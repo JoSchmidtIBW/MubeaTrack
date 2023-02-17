@@ -1,0 +1,14 @@
+{
+  "name": "mubeatrack",
+  "version": "1.0.0",
+  "description": "RESTful API; node.js- Client-Server- Application for \"ASMA\" Mubea",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Schmidt",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
