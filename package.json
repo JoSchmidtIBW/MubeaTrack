@@ -2,7 +2,7 @@
   "name": "mubeatrack",
   "version": "1.0.0",
   "description": "RESTful API; node.js- Client-Server- Application for \"ASMA\" Mubea",
-  "main": "index.js",
+  "main": "server.mjs",
   "scripts": {
     "dev": "nodemon server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
