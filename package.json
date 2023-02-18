@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "RESTful API; node.js- Client-Server- Application for \"ASMA\" Mubea",
   "main": "server.mjs",
+  "type": "module",
   "scripts": {
     "dev": "nodemon server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
