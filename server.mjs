@@ -15,7 +15,7 @@ app.listen(PORT, () => {
 });
 
 //vercel test
-module.exports = app;
+export default app;
 
 // let str = 'joij';
 // let a = 44;
