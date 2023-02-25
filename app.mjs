@@ -1,5 +1,6 @@
 import morgan from 'morgan';
 import express from 'express';
+import poolDB from './utils/db.mjs';
 
 const app = express();
 
@@ -23,6 +24,30 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', (req, res) => {
   res.status(200).send('hello from server from app.mjs');
+});
+
+app.get('/d', async (req, res) => {
+  console.log('Halloooo from /d');
+  let conn;
+  try {
+    conn = await poolDB.getConnection();
+    const rows = await conn.query(
+      `SELECT * FROM userVerkaufMubea WHERE ID_User=1;`
+    );
+    //console.log(rows); //[ {val: 1}, meta: ... ]
+    const jsonS = JSON.stringify(rows);
+    console.log(jsonS);
+    //const res = await conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
+    //console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+    res.send(jsonS);
+  } catch (err) {
+    console.log(
+      'DB-Error, irgendwas ist passiert, weil connection limit auf 8??? max 150??? '
+    );
+    throw err;
+  } finally {
+    if (conn) return conn.end();
+  }
 });
 
 export default app;
