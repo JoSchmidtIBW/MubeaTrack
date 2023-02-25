@@ -1,13 +1,20 @@
-//import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config({ path: './config.env' }); //muss nur hier definiert werden    und oben stehen hier!!//
+
 import app from './app.mjs';
 
-//const server = express();
+console.log('app.get("env"): ' + app.get('env'));
+//console.log(process.env);
 
-// server.get('/', (req, res) => {
-//   res.end('hello from server');
-// });
+let PORT = 7555; // = process.env.DEV_PORT || 7555;
+if (process.env.NODE_ENV === 'development') {
+  PORT = process.env.DEV_PORT;
+} else if (process.env.NODE_ENV === 'production') {
+  PORT = process.env.PROD_PORT;
+} else {
+  PORT = 7555;
+}
 
-const PORT = 7555;
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}...`);
   console.log(`Server running on port: http://localhost:${PORT}...`);
@@ -15,12 +22,4 @@ app.listen(PORT, () => {
 });
 
 //vercel test
-export default app;
-
-// let str = 'joij';
-// let a = 44;
-// let q = 'nini';
-//
-// let str = 'ninn';
-//
-// // ich "dd"
+export default app; // "type": "module",
