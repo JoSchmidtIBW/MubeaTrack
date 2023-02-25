@@ -19,12 +19,12 @@ or pages with AA(Arbeitsanweisung) (not real-time)
 or pages with Info's about maschineUpdate from the Constuction- department,
 or info's from the Planung-department (real-time)
 
-or it is like ASMA (Maschine- Error- message-send) (muss nicht real-time sein)
+or it is like ASMA (Maschine- Error- message-send) (muss nicht real-time sein) (cookie log out in 8h)
 or it is like a digital- "order" Programm, (Anlage 1, brauche ein Prüfmittel! Prüfmittelabteilung --> Anlage 1)
 
 or it will be a dashboard for boss's to look if the maschine run etc. (real-time)
 
-
+in the moment, in exist nothing like this in the company
 
 ## Project Setup
 ### Server
