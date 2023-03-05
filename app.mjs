@@ -2,6 +2,9 @@ import morgan from 'morgan';
 import express from 'express';
 import poolDB from './utils/db.mjs';
 
+import path from 'path'; //__dirname is not definet
+import { fileURLToPath } from 'url'; //__dirname is not definet
+
 const app = express();
 
 // Middleware
@@ -14,6 +17,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json()); //für post (daten von client zu bekommen), muss json sein
+
+const __filename = fileURLToPath(import.meta.url); //__dirname is not definet
+const __dirname = path.dirname(__filename); //__dirname is not definet
+
+//um auf html css zuzugreifen, was jedoch eine API nicht macht
+app.use(express.static(`${__dirname}/public`));
 
 // my middleware
 app.use((req, res, next) => {
