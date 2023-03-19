@@ -88,3 +88,5 @@ console.log('process.argv: ' + process.argv);
 
 //zum laufen lassen, neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --import
 // man sieht in conosle 3 sachen, sollte ein array sein, aber zeigt keine [], das dritte ist --import
+
+//zu datenbank löschen: neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --delete
