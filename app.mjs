@@ -59,4 +59,14 @@ app.get('/d', async (req, res) => {
   }
 });
 
+//um falsche urls eine fehlermeldung zu geben, muss dies unter den routen passieren
+// für all, get post put delete--> all      404 for not found
+//http://127.0.0.1:4301/api/tours       --> v1 zb nicht in url
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can's find ${req.originalUrl} on this server!`,
+  });
+});
+
 export default app;
