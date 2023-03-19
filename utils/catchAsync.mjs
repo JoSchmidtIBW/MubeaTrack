@@ -1,4 +1,5 @@
 export default (fn) => {
+  // damit keine try catch blöcke --> error is next
   // fn = function
   return (req, res, next) => {
     //anonymus function
