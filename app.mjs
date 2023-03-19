@@ -1,6 +1,7 @@
 import morgan from 'morgan';
 import express from 'express';
 import poolDB from './utils/db.mjs';
+import User from './models/userModel.mjs';
 
 import path from 'path'; //__dirname is not definet
 import { fileURLToPath } from 'url'; //__dirname is not definet
@@ -33,6 +34,29 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', (req, res) => {
   res.status(200).send('hello from server from app.mjs');
+});
+
+app.get('/m', async (req, res) => {
+  try {
+    const users = await User.find();
+
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'sucsess',
+      results: users.length,
+      data: {
+        users,
+      },
+      //requestedAt: req.requestTime //,
+      // results: tours.length,
+      // data: tours //{ tours: tours }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'was ist schief: ' + err,
+    });
+  }
 });
 
 app.get('/d', async (req, res) => {

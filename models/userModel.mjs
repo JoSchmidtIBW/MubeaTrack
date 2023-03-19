@@ -1,56 +1,75 @@
 import mongoose from 'mongoose';
+//import validator from 'validator';  // github validator für email oder isAplpha Character
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    requires: [true, 'A Tour must have a name'], //validator
-    unique: true, // nicht zwei mit selben Namen
+  firstName: {
+    type: String, //validate: [validator.isAlpha, 'Tour name must only contain characters and no spaces'] // github --> validator     npm i validator
+    required: [true, 'A User must have a firstname'], //validator
+    //unique: true, // nicht zwei mit selben Namen
     trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A firstName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A firstName must have more or equal then 1 characters'], //validator
   },
-  duration: {
-    type: Number,
-    // required: [true, 'A tour must have a Duration'],
-  },
-  maxGroupSize: {
-    type: Number,
-    // required: [true, 'A tour must have a groupe size'],
-  },
-  difficulty: {
+  lastName: {
     type: String,
-    //  required: [true, 'A tour must have a difficulty'],
+    required: [true, 'A User must have a lasttname'], //validator
+    //unique: true, // nicht zwei mit selben Namen
+    trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A lastName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A lastName name must have more or equal then 1 characters'], //validator
   },
-  ratingsAverage: {
+  employeeNumber: {
     type: Number,
-    default: 4.5,
+    required: [true, 'A user must have a employeeNumber'],
+    unique: true, // darf keine gleiche nochmals haben!
+    trim: true,
   },
-  ratingsQuantity: {
+  password: {
+    type: String,
+    required: [true, 'Please provide a password'],
+    minlength: 1,
+    trim: true,
+  },
+  // passwordConfirm: {
+  //   type: String,
+  //   required: [true, 'Please confirm your password']
+  // },
+  age: {
     type: Number,
-    default: 0,
+    default: 1,
+    trim: true,
   },
-  price: {
-    type: Number,
-    // required: [true, 'A tour must have a Price'],
+  company_department: {
+    type: String,
+    // required: [true, 'A user must have a company_department'],
+    enum: {
+      //geht nur bei strings, nicht bei nummern
+      values: ['Schweisserei', 'Zieherei', 'Anarbeit'], // validator, kann nur drei sachen eingeben,
+      message: 'company_department is either: Schweisserei, Zieherei, Anarbeit',
+    },
   },
-  priceDiscount: Number,
-  summary: {
+  machine: {
     type: String,
     trim: true,
     // required: [true, 'A Tour must have a desription'],
   },
-  description: {
+  avatarColor: {
     type: String,
+    default: 'black',
+  },
+  email: {
+    type: String,
+    //required: [true, 'Please provide your email!'],
+    unique: true,
+    lowercase: true,
+    //validate: [validator.isEmail, 'Please profide a valid email'],
     trim: true,
   },
-  imageCover: {
-    type: String,
-    // required: [true, 'A Cover must have a Image'],
-  },
-  images: [String],
   createdAt: {
     type: Date,
     default: Date.now(),
+    //select: false //dann sieht man nicht
   },
-  startDate: [Date],
 });
 
 const User = mongoose.model('User', userSchema); //grossgeschrieben

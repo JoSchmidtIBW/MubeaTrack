@@ -31,7 +31,7 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('DB connection succeful!'));//.catch(err => console.log('ERROR DB-Connecting'))
+  .then(() => console.log('DB connection succeful!')); //.catch(err => console.log('ERROR DB-Connecting'))
 
 const tourSchema = new mongoose.Schema({
   name: {
@@ -55,15 +55,15 @@ const testTour = new Tour({
   name: 'The Mubea Caaxeeeeceeeecaaaaaamper',
   price: 99.97,
 });
-
-testTour
-  .save()
-  .then((doc) => {
-    console.log(doc); //////////
-  })
-  .catch((err) => {
-    console.log('ERROR doc save... : ', err);
-  });
+//
+// testTour
+//   .save()
+//   .then((doc) => {
+//     console.log(doc); //////////
+//   })
+//   .catch((err) => {
+//     console.log('ERROR doc save... : ', err);
+//   });
 
 console.log('app.get("env"): ' + app.get('env'));
 //console.log(process.env);
