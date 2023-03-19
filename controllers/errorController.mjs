@@ -1,11 +1,13 @@
 import AppError from '../utils/appError.mjs';
 
 const handleCastErrorDB = (err) => {
+  console.log('Bin handleCastErrorDB');
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message, 400);
 };
 
 const handleDuplicateFieldsDB = (err) => {
+  console.log('Bin handleDuplicateFieldsDB');
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
   console.log(value);
 
@@ -13,6 +15,7 @@ const handleDuplicateFieldsDB = (err) => {
   return new AppError(message, 400);
 };
 const handleValidationErrorDB = (err) => {
+  console.log('Bin handleValidationErrorDB');
   const errors = Object.values(err.errors).map((el) => el.message);
 
   const message = `Invalid input data. ${errors.join('. ')}`;
@@ -20,10 +23,11 @@ const handleValidationErrorDB = (err) => {
 };
 
 const sendErrorDev = (err, res) => {
+  console.log('9999999999999999999999999999999999999999999999');
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
-    message: err.message,
+    message: err.message + 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk',
     stack: err.stack,
   });
 };
@@ -51,13 +55,20 @@ const sendErrorProd = (err, res) => {
 
 //module.exports = (err, req, res, next) => {
 export default (err, req, res, next) => {
-  // console.log(err.stack);
+  console.log('**************************************** ' + err.stack);
 
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    console.log('bin errorController.mjs und im develop');
+    // sendErrorDev(err, res);
+    res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message + ' bin errorHandling-Middleware bei app.js',
+      stack: err.stack,
+    });
   } else if (process.env.NODE_ENV === 'production') {
     let error = Object.create(err);
 

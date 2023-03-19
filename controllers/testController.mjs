@@ -1,6 +1,7 @@
 import User from '../models/userModel.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 import APIFeatures from '../utils/apiFeatures.mjs';
+import AppError from '../utils/appError.mjs';
 
 export const getAllUsers = catchAsync(async (req, res, next) => {
   // try {
