@@ -5,6 +5,17 @@ import mongoose from 'mongoose';
 
 import app from './app.mjs';
 
+// process.on('uncaughtException', err => {//SPàTER reinmachen, sonst sieht man nicht, wo genau der Fehler!!!!
+
+//     console.log('UNCAUGHT EXCEPTION! Shutting down...')
+//     console.log("Beendige den Prozess...");
+//     console.log("--> err.name: " + err.name + " , err.message: " + err.message);
+//     // server.close(() => { // damit server noch alle request verarbeiten kann, nicht aprupt schliesst
+//     //     process.exit(1); //0 for success, 1 uncalled subjection
+//     // });server hier nicht definiert, aber hier auch kein server fehler
+//     process.exit(1);
+// });
+
 //mongoose.connect();
 const DB = process.env.DATABASE_MONGODB.replace(
   '<PASSWORD>',
@@ -66,8 +77,10 @@ const testTour = new Tour({
 //   });
 
 console.log('app.get("env"): ' + app.get('env'));
-//console.log(process.env);
+//console.log("app.get('status'): " + app.get('status'))
+//console.log(process.env)
 
+// 4. start server
 let PORT = 7555; // = process.env.DEV_PORT || 7555;
 if (process.env.NODE_ENV === 'development') {
   PORT = process.env.DEV_PORT;
@@ -77,14 +90,30 @@ if (process.env.NODE_ENV === 'development') {
   PORT = 7555;
 }
 
+// const server = app.listen(PORT, () => {
+//   console.log(`App running on port ${PORT}...`);
+//   console.log(`Server running on port: http://localhost:${PORT}...`);
+//   console.log(`Server running on port: http://127.0.0.1:${PORT}...`);
+// });
+
 const server = app.listen(PORT, () => {
   console.log(`App running on port ${PORT}...`);
-  console.log(`Server running on port: http://localhost:${PORT}...`);
-  console.log(`Server running on port: http://127.0.0.1:${PORT}...`);
+  console.log(
+    `Server running on port: http://localhost:${PORT}...in Browser with no cookie Nicht https`
+  );
+  console.log(
+    `Server running on port: http://127.0.0.1:${PORT}...in Browser with cookie nicht https`
+  );
 });
+
+const x = 66;
+let a = 5;
+//x = 5;
 
 //vercel test
 export default app; // "type": "module",
+
+//TEST COMMENT NDB//////////
 
 process.on('unhandledRejection', (err) => {
   console.log(
@@ -101,3 +130,19 @@ process.on('unhandledRejection', (err) => {
     process.exit(1); //0 for success, 1 uncalled subjection
   });
 });
+
+// process.on('unhandledRejection', (err) => {
+//   console.log(
+//     'Etwas ist unvorhersehbar passiert: err.name: ' +
+//     err.name +
+//     ' , err.message: ' +
+//     err.message
+//   );
+//   console.log('UNHANDLER REJECTION! Shutting down...');
+//   console.log('Beendige den Prozess...');
+//   server.close(() => {
+//     // damit server noch alle request verarbeiten kann, nicht aprupt schliesst
+//     // eslint-disable-next-line no-process-exit
+//     process.exit(1); //0 for success, 1 uncalled subjection
+//   });
+// });
