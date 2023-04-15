@@ -6,12 +6,14 @@ import User from './models/userModel.mjs';
 import path from 'path'; //__dirname is not definet
 import { fileURLToPath } from 'url'; //__dirname is not definet
 
+import testRoute from './routes/testRoute.mjs';
+
 const app = express();
 
 // Middleware
 
 // Development logging
-console.log('wiso undefinded??? process.env.NODE_ENV: ' + process.env.NODE_ENV); // wiso ist dieser undefinded? bei server.mjs ist morgan zuoberst und erst dann app
+console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV); // wiso ist dieser undefinded? bei server.mjs ist morgan zuoberst und erst dann app
 if (process.env.NODE_ENV === 'development') {
   // wenn undefined oder development... :)
   app.use(morgan('dev')); // wenn nicht geht, hat man kein logger!
@@ -83,13 +85,15 @@ app.get('/d', async (req, res) => {
   }
 });
 
+app.use('/api/v1/users', testRoute);
+
 //um falsche urls eine fehlermeldung zu geben, muss dies unter den routen passieren
 // für all, get post put delete--> all      404 for not found
 //http://127.0.0.1:4301/api/tours       --> v1 zb nicht in url
 app.all('*', (req, res, next) => {
   res.status(404).json({
     status: 'fail',
-    message: `Can's find ${req.originalUrl} on this server!`,
+    message: `Can't find ${req.originalUrl} on this server!`,
   });
 });
 
