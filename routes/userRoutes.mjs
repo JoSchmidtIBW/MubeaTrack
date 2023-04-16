@@ -25,6 +25,8 @@ import {
 
 const router = express.Router();
 
+router.get('/l', getAllUsers);
+
 //authentication
 //http: //127.0.0.1:4301/api/v1/users/signup
 router.post('/signup', signup); //hat kein get, und kein update,     post in postman!// für jederman

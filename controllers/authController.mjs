@@ -89,6 +89,7 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangeAt: req.body.passwordChangeAt,
     role: req.body.role,
+    photo: req.body.photo,
   });
 
   //jwt token generieren      sign(payload, secret, Ablaufzeit)     payload, welche Daten sollen dort rein, zb die ID von user        'secret'
@@ -119,16 +120,30 @@ export const login = catchAsync(async (req, res, next) => {
   // das gibt fehler von linter, weil email und email...
   //desshalb:
   const { email, password } = req.body; // das ist das, was user sendet bei login
+  console.log('------------------------------------: ' + email, password);
 
-  //1. check if email and password exist
+  //1. check if email and password exist wenn gar nix steht!
   if (!email || !password) {
     // wenn nicht existiert, sende zu client
     return next(new AppError('Pleace provide email and password!', 400)); //400 = bad request         wenn nicht return, in console. error
   }
+
+  // if (!email) {
+  //   // wenn nicht existiert, sende zu client
+  //   return next(new AppError('No user with this email!', 400)); //400 = bad request         wenn nicht return, in console. error
+  // }
+  //
+  // if (!password) {
+  //   // wenn nicht existiert, sende zu client
+  //   return next(new AppError('No User with this password!', 400)); //400 = bad request         wenn nicht return, in console. error
+  // }
+
   //2. check if user exists && password is correct
   //    user --> ist ein user-dokument
   const user = await User.findOne({ email: email }).select('+password'); //geht auch const user = User.findOne({ email })        Achtung: passwort ist bei usermodel secret = false! also ist nur die email da, nicht das passwort, okay.. mit .selcte('+password') sieht man wieder
-  console.log('user: ' + user);
+  //console.log('user: ' + user);
+  console.log('user.password: ' + user.password);
+  console.log('password: ' + password);
 
   // frage, ob passwort gleich, userPasswort in db, in db is hash,
   //const correct = await user.correctPassword(password, user.password); // correct ist entweder true oder false    muss auch wait sein, wenn oberer user nicht ist
@@ -137,10 +152,19 @@ export const login = catchAsync(async (req, res, next) => {
   //     return next(new AppError('Incorrect email or password', 401)); // 401 unauthorize
   // }
 
+  console.log(
+    'was ist das? ' + (await user.correctPassword(password, user.password))
+  );
+
   if (!user || !(await user.correctPassword(password, user.password))) {
     //wenn separat, dann hacker hat weiss, ob email nicht korrekt oder passwort usw
     return next(new AppError('Incorrect email or password', 401)); // 401 unauthorize
   }
+
+  // if (!user) {
+  //   //wenn separat, dann hacker hat weiss, ob email nicht korrekt oder passwort usw
+  //   return next(new AppError('User not found', 401)); // 401 unauthorize
+  // }
 
   //3. If everything is ok, send token to client
   //// const token = '' //fakeTokken
@@ -169,6 +193,7 @@ export const logout = (req, res) => {
 //Middlewarefunction    für protectet route, also die, die eingeloggt sind
 //exports.protect = catchAsync(async (req, res, next) => {
 export const protect = catchAsync(async (req, res, next) => {
+  console.log('bin protect in authController');
   //1.) Getting token and checking if exist
 
   let token;
@@ -236,6 +261,7 @@ export const protect = catchAsync(async (req, res, next) => {
 // Only for rendered pages, no creating errors!
 //exports.isLoggedIn = async (req, res, next) => {
 export const isLoggedIn = async (req, res, next) => {
+  console.log('bin isLoggedIn in authController');
   // hier catchasync weg, weil ein fehler beim logout durch anderes cookie an den apperror gesendet wird, obwohl hier drin kein apperror sit, weil wir nicht catch async errors
   if (req.cookies.jwt) {
     try {
@@ -277,6 +303,7 @@ export const isLoggedIn = async (req, res, next) => {
 
 //exports.restrictTo = (...roles) => {
 export const restrictTo = (...roles) => {
+  console.log('bin restrictTo in authController');
   // wegen req.user, muss zuerst die middleware prodect laufen
   return (req, res, next) => {
     // roles ['admin', 'lead-guide ]. role = 'user'
@@ -293,6 +320,7 @@ export const restrictTo = (...roles) => {
 //video 135
 //exports.forgotPassword = catchAsync(async (req, res, next) => {
 export const forgotPassword = catchAsync(async (req, res, next) => {
+  console.log('bin forgotPassword in authController');
   // 1.) Get user based on POSTed email
   const user = await User.findOne({ email: req.body.email });
 
@@ -344,6 +372,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 //video 137
 //exports.resetPassword = catchAsync(async (req, res, next) => {
 export const resetPassword = catchAsync(async (req, res, next) => {
+  console.log('bin resetPassword in AuthController');
   // 1.) Get user based on the token
   // token send in url is not encryptet token
   // the one we have in the db is the encryptet one
@@ -390,8 +419,13 @@ export const resetPassword = catchAsync(async (req, res, next) => {
 // ist nur für loged in Users
 //exports.updatePassword = catchAsync(async (req, res, next) => {
 export const updatePassword = catchAsync(async (req, res, next) => {
+  console.log('bin updatePassword in authController');
   // 1.) Get user from the collection
   const user = await User.findById(req.user.id).select('+password'); // der user kommt von der protect middleware, und passwort not includet
+
+  console.log('user: ' + user);
+  console.log('user.password' + user.password);
+  console.log('req.body.passwordCurrent:' + req.body.passwordCurrent);
 
   // 2.) Check if POSTed current password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {

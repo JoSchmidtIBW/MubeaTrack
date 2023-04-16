@@ -4,12 +4,13 @@ import { showAlert } from './alerts.js';
 
 // type is either 'password' or 'data'
 export const updateSettings = async (data, type) => {
+  console.log('bin updateSettings in updateSettings.js');
   // data, type // name und email kommen von pug input
   try {
     const url =
       type === 'password'
-        ? 'http://127.0.0.1:4301/api/v1/users/updateMyPassword'
-        : 'http://127.0.0.1:4301/api/v1/users/updateMe';
+        ? 'http://127.0.0.1:7566/api/v1/users/updateMyPassword'
+        : 'http://127.0.0.1:7566/api/v1/users/updateMe';
 
     const res = await axios({
       method: 'PATCH',

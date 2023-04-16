@@ -34,7 +34,7 @@ const router = express.Router();
 
 //video159
 //router.use('/:tourId/reviews', reviewRouter); // muss oben sein     mointing a router       der reviewrouter braucht aber noch die tourId
-
+router.use('/:tourId', getTour);
 //param mittleware      tour id is 5  --> http://127.0.0.1:4301/api/v1/tours/5      check id, sonst fail
 // router.param('id', (req, res, next, val) => {
 //     //console.log(`tour- id is: ${val}`)

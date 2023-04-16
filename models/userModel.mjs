@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
+import { encryptData, decryptData } from '../utils/crypto.mjs';
+import CryptoJS from 'crypto-js';
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -10,10 +13,10 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    //required: [true, 'Please provide your email!'],
-    //unique: true,
+    required: [true, 'Please provide your email!'],
+    unique: true,
     lowercase: true,
-    //validate: [validator.isEmail, 'Please profide a valid email'],
+    validate: [validator.isEmail, 'Please profide a valid email'],
   },
   photo: String,
   role: {
@@ -55,14 +58,34 @@ const userSchema = new mongoose.Schema({
 // pre-hook-on-save middleware  runs between getting data, and saving data, when daten in db save gemacht wird!
 //comment this out for import data
 userSchema.pre('save', async function (next) {
+  // hier drin auskommentieren, wenn dev-data geladen wird!!!!
   // password nur encypt, wenn update or new      zb wenn user update email, dann nicht pw
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next(); //this is the actuelle dokument        isModified ist funktion, wenn etwas im dokument gerade geändert wird, braucht name des fields, das geändert wird
   // wenn nicht das pw geändert, mache next, gehe zur nächsten middleware, ansonsten, bleibe drin
   // npm i bcryptjs
 
+  //----------------------------------------------------------------------------------
   // Hash the password with cost of 12
-  this.password = await bcrypt.hash(this.password, 12); //16 braucht sehr lange // default is 10      .hash (ist ein promise, braucht await) is asynchron version, sinchron version nicht nehmen, weil diese die anderen user ausbremst, bis fertig ist
+  // this.password = await bcrypt.hash(this.password, 12); //16 braucht sehr lange // default is 10      .hash (ist ein promise, braucht await) is asynchron version, sinchron version nicht nehmen, weil diese die anderen user ausbremst, bis fertig ist
+  //------------------------------------------------------------------------------------
+
+  var encryptedStringPasswortLClient;
+  // // passwort wird hier gehascht und schreibt es in den: encryptedStringPasswortLClient
+  // //**************************************************************************
+  let data = this.password; //passwortLClient;//Message to Encrypt
+  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
+  let key = CryptoJS.SHA256('mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
+  encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
+  // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
+  // //--------------------------------------------------------------------------
+  // //das ist zum wieder das normale pw anzeigen, möchte das später einbauen
+  // let decrypteddata = decryptData(encryptedStringPasswortLClient, iv, key);
+  // //  console.log("decrypteddata: "+decrypteddata);
+  // //**************************************************************************
+  this.password = encryptedStringPasswortLClient;
+
   // danch muss confirmpasswort gelöscht werden, weil nur noch hashpasswort gibt, mit set to undefined
   // Delete the passwordConfirm field
   this.passwordConfirm = undefined; //requrierd Input, not input in database
@@ -73,9 +96,11 @@ userSchema.pre('save', async function (next) {
 //video 137 email reset
 //comment this out for import data
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password') || this.isNew) return next();
+  if (!this.isModified('password') || this.isNew) return next(); // hier drin auskommentieren, wenn dev-data geladen wird!!!!
 
-  this.passwordChangeAt = Date.now() - 1000; // -1000 = - 1sec in der Vergangenheit, weil tooken schneller generiert wurde, als gespeichert
+  //----------------------------------------------------------------------------------------
+  //this.passwordChangeAt = Date.now() - 1000; // -1000 = - 1sec in der Vergangenheit, weil tooken schneller generiert wurde, als gespeichert
+  //-----------------------------------------------------------------------------------------
   next();
 });
 
@@ -99,11 +124,40 @@ userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
+  console.log('userPassword: ' + userPassword);
+  console.log('candidatePassword: ' + candidatePassword);
+
   //this.password   geht nicht, weil passwort ist secret=false
 
-  // candidatepasswort comming from user, is not hash, userPasswort is hash
-  return await bcrypt.compare(candidatePassword, userPassword); //asynchron funktion
-  //compare return true if passwort is same, or false
+  // candidatepasswort comming from user, is not hash, userPasswort is hash//compare return true if passwort is same, or false
+  //------------------------------------------------------------------------------------------------
+  //return await bcrypt.compare(candidatePassword, userPassword); //asynchron funktion
+  const isBcrypt = await bcrypt.compare(candidatePassword, userPassword);
+  //------------------------------------------------------------------------------------------------
+
+  //var encryptedStringPasswortLClient;
+  //encryptedStringPasswortLClient =
+  // // passwort wird hier gehascht und schreibt es in den: encryptedStringPasswortLClient
+  // //**************************************************************************
+  // let data = this.password; //passwortLClient;//Message to Encrypt
+  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
+  let key = CryptoJS.SHA256('mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
+  // encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
+  // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
+  // //--------------------------------------------------------------------------
+  // //das ist zum wieder das normale pw anzeigen, möchte das später einbauen
+  let decrypteddata = decryptData(userPassword, iv, key);
+  console.log('decrypteddata: ' + decrypteddata);
+  // //**************************************************************************
+  // this.password = encryptedStringPasswortLClient;
+
+  if (decrypteddata === candidatePassword || isBcrypt === true) {
+    return true;
+  } else {
+    return false;
+  }
+  return false;
 };
 
 //video 132 20min..     wechselt passowrt nach jwt webtoken bei protected middlware, nr 4 in authcontroller
@@ -111,7 +165,10 @@ userSchema.methods.changesPasswordAfter = function (JWTTimestamp) {
   // return false, --> user has not change passwort after the token was isued  nachdem der token ausgestellt wurde
   if (this.passwordChangeAt) {
     //wenn user nie passwort gewechselt hat, existiert das hier nicht
-    //console.log("passwordChangeAt, JWTTimestamp: " + passwordChangeAt, JWTTimestamp)  //ausgabe was mit millisekunden
+    console.log(
+      'passwordChangeAt, JWTTimestamp: ' + passwordChangeAt,
+      JWTTimestamp
+    ); //ausgabe was mit millisekunden
 
     const changedTimestamp = parseInt(
       this.passwordChangeAt.getTime() / 1000,

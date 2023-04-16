@@ -31,6 +31,17 @@ const DB = process.env.DATABASE_MONGODB.replace(
 //     console.log(con.connections), console.log('DB connection succeful!');
 //   });
 
+mongoose
+  .connect(DB, {
+    //hostet db
+    //mongoose.connect(process.env.DATABASE_LOCAL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('DB connection succeful!')); //.catch(err => console.log('ERROR DB-Connecting'))
+
 //mongoose.connect(mongoConnectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // mongoose

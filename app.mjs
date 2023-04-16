@@ -82,64 +82,76 @@ app.use(helmet()); // sollte hier am anfang der mittdleware stehen,und nicht am 
 //     },
 // }))
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'", 'data:', 'blob:', 'https:', 'ws:'],
-        baseUri: ["'self'"],
-        fontSrc: ["'self'", 'https:', 'data:'],
-        scriptSrc: [
-          "'self'",
-          'https:',
-          'http:',
-          'blob:',
-          'https://*.mapbox.com',
-          'https://js.stripe.com',
-          'https://m.stripe.network',
-          'https://*.cloudflare.com',
-        ],
-        frameSrc: ["'self'", 'https://js.stripe.com'],
-        objectSrc: ["'none'"],
-        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
-        workerSrc: [
-          "'self'",
-          'data:',
-          'blob:',
-          'https://*.tiles.mapbox.com',
-          'https://api.mapbox.com',
-          'https://events.mapbox.com',
-          'https://m.stripe.network',
-        ],
-        childSrc: ["'self'", 'blob:'],
-        imgSrc: ["'self'", 'data:', 'blob:'],
-        formAction: ["'self'"],
-        connectSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          'unsafe-eval',
-          'data:',
-          'blob:',
-          //'https://*.stripe.com',
-          //'https://*.mapbox.com',
-          //'https://*.cloudflare.com/',
-          //'https://bundle.js:*',
-          'ws://127.0.0.1:*/',
-        ],
-        upgradeInsecureRequests: [],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: [
+//         "'self'",
+//         'cdnjs.cloudflare.com',
+//         'code.jquery.com',
+//         'cdn.datatables.net',
+//       ],
+//       connectSrc: ["'self'", 'http://localhost:7566', 'http://172.0.0.1:7566'],
+//     },
+//   })
+// );
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'", 'data:', 'blob:', 'https:', 'ws:'],
+//         baseUri: ["'self'"],
+//         fontSrc: ["'self'", 'https:', 'data:'],
+//         scriptSrc: [
+//           "'self'",
+//           'https:',
+//           'http:',
+//           'blob:',
+//           'https://*.mapbox.com',
+//           'https://js.stripe.com',
+//           'https://m.stripe.network',
+//           'https://*.cloudflare.com',
+//         ],
+//         frameSrc: ["'self'", 'https://js.stripe.com'],
+//         objectSrc: ["'none'"],
+//         styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+//         workerSrc: [
+//           "'self'",
+//           'data:',
+//           'blob:',
+//           'https://*.tiles.mapbox.com',
+//           'https://api.mapbox.com',
+//           'https://events.mapbox.com',
+//           'https://m.stripe.network',
+//         ],
+//         childSrc: ["'self'", 'blob:'],
+//         imgSrc: ["'self'", 'data:', 'blob:'],
+//         formAction: ["'self'"],
+//         connectSrc: [
+//           "'self'",
+//           "'unsafe-inline'",
+//           'unsafe-eval',
+//           //'data:',
+//           //'blob:',
+//           //'https://*.stripe.com',
+//           //'https://*.mapbox.com',
+//           //'https://*.cloudflare.com/',
+//           //'https://bundle.js:*',
+//           'ws://127.0.0.1:*/',
+//           //'ws://localhost:*/',
+//         ],
+//         upgradeInsecureRequests: [],
+//       },
+//     },
+//   })
+// );
 
 // das oben würde ev auch so gehen: mit einer middleware
-// app.use((req, res, next) => {
-//     res.set(
-//       'Content-Security-Policy',
-//       'connect-src *'
-//     );
-//     next();
-//   });
+app.use((req, res, next) => {
+  res.set('Content-Security-Policy', 'connect-src *');
+  next();
+});
 
 // *
 // Default: `default-src 'self' 'unsafe-inline' data:;` *
@@ -249,20 +261,38 @@ app.use((req, res, next) => {
   //console.log("app.js, req.headers: " + req.headers) //http-headers, client send  [object, object]
   //console.log(JSON.parse(req.headers)) gibt fehler unexpect token
   // console.log(JSON.stringify(req.headers)) //http://127.0.0.1:4301/api/v1/tours mit value: Authoriazation und Bearer hashirgendwasToken
-  console.log('Bin Test middleware: ' + JSON.stringify(req.cookies));
+  // console.log(
+  //   'Bin Test middleware: ' + JSON.stringify(req.cookies) + ' ---------'
+  // );
   next();
+});
+
+// DELETE COOKIE
+app.get('/delete-cookie', (req, res) => {
+  //DELETING username COOKIE
+  res.clearCookie('jwtAdministrator');
+  res.clearCookie('jwtEduardo Hernandez');
+  res.clearCookie('jwtJonas Schmedtmann');
+  res.clearCookie('jwtLaura Wilson');
+  res.clearCookie('jwtMax Smith');
+  res.clearCookie('jwtjonassssss');
+  res.clearCookie('jwtnameCookie5');
+  res.clearCookie('jwttester33');
+  res.clearCookie('jwtuserCookie5');
+  // REDIRECT OT HOME
+  res.redirect('/');
 });
 
 // my middleware
-app.use((req, res, next) => {
-  console.log('Hello from the middleware :)');
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Hello from the middleware :)');
+//   next();
+// });
 
 // Routes
-app.get('/', (req, res) => {
-  res.status(200).send('hello from server from app.mjs');
-});
+// app.get('/', (req, res) => {
+//   res.status(200).send('hello from server from app.mjs');
+// });
 
 app.get('/m', async (req, res) => {
   try {
