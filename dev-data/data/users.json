@@ -1,34 +1,65 @@
-[
+[{
+  "_id": "5c8a1d5b0190b214360dc057",
+  "name": "Jonas Schmedtmann",
+  "email": "admin@natours.io",
+  "role": "admin",
+  "active": true,
+  "photo": "user-1.jpg",
+  "password": "$2a$12$F5iTq.cqXnNT4KsQQwJlbuR.gjG0/zBK4qJqzS5GqCvaKaRYQYNfm"
+},
   {
-    "firstName": "moritz",
-    "lastName": "mustafer",
-    "employeeNumber": 70223,
-    "password": "2",
-    "age": 57,
-    "company_department": "Zieherei",
-    "machine": "Asmag",
-    "avatarColor": "pink",
-    "email": "moritz@test.com"
+    "_id": "5c8a1dfa2f8fb814b56fa181",
+    "name": "Lourdes Browning",
+    "email": "loulou@example.com",
+    "role": "user",
+    "active": true,
+    "photo": "user-2.jpg",
+    "password": "$2a$12$hP1h2pnNp7wgyZNRwPsOTeZuNzWBv7vHmsR3DT/OaPSUBQT.y0S.."
   },
   {
-    "firstName": "max",
-    "lastName": "muster",
-    "employeeNumber": 70221,
-    "password": "a",
-    "age": 85,
-    "company_department": "Anarbeit",
-    "machine": "Rat.1, Conni 1",
-    "avatarColor": "blue",
-    "email": "max@test.com"
+    "_id": "5c8a24402f8fb814b56fa190",
+    "name": "Alexander Jones",
+    "email": "alex@example.com",
+    "role": "user",
+    "active": true,
+    "photo": "user-17.jpg",
+    "password": "$2a$12$NnclhoYFNcSApoQ3ML8kk.b4B3gbpOmZJLfqska07miAnXukOgK6y"
   },
   {
-    "firstName": "Bil",
-    "lastName": "dürgün",
-    "employeeNumber": 70220,
-    "password": "1",
-    "company_department": "Anarbeit",
-    "machine": "Rat.1",
-    "avatarColor": "red",
-    "email": "bil@test.com"
+    "_id": "5c8a245f2f8fb814b56fa191",
+    "name": "Eduardo Hernandez",
+    "email": "edu@example.com",
+    "role": "user",
+    "active": true,
+    "photo": "user-18.jpg",
+    "password": "$2a$12$uB5H1OxLMOqDYTuTlptAoewlovENJvjrLwzsL1wUZ6OkAIByPPBGq"
+  },
+  {
+    "_id": "5c8a24822f8fb814b56fa192",
+    "name": "John Riley",
+    "email": "john@example.com",
+    "role": "user",
+    "active": true,
+    "photo": "user-19.jpg",
+    "password": "$2a$12$11JElTatQlAFo1Obw/dwd..vuVmQyYS7MT14pkl3lRvVPjGA00G8O"
+  },
+  {
+    "_id": "5c8a24a02f8fb814b56fa193",
+    "name": "Lisa Brown",
+    "email": "lisa@example.com",
+    "role": "user",
+    "active": true,
+    "photo": "user-20.jpg",
+    "password": "$2a$12$uA9FsDw63v6dkJKGlLQ/8ufYBs8euB7kqIQewyYlZXU5azEKeLEky"
+  },
+  {
+
+    "_id": "643c1f042df0321cb8a06a47",
+    "role": "admin",
+    "active": true,
+    "name": "john",
+    "email": "john@admin.io",
+    "password": "UcOdDFH3nfVSNAkY53aMFQ==",
+    "photo": "user-1.jpg"
   }
 ]

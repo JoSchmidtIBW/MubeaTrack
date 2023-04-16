@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'; //__dirname is not definet
 
 // eslint-disable-next-line node/no-missing-import
 import User from '../../models/userModel.mjs';
+import Tour from '../../models/tourModel.mjs';
 
 import dotenv, { config } from 'dotenv';
 
@@ -47,12 +48,15 @@ mongoose
 
 // READ JSON-file
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8')); //, 'utf-8'
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')); //, 'utf-8'
 //const tours = JSON.parse(fs.readFil.eSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
 //IMPORT DATA into Database
 const importData = async () => {
   try {
-    await User.create(users);
+    await Tour.create(tours);
+    await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
+
     console.log('Data successfully loaded! Test- Daten, zum DB erstellen');
     // eslint-disable-next-line no-process-exit
     process.exit();
@@ -65,6 +69,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
+    await Tour.deleteMany();
     console.log(
       'Data successfully deleted! TestDatanbank wurde geleert, um sie mit testdaten zu füllen zu können'
     );

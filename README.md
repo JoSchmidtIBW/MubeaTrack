@@ -19,6 +19,21 @@ It will have a login and pages...
 npm install
 ```
 #MongoDB dev-data....
+--> in userModel müssen dafür zuerst die Pre- Save- Middleware auskommentiert werden, damit das Passwort funktioniert.
+ansonsten kann man in Postman mit signup eigene user erzeugen
+
+postman:
+POST     http://127.0.0.1:7566/api/v1/users/signup
+{
+"name": "john4",
+"email": "john4@admin.io",
+"password": "test1234",
+"passwordConfirm": "test1234",
+"role": "admin",
+"active": true,
+"photo": "user-1.jpg"
+}
+
 DB erzeugen: neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --import
 DB löschen: neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --delete
 
