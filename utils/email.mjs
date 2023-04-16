@@ -30,5 +30,5 @@ const sendEmail = async (options) => {
   await transporter.sendMail(mailOptions); //return ein promise
 };
 
-export default sendEmail();
+export default sendEmail;
 //module.exports = sendEmail
