@@ -1,3 +1,5 @@
+import multer from 'multer';
+import sharp from 'sharp';
 import User from '../models/userModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
@@ -8,6 +10,60 @@ import {
   deleteOne,
   updateOne,
 } from '../controllers/handlerFactory.mjs';
+
+// setting destination and fileName     SPEICHERT IN...
+// const multerStorage = multer.diskStorage({
+//   // stored in your filesystem, diskSpeicher
+//   destination: (req, file, cb) => {
+//     // hat zugriff auf req, file, cb = callBack, heisst nicht next, weil nicht von express kommt
+//     cb(null, 'public/img/users'); // null = error or Not,
+//   },
+//   filename: (req, file, cb) => {
+//     // file = req.file
+//     // user-77586_id-3232322323232(timestamp).jpeg(ext)      // damit falls bild vorhanden, nicht überschrieben wird
+//     const ext = file.mimetype.split('/')[1]; //mimetype: 'image/jpeg',
+//     cb(null, `user-${req.user.id}-${Date.now()}.${ext}`); //user-77586_id-3232322323232(timestamp).jpeg(ext)
+//   },
+// });
+const multerStorage = multer.memoryStorage(); // stored as a buffer
+// nur für bilder erlaubt zum hochladen, dafür dieser filter
+// test if uploaded file is an image, wenn true, --> cb (callBack) = filename und destination
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    //mimetype: 'image/jpeg',
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false); // 400 bad request, (null(error), false)
+  }
+};
+
+// hier bei beginning
+//const upload = multer({ dest: 'public/img/users' }); // das ist der ort, wo alle fotos von user gespeichert werden sollen
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+// in updateMe wird nun geschaut, das das hochgeladene neue bild, ins onbjekt des users geschrieben wird
+
+//Middleware
+export const uploadUserPhoto = upload.single('photo');
+
+// video 202
+// middleware to resize photo to square, muss vor updateMe sein!
+export const resizeUserPhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) return next(); // wenn kein photo uploaded wurde, dann next, ansonsten resizing
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`; // der Pfad, wo es gespeichert wird definiert, hier, weil es wo anderst gebraucht wird, und nicht definiert ist
+
+  await sharp(req.file.buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 }) //90=90%
+    .toFile(`public/img/users/${req.file.filename}`);
+
+  next();
+});
 
 //video 139
 const filterObj = (obj, ...allowedFields) => {
@@ -48,6 +104,9 @@ export const getMe = (req, res, next) => {
 //video 139
 //exports.updateMe = catchAsync(async (req, res, next) => {
 export const updateMe = catchAsync(async (req, res, next) => {
+  console.log(req.file);
+  console.log(req.body);
+
   // Für User sich selber, ohne Admin
   // 1.) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -65,6 +124,8 @@ export const updateMe = catchAsync(async (req, res, next) => {
 
   // 3.) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email'); // in req.body sind alle daten,
+  // dem filteredBody auch noch photo hinzufügen, wenn req.file (photo) hat
+  if (req.file) filteredBody.photo = req.file.filename;
 
   // 4.) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
@@ -133,6 +194,45 @@ export const createUser = (req, res) => {
 //exports.updateUser = factory.updateOne(User); // nur für admin, und update data that is not the passwort
 //exports.updateUser = updateOne(User);
 export const updateUser = updateOne(User);
+
+// export const updateUser = catchAsync(async (req, res, next) => {
+//   // name: req.body.name,
+//   // email: req.body.email,
+//   // password: req.body.password,
+//   // passwordConfirm: req.body.passwordConfirm,
+//   // passwordChangeAt: req.body.passwordChangeAt,
+//   // role: req.body.role,
+//   // photo: req.body.photo,
+//   // department: req.body.department,
+//
+//   console.log('req.body: ' + JSON.stringify(req.body));
+//
+//   try {
+//     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+//       //achtung mit patch und put, bei updatebyid
+//       new: true,
+//       runValidators: true, // falls price: 500 wäre ein string
+//     }); // in url /:63fb4c3baac7bf9eb4b72a76 , body: was geupdatet wird, 3, damit nur das geupdatet neue return wird
+//     // Tour.findOne({ _id: req.params.id})
+//
+//     res.status(200).json({
+//       //postman: url/63fb4c3baac7bf9eb4b72a76 und body muss json sein sonst geht nicht
+//       status: 'success',
+//       // results: tours.length,
+//       //message: "helllloooo",
+//       data: {
+//         //     tours: 'updated tours here...' //{ tours: tours }
+//         user: user, // wenn gleicher name tout tour, kann auch nur tour stehen
+//       },
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: err,
+//     });
+//   }
+// });
+
 // weil findbyidandupdate, die ganzen save- middleware is not run
 
 // exports.updateUser = (req, res) => { // für ADMIN

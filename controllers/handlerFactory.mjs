@@ -39,10 +39,15 @@ export const getAll = (Model) =>
 //exports.getOne = (Model, popOptions) =>
 export const getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
+    console.log('bin getOne in HandlerFactory');
+    console.log(req.params.id);
+    console.log(JSON.stringify(req.params.id));
     let query = Model.findById(req.params.id);
+    console.log('query: ' + query);
     if (popOptions) query = query.populate(popOptions);
 
     const doc = await query;
+    console.log('doc: ' + doc);
 
     //const doc = await Model.findById(req.params.id).populate('reviews');
 
@@ -80,6 +85,8 @@ export const deleteOne = (Model) =>
 //exports.updateOne = (Model) =>
 export const updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    console.log('Bin UpdateOne in handlerFactory');
+
     // try {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       //achtung mit patch und put, bei updatebyid
@@ -115,6 +122,38 @@ export const updateOne = (Model) =>
     //     res.status(404).json({ status: 'fail', message: 'Invalid ID' })
     // }
   });
+
+// export const updateOne = (Model) =>
+//   catchAsync(async (req, res, next) => {
+//     console.log('Bin UpdateOne in handlerFactory');
+//
+//     const doc = await Model.findById(req.params.id);
+//
+//     // const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+//     //   //achtung mit patch und put, bei updatebyid
+//     //   new: true,
+//     //   runValidators: true, // falls price: 500 wäre ein string
+//     // });
+//
+//     if (!doc) {
+//       return next(new AppError('No document found with that ID', 404));
+//     }
+//
+//     // Update the document with the new data
+//     doc.set(req.body, {
+//       //achtung mit patch und put, bei updatebyid
+//       //new: true,
+//       //runValidators: true, // falls price: 500 wäre ein string
+//     });
+//     await doc.save(); // Call the save() method to trigger the pre('save') middleware
+//
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         data: doc,
+//       },
+//     });
+//   });
 
 //exports.createOne = (Model) =>
 export const createOne = (Model) =>

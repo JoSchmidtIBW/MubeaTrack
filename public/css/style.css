@@ -1,3 +1,24 @@
+
+.LogoBildText{
+    margin: 1px;
+    margin-left: 0px;
+    margin-top: 3px;
+    padding: 0;
+    /*box-sizing: border-box;*/
+    /*height:2px;
+    width:3px;*/
+}
+
+.logoTrack{
+    color: #c8ed10;
+    font-size: 20px;
+    font-weight: bold;
+    /*margin-bottom: -3px;*/
+    /*display: block;*/
+    padding: 0;
+}
+
+
 :root {
     --section-rotate: 9vw;
 }

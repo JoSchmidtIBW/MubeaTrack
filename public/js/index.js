@@ -41,14 +41,37 @@ if (logOutBtn) logOutBtn.addEventListener('click', logout);
 //         updateData(name, email)
 //     })
 
+// send data, to be updated on the server
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value; // in pug id= #email
+
+    //auch photos
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+
+    form.append('photo', document.getElementById('photo').files[0]); // files sind array, brauchen erstes element
+
+    console.log(
+      'form in index.js, wenn bild, sieht keine information: ' + form
+    ); // man sieht hier keine information
+
+    // const name = document.getElementById('name').value;
+    // const email = document.getElementById('email').value; // in pug id= #email
     //updateData(name, email)
-    updateSettings({ name, email }, 'data');
+    //updateSettings({ name, email }, 'data')
+    updateSettings(form, 'data');
   });
+
+// if (userDataForm)
+//   userDataForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     const name = document.getElementById('name').value;
+//     const email = document.getElementById('email').value; // in pug id= #email
+//     //updateData(name, email)
+//     updateSettings({ name, email }, 'data');
+//   });
 
 if (userPasswordForm)
   userPasswordForm.addEventListener('submit', async (e) => {

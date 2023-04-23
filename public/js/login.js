@@ -24,7 +24,7 @@ export const login = async (email, password) => {
       //alert('Logged in successfully!');
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
-        location.assign('/'); //wie redirect
+        location.assign('/overview'); //wie redirect
       }, 1500);
     }
 
@@ -49,7 +49,8 @@ export const logout = async () => {
     });
 
     // reload the page  um cookie mit keinem token, an den server zu schicken
-    if (res.data.status === 'success') location.reload(true); // true macht force relaod from server, and not from browser cache
+    if (res.data.status === 'success') location.assign('/'); //wie redirect
+    //location.reload(true); // true macht force relaod from server, and not from browser cache
   } catch (err) {
     console.log(err.response);
     showAlert('error', 'Error logging out! Try agein.');

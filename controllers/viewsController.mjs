@@ -5,11 +5,18 @@
 
 import Tour from '../models/tourModel.mjs';
 import User from '../models/userModel.mjs';
+import Department from '../models/departmentModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 
+export const getStart = catchAsync(async (req, res, next) => {
+  res.status(200).render('start', {
+    title: 'Start',
+  });
+});
+
 //exports.getOverview = catchAsync(async (req, res, nexth) => {
-export const getOverview = catchAsync(async (req, res, nexth) => {
+export const getOverview = catchAsync(async (req, res, next) => {
   // 1.) Get tour data from collection
   const tours = await Tour.find();
 
@@ -20,6 +27,51 @@ export const getOverview = catchAsync(async (req, res, nexth) => {
   res.status(200).render('overview', {
     title: 'All Tours',
     tours: tours, // erstes tours ist das template, zweites tours sind die tourdata
+  });
+});
+
+//exports.getOverview = catchAsync(async (req, res, nexth) => {
+export const getOverviewDepartment = catchAsync(async (req, res, next) => {
+  // 1.) Get tour data from collection
+  console.log('bin getOverviewDepartment');
+  const departments = await Department.find();
+
+  // User.aggregate(
+  //   [
+  //     {
+  //       $group: {
+  //         _id: '$department',
+  //         users: { $push: '$_id' },
+  //       },
+  //     },
+  //     {
+  //       $project: {
+  //         department: '$_id',
+  //         users: 1,
+  //       },
+  //     },
+  //   ],
+  //   function (err, results) {
+  //     if (err) {
+  //       console.log(err);
+  //       res.status(500).json({ error: err });
+  //     } else {
+  //       //res.json(results);
+  //       res.status(200).render('overview', {
+  //         title: 'All Departments',
+  //         departments: departments, // erstes tours ist das template, zweites tours sind die tourdata
+  //       });
+  //     }
+  //   }
+  // );
+
+  // 2. Build template, but in real not in this controller
+
+  // 3.) Render that template using tour data from 1.)
+
+  res.status(200).render('overview', {
+    title: 'All Departments',
+    departments: departments, // erstes tours ist das template, zweites tours sind die tourdata
   });
 });
 
@@ -52,9 +104,13 @@ export const getTour = catchAsync(async (req, res, next) => {
   //   path: 'reviews',
   //   fields: 'review rating user',
   // });
-  // console.log('bin getTour in viewController');
-  // console.log('req.params: ' + JSON.stringify(req.params));
+  console.log('bin getTour in viewController');
+  console.log('req.params: ' + JSON.stringify(req.params));
+
   const tour = await Tour.findOne({ slug: req.params.slug });
+
+  console.log('tour: ' + tour);
+
   // console.log('-------------------------');
   // console.log('tour: ' + tour);
   // console.log('-------------------------');
@@ -71,6 +127,38 @@ export const getTour = catchAsync(async (req, res, next) => {
   res.status(200).render('department', {
     title: `${tour.name} department`, //'The Forrest Hiker Tour',
     tour,
+  });
+});
+
+export const getDepartment = catchAsync(async (req, res, next) => {
+  // 1.) Get the data, from the requested tour (inclouding rewievs and guides)
+  // const tour = await Tour.findOne({ slug: req.params.slug }).populate({
+  //   path: 'reviews',
+  //   fields: 'review rating user',
+  // });
+  console.log('bin getTour in viewController');
+  console.log('req.params: ' + JSON.stringify(req.params));
+
+  const department = await Department.findOne({ slug: req.params.slug });
+
+  console.log('department: ' + department);
+
+  // console.log('-------------------------');
+  // console.log('tour: ' + tour);
+  // console.log('-------------------------');
+
+  if (!department) {
+    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+    return next(new AppError('There is no tour with that name.', 404)); //404= not found
+  }
+
+  // 2. Build template, but in real not in this controller
+
+  // 3.) Render that template using tour data from 1.)
+
+  res.status(200).render('department', {
+    title: `${department.name} department`, //'The Forrest Hiker Tour',
+    department,
   });
 });
 

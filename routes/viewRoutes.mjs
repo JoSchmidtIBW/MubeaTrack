@@ -3,10 +3,11 @@ import express from 'express';
 //const viewsController = require('../controllers/viewsController');
 import {
   getLoginForm,
-  getTour,
+  getDepartment,
   getAccount,
-  getOverview,
   updateUserData,
+  getStart,
+  getOverviewDepartment,
 } from '../controllers/viewsController.mjs';
 //const authController = require('../controllers/authController')
 //import authController from '../controllers/authController.mjs';
@@ -36,7 +37,9 @@ const router = express.Router();
 //     //     res.status(200).render('basee')
 //     // })
 
-router.get('/', isLoggedIn, getOverview); // /overview   // das ist die erstee seite
+router.get('/overview', isLoggedIn, getOverviewDepartment); // /overview   // das ist die erstee seite
+router.get('/', getStart);
+
 //router.get('/overview', viewsController.getOverview)
 // router.get('/overview', (req, res) => {
 //     res.status(200).render('overview', {
@@ -45,7 +48,11 @@ router.get('/', isLoggedIn, getOverview); // /overview   // das ist die erstee s
 // })
 
 //http://localhost:4301/tours/the-forest-hiker
-router.get('/tour/:slug', isLoggedIn, getTour);
+//router.get('/tour/:slug', isLoggedIn, getTour);
+router.get('/departments/:slug', isLoggedIn, getDepartment);
+//router.get('/tour/:id', isLoggedIn, getTour);
+//router.get('/tour', isLoggedIn, getTour);
+
 // router.get('/tour', (req, res) => {
 //     res.status(200).render('tour', {
 //         title: 'The Forrest Hiker Tour',
