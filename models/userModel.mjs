@@ -45,24 +45,8 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   department: {
-    type: String,
-    //required: [true, 'Please provide your department'],
-    // enum: {
-    //   //geht nur bei strings, nicht bei nummern
-    //   values: [
-    //     'Engineering',
-    //     'Konstruktion',
-    //     'IT',
-    //     'Unterhalt',
-    //     'Geschäfts-Führung',
-    //     'Schweisserei',
-    //     'Zieherei',
-    //     'Anarbeit',
-    //   ], // validator, kann nur drei sachen eingeben,
-    //   message:
-    //     'departments are: Engineering, Konstruktion, IT, Unterhalt, Geschäfts-Führung, Schweisserei, Zieherei, Anarbeit',
-    // },
-    default: 'Engineering',
+    type: [String],
+    default: ['Engineering'],
     enum: [
       'Engineering',
       'Konstruktion',
@@ -73,7 +57,6 @@ const userSchema = new mongoose.Schema({
       'Zieherei',
       'Anarbeit',
     ],
-    //default: 'Engineering',
     // required: [true, 'Please provide your department'],
   },
 
@@ -224,6 +207,20 @@ const userSchema = new mongoose.Schema({
 //   next();
 // });
 //
+// userSchema.pre('save', async function (next) {
+//   if (this.department) {
+//     console.log('this.department: ' + this.department);
+//     const department = await Department.findOne({ name: this.department });
+//     console.log('Gefunden department in Department: ' + department);
+//
+//     if (department) {
+//       department.employees.push(this._id);
+//       await department.save();
+//     }
+//   }
+//   next();
+// });
+
 userSchema.pre('save', async function (next) {
   if (this.department) {
     console.log('this.department: ' + this.department);
@@ -231,52 +228,91 @@ userSchema.pre('save', async function (next) {
     console.log('Gefunden department in Department: ' + department);
 
     if (department) {
-      department.employees.push(this._id);
-      await department.save();
+      if (!department.employees.includes(this._id)) {
+        department.employees.push(this._id);
+        await department.save();
+      } else {
+        console.log('Der Benutzer ist bereits in dieser Abteilung');
+      }
     }
   }
   next();
 });
 
 userSchema.pre('findOneAndUpdate', async function (next) {
-  console.log('bin findOne');
-  //const docToUpdate = await this.model.findOne(this.getQuery());
+  const { department } = this._update;
 
-  //console.log(this);
-  console.log(this._conditions._id);
+  if (department) {
+    console.log('Department wird geupdatet');
+    const newDepartments = await Department.find({ name: { $in: department } });
+    console.log('newDepartments:', newDepartments);
 
-  if (this._update.department) console.log('Department wird geupdatet');
-
-  // const oldDepartment = await Department.findOne({ employees: this._id });
-  // console.log('oldDepartment: ' + oldDepartment);
-  const newDepartment = await Department.findOne({
-    name: this._update.department,
-  });
-  console.log('newDepartment: ' + newDepartment);
-
-  // // Check if the department has been updated
-  // if (
-  //   this._update.department &&
-  //   this._update.department !== docToUpdate.department
-  // ) {
-  //   // Remove the user from the old department
-  //   const oldDepartment = await Department.findOne({
-  //     name: docToUpdate.department,
-  //   });
-  //   oldDepartment.employees.pull(docToUpdate._id);
-  //
-  //   // Add the user to the new department
-  //   const newDepartment = await Department.findOne({
-  //     name: this._update.department,
-  //   });
-  newDepartment.employees.push(this._conditions._id);
-  //
-  //   await oldDepartment.save();
-  await newDepartment.save();
-  // }
+    for (const dep of newDepartments) {
+      if (!dep.employees.includes(this._conditions._id)) {
+        dep.employees.addToSet(this._conditions._id);
+        await dep.save();
+      }
+    }
+  }
 
   next();
 });
+
+// userSchema.pre('findOneAndUpdate', async function (next) {
+//   const { department } = this._update;
+//
+//   if (department) {
+//     console.log('Department wird geupdatet');
+//     const newDepartments = await Department.find({ name: { $in: department } });
+//     console.log('newDepartments:', newDepartments);
+//
+//     newDepartments.forEach(async (dep) => {
+//       dep.employees.addToSet(this._conditions._id); // Hinzufügen der Benutzer-ID
+//       await dep.save();
+//     });
+//   }
+//   next();
+// });
+
+// userSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('bin findOne');
+//   //const docToUpdate = await this.model.findOne(this.getQuery());
+//
+//   //console.log(this);
+//   console.log(this._conditions._id);
+//
+//   if (this._update.department) console.log('Department wird geupdatet');
+//
+//   // const oldDepartment = await Department.findOne({ employees: this._id });
+//   // console.log('oldDepartment: ' + oldDepartment);
+//   const newDepartment = await Department.findOne({
+//     name: this._update.department,
+//   });
+//   console.log('newDepartment: ' + newDepartment);
+//
+//   // // Check if the department has been updated
+//   // if (
+//   //   this._update.department &&
+//   //   this._update.department !== docToUpdate.department
+//   // ) {
+//   //   // Remove the user from the old department
+//   //   const oldDepartment = await Department.findOne({
+//   //     name: docToUpdate.department,
+//   //   });
+//   //   oldDepartment.employees.pull(docToUpdate._id);
+//   //
+//   //   // Add the user to the new department
+//   //   const newDepartment = await Department.findOne({
+//   //     name: this._update.department,
+//   //   });
+//   newDepartment.employees.push(this._conditions._id);
+//   //
+//   //   await oldDepartment.save();
+//   await newDepartment.save();
+//   // }
+//
+//   next();
+// });
 
 // userSchema.pre(/^find/, async function (next) {
 //   console.log('bin find sssssssssssssssssss');
