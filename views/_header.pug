@@ -1,8 +1,11 @@
 header.header
     nav.nav.nav--tours
-        a.nav__el(href='/') All tours
+        if user
+            a.nav__el(href='/overview') All tours
     .header__logo
-        img(src='/img/logo-color.png', alt='Mubea logo')
+        .LogoBildText
+            img(src='/img/Mubea_logo.svg.png', alt='Mubea logo')
+            a.logoTrack Track
         //-div= user.name
         //-div= user.photo
     nav.nav.nav--user

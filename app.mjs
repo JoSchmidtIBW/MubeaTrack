@@ -17,8 +17,9 @@ import User from './models/userModel.mjs'; // MongoDB...
 import AppError from './utils/appError.mjs';
 
 import userRoute from './routes/userRoutes.mjs';
-import tourRoute from './routes/tourRoutes.mjs';
+import machineRoute from './routes/machineRoutes.mjs';
 import viewRoute from './routes/viewRoutes.mjs';
+import departmentRoute from './routes/departmentRoutes.mjs';
 
 import globalErrorHandler from './controllers/errorController.mjs'; //globalError..., kann nennen wie man möchte
 import testRoute from './routes/testRoute.mjs';
@@ -367,7 +368,8 @@ app.get('/ejs', (req, res) => {
 // API- Routes
 app.use('/api/v1/userstest', testRoute);
 app.use('/', viewRoute); // sollte der erste sein
-app.use('/api/v1/tours', tourRoute);
+app.use('/api/v1/departments', departmentRoute);
+app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);
 
 //um falsche urls eine fehlermeldung zu geben, muss dies unter den routen passieren

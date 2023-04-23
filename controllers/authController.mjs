@@ -90,6 +90,7 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordChangeAt: req.body.passwordChangeAt,
     role: req.body.role,
     photo: req.body.photo,
+    department: req.body.department,
   });
 
   //jwt token generieren      sign(payload, secret, Ablaufzeit)     payload, welche Daten sollen dort rein, zb die ID von user        'secret'

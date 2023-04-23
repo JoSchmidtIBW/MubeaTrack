@@ -9,6 +9,8 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  uploadUserPhoto,
+  resizeUserPhoto,
 } from '../controllers/userController.mjs';
 //import authController from '../controllers/authController.mjs';
 import {
@@ -22,6 +24,11 @@ import {
   resetPassword,
   updatePassword,
 } from '../controllers/authController.mjs';
+
+// import multer from 'multer';
+//
+// // hier bei beginning   eine middleware
+// const upload = multer({ dest: 'public/img/users' }); // das ist der ort, wo alle fotos von user gespeichert werden sollen
 
 const router = express.Router();
 
@@ -50,7 +57,7 @@ router.patch('/updateMyPassword', updatePassword);
 router.get('/me', getMe, getUser);
 //{{URL}}api/v1/users/updateMe
 //router.patch('/updateMe', authController.protect, userController.updateMe)
-router.patch('/updateMe', updateMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe); // single, weil ein single File //upload.single('photo'),
 //{{URL}}api/v1/users/deleteMe
 //router.delete('/deleteMe', authController.protect, userController.deleteMe)
 router.delete('/deleteMe', deleteMe);

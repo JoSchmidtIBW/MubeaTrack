@@ -6,6 +6,11 @@
       "use": "@vercel/node"
     }
   ],
+  "env": {
+    "MONGO_URI": "mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority",
+    "PORT": "env.PORT"
+  },
+
   "routes": [
     {
       "src": "/(.*)",
