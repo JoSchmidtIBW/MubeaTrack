@@ -14,6 +14,8 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 
+const manageUsersTable = document.querySelector('.manageUsersTable');
+
 // VALUES
 // const email = document.getElementById('email').value;        hier, diese sind nicht defined, wenn dom läd, braucht eventlistener
 // const password = document.getElementById('password').value;

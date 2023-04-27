@@ -1,5 +1,11 @@
 [{
   "_id": "5c8a1d5b0190b214360dc057",
+  "firstName": "max",
+  "lastName": "mustafer",
+  "age": 57,
+  "gender": "male",
+  "employeeNumber": 70910,
+  "language": "Deutsch",
   "name": "Jonas Schmedtmann",
   "email": "admin@natours.io",
   "role": "admin",
@@ -10,6 +16,12 @@
 },
   {
     "_id": "5c8a1dfa2f8fb814b56fa181",
+    "firstName": "maxli",
+    "lastName": "mustafer",
+    "age": 57,
+    "gender": "male",
+    "employeeNumber": 70911,
+    "language": "Deutsch",
     "name": "Lourdes Browning",
     "email": "loulou@example.com",
     "role": "user",
@@ -20,6 +32,12 @@
   },
   {
     "_id": "5c8a24402f8fb814b56fa190",
+    "firstName": "moritz",
+    "lastName": "mustafer",
+    "age": 57,
+    "gender": "male",
+    "employeeNumber": 70912,
+    "language": "Deutsch",
     "name": "Alexander Jones",
     "email": "alex@example.com",
     "role": "Bediener",
@@ -30,6 +48,12 @@
   },
   {
     "_id": "5c8a245f2f8fb814b56fa191",
+    "firstName": "mutzi",
+    "lastName": "mustafer",
+    "age": 57,
+    "gender": "male",
+    "employeeNumber": 70913,
+    "language": "Deutsch",
     "name": "Eduardo Hernandez",
     "email": "edu@example.com",
     "role": "Schichtleiter",
@@ -40,6 +64,12 @@
   },
   {
     "_id": "5c8a24822f8fb814b56fa192",
+    "firstName": "Doris",
+    "lastName": "mustafer",
+    "age": 61,
+    "gender": "female",
+    "employeeNumber": 70914,
+    "language": "Deutsch",
     "name": "John Riley",
     "email": "john@example.com",
     "role": "guide",
@@ -49,8 +79,13 @@
     "department": "IT"
   },
   {
-
     "_id": "643c1f042df0321cb8a06a48",
+    "firstName": "moritz",
+    "lastName": "mustafer",
+    "age": 57,
+    "gender": "ladyboy",
+    "employeeNumber": 70915,
+    "language": "Deutsch",
     "role": "user",
     "active": true,
     "name": "Hans",
@@ -62,11 +97,18 @@
   {
 
     "_id": "643c1f042df0321cb8a06a47",
+    "firstName": "toni",
+    "lastName": "mustafer",
+    "age": 34,
+    "gender": "male",
+    "employeeNumber": 70916,
+    "language": "Deutsch",
     "role": "admin",
     "active": true,
     "name": "admin",
     "email": "admin@admin.io",
     "password": "test1234",
-    "photo": "user-Admin.jpg"
+    "photo": "user-109.jpg",
+    "department": ["Geschäfts-Führung", "Konstruktion","IT", "Engineering", "Unterhalt","Anarbeit", "Schweisserei", "Zieherei"]
   }
 ]

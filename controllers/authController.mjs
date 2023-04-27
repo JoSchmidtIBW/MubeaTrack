@@ -182,7 +182,7 @@ export const login = catchAsync(async (req, res, next) => {
 //exports.logout = (req, res) => {
 export const logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000), //+ 10 sekunden = 10*1000
+    expires: new Date(Date.now() + 1 * 1000), //+ 10 sekunden = 10*1000//Date.now() + 10 * 1000
     httpOnly: true,
   }); // muss genau so heissen, da das alte cookie überschrieben wird, und neues nur kurze lebenszeit hat
 
@@ -287,6 +287,7 @@ export const isLoggedIn = async (req, res, next) => {
       }
 
       // THERE IS A LOGGED IN USER
+      req.user = currentUser;
       res.locals.user = currentUser; // hier wird gebunden,,,,, aber für renderet site// hier wird der user, mit all seinen angaben restored
       return next(); //hier hat cookie    muss return haben, sonst, next, und next wäre nest ohne cookie
     } catch (err) {

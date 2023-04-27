@@ -41,6 +41,11 @@ app.set('views', path.join(__dirname, 'views')); // slash /views// mit path, kö
 
 // 1. GLOBAL MIDDLEWARES
 
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
+
 // Serving static files
 //um auf html css zuzugreifen, was jedoch eine API nicht macht
 //app.use(express.static(`${__dirname}/public`))

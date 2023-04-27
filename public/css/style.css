@@ -53,7 +53,7 @@ body {
     font-weight: 300;
     font-family: 'Lato', sans-serif;
     color: #777;
-    padding: 3rem;
+    padding: 2px;
     min-height: 100vh;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -512,6 +512,8 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    /*height: 500px;/*
+    width: 110%;*/
     clip-path: polygon( 0 var(--section-rotate), 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%);
     -webkit-clip-path: polygon( 0 var(--section-rotate), 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%);
     margin-top: calc(0px - var(--section-rotate));
@@ -1371,4 +1373,36 @@ body {
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
     -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
+}
+
+/*
+table td {
+    font-size: 12px;
+}
+*/
+
+.table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 8px;
+}
+
+.table td, #table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table tr:nth-child(even){background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+.table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border: 1px solid black;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+    font-size: 12px;
 }

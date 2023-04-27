@@ -13,6 +13,41 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A User must have a name!'],
   },
+  firstName: {
+    type: String,
+    required: [true, 'A User must have a firstName'],
+    trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A firstName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A firstName must have more or equal then 1 characters'], //validator
+  },
+  lastName: {
+    type: String,
+    required: [true, 'A User must have a lastName'],
+    trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A lastName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A lastName must have more or equal then 1 characters'], //validator
+  },
+  employeeNumber: {
+    type: Number,
+    required: [true, 'A user must have a employeeNumber'],
+    unique: true, // darf keine gleiche nochmals haben!
+    trim: true,
+    select: true,
+  },
+  age: {
+    type: Number,
+    default: 1,
+    trim: true,
+  },
+  gender: {
+    type: String,
+    trim: true,
+  },
+  language: {
+    type: String,
+    default: 'Deutsch',
+    trim: true,
+  },
   // tour: {
   //   type: mongoose.Schema.ObjectId,
   //   ref: 'Tour',
@@ -59,7 +94,11 @@ const userSchema = new mongoose.Schema({
     ],
     // required: [true, 'Please provide your department'],
   },
-
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false, //dann sieht man nicht
+  },
   // department: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Department',
@@ -156,7 +195,20 @@ const userSchema = new mongoose.Schema({
 //   // }
 //   next();
 // });
+// für Datum
+function formatCreatedAt(date) {
+  return `${date.getDate()}.${
+    date.getMonth() + 1
+  }.${date.getFullYear()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
 
+// Vor dem Speichern den createdAt-Wert konvertieren
+userSchema.pre('save', function (next) {
+  if (this.isNew || this.isModified('createdAt')) {
+    this.createdAt = formatCreatedAt(this.createdAt);
+  }
+  next();
+});
 // userSchema.pre('save', function (next) {
 //   if (!this.department) {
 //     this.department = 'Engineering';
