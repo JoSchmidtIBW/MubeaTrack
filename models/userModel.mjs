@@ -78,6 +78,12 @@ const userSchema = new mongoose.Schema({
       'Elektriker',
     ],
     default: 'user',
+    // validate: {
+    //   validator: function (value) {
+    //     return value !== 'admin';
+    //   },
+    //   message: 'Admin role is not allowed.',
+    // },
   },
   department: {
     type: [String],
@@ -94,6 +100,27 @@ const userSchema = new mongoose.Schema({
     ],
     // required: [true, 'Please provide your department'],
   },
+  // department: {
+  //   type: [String],
+  //   //type: mongoose.Schema.Types.ObjectId,
+  //   //ref: 'Department',
+  //   default: '5c8a24822f8fb814b56fa192',
+  //   required: [true, 'Please provide your department'],
+  // },
+  machines: [
+    {
+      type: [String],
+      enum: [
+        'TRT 1',
+        'Conni 1',
+        'Rattunde 1',
+        'Rattunde 2',
+        'Rattunde 3',
+        'Rattunde 4',
+        'Rattunde 5',
+      ],
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -147,6 +174,13 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.pre('save', function (next) {
+  if (this.role === 'admin') {
+    const error = new Error('Admin role is not allowed2.');
+    return next(error);
+  }
+  next();
+});
 // userSchema.pre('save', async function (next) {
 //   const department = await mongoose
 //     .model('Department')
@@ -520,6 +554,10 @@ userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
+
+// userSchema.pre('find', function () {
+//   this.select('createdAt');
+// });
 
 //funktion, um hashpasswort wieder encrypten zu normal
 userSchema.methods.correctPassword = async function (

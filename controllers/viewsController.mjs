@@ -16,11 +16,11 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   // 1.) Get tour data from collection
   console.log('bin getOverviewDepartment');
   //console.log(req.body);
-  console.log(req.user);
+  //console.log(req.user);
 
   //const departments = await Department.find();
   const currentUser = req.user;
-  console.log('currentUser.department: ' + currentUser.department);
+  // console.log('currentUser.department: ' + currentUser.department);
 
   const departments = await Department.find({
     name: currentUser.department,
@@ -75,8 +75,8 @@ export const getDepartment = catchAsync(async (req, res, next) => {
   //   path: 'reviews',
   //   fields: 'review rating user',
   // });
-  console.log('bin getTour in viewController');
-  console.log('req.params: ' + JSON.stringify(req.params));
+  //console.log('bin getTour in viewController');
+  //console.log('req.params: ' + JSON.stringify(req.params));
 
   const department = await Department.findOne({ slug: req.params.slug });
 
@@ -95,14 +95,14 @@ export const getDepartment = catchAsync(async (req, res, next) => {
 
   // 3.) Render that template using tour data from 1.)
 
-  console.log('department: ' + department.name);
-  console.log('user.department: ' + req.user.department);
+  // console.log('department: ' + department.name);
+  // console.log('user.department: ' + req.user.department);
   const userDepartmentObject = req.user.department;
-  console.log('userDepartmentObject: ' + userDepartmentObject);
+  //  console.log('userDepartmentObject: ' + userDepartmentObject);
   const userDepartmentString = JSON.stringify(userDepartmentObject);
-  console.log(typeof userDepartmentString);
+  // console.log(typeof userDepartmentString);
   const departmentsArray = JSON.parse(userDepartmentString.split(','));
-  console.log(departmentsArray); // ["IT", "Engineering", "Anarbeit"]
+  // console.log(departmentsArray); // ["IT", "Engineering", "Anarbeit"]
 
   //const currentDepartmentName =
 
@@ -132,8 +132,9 @@ export const getLoginForm = (req, res) => {
 
 export const getManageUsers = catchAsync(async (req, res) => {
   const allUsers = await User.find().select(
-    '+createdAt +employeeNumber +password'
+    '+createdAt +password' // +employeeNumber +password'
   );
+  //const allUsers = await User.find();
   //console.log(allUsers.length);
 
   // const features = new APIFeatures(User.find(), req.query)
@@ -149,6 +150,68 @@ export const getManageUsers = catchAsync(async (req, res) => {
   });
 });
 
+export const getCreateNewUserForm = (req, res) => {
+  res.status(200).render('createNewUser', {
+    title: 'Create new user',
+  });
+};
+
+export const getUpdateUser = catchAsync(async (req, res, next) => {
+  //console.log(req.body);
+  const currentUserLoggedIn = req.user;
+
+  console.log('----------');
+  console.log(currentUserLoggedIn);
+  console.log('----------');
+  console.log(req.params.id);
+
+  const userToUpdate = await User.findById({ _id: req.params.id }).select(
+    '+password'
+  );
+
+  const allDepartments = await Department.find();
+
+  console.log(userToUpdate.firstName);
+
+  console.log(userToUpdate);
+  if (!userToUpdate) {
+    return next(new AppError('There is no User with that ID.', 404));
+  }
+
+  if (userToUpdate.role === 'admin' && req.user.role !== 'admin') {
+    //damit niemand den admin verändert
+    //res.redirect('/api/v1/manage_users');
+    //return next(new AppError('There is sadfghno User with that ID.', 404));
+
+    //res.redirect('/api/v1/manage_users');
+    res.status(401).render('error', {
+      msg: 'You do not have permission to perform this action!',
+    });
+    // return next(
+    //   new AppError('You do not have permission to perform this action!', 403)
+    // );
+  } else if (req.user.role === 'admin') {
+    res.status(200).render('updateUserAdminPW', {
+      title: 'Update user',
+      //data: userToUpdate,
+      data: {
+        userToUpdate: userToUpdate,
+        departments: allDepartments,
+        //currentUserLoggedIn,
+      },
+    });
+  } else {
+    res.status(200).render('updateUser', {
+      title: 'Update user',
+      //data: userToUpdate,
+      data: {
+        userToUpdate: userToUpdate,
+        //currentUserLoggedIn,
+      },
+    });
+  }
+});
+
 export const getAccount = (req, res) => {
   // da protect und isLoggedin middleware bereits user wissen, muss hier nicht fragen
   // frage, der user ist in der req.user drin, jedoch wiso wird der user nicht gesendet unterhalb des titels?
@@ -160,8 +223,8 @@ export const getAccount = (req, res) => {
 //video 195 POST userData MEaccount, ohne API, mit POST wie bei ejs method=post
 //exports.updateUserData = catchAsync(async (req, res, next) => {
 export const updateUserData = catchAsync(async (req, res, next) => {
-  console.log('req.User: ', req.user);
-  console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
+  //console.log('req.User: ', req.user);
+  //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,

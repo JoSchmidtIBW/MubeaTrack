@@ -27,7 +27,7 @@ export const getAll = (Model) =>
 
     // SEND RESPONSE
     res.status(200).json({
-      status: 'sucsess',
+      status: 'success',
       results: doc.length,
       data: {
         data: doc,

@@ -97,10 +97,10 @@
   {
 
     "_id": "643c1f042df0321cb8a06a47",
-    "firstName": "toni",
-    "lastName": "mustafer",
-    "age": 34,
-    "gender": "male",
+    "firstName": "Admin",
+    "lastName": "Administrator",
+    "age": 1,
+    "gender": "XXX",
     "employeeNumber": 70916,
     "language": "Deutsch",
     "role": "admin",

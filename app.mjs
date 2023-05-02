@@ -20,6 +20,7 @@ import userRoute from './routes/userRoutes.mjs';
 import machineRoute from './routes/machineRoutes.mjs';
 import viewRoute from './routes/viewRoutes.mjs';
 import departmentRoute from './routes/departmentRoutes.mjs';
+import startRoute from './routes/startRoute.mjs';
 
 import globalErrorHandler from './controllers/errorController.mjs'; //globalError..., kann nennen wie man möchte
 import testRoute from './routes/testRoute.mjs';
@@ -61,7 +62,23 @@ app.use(express.static(path.join(__dirname, 'public'))); //wurde hier plaziert, 
 app.use(cors({ origin: 'http://localhost:4301' }));
 
 // Set securtity HTTP headers
-app.use(helmet()); // sollte hier am anfang der mittdleware stehen,und nicht am schluss
+//app.use(helmet()); // sollte hier am anfang der mittdleware stehen,und nicht am schluss   hat mit dem funktioniert, bis jquery
+
+const cspOptions = {
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: [
+      "'self'",
+      //'cdnjs.cloudflare.com',
+      'code.jquery.com',
+      'cdn.datatables.net',
+    ],
+    connectSrc: ["'self'", 'http://127.0.0.1:7566'],
+  },
+};
+
+app.use(helmet.contentSecurityPolicy(cspOptions));
+
 //nicht von tutorial
 // app.use(
 //     helmet.contentSecurityPolicy({
@@ -372,7 +389,8 @@ app.get('/ejs', (req, res) => {
 
 // API- Routes
 app.use('/api/v1/userstest', testRoute);
-app.use('/', viewRoute); // sollte der erste sein
+app.use('/', startRoute);
+app.use('/api/v1', viewRoute); // sollte der erste sein
 app.use('/api/v1/departments', departmentRoute);
 app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);

@@ -64,8 +64,8 @@ const importData = async () => {
   try {
     await Tour.create(tours);
 
-    await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
     await Department.create(departments, { validateBeforeSave: false });
+    await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
     await Machine.create(machines, { validateBeforeSave: false });
 
     console.log('Data successfully loaded! Test- Daten, zum DB erstellen');

@@ -1,65 +1,59 @@
 extends base
 
 block content
-  script.
-    console.log("ManageUsers.pug");
+    main.main2
+      table#manageUsersTable.manageUsersTable.table
+        thead
+          tr
+            th ID
+            th createdAt
+            th Employee Number
+              button-upDown
+                spam.arrow-up
+              button-upDown
+                spam.arrow-down
+            th firstName
+            th lastName
+            th age
+            th gender
+            th language
+            th photo
+            th Name
+              //-span Name
+              //-.arrowUpDown
+              button-upDown
+                spam.arrow-up
+              button-upDown
+                spam.arrow-down
+            th E-Mail
+            th Role
+            th department
+            th password
+            th Edit
+        tbody
+          each user in users
+            tr
+              td= user._id
+              td= user.createdAt
+              td= user.employeeNumber
+              td= user.firstName
+              td= user.lastName
+              td= user.age
+              td= user.gender
+              td= user.language
+              td= user.photo
+              td= user.name
+              td= user.email
+              td= user.role
+              td= user.department
+              td= user.password
+              td
+                //-a.edit-button(href=`/user/${user._id}`) Edit
+                //-a.delete-button(data-id=user._id) Delete
 
-  //-main.main
-  h1= `About the users from ${user.name}..`
-  table#manageUsersTable.table
-    thead
-      tr
-        th ID
-        th createdAt
-        th firstName
-        th lastName
-        th age
-        th gender
-        th employeeNumber
-        th language
-        th photo
-        th role
-          span Role
-          button(type="button", onclick="sortTable('role')") Sort by Role
-        th department
-          span Department
-           button(type="button", onclick="sortTable('department')") Sort by Department
-        th name
-          span Name
-          button(type="button", onclick="sortTable('name')") Sort by Name
-        th email
-          span Email
-          button(type="button", onclick="sortTable('email')") Sort by Email
-        th password
-    tbody
-    if (users.length > 0)
-      each user in users
-        tr
-          td= user._id
-          td= user.createdAt
-          td= user.firstName
-          td= user.lastName
-          td= user.age
-          td= user.gender
-          td= user.employeeNumber
-          td= user.language
-          td= user.photo
-          td= user.role
-          td= user.department
-          td= user.name
-          td= user.email
-          td= user.password
-          td
-            a.edit-button(href=`/user/${user._id}`) Edit
-            button.delete-button(data-id=user._id) Delete
-    else
-      tr
-        td(colspan="16") No users found
-  if hasNextPage
-    nav
-      ul.pagination
-        each page in pages
-          li.page-item(class=currentPage === page ? 'active' : '')
-            a.page-link(href=`?page=${page}`)= page
-        li.page-item
-          a.page-link(href=`?page=${nextPage}`) Next
+      br
+      br
+      h1 hallo
+      br
+
+      a.btn.btn--small.btn--green(href="/api/v1/createNewUser") Create new User

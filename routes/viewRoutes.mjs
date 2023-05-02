@@ -8,6 +8,8 @@ import {
   getStart,
   getOverviewDepartment,
   getManageUsers,
+  getCreateNewUserForm,
+  getUpdateUser,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -26,7 +28,7 @@ const router = express.Router();
 
 //router.use(authController.isLoggedIn) // alle ab hier, haben diese middleware,  isLoggedIn will run for all request
 
-router.get('/', getStart);
+//router.get('/', getStart);
 router.get('/overview', protect, isLoggedIn, getOverviewDepartment); // /overview   // das ist die erstee seite
 
 //http://localhost:4301/tours/the-forest-hiker
@@ -40,11 +42,30 @@ router.get('/login', isLoggedIn, getLoginForm);
 
 router.get('/me', protect, getAccount); // diese sollte protect sein
 
-router.get('/manage_users', protect, getManageUsers);
+router.get(
+  '/manage_users',
+  protect,
+  restrictTo('admin', 'Chef'),
+  getManageUsers
+);
+router.get(
+  '/manage_users/:id',
+  protect,
+  restrictTo('admin', 'Chef'),
+  getUpdateUser
+);
+//router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);
 
 //wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
 // update User account
 router.post('/submit-user-data', protect, updateUserData);
+
+router.get(
+  '/createNewUser',
+  protect,
+  restrictTo('admin'),
+  getCreateNewUserForm
+);
 
 //module.exports = router
 

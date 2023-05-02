@@ -1,0 +1,99 @@
+extends base
+
+block content
+    main.main
+      div(class="user-view__content")
+        div(class="user-view__form-container")
+          h2.heading-secondary.ma-bt-md= `Edit User ${data.userToUpdate.firstName}`
+          form.form.form-worker-data
+            input#userId(type="hidden", value="<%= user.id; %>")
+            div(class="form__group")
+              label(class="form__label", for="employeeNumber") Employee Number
+              input#employeeNumber(class="form__input", type="number", value=data.userToUpdate.employeeNumber, readonly, style="background-color: lightgrey;")
+            div(class="form__group")
+              label(class="form__label", for="firstname") Firstname
+              input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName)
+            div(class="form__group")
+              label(class="form__label", for="lastname") Lastname
+              input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
+            div(class="form__group")
+              label(class="form__label", for="age") Age
+              input#age(class="form__input", type="text", value=data.userToUpdate.age, readonly, style="background-color: lightgrey;")
+            div(class="form__group")
+              label(class="form__label", for="gender") gender
+              select#gender(class="form__input")
+                option(value="male") Male
+                option(value="Female") Female
+            div(class="form__group")
+              label(class="form__label", for="language") Language
+              select#language(class="form__input")
+                option(value="Englisch") English
+                option(value="Deutsch") Deutsch
+            div(class="form__group")
+              label(class="form__label", for="name") Name
+              input#name(class="form__input", type="text", value=data.userToUpdate.name)
+            div(class="form__group")
+              label(class="form__label", for="email") E-Mail
+              input#email(class="form__input", type="email", value=data.userToUpdate.email)
+            div(class="form__group ma-bt-md")
+              label(class="form__label", for="password") Password
+              input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
+            div(class="form__group ma-bt-md")
+              label(class="form__label", for="passwordEncripted") decryptedPassword
+
+              input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
+
+              script.
+                console.log("test")
+                let encryptedPassword = "#{data.userToUpdate.password}";
+                let key = CryptoJS.SHA256('mySecretKey1');
+                let iv = CryptoJS.enc.Base64.parse('');
+                let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
+                document.getElementById("passwordEncripted").value = decryptedPassword;
+            div(class="form__group")
+              label(class="form__label", for="language") Language
+              input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+            div(class="form__group")
+              label(class="form__label", for="role") Role
+              select#role(class="form__input")
+                option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
+                option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
+                option(value="user", selected=data.userToUpdate.role === 'user') User
+                option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
+            div(class="form__group")
+              label(class="form__label", for="departments") Departments
+              input#department(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: red;")
+              script.
+                console.log("test2222")
+              - const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
+
+              each department in data.departments
+                - var checked = data.userToUpdate.department && data.userToUpdate.department.includes(department.name)
+
+                label(class="form__checkbox-label")
+                  |
+                  input(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked, required, style="width: 20px; height: 20px;")
+
+                  span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
+
+
+                script.
+                  const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
+                  let atLeastOneChecked = false;
+                  departmentCheckboxes.forEach(function(departmentCheckbox) {
+                    if (departmentCheckbox.checked) {
+                      atLeastOneChecked = true;
+                    }
+                  });
+
+                  if (!atLeastOneChecked) {
+                    alert("Please select at least one department.");
+                    return false;
+                  }
+
+
+
+
+            button.btn.btn--small.btn--green Save
+            button.btn.btn--small.btn--red Delete
+            a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel

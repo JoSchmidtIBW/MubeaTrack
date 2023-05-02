@@ -81,8 +81,17 @@ export const signup = catchAsync(async (req, res, next) => {
   // const newUser = await User.create(req.body); // daten sind im body, und returnt ein promis, darum await
   //User.save()                       // problem oben, so wird alles akzeptiert, zum ein user machen
 
+  console.log('bin signup: ');
+  console.log(req.body);
+
   const newUser = await User.create({
     // nur das wird aktzepiert zum ein user machen
+    employeeNumber: req.body.employeeNumber,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    age: req.body.age,
+    gender: req.body.gender,
+    language: req.body.language,
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,

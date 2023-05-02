@@ -4,10 +4,28 @@ import validator from 'validator'; //'validator/es/index.js';
 import User from './userModel.mjs';
 import Machine from './machineModel.mjs';
 
+//
+
+// departmentSchema.pre('validate', function (next) {
+//   this.populate(
+//     {
+//       path: 'employees',
+//       select: '-password -__v',
+//       model: 'User',
+//     },
+//     (err) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       next();
+//     }
+//   );
+// });
+
 const departmentSchema = new mongoose.Schema({
   name: {
     type: String,
-    requires: [true, 'A Department must have a name'], //validator
+    required: [true, 'A Department must have a name'], //validator
     //unique: true, // nicht zwei mit selben Namen, kein validator
     trim: true, // nama und nicht leerzeichenNameLeerzeichen
     maxlength: [
@@ -62,8 +80,11 @@ const departmentSchema = new mongoose.Schema({
   },
   machines: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Machine',
+      name: String,
+      machineId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Machine',
+      },
     },
   ],
   machinesCount: {
@@ -72,108 +93,55 @@ const departmentSchema = new mongoose.Schema({
   },
 });
 
-// departmentSchema.pre('save', async function (next) {
-//   const department = this;
-//   console.log('department: ' + department);
-//   if (department.isModified('name')) {
-//     const user = await User.findOne({ department: department.name });
-//     console.log('user Gefunden: ' + user);
-//     if (user) {
-//       department.users.push(user._id);
-//     }
-//   }
-//   next();
-// });
-
-// departmentSchema.pre('save', async function (next) {
-//   const department = this;
-//   if (department.isModified('guides') || department.isNew) {
-//     const User = mongoose.model('User');
-//     const guidesPromises = department.guides.map(async (guideId) => {
-//       return await User.findByIdAndUpdate(
-//         guideId,
-//         { department: department._id },
-//         { new: true }
-//       );
-//     });
-//     const Promise = await Promise.all(guidesPromises);
-//     console.log(Promise);
-//   }
-//   next();
-// });
-
-// departmentSchema.pre('save', async function (next) {
-//   // guidePromises ist ein array full of promises
-//   const usersPromises = this.users.map(async (id) => await User.findById(id)); //User.findById(id) diese id ist die current id, mit await
-//   this.users = await Promise.all(usersPromises);
-//   next();
-// });
-
-// const department = await Department.findOne({ name: 'Engineering' });
-// const user = new User({
-//   // ...
-//   department: department._id,
-// });
-//
-// await user.save();
-
-// ,
-// {
-//   //virtuele eigenschaften video 104  kann nicht sagen, tour.find where durationweeks = 7 weil nicht in db
-//   toJSON: { virtuals: true },
-//   toObject: { virtuals: true },
-// }
-
-// reviews: [ // parent tour will children kennen      implement child-referencing     the tout reference to reviews   aber das wollen wir nicht
-//     {
-//         type: mongoose.Schema.ObjectId,
-//         ref: 'Review',
-//     }
-// ],
-
-//in postman bekommt man nur die ID dazu
-// "guides": [
-//     "6426c4604e93f288b8cdb610",
-//     "6420daf8fe4c2d18107505dc"
-// ],
-// "_id": "64270fb4e2aa741650a4af58",
-
-//anstatt child referencing wollen wir virtual populate speichert nicht in db       das machen wir in tourSchema
-
-//guides: Array, // hier wird der user hineingeschrieben  EMBADDING mit der Pre- Save funktion VIDEO 151
-// in Postman bekommt man alle Daten von user in einer tour
-//     {
-//         "role": "admin",
-//         "_id": "6420daf8fe4c2d18107505dc",
-//         "name": "admin",
-//         "email": "admin@jonas.io",
-//         "__v": 0,
-//         "passwordChangeAt": "2023-03-30T00:18:41.646Z"
-//     }
-// ],
-// "_id": "6427073a8ed4617a9818f914",
-// "name": "The Test Tour",
-
-//video167  suchen nach id, nicht jedes dokument abklappern bis findet, zb wenn millionen von dokuments, index on price
-//tourSchema.index({ price: 1 }) // 1 =      -1 = desending order
-// testen in postman: {{URL}}api/v1/tours?price[lt]=1000
-// tourSchema.index({ price: 1, ratingsAverage: -1 });
 departmentSchema.index({ slug: 1 });
 
-// video 105 Middleware in Mongoose, pre- pro hooks, 4 typen von middleware pre, post, query, agregation
-// pre run befor a event, zb befor speicher
-// DOCUMENT MIDDLEWARE: runs before .save()  .create(), aber nicht bei  .insertMany() oder findbyid update()...
-// um diese funktion auszulösen, mit comand .save() oder .create() --> braucht neue route...
-// npm i slugify, slug ist string...
-// pre-save-hook or pre-save-middleware
-// hook ist 'save'
-// save ist document-middleware
+// wenn departmentModel geladen wird, also nicht nur die departments
+departmentSchema.pre('validate', function (next) {
+  this.populate(
+    {
+      path: 'employees',
+      select: '-password -__v',
+      model: 'User',
+    },
+    (err) => {
+      if (err) {
+        return next(err);
+      }
+      next();
+    }
+  );
+});
+// userSchema.pre('validate', function (next) {
+//   this.populate('department', '-employees -__v', (err) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     next();
+//   });
+// });
+// wenn departmentModel geladen wird, also nicht nur die departments
+departmentSchema.pre('validate', function (next) {
+  const department = this;
+  department.employeesCount = department.employees.length;
+  next();
+});
+
 departmentSchema.pre('save', function (next) {
   // this --> ist der currently prozess dokument
   //console.log("bin tourModel Middleware, zeige This, bevor save in db bei einem post")
   //console.log("this: " + this)
   this.slug = slugify(this.name, { lower: true });
   next(); // slug: string muss dafür ins schema// wenn next auskommentiert, bei post, kommt kein fehler, aber ladet und ladet...
+});
+
+//damit in compass, in department der vollständige user angezeigt wird, jedoch ohne sein passwort
+departmentSchema.pre('save', function (next) {
+  this.populate('employees', '-password', (err) => {
+    if (err) {
+      return next(err);
+    }
+    next();
+  });
 });
 
 // Count the employees in this.department
@@ -249,6 +217,44 @@ departmentSchema.post(/^find/, function (docs, next) {
   //console.log('bin post find middleware, docs: ' + docs)
   next();
 });
+
+// // Damit man im Compass bei department/machine den maschinenNamen sieht,anstatt die ID
+// // Definieren Sie eine statische Methode für das Department-Modell, um die Namen der Maschinen abzurufen, die dem Department zugeordnet sind
+// departmentSchema.statics.getMachinesForDepartment = async function (
+//   departmentId
+// ) {
+//   // Führen Sie eine Aggregations-Pipeline aus, um die Maschinennamen abzurufen
+//
+//   // Verwenden Sie `$match`, um das Dokument mit der angegebenen `departmentId` zu finden
+//   const department = await this.aggregate([
+//     {
+//       $match: {
+//         _id: mongoose.Types.ObjectId(departmentId), // Filtere das Dokument mit der angegebenen `departmentId`
+//       },
+//     },
+//     // Verwenden Sie `$lookup`, um die Maschinendokumente abzurufen, die zu dem Department gehören
+//     {
+//       $lookup: {
+//         from: 'machines', // Verwenden Sie den Namen der `machine`-Sammlung
+//         localField: 'machines', // Verwenden Sie das Feld `machines` im Department-Dokument
+//         foreignField: '_id', // Verwenden Sie das `_id`-Feld im Maschinen-Dokument
+//         as: 'machineNames', // Erstellen Sie ein neues Feld namens `machineNames`, um die Namen der Maschinen zu speichern
+//       },
+//     },
+//     // Verwenden Sie `$project`, um nur das `_id`, den `name` des Departments und den Array von Maschinennamen zurückzugeben
+//     {
+//       $project: {
+//         _id: 1, // Gib das `_id` des gefundenen Departments zurück
+//         name: 1, // Gib den `name` des Departments zurück
+//         machineNames: '$machineNames.name', // Gib ein Array von Maschinennamen zurück
+//         // Verwenden Sie den `name` des Maschinendokuments im `machineNames`-Array
+//       },
+//     },
+//   ]);
+//
+//   // Rückgabe des ersten gefundenen Departments (es sollte nur eins geben)
+//   return department[0];
+// };
 
 const Department = mongoose.model('Department', departmentSchema);
 

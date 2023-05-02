@@ -1,0 +1,67 @@
+extends base
+
+block content
+    main.main
+      div(class="user-view__content")
+        div(class="user-view__form-container")
+          h2.heading-secondary.ma-bt-md Create new User
+          form.form.form-new-user-data
+            div(class="form__group")
+              label(class="form__label", for="employeeNumber") Employee Number
+              input#employeeNumber(class="form__input" type="number" placeholder="70220" required="required" min="10000" max="99999")
+
+
+              //-input#employeeNumber1(class="form__input", type="number", placeholder="70220", required="required", pattern="^[0-9]{5,}$")
+            div(class="form__group")
+              label(class="form__label", for="firstname") firstname
+              input#firstname(class="form__input", type="text", placeholder="Max", required="required")
+            div(class="form__group")
+              label(class="form__label", for="lastname") lastname
+              input#lastname(class="form__input", type="text", placeholder="Mustermann", required="required")
+            div(class="form__group")
+              label(class="form__label", for="age") age
+              input#age(class="form__input", type="number", placeholder="65", required="required", min="1" max="100")
+            div(class="form__group")
+              label(class="form__label", for="gender") gender
+              select#gender(class="form__input")
+                option(value="male") Male
+                option(value="Female") Female
+            div(class="form__group")
+              label(class="form__label", for="language") language
+              select#language(class="form__input")
+                option(value="Englisch") English
+                option(value="Deutsch") Deutsch
+            div(class="form__group")
+              label(class="form__label", for="name") Name
+              input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
+            div(class="form__group")
+              label(class="form__label", for="email") Email address
+              input#email(class="form__input", type="email", placeholder="you@mubea.com")
+            div(class="form__group ma-bt-md")
+              label(class="form__label", for="password") Password
+              input#password(class="form__input", type="password", placeholder="••••••••", required="required", minlength="8")
+            div(class="form__group ma-bt-md")
+              label(class="form__label", for="passwordConfirm") Confirm Password
+              input#passwordConfirm(class="form__input", type="password", placeholder="••••••••", required="required", minlength="8")
+            div(class="form__group")
+              label(class="form__label", for="role") Role
+              select#role(class="form__input")
+                option(value="Chef") Chef
+                option(value="Schichtleiter") Schichtleiter
+                option(value="user") User
+                option(value="admin") Admin
+            div(class="form__group")
+              label(class="form__label", for="department") Department
+              select#department(class="form__input")
+                option(value="Schweisserei") Schweisserei
+                option(value="Zieherei") Zieherei
+                option(value="Anarbeit") Anarbeit
+                option(value="Unterhalt") Unterhalt
+                option(value="IT") IT
+                option(value="Engineering") Engineering
+                option(value="Konstruktion") Konstruktion
+                option(value="Geschäfts-Führung") Geschäfts-Führung
+            div(class="form__group")
+              button.btn.btn--green Save
+              a.btn.btn--small(href=`/api/v1/manage_users`) Cancel
+
