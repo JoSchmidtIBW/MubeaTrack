@@ -120,11 +120,6 @@ departmentSchema.pre('validate', function (next) {
 //   });
 // });
 // wenn departmentModel geladen wird, also nicht nur die departments
-departmentSchema.pre('validate', function (next) {
-  const department = this;
-  department.employeesCount = department.employees.length;
-  next();
-});
 
 departmentSchema.pre('save', function (next) {
   // this --> ist der currently prozess dokument
@@ -148,6 +143,12 @@ departmentSchema.pre('save', function (next) {
 departmentSchema.pre('save', function (next) {
   const employees = this;
   employees.employeesCount = employees.employees.length;
+  next();
+});
+
+departmentSchema.pre('validate', function (next) {
+  const department = this;
+  department.employeesCount = department.employees.length;
   next();
 });
 

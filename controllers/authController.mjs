@@ -242,6 +242,8 @@ export const protect = catchAsync(async (req, res, next) => {
 
   //3.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
   const currentUser = await User.findById(decoded.id);
+  //console.log('-------');
+  //console.log(currentUser);
 
   if (!currentUser) {
     return next(

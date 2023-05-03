@@ -280,9 +280,17 @@ body {
     color: #fff;
 }
 
+.btn--red::after {
+    background-color: tomato;
+}
+
 .btn--gray {
     background-color: #999999;
     color: #fff;
+}
+
+.btn--gray::after {
+    background-color: lightgray;
 }
 
 .btn--small {

@@ -86,6 +86,7 @@ const userSchema = new mongoose.Schema({
     // },
   },
   department: {
+    //const user = await User.findOne({ _id: userId }).populate('department', 'name');
     type: [String],
     default: ['Engineering'],
     enum: [
@@ -174,13 +175,16 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre('save', function (next) {
-  if (this.role === 'admin') {
-    const error = new Error('Admin role is not allowed2.');
-    return next(error);
-  }
-  next();
-});
+//--------------------------Ausblenden um Dev-data einzufügen---------------------
+// userSchema.pre('save', function (next) {
+//   if (this.role === 'admin') {
+//     const error = new Error('Admin role is not allowed2.');
+//     return next(error);
+//   }
+//   next();
+// });
+//----------------------------------------------------------------------------
+
 // userSchema.pre('save', async function (next) {
 //   const department = await mongoose
 //     .model('Department')
@@ -229,7 +233,7 @@ userSchema.pre('save', function (next) {
 //   // }
 //   next();
 // });
-// für Datum
+// für Datum funktioniert nicht
 function formatCreatedAt(date) {
   return `${date.getDate()}.${
     date.getMonth() + 1
@@ -309,14 +313,14 @@ userSchema.pre('save', function (next) {
 
 userSchema.pre('save', async function (next) {
   if (this.department) {
-    console.log('this.department: ' + this.department);
+    console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
     const department = await Department.findOne({ name: this.department });
     console.log('Gefunden department in Department: ' + department);
 
     if (department) {
       if (!department.employees.includes(this._id)) {
         department.employees.push(this._id);
-        await department.save();
+        await department.save(); //department in Department
       } else {
         console.log('Der Benutzer ist bereits in dieser Abteilung');
       }
@@ -325,21 +329,74 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// soll die departments updaten, mit dem, was gerade aktuell im user.departmentArray drin ist
 userSchema.pre('findOneAndUpdate', async function (next) {
   const { department } = this._update;
 
   if (department) {
-    console.log('Department wird geupdatet');
     const newDepartments = await Department.find({ name: { $in: department } });
-    console.log('newDepartments:', newDepartments);
 
-    for (const dep of newDepartments) {
-      if (!dep.employees.includes(this._conditions._id)) {
-        dep.employees.addToSet(this._conditions._id);
+    const user = await User.findById(this._conditions._id);
+    const oldDepartments = user.department
+      ? await Department.find({ name: { $in: user.department } })
+      : [];
+
+    for (const dep of oldDepartments) {
+      if (!newDepartments.some((newDep) => newDep.name === dep.name)) {
+        dep.employees.pull(this._conditions._id);
         await dep.save();
       }
     }
+
+    for (const dep of newDepartments) {
+      if (user.department && user.department.includes(dep.name)) {
+        console.log('Der Benutzer ist bereits in dieser Abteilung');
+        continue;
+      }
+      dep.employees.addToSet(this._conditions._id);
+      await dep.save();
+    }
   }
+
+  // if (department) {
+  //   console.log('Department wird geupdatet');
+  //   const newDepartments = await Department.find({ name: { $in: department } });
+  //   console.log('newDepartments:', newDepartments);
+  //
+  //   const oldDepartments = await Department.find({
+  //     employees: this._conditions._id,
+  //   });
+  //   console.log('oldDepartments:', oldDepartments);
+  //
+  //   for (const dep of oldDepartments) {
+  //     if (!newDepartments.some((newDep) => newDep.name === dep.name)) {
+  //       dep.employees.pull(this._conditions._id);
+  //       await dep.save();
+  //     }
+  //   }
+  //
+  //   for (const dep of newDepartments) {
+  //     if (this.department.includes(dep.name)) {
+  //       console.log('Der Benutzer ist bereits in dieser Abteilung');
+  //       continue;
+  //     }
+  //     dep.employees.addToSet(this._conditions._id);
+  //     await dep.save();
+  //   }
+  // }
+
+  // if (department) {
+  //   console.log('Department wird geupdatet');
+  //   const newDepartments = await Department.find({ name: { $in: department } });
+  //   console.log('newDepartments:', newDepartments);
+  //
+  //   for (const dep of newDepartments) {
+  //     if (!dep.employees.includes(this._conditions._id)) {
+  //       dep.employees.addToSet(this._conditions._id);
+  //       await dep.save();
+  //     }
+  //   }
+  // }
 
   next();
 });

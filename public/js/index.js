@@ -24,6 +24,7 @@ const userPasswordForm = document.querySelector('.form-user-password');
 
 const manageUsersTable = document.querySelector('.manageUsersTable');
 const newUserDataForm = document.querySelector('.form-new-user-data');
+const updateUserByChefDataForm = document.querySelector('.form-worker-data');
 //const createUserBtn = document.querySelector('.createUserBtn')
 
 //if (createUserBtn) createUserBtn.addEventListener('click', createUser);
@@ -62,6 +63,12 @@ if (userDataForm)
 
     //auch photos
     const form = new FormData();
+    //console.log('testi: ' + document.getElementById('firstname').value);
+    form.append('firstName', document.getElementById('firstname').value);
+    form.append('lastName', document.getElementById('lastname').value);
+    form.append('gender', document.getElementById('gender').value);
+    form.append('language', document.getElementById('language').value);
+
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
 
@@ -417,6 +424,99 @@ const createNewUser = async (
       }, 1200);
     } else {
       console.log('nixxxx');
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const saveButton = document.querySelector('.btn--saveUpdateUserByChef');
+const deleteButton = document.querySelector('.btn--deleteUpdateUserByChef');
+
+// todo !!! der chef darf nur die abteilung und Rolle des users zuordnen nichts mehr, der user darf sich sonst selber verändern!!!
+if (updateUserByChefDataForm) {
+  updateUserByChefDataForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateUserChefDataForm');
+
+    const id = document.getElementById('userId').value;
+    const employeeNumber = document.getElementById('employeeNumber').value;
+    const firstname = document.getElementById('firstname').value;
+    const lastname = document.getElementById('lastname').value;
+    const age = document.getElementById('age').value;
+    const gender = document.querySelector('#gender').value;
+    const language = document.querySelector('#language').value;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    //const passwordConfirm = document.getElementById('passwordConfirm').value;
+    const role = document.querySelector('#role').value;
+    const departmentString = document.querySelector('#department').value;
+
+    console.log(id);
+    console.log(employeeNumber);
+    console.log(firstname);
+    console.log(lastname);
+    console.log(age);
+    console.log(gender);
+    console.log(language);
+    console.log(name);
+    console.log(email);
+    console.log(password);
+    //console.log(passwordConfirm);
+    console.log(role);
+
+    console.log(departmentString);
+    const departmentsArray = departmentString.split(',');
+
+    console.log(departmentsArray);
+    const department = departmentsArray;
+    if (e.submitter === saveButton) {
+      updateUserByChef(
+        {
+          role,
+          department,
+        },
+        id
+      );
+    } else if (e.submitter === deleteButton) {
+      console.log('bin Delete in updateUserByChefDataForm');
+      deleteUser(id);
+    }
+  });
+}
+
+const deleteUser = async (id) => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${apiUrl}/users/${id}`,
+    });
+
+    if (res.status === 204) {
+      showAlert('success', 'User successfully deleted');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_users');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const updateUserByChef = async (data, id) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${apiUrl}/users/` + id,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'User successfully updated');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_users');
+      }, 500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);

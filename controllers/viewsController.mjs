@@ -19,12 +19,8 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   //console.log(req.user);
 
   //const departments = await Department.find();
-  const currentUser = req.user;
-  // console.log('currentUser.department: ' + currentUser.department);
 
-  const departments = await Department.find({
-    name: currentUser.department,
-  }).sort('_id');
+  // console.log('currentUser.department: ' + currentUser.department);
 
   const reihenfolgeDerAuflistung = [
     'Schweisserei',
@@ -61,12 +57,27 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   // 2. Build template, but in real not in this controller
 
   // 3.) Render that template using tour data from 1.)
+  const currentUser = req.user;
 
-  res.status(200).render('overview', {
-    title: 'All Departments',
-    departments: departments, // erstes tours ist das template, zweites tours sind die tourdata
-    //user: currentUser,
-  });
+  if (currentUser.role === 'admin') {
+    const departmentsAll = await Department.find().sort('_id');
+
+    res.status(200).render('overview', {
+      title: 'All Departments',
+      departments: departmentsAll, // erstes tours ist das template, zweites tours sind die tourdata
+      //user: currentUser,
+    });
+  } else {
+    const departmentsUser = await Department.find({
+      name: currentUser.department,
+    }).sort('_id');
+
+    res.status(200).render('overview', {
+      title: 'All Departments',
+      departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+      //user: currentUser,
+    });
+  }
 });
 
 export const getDepartment = catchAsync(async (req, res, next) => {
@@ -105,8 +116,12 @@ export const getDepartment = catchAsync(async (req, res, next) => {
   // console.log(departmentsArray); // ["IT", "Engineering", "Anarbeit"]
 
   //const currentDepartmentName =
+  const currentUser = req.user;
 
-  if (departmentsArray.includes(department.name)) {
+  if (
+    departmentsArray.includes(department.name) ||
+    currentUser.role === 'admin'
+  ) {
     console.log('Arbeitet dort');
     res.status(200).render('department', {
       title: `${department.name} department`, //'The Forrest Hiker Tour',
@@ -160,20 +175,20 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
   //console.log(req.body);
   const currentUserLoggedIn = req.user;
 
-  console.log('----------');
-  console.log(currentUserLoggedIn);
-  console.log('----------');
-  console.log(req.params.id);
+  console.log('bin getUpdateUser');
+  // console.log(currentUserLoggedIn);
+  // console.log('----------');
+  // console.log(req.params.id);
 
   const userToUpdate = await User.findById({ _id: req.params.id }).select(
     '+password'
   );
 
-  const allDepartments = await Department.find();
+  const allDepartments = await Department.find().sort('_id');
 
-  console.log(userToUpdate.firstName);
-
-  console.log(userToUpdate);
+  // console.log(userToUpdate.firstName);
+  //
+  // console.log(userToUpdate);
   if (!userToUpdate) {
     return next(new AppError('There is no User with that ID.', 404));
   }

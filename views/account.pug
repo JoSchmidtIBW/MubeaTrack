@@ -4,13 +4,14 @@ mixin navItem(link, text, icon, active)
     li(class=`${active ? 'side-nav--active' : ''}`)
         a(href=`${link}`)
             svg
-                use(xlink:href=`img/icons.svg#icon-${icon}`)
+                use(xlink:href=`/img/icons.svg#icon-${icon}`)
             | #{text}
 
 block content
     main.main
         .user-view
             nav.user-view__menu
+
                 ul.side-nav
                     +navItem('#', 'Settings', 'settings', true)
                     +navItem('#', 'My bookings', 'briefcase')
@@ -19,7 +20,7 @@ block content
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
-                        h5.admin-nav__heading Admin
+                        h5.admin-nav__heading= `${user.role}`
                         ul.side-nav
                             +navItem('#', 'Manage tours', 'map')
                             +navItem('/api/v1/manage_users', 'Manage users', 'users')
@@ -36,6 +37,38 @@ block content
 
                     //- WITH API    darf dann nicht stehen method=POST usw
                     form.form.form-user-data
+                        input#userId(type="hidden", value=`${user._id}`)
+                        div(class="form__group")
+                            label(class="form__label", for="employeeNumber") Employee Number
+                            input#employeeNumber(class="form__input", type="number", value=user.employeeNumber, readonly, style="background-color: lightgrey;")
+                        div(class="form__group")
+                            label(class="form__label", for="firstname") Firstname
+                            input#firstname(class="form__input", type="text", value=user.firstName)
+                        div(class="form__group")
+                            label(class="form__label", for="lastname") Lastname
+                            input#lastname(class="form__input", type="text", value=user.lastName)
+                        div(class="form__group")
+                            label(class="form__label", for="age") Age
+                            input#age(class="form__input", type="text", value=user.age, readonly, style="background-color: lightgrey;")
+                        div(class="form__group")
+                            label(class="form__label", for="gender") gender
+                            //input#gender(class="form__input", type="text", value=user.gender)
+                            select#gender(class="form__input", value=user.gender)
+                                option(value="male", selected=user.gender === 'male') Male
+                                option(value="female", selected=user.gender === 'female') Female
+                        div(class="form__group")
+                            label(class="form__label", for="language") Language
+                            //input#language(class="form__input", type="text", value=user.language, readonly, style="background-color: lightgrey;")
+                            select#language(class="form__input")
+                                option(value="Englisch", selected=user.language === 'Englisch') English
+                                option(value="Deutsch", selected=user.language === 'Deutsch') Deutsch
+
+                        div(class="form__group")
+                            label(class="form__label", for="role") Role
+                            input#role(class="form__input", type="text", value=user.role, readonly, style="background-color: lightgrey;")
+                        div(class="form__group")
+                            label(class="form__label", for="role") Department
+                            input#department(class="form__input", type="text", value=user.department, readonly, style="background-color: lightgrey;")
                         .form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${user.name}`,autocomplete="user-name", required, name='name')
@@ -56,6 +89,9 @@ block content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Password change
                     form.form.form-user-password
+                        //-.form__group     //- damit Fehler weg geht: Password forms should have (optionally hidden) username fields for accessibility: aber egal
+                            label.form__label(for='username') Username (optional)
+                            input#username.form__input(type='hidden', autocomplete='username', placeholder='Enter your username (optional)', aria-label='Username', hidden)
                         .form__group
                             label.form__label(for='password-current') Current password
                             input#password-current.form__input(type='password',autocomplete='current-password', placeholder='••••••••', required, minlength='8')

@@ -6,35 +6,40 @@ block content
         div(class="user-view__form-container")
           h2.heading-secondary.ma-bt-md= `Edit User ${data.userToUpdate.firstName}`
           form.form.form-worker-data
-            input#userId(type="hidden", value="<%= user.id; %>")
+            //-input#userId(type="hidden", value=data.userToUpdate._id)
+            div(class="form__group ma-bt-md")
+              label(class="form__label", for="userId") UserId
+              input#userId(class="form__input", type="text", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="employeeNumber") Employee Number
               input#employeeNumber(class="form__input", type="number", value=data.userToUpdate.employeeNumber, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="firstname") Firstname
-              input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName)
+              input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="lastname") Lastname
-              input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
+              input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="age") Age
               input#age(class="form__input", type="text", value=data.userToUpdate.age, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="gender") gender
-              select#gender(class="form__input")
+              input#gender(class="form__input", type="text", value=data.userToUpdate.gender, readonly, style="background-color: lightgrey;")
+              //-select#gender(class="form__input")
                 option(value="male") Male
                 option(value="Female") Female
             div(class="form__group")
               label(class="form__label", for="language") Language
-              select#language(class="form__input")
+              input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+              //-select#language(class="form__input")
                 option(value="Englisch") English
                 option(value="Deutsch") Deutsch
             div(class="form__group")
               label(class="form__label", for="name") Name
-              input#name(class="form__input", type="text", value=data.userToUpdate.name)
+              input#name(class="form__input", type="text", value=data.userToUpdate.name, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="email") E-Mail
-              input#email(class="form__input", type="email", value=data.userToUpdate.email)
+              input#email(class="form__input", type="email", value=data.userToUpdate.email, readonly, style="background-color: lightgrey;")
             div(class="form__group ma-bt-md")
               label(class="form__label", for="password") Password
               input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
@@ -62,22 +67,23 @@ block content
                 option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
             div(class="form__group")
               label(class="form__label", for="departments") Departments
-              input#department(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: red;")
+              input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
               script.
                 console.log("test2222")
-              - const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
+              //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
 
               each department in data.departments
                 - var checked = data.userToUpdate.department && data.userToUpdate.department.includes(department.name)
 
-                label(class="form__checkbox-label")
+                label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
                   |
-                  input(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked, required, style="width: 20px; height: 20px;")
-
+                  input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                   span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
 
 
-                script.
+
+
+                //-script.
                   const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
                   let atLeastOneChecked = false;
                   departmentCheckboxes.forEach(function(departmentCheckbox) {
@@ -94,6 +100,32 @@ block content
 
 
 
-            button.btn.btn--small.btn--green Save
-            button.btn.btn--small.btn--red Delete
+            button.btn.btn--small.btn--green.btn--saveUpdateUserByChef Save
+            button.btn.btn--small.btn--red.btn--deleteUpdateUserByChef Delete
             a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
+
+            script.
+              function getSelectedDepartments() {
+                const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
+                let selectedDepartments = [];
+                departmentCheckboxes.forEach((checkbox) => {
+                  if (checkbox.checked) {
+                    selectedDepartments.push(checkbox.value);
+                  }
+                });
+                if (selectedDepartments.length > 0) {
+                  console.log(selectedDepartments + " sind angewählt");
+                  //#department === selectedDepartments
+                  //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
+                  document.querySelector('#department').value = selectedDepartments;
+                  //-document.querySelector('#department').value = selectedDepartmentsString
+                } else {
+                  console.log(selectedDepartments.length + " Departments!!!");
+                  alert('Bitte wählen Sie mindestens eine Abteilung aus.');
+                }
+              }
+
+              // Rufen Sie die Funktion auf, wenn der "Speichern"-Button geklickt wird
+              document.querySelector('.btn--saveUpdateUserByChef').addEventListener('click', () => {
+                getSelectedDepartments();
+              });
