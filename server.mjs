@@ -31,6 +31,8 @@ const DB = process.env.DATABASE_MONGODB.replace(
 //     console.log(con.connections), console.log('DB connection succeful!');
 //   });
 
+////(node:9752) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitori
+// // ng engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
 mongoose
   .connect(DB, {
     //hostet db

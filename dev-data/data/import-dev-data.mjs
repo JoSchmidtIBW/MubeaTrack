@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'; //__dirname is not definet
 
 // eslint-disable-next-line node/no-missing-import
 import User from '../../models/userModel.mjs';
-import Tour from '../../models/tourModel.mjs';
+
 import Machine from '../../models/machineModel.mjs';
 import Department from '../../models/departmentModel.mjs';
 
@@ -38,6 +38,9 @@ const DB = process.env.DATABASE_MONGODB.replace(
 //   .then((con) => {
 //     console.log(con.connections), console.log('DB connection succeful!');
 //   });
+
+//(node:9752) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitori
+// ng engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
 mongoose
   //.connect(process.env.DATABASE_MONGODB_LOCAL, {
   .connect(DB, {
@@ -45,30 +48,31 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
   })
   .then(() => console.log('DB connection succeful!'));
 
+//const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')); //, 'utf-8'
+//const tours = JSON.parse(fs.readFil.eSync(`${__dirname}/../dev-data/data/tours-simple.json`))
+
 // READ JSON-file
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8')); //, 'utf-8'
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')); //, 'utf-8'
 const machines = JSON.parse(
   fs.readFileSync(`${__dirname}/machines.json`, 'utf-8')
 ); //, 'utf-8'
 const departments = JSON.parse(
   fs.readFileSync(`${__dirname}/departments.json`, 'utf-8')
 ); //, 'utf-8'
-//const tours = JSON.parse(fs.readFil.eSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
 //IMPORT DATA into Database
 const importData = async () => {
   try {
-    await Tour.create(tours);
-
+    await User.create(users, { validateBeforeSave: false });
     await Department.create(departments, { validateBeforeSave: false });
-    await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
+    //await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
     await Machine.create(machines, { validateBeforeSave: false });
 
-    console.log('Data successfully loaded! Test- Daten, zum DB erstellen');
+    console.log('Data successfully loaded! Test- Daten');
     // eslint-disable-next-line no-process-exit
     process.exit();
   } catch (err) {
@@ -80,12 +84,9 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
-    await Tour.deleteMany();
     await Machine.deleteMany();
     await Department.deleteMany();
-    console.log(
-      'Data successfully deleted! TestDatanbank wurde geleert, um sie mit testdaten zu füllen zu können'
-    );
+    console.log('Data successfully deleted!');
     // eslint-disable-next-line no-process-exit
     process.exit();
   } catch (err) {
@@ -93,7 +94,7 @@ const deleteData = async () => {
   }
 };
 
-// weil --import in terminal (das dritte im array --> 2)
+// weil --import in terminal (das dritte im array --> [2])
 if (process.argv[2] === '--import') {
   //run importData()
   importData();
@@ -105,6 +106,8 @@ if (process.argv[2] === '--import') {
 console.log('process.argv: ' + process.argv);
 
 //zum laufen lassen, neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --import
-// man sieht in conosle 3 sachen, sollte ein array sein, aber zeigt keine [], das dritte ist --import
+// (ev muss im userModel gewisse Middleware dafür auskommentiert werden
 
 //zu datenbank löschen: neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --delete
+
+// man sieht in conosle 3 sachen, sollte ein array sein, aber zeigt keine [], das dritte ist --import

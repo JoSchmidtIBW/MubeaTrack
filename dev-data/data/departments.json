@@ -41,7 +41,7 @@
     "name": "IT",
     "guides": [],
     "machines": [],
-    "employees": [],
+    "employees": ["643c1f042df0321cb8a06a47"],
     "summary": "Für Netzwerk, Telefon und Verbindungen",
     "description": "IT: Für Netzwerk, Telefon und Verbindungen",
     "imageCover": "department-cover-IT.jpg",

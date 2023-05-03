@@ -14,6 +14,6 @@
     "email": "admin@admin.io",
     "password": "test1234",
     "photo": "user-109.jpg",
-    "department": ["Geschäfts-Führung", "Konstruktion","IT", "Engineering", "Unterhalt","Anarbeit", "Schweisserei", "Zieherei"]
+    "department": ["IT"]
   }
 ]
