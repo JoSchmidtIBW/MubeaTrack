@@ -1,7 +1,7 @@
 import multer from 'multer';
 import sharp from 'sharp';
 
-import Department from '../models/departmentModel.mjs';
+import Department from '../models/departmentModel.mjs';//
 
 import catchAsync from '../utils/catchAsync.mjs';
 
