@@ -380,7 +380,7 @@ userSchema.pre('findOneAndDelete', async function (next) {
   if (user._id.toString() === ADMIN_ID) {
     console.log('ist ADMIN!!!!!!!!!!!!!!!!!');
     // next(new AppError('Admin can not deleted!!!', 400));
-    return next(new AppError('Admin can not be deleted!!!', 404));
+    return next(new AppError('Admin can not be deleted!!!', 400));
   }
 
   console.log('user1._id: ' + user1._id);
