@@ -57,6 +57,8 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   // 2. Build template, but in real not in this controller
 
   // 3.) Render that template using tour data from 1.)
+  const users = await User.find();
+
   const currentUser = req.user;
 
   if (currentUser.role === 'admin') {
@@ -65,6 +67,7 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('overview', {
       title: 'All Departments',
       departments: departmentsAll, // erstes tours ist das template, zweites tours sind die tourdata
+      users: users,
       //user: currentUser,
     });
   } else {
@@ -75,6 +78,7 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('overview', {
       title: 'All Departments',
       departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+      users: users,
       //user: currentUser,
     });
   }

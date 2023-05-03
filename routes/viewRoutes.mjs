@@ -67,10 +67,9 @@ router.get(
   getCreateNewUserForm
 );
 
-//module.exports = router
-
 export default router;
 
+//----------------------------------------------------------Old-----------------
 //router.get('/overview', viewsController.getOverview)
 // router.get('/overview', (req, res) => {
 //     res.status(200).render('overview', {

@@ -1,7 +1,6 @@
 import multer from 'multer';
 import sharp from 'sharp';
 
-//import Tour from '../models/tourModel.mjs';
 import Department from '../models/departmentModel.mjs';
 
 import catchAsync from '../utils/catchAsync.mjs';
