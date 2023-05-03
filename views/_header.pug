@@ -1,7 +1,7 @@
 header.header
     nav.nav.nav--tours
         if user
-            a.nav__el(href='/overview') All tours
+            a.nav__el(href='/api/v1/overview') Overview
     .header__logo
         .LogoBildText
             img(src='/img/Mubea_logo.svg.png', alt='Mubea logo')
@@ -11,10 +11,10 @@ header.header
     nav.nav.nav--user
         if user
             a.nav__el.nav__el--logout Log out
-            a.nav__el(href='/me')
+            a.nav__el(href='/api/v1/me')
                 img.nav__user-img(src=`/img/users/${user.photo}`, alt=`Photo of ${user.name}`)
                 span= user.name.split(' ')[0]
         else
             //- kommt von isloggedIn- Middleware, wo res.locals.user = currentuser
-            a.nav__el(href='/login') log in
+            a.nav__el(href='/api/v1/login') log in
             a.nav__el.nav__el--cta(href='/#') Sign up

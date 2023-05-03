@@ -13,6 +13,41 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A User must have a name!'],
   },
+  firstName: {
+    type: String,
+    required: [true, 'A User must have a firstName'],
+    trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A firstName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A firstName must have more or equal then 1 characters'], //validator
+  },
+  lastName: {
+    type: String,
+    required: [true, 'A User must have a lastName'],
+    trim: true, // nama und nicht leerzeichenNameLeerzeichen
+    maxlength: [20, 'A lastName must have less or equal then 20 characters'], //validator
+    minlength: [1, 'A lastName must have more or equal then 1 characters'], //validator
+  },
+  employeeNumber: {
+    type: Number,
+    required: [true, 'A user must have a employeeNumber'],
+    unique: true, // darf keine gleiche nochmals haben!
+    trim: true,
+    select: true,
+  },
+  age: {
+    type: Number,
+    default: 1,
+    trim: true,
+  },
+  gender: {
+    type: String,
+    trim: true,
+  },
+  language: {
+    type: String,
+    default: 'Deutsch',
+    trim: true,
+  },
   // tour: {
   //   type: mongoose.Schema.ObjectId,
   //   ref: 'Tour',
@@ -43,8 +78,15 @@ const userSchema = new mongoose.Schema({
       'Elektriker',
     ],
     default: 'user',
+    // validate: {
+    //   validator: function (value) {
+    //     return value !== 'admin';
+    //   },
+    //   message: 'Admin role is not allowed.',
+    // },
   },
   department: {
+    //const user = await User.findOne({ _id: userId }).populate('department', 'name');
     type: [String],
     default: ['Engineering'],
     enum: [
@@ -59,7 +101,32 @@ const userSchema = new mongoose.Schema({
     ],
     // required: [true, 'Please provide your department'],
   },
-
+  // department: {
+  //   type: [String],
+  //   //type: mongoose.Schema.Types.ObjectId,
+  //   //ref: 'Department',
+  //   default: '5c8a24822f8fb814b56fa192',
+  //   required: [true, 'Please provide your department'],
+  // },
+  machines: [
+    {
+      type: [String],
+      enum: [
+        'TRT 1',
+        'Conni 1',
+        'Rattunde 1',
+        'Rattunde 2',
+        'Rattunde 3',
+        'Rattunde 4',
+        'Rattunde 5',
+      ],
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false, //dann sieht man nicht
+  },
   // department: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Department',
@@ -107,6 +174,16 @@ const userSchema = new mongoose.Schema({
     select: false, // zeigt nicht im output ob aktiv oder inaktive
   },
 });
+
+//--------------------------Ausblenden um Dev-data einzufügen---------------------
+// userSchema.pre('save', function (next) {
+//   if (this.role === 'admin') {
+//     const error = new Error('Admin role is not allowed2.');
+//     return next(error);
+//   }
+//   next();
+// });
+//----------------------------------------------------------------------------
 
 // userSchema.pre('save', async function (next) {
 //   const department = await mongoose
@@ -156,7 +233,20 @@ const userSchema = new mongoose.Schema({
 //   // }
 //   next();
 // });
+// für Datum funktioniert nicht
+function formatCreatedAt(date) {
+  return `${date.getDate()}.${
+    date.getMonth() + 1
+  }.${date.getFullYear()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
 
+// Vor dem Speichern den createdAt-Wert konvertieren
+userSchema.pre('save', function (next) {
+  if (this.isNew || this.isModified('createdAt')) {
+    this.createdAt = formatCreatedAt(this.createdAt);
+  }
+  next();
+});
 // userSchema.pre('save', function (next) {
 //   if (!this.department) {
 //     this.department = 'Engineering';
@@ -223,14 +313,14 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save', async function (next) {
   if (this.department) {
-    console.log('this.department: ' + this.department);
+    console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
     const department = await Department.findOne({ name: this.department });
     console.log('Gefunden department in Department: ' + department);
 
     if (department) {
       if (!department.employees.includes(this._id)) {
         department.employees.push(this._id);
-        await department.save();
+        await department.save(); //department in Department
       } else {
         console.log('Der Benutzer ist bereits in dieser Abteilung');
       }
@@ -239,21 +329,74 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// soll die departments updaten, mit dem, was gerade aktuell im user.departmentArray drin ist
 userSchema.pre('findOneAndUpdate', async function (next) {
   const { department } = this._update;
 
   if (department) {
-    console.log('Department wird geupdatet');
     const newDepartments = await Department.find({ name: { $in: department } });
-    console.log('newDepartments:', newDepartments);
 
-    for (const dep of newDepartments) {
-      if (!dep.employees.includes(this._conditions._id)) {
-        dep.employees.addToSet(this._conditions._id);
+    const user = await User.findById(this._conditions._id);
+    const oldDepartments = user.department
+      ? await Department.find({ name: { $in: user.department } })
+      : [];
+
+    for (const dep of oldDepartments) {
+      if (!newDepartments.some((newDep) => newDep.name === dep.name)) {
+        dep.employees.pull(this._conditions._id);
         await dep.save();
       }
     }
+
+    for (const dep of newDepartments) {
+      if (user.department && user.department.includes(dep.name)) {
+        console.log('Der Benutzer ist bereits in dieser Abteilung');
+        continue;
+      }
+      dep.employees.addToSet(this._conditions._id);
+      await dep.save();
+    }
   }
+
+  // if (department) {
+  //   console.log('Department wird geupdatet');
+  //   const newDepartments = await Department.find({ name: { $in: department } });
+  //   console.log('newDepartments:', newDepartments);
+  //
+  //   const oldDepartments = await Department.find({
+  //     employees: this._conditions._id,
+  //   });
+  //   console.log('oldDepartments:', oldDepartments);
+  //
+  //   for (const dep of oldDepartments) {
+  //     if (!newDepartments.some((newDep) => newDep.name === dep.name)) {
+  //       dep.employees.pull(this._conditions._id);
+  //       await dep.save();
+  //     }
+  //   }
+  //
+  //   for (const dep of newDepartments) {
+  //     if (this.department.includes(dep.name)) {
+  //       console.log('Der Benutzer ist bereits in dieser Abteilung');
+  //       continue;
+  //     }
+  //     dep.employees.addToSet(this._conditions._id);
+  //     await dep.save();
+  //   }
+  // }
+
+  // if (department) {
+  //   console.log('Department wird geupdatet');
+  //   const newDepartments = await Department.find({ name: { $in: department } });
+  //   console.log('newDepartments:', newDepartments);
+  //
+  //   for (const dep of newDepartments) {
+  //     if (!dep.employees.includes(this._conditions._id)) {
+  //       dep.employees.addToSet(this._conditions._id);
+  //       await dep.save();
+  //     }
+  //   }
+  // }
 
   next();
 });
@@ -468,6 +611,10 @@ userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
+
+// userSchema.pre('find', function () {
+//   this.select('createdAt');
+// });
 
 //funktion, um hashpasswort wieder encrypten zu normal
 userSchema.methods.correctPassword = async function (

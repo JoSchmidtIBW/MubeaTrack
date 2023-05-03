@@ -81,8 +81,17 @@ export const signup = catchAsync(async (req, res, next) => {
   // const newUser = await User.create(req.body); // daten sind im body, und returnt ein promis, darum await
   //User.save()                       // problem oben, so wird alles akzeptiert, zum ein user machen
 
+  console.log('bin signup: ');
+  console.log(req.body);
+
   const newUser = await User.create({
     // nur das wird aktzepiert zum ein user machen
+    employeeNumber: req.body.employeeNumber,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    age: req.body.age,
+    gender: req.body.gender,
+    language: req.body.language,
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
@@ -182,7 +191,7 @@ export const login = catchAsync(async (req, res, next) => {
 //exports.logout = (req, res) => {
 export const logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000), //+ 10 sekunden = 10*1000
+    expires: new Date(Date.now() + 1 * 1000), //+ 10 sekunden = 10*1000//Date.now() + 10 * 1000
     httpOnly: true,
   }); // muss genau so heissen, da das alte cookie überschrieben wird, und neues nur kurze lebenszeit hat
 
@@ -233,6 +242,8 @@ export const protect = catchAsync(async (req, res, next) => {
 
   //3.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
   const currentUser = await User.findById(decoded.id);
+  //console.log('-------');
+  //console.log(currentUser);
 
   if (!currentUser) {
     return next(
@@ -287,6 +298,7 @@ export const isLoggedIn = async (req, res, next) => {
       }
 
       // THERE IS A LOGGED IN USER
+      req.user = currentUser;
       res.locals.user = currentUser; // hier wird gebunden,,,,, aber für renderet site// hier wird der user, mit all seinen angaben restored
       return next(); //hier hat cookie    muss return haben, sonst, next, und next wäre nest ohne cookie
     } catch (err) {

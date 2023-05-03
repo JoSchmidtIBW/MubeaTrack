@@ -32,7 +32,7 @@ import {
 
 const router = express.Router();
 
-router.get('/l', getAllUsers);
+router.get('/', getAllUsers);
 
 //authentication
 //http: //127.0.0.1:4301/api/v1/users/signup
@@ -66,7 +66,9 @@ router.delete('/deleteMe', deleteMe);
 router.use(restrictTo('admin'));
 
 //http: //127.0.0.1:4301/api/v1/users
-router.route('/').get(getAllUsers).post(createUser);
+//router.route('/').get(getAllUsers).post(createUser);
+
+router.post('/createNewUser', createUser);
 
 //http: //127.0.0.1:4301/api/v1/users/:id
 router.route('/:id').get(protect, getUser).patch(updateUser).delete(deleteUser);

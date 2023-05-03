@@ -27,7 +27,7 @@ export const getAll = (Model) =>
 
     // SEND RESPONSE
     res.status(200).json({
-      status: 'sucsess',
+      status: 'success',
       results: doc.length,
       data: {
         data: doc,
@@ -69,6 +69,9 @@ export const deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // so wird gelöscht in einer Restfull api
     // try {
+    console.log('zum löschen:');
+    console.log(req.params.id);
+
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) {
@@ -86,6 +89,8 @@ export const deleteOne = (Model) =>
 export const updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
     console.log('Bin UpdateOne in handlerFactory');
+
+    console.log(req.body);
 
     // try {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {

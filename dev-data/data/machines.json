@@ -1,7 +1,21 @@
 [
   {
-  "_id": "6444566c830afd3adeba2d38",
-  "name": "Rattunde 1"
+    "_id": "6444566c830afd3adeba2d38",
+    "name": "Rattunde 1",
+    "description": "Säge- Anlage",
+    "machineNumber": "14C31",
+    "type": "ACS 105/2/BM+BDM100+wdm+TI+SRTH+CC+Pi",
+    "constructionYear": "1991",
+    "companyMachine": "Firma XXX GmbHn",
+    "voltage": "3x400 VAC 50 Hz",
+    "controlVoltage": "24 VDC",
+    "ratedCurrent": "60 A",
+    "electricalFuse": "250 A",
+    "compressedAir": "4000 l/m 7 bar",
+    "weightMass": "12 t",
+    "dimensions": "12975 x 9300 x 500",
+    "drawingNumber": "0480.74240",
+    "department": "Anarbeit"
   },
   {
     "_id": "64445692830afd3adeba2d39",

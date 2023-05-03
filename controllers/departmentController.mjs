@@ -53,7 +53,7 @@ export const resizeDepartmentImages = catchAsync(async (req, res, next) => {
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 }) //90=90%
-    .toFile(`public/img/tours/${req.body.imageCover}`);
+    .toFile(`public/img/departments/departments-cover/${req.body.imageCover}`);
 
   req.body.images = [];
 
@@ -67,7 +67,7 @@ export const resizeDepartmentImages = catchAsync(async (req, res, next) => {
         .resize(2000, 1333)
         .toFormat('jpeg')
         .jpeg({ quality: 90 }) //90=90%
-        .toFile(`public/img/tours/${filename}`);
+        .toFile(`public/img/departments/${filename}`);
 
       req.body.images.push(filename);
     })

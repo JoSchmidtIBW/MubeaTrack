@@ -6,13 +6,21 @@ block content
     // extends index.pug oder layout
     main.main
         .card-container
+            script.
+                console.log("Hello World- Overview");
 
+            //-if(user.department === 'Engineering')
+            //-h1= `About ${user.department}`
             each department in departments
+                //-h6= `${department.name}`
+                //-if(user.department === department.name)
+                //h1= `${user.department}`
+                //h1= `${department.name}`
                 .card
                     .card__header
                         .card__picture
                             card__picture-overlay &nbsp;
-                            img.card__picture-img(src=`/img/departments/${department.imageCover}`, alt=`${department.name}`)
+                            img.card__picture-img(src=`/img/departments/departments-cover/${department.imageCover}`, alt=`${department.name}`)
                         h3.heading-tertirary
                             span= department.name
 
@@ -41,4 +49,6 @@ block content
                             //-span.card__footer-value= tour.ratingsAverage
                             |
                             //-span.card__footer-text= `rating (${tour.ratingsQuantity})`
-                        a.btn.btn--green.btn--small(href=`/departments/${department.slug}`) Details
+                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.slug}`) Details
+
+

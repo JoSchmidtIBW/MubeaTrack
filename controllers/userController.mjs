@@ -104,6 +104,7 @@ export const getMe = (req, res, next) => {
 //video 139
 //exports.updateMe = catchAsync(async (req, res, next) => {
 export const updateMe = catchAsync(async (req, res, next) => {
+  console.log('bin updateMe');
   console.log(req.file);
   console.log(req.body);
 
@@ -123,7 +124,15 @@ export const updateMe = catchAsync(async (req, res, next) => {
   //const user = await User.findById(req.user.id);// um saveMethode nicht zu nutzen hier, weil sonst fehler kommt
 
   // 3.) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(req.body, 'name', 'email'); // in req.body sind alle daten,
+  const filteredBody = filterObj(
+    req.body,
+    'name',
+    'email',
+    'firstName',
+    'lastName',
+    'gender',
+    'language'
+  ); // in req.body sind alle daten,
   // dem filteredBody auch noch photo hinzufügen, wenn req.file (photo) hat
   if (req.file) filteredBody.photo = req.file.filename;
 
@@ -179,16 +188,82 @@ export const getUser = getOne(User);
 
 //exports.getAllUsers = factory.getAll(User);
 //exports.getAllUsers = getAll(User);
-export const getAllUsers = getAll(User);
+
+//export const getAllUsers = getAll(User);
+
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  console.log('bin getAllUsers');
+
+  const users = await User.find().select('+createdAt +password');
+  // const users = await User.find().select('+createdAt').lean().exec();
+  // const usersJSON = JSON.parse(JSON.stringify(users));
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      data: users,
+    },
+  });
+});
 
 // hier braucht es keine createOne, weil wir haben die signup- funktion
 //exports.createUser = (req, res) => {
-export const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not defined, pleace use /signup insteat',
-  }); // server error not implement
-};
+export const createUser = catchAsync(async (req, res) => {
+  console.log('bin createNewUser');
+
+  //console.log(req.body);
+
+  // const newUser = await User.create({
+  //   // nur das wird aktzepiert zum ein user machen
+  //   employeeNumber: req.body.employeeNumber,
+  //   firstName: req.body.firstName,
+  //   lastName: req.body.lastName,
+  //   age: req.body.age,
+  //   gender: req.body.gender,
+  //   language: req.body.language,
+  //   name: req.body.name,
+  //   email: req.body.email,
+  //   password: req.body.password,
+  //   passwordConfirm: req.body.passwordConfirm,
+  //   passwordChangeAt: req.body.passwordChangeAt,
+  //   role: req.body.role,
+  //   photo: req.body.photo,
+  //   department: req.body.department,
+  //   active: req.body.active,
+  // });
+
+  const userData = {
+    employeeNumber: req.body.employeeNumber,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    age: req.body.age,
+    gender: req.body.gender,
+    language: req.body.language,
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+    passwordChangeAt: req.body.passwordChangeAt,
+    role: req.body.role,
+    photo: req.body.photo,
+    department: req.body.department,
+    active: req.body.active,
+  };
+
+  const newUser = new User(userData);
+  await newUser.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'A new user is succefully created!',
+  });
+
+  // res.status(500).json({
+  //   status: 'error',
+  //   message: 'this route is not defined, pleace use /signup insteat',
+  // }); // server error not implement
+});
 
 // Do NOT update password with this!
 //exports.updateUser = factory.updateOne(User); // nur für admin, und update data that is not the passwort
