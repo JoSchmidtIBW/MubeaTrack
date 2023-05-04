@@ -375,7 +375,7 @@ userSchema.pre('findOneAndDelete', async function (next) {
   console.log('user' + user);
   console.log('user._id: ' + user._id);
 
-  const ADMIN_ID = '643c1f042df0321cb8a06a47';
+  const ADMIN_ID = '643c1f042df0321cb8a06a47';//ID von MongoDB
 
   if (user._id.toString() === ADMIN_ID) {
     console.log('ist ADMIN!!!!!!!!!!!!!!!!!');
