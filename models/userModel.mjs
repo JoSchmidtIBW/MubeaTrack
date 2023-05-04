@@ -177,14 +177,40 @@ const userSchema = new mongoose.Schema({
 });
 
 //--------------------------Ausblenden um Dev-data einzufügen-------------------
-// userSchema.pre('save', function (next) {
-//   if (this.role === 'admin') {
-//     const error = new Error('Admin role is not allowed2.');
-//     return next(error);
-//   }
-//   next();
-// });
+// There can only be one admin
+userSchema.pre('save', function (next) {
+  if (this.role === 'admin') {
+    const error = new Error('Admin role is not allowed!');
+    return next(error);
+  }
+  next();
+});
 //-------------------------- Ausblenden um Dev-data einzufügen------------------
+
+userSchema.pre('findOneAndUpdate', async function (next) {
+  //console.log('schau das Admin nicht seine rolle ändern kann');
+
+  const updatedFields = this.getUpdate();
+  // console.log('updatedFields');
+  // console.log(updatedFields);
+  // console.log(updatedFields.role);
+
+  const user = await this.findOne();
+
+  // console.log('user' + user);
+  // console.log('user._id: ' + user._id);
+  // console.log('user.role: ' + user.role);
+
+  const ADMIN_ID = '643c1f042df0321cb8a06a47'; //ID von MongoDB
+
+  if (user._id.toString() === ADMIN_ID) {
+    //console.log('ist ADMIN!!!!!!!!!!!!!**********!!!!');
+    if (updatedFields.role !== 'admin')
+      return next(new AppError('Admin- Role can not be changed!!!', 400));
+  }
+
+  next();
+});
 
 // userSchema.pre('save', async function (next) {
 //   const department = await mongoose
@@ -363,7 +389,7 @@ userSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-//löschen von user, department.employeeCount..  ADMIN nicht löschen, mit ID weil name kann geändert werden
+//löschen von user auch löschen in department.employeeCount und Löschen von ADMIN nicht erlaubt, mit ID weil name kann geändert werden
 userSchema.pre('findOneAndDelete', async function (next) {
   console.log('bin remove');
   console.log('this: ' + this);
@@ -375,7 +401,7 @@ userSchema.pre('findOneAndDelete', async function (next) {
   console.log('user' + user);
   console.log('user._id: ' + user._id);
 
-  const ADMIN_ID = '643c1f042df0321cb8a06a47';//ID von MongoDB
+  const ADMIN_ID = '643c1f042df0321cb8a06a47'; //ID von MongoDB
 
   if (user._id.toString() === ADMIN_ID) {
     console.log('ist ADMIN!!!!!!!!!!!!!!!!!');
