@@ -176,17 +176,26 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-//--------------------------Ausblenden um Dev-data einzufügen-------------------
-// There can only be one admin
-userSchema.pre('save', function (next) {
-  if (this.role === 'admin') {
-    const error = new Error('Admin role is not allowed!');
-    return next(error);
+// Checks that there can only be one admin,
+// also that this pre-save-middleware does not have to be commented out, when the first user- data is loaded into mongodb
+userSchema.pre('save', async function (next) {
+  const adminCount = await this.constructor.countDocuments({ role: 'admin' });
+  // console.log('adminCount: ' + adminCount);
+  // console.log('this.isNew: ' + this.isNew);
+
+  const saveFields = this;
+  // console.log('saveFields');
+  // console.log(saveFields);
+  // console.log(saveFields.role);
+
+  if (adminCount > 0 && saveFields.role === 'admin') {
+    return next(new AppError('Only one admin- user is allowed!', 400));
   }
+
   next();
 });
-//-------------------------- Ausblenden um Dev-data einzufügen------------------
 
+// Checks when the admin updates that he cannot change his role as admin
 userSchema.pre('findOneAndUpdate', async function (next) {
   //console.log('schau das Admin nicht seine rolle ändern kann');
 
@@ -212,139 +221,12 @@ userSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-// userSchema.pre('save', async function (next) {
-//   const department = await mongoose
-//     .model('Department')
-//     .findOne({ name: this.department });
-//   if (department) {
-//     if (!department.users.includes(this._id)) {
-//       department.users.push(this._id);
-//       await department.save();
-//     }
-//   } else {
-//     const newDepartment = await mongoose.model('Department').create({
-//       name: this.department,
-//       users: [this._id],
-//     });
-//     this.department = newDepartment._id;
-//   }
-//   next();
-// });
-
-// userSchema.pre('save', async function (next) {
-//   const department = await Department.findOne({ name: this.department });
-//   if (department) {
-//     if (!department.users.includes(this._id)) {
-//       department.users.push(this._id);
-//       await department.save();
-//     }
-//   }
-//   next();
-// });
-
-// userSchema.pre('save', async function (next) {
-//   const department = await mongoose
-//     .model('Department')
-//     .findOne({ name: this.department });
-//   if (department) {
-//     if (!department.users.includes(this._id)) {
-//       department.users.push(this._id);
-//       await department.save();
-//     }
-//   }
-//   // } else {
-//   //   await mongoose.model('Department').create({
-//   //     name: this.department,
-//   //     users: [this._id],
-//   //   });
-//   // }
-//   next();
-// });
-
-// für Datum funktioniert nicht
-// function formatCreatedAt(date) {
-//   return `${date.getDate()}.${
-//     date.getMonth() + 1
-//   }.${date.getFullYear()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-// }
-//
-// // Vor dem Speichern den createdAt-Wert konvertieren
-// userSchema.pre('save', function (next) {
-//   if (this.isNew || this.isModified('createdAt')) {
-//     this.createdAt = formatCreatedAt(this.createdAt);
-//   }
-//   next();
-// });
-
-// userSchema.pre('save', function (next) {
-//   if (!this.department) {
-//     this.department = 'Engineering';
-//   }
-//   next();
-// });
-
-// userSchema.pre('save', function (next) {
-//   const user = this;
-//
-//   User.distinct('department', function (err, departments) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       user.departments = departments;
-//       console.log(user.departments);
-//       next();
-//     }
-//   });
-// });
-
-// userSchema.post('save', function () {
-//   User.distinct('department', function (err, departments) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       User.departments = departments;
-//       console.log(User.departments);
-//     }
-//   });
-// });
-
-// userSchema.pre('save', async function (next) {
-//   console.log('bin pre save Engineering...');
-//   if (this.department === 'Engineering') {
-//     const department = await Department.findOne({ name: 'Engineering' });
-//     if (department) {
-//       this.department = department._id;
-//     }
-//   }
-//   next();
-// });
-// userSchema.pre('save', async function (next) {
-//   const departmentName = this.department;
-//   const department = await Department.findOne({ name: departmentName });
-//   department.users.push(this._id);
-//   await department.save();
-//   next();
-// });
-//
-// userSchema.pre('save', async function (next) {
-//   if (this.department) {
-//     console.log('this.department: ' + this.department);
-//     const department = await Department.findOne({ name: this.department });
-//     console.log('Gefunden department in Department: ' + department);
-//
-//     if (department) {
-//       department.employees.push(this._id);
-//       await department.save();
-//     }
-//   }
-//   next();
-// });
-
+// Checks if the department exists and the user only saves himself in it once, when creating a user
 userSchema.pre('save', async function (next) {
   if (this.department) {
     console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
     const department = await Department.findOne({ name: this.department });
-    console.log('Gefunden department in Department: ' + department);
+    //console.log('Gefunden department in Department: ' + department);
 
     if (department) {
       if (!department.employees.includes(this._id)) {
@@ -359,6 +241,8 @@ userSchema.pre('save', async function (next) {
 });
 
 // soll die departments updaten, mit dem, was gerade aktuell im user.departmentArray drin ist
+// update all departments, Checks if user is assigned to departments and checks that
+// the user does not appear more than once in the same department
 userSchema.pre('findOneAndUpdate', async function (next) {
   const { department } = this._update;
 
@@ -390,6 +274,8 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 });
 
 //löschen von user auch löschen in department.employeeCount und Löschen von ADMIN nicht erlaubt, mit ID weil name kann geändert werden
+// Checks that when a user is deleted that also matches department.employeeCount,
+// and monitors that the ADMIN cannot delete itself, this with its ID because the name can be changed
 userSchema.pre('findOneAndDelete', async function (next) {
   console.log('bin remove');
   console.log('this: ' + this);
@@ -419,138 +305,6 @@ userSchema.pre('findOneAndDelete', async function (next) {
   }
   next();
 });
-
-// userSchema.pre('findOneAndUpdate', async function (next) {
-//   const { department } = this._update;
-//
-//   if (department) {
-//     console.log('Department wird geupdatet');
-//     const newDepartments = await Department.find({ name: { $in: department } });
-//     console.log('newDepartments:', newDepartments);
-//
-//     newDepartments.forEach(async (dep) => {
-//       dep.employees.addToSet(this._conditions._id); // Hinzufügen der Benutzer-ID
-//       await dep.save();
-//     });
-//   }
-//   next();
-// });
-
-// userSchema.pre('findOneAndUpdate', async function (next) {
-//   console.log('bin findOne');
-//   //const docToUpdate = await this.model.findOne(this.getQuery());
-//
-//   //console.log(this);
-//   console.log(this._conditions._id);
-//
-//   if (this._update.department) console.log('Department wird geupdatet');
-//
-//   // const oldDepartment = await Department.findOne({ employees: this._id });
-//   // console.log('oldDepartment: ' + oldDepartment);
-//   const newDepartment = await Department.findOne({
-//     name: this._update.department,
-//   });
-//   console.log('newDepartment: ' + newDepartment);
-//
-//   // // Check if the department has been updated
-//   // if (
-//   //   this._update.department &&
-//   //   this._update.department !== docToUpdate.department
-//   // ) {
-//   //   // Remove the user from the old department
-//   //   const oldDepartment = await Department.findOne({
-//   //     name: docToUpdate.department,
-//   //   });
-//   //   oldDepartment.employees.pull(docToUpdate._id);
-//   //
-//   //   // Add the user to the new department
-//   //   const newDepartment = await Department.findOne({
-//   //     name: this._update.department,
-//   //   });
-//   newDepartment.employees.push(this._conditions._id);
-//   //
-//   //   await oldDepartment.save();
-//   await newDepartment.save();
-//   // }
-//
-//   next();
-// });
-
-// userSchema.pre(/^find/, async function (next) {
-//   console.log('bin find sssssssssssssssssss');
-//   console.log('This.department: ' + this.department);
-//   //console.log(this);
-//   if (this.department) {
-//     console.log('this.department: ' + this.department);
-//     const department = await Department.findOne({ name: this.department });
-//     console.log('Gefunden department in Department: ' + department);
-//
-//     if (department) {
-//       department.employees.push(this._id);
-//       await department.save();
-//     }
-//   }
-//   next();
-// });
-
-// userSchema.pre(/^find/, async function (next) {
-//   const user = this;
-//   console.log('bin save USER');
-//   // if department has changed
-//   if (user.isModified('department')) {
-//     const oldDepartment = await Department.findOne({ employees: user._id });
-//     const newDepartment = await Department.findOne({ name: user.department });
-//
-//     if (
-//       oldDepartment &&
-//       newDepartment &&
-//       oldDepartment._id.toString() !== newDepartment._id.toString()
-//     ) {
-//       oldDepartment.employees.pull(user._id);
-//       await oldDepartment.save();
-//
-//       newDepartment.employees.push(user._id);
-//       await newDepartment.save();
-//     }
-//   }
-//
-//   next();
-// });
-// userSchema.pre(/^find/, async function (next) {
-//   console.log('bin save USER');
-//
-//   const user = this;
-//
-//   // get changes to the user document
-//   const changes = user.modifiedPaths();
-//
-//   // check if department has changed
-//   if (changes.includes('department')) {
-//     const oldDepartment = await Department.findOne({ employees: user._id });
-//     const newDepartment = await Department.findOne({ name: user.department });
-//
-//     if (
-//       oldDepartment &&
-//       newDepartment &&
-//       oldDepartment._id.toString() !== newDepartment._id.toString()
-//     ) {
-//       oldDepartment.employees.pull(user._id);
-//       await oldDepartment.save();
-//
-//       newDepartment.employees.push(user._id);
-//       await newDepartment.save();
-//     }
-//   }
-//
-//   next();
-// });
-
-// userSchema.virtual('tours', {
-//   //forenfield and localfield
-//   ref: 'Tour',
-//   foreignField: 'user', //in reviewModel hat es tour, wo id tour gespeichert
-//   localField: '_id', //
-// });
 
 //hier auch Passwort hash machen, weil es mit datenmodel zu tun hat und nicht im controller v 127   bruteforce- Angriff (wenn Hacker auf db zugreifen kann, und alle pw sieht)
 // document pre-save-middleware
@@ -722,6 +476,266 @@ userSchema.methods.createPasswordResetToken = function () {
 const User = mongoose.model('User', userSchema);
 
 export default User;
+
+// userSchema.pre('findOneAndUpdate', async function (next) {
+//   const { department } = this._update;
+//
+//   if (department) {
+//     console.log('Department wird geupdatet');
+//     const newDepartments = await Department.find({ name: { $in: department } });
+//     console.log('newDepartments:', newDepartments);
+//
+//     newDepartments.forEach(async (dep) => {
+//       dep.employees.addToSet(this._conditions._id); // Hinzufügen der Benutzer-ID
+//       await dep.save();
+//     });
+//   }
+//   next();
+// });
+
+// userSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('bin findOne');
+//   //const docToUpdate = await this.model.findOne(this.getQuery());
+//
+//   //console.log(this);
+//   console.log(this._conditions._id);
+//
+//   if (this._update.department) console.log('Department wird geupdatet');
+//
+//   // const oldDepartment = await Department.findOne({ employees: this._id });
+//   // console.log('oldDepartment: ' + oldDepartment);
+//   const newDepartment = await Department.findOne({
+//     name: this._update.department,
+//   });
+//   console.log('newDepartment: ' + newDepartment);
+//
+//   // // Check if the department has been updated
+//   // if (
+//   //   this._update.department &&
+//   //   this._update.department !== docToUpdate.department
+//   // ) {
+//   //   // Remove the user from the old department
+//   //   const oldDepartment = await Department.findOne({
+//   //     name: docToUpdate.department,
+//   //   });
+//   //   oldDepartment.employees.pull(docToUpdate._id);
+//   //
+//   //   // Add the user to the new department
+//   //   const newDepartment = await Department.findOne({
+//   //     name: this._update.department,
+//   //   });
+//   newDepartment.employees.push(this._conditions._id);
+//   //
+//   //   await oldDepartment.save();
+//   await newDepartment.save();
+//   // }
+//
+//   next();
+// });
+
+// userSchema.pre(/^find/, async function (next) {
+//   console.log('bin find sssssssssssssssssss');
+//   console.log('This.department: ' + this.department);
+//   //console.log(this);
+//   if (this.department) {
+//     console.log('this.department: ' + this.department);
+//     const department = await Department.findOne({ name: this.department });
+//     console.log('Gefunden department in Department: ' + department);
+//
+//     if (department) {
+//       department.employees.push(this._id);
+//       await department.save();
+//     }
+//   }
+//   next();
+// });
+
+// userSchema.pre(/^find/, async function (next) {
+//   const user = this;
+//   console.log('bin save USER');
+//   // if department has changed
+//   if (user.isModified('department')) {
+//     const oldDepartment = await Department.findOne({ employees: user._id });
+//     const newDepartment = await Department.findOne({ name: user.department });
+//
+//     if (
+//       oldDepartment &&
+//       newDepartment &&
+//       oldDepartment._id.toString() !== newDepartment._id.toString()
+//     ) {
+//       oldDepartment.employees.pull(user._id);
+//       await oldDepartment.save();
+//
+//       newDepartment.employees.push(user._id);
+//       await newDepartment.save();
+//     }
+//   }
+//
+//   next();
+// });
+// userSchema.pre(/^find/, async function (next) {
+//   console.log('bin save USER');
+//
+//   const user = this;
+//
+//   // get changes to the user document
+//   const changes = user.modifiedPaths();
+//
+//   // check if department has changed
+//   if (changes.includes('department')) {
+//     const oldDepartment = await Department.findOne({ employees: user._id });
+//     const newDepartment = await Department.findOne({ name: user.department });
+//
+//     if (
+//       oldDepartment &&
+//       newDepartment &&
+//       oldDepartment._id.toString() !== newDepartment._id.toString()
+//     ) {
+//       oldDepartment.employees.pull(user._id);
+//       await oldDepartment.save();
+//
+//       newDepartment.employees.push(user._id);
+//       await newDepartment.save();
+//     }
+//   }
+//
+//   next();
+// });
+
+// userSchema.virtual('tours', {
+//   //forenfield and localfield
+//   ref: 'Tour',
+//   foreignField: 'user', //in reviewModel hat es tour, wo id tour gespeichert
+//   localField: '_id', //
+// });
+
+// userSchema.pre('save', async function (next) {
+//   const department = await mongoose
+//     .model('Department')
+//     .findOne({ name: this.department });
+//   if (department) {
+//     if (!department.users.includes(this._id)) {
+//       department.users.push(this._id);
+//       await department.save();
+//     }
+//   } else {
+//     const newDepartment = await mongoose.model('Department').create({
+//       name: this.department,
+//       users: [this._id],
+//     });
+//     this.department = newDepartment._id;
+//   }
+//   next();
+// });
+
+// userSchema.pre('save', async function (next) {
+//   const department = await Department.findOne({ name: this.department });
+//   if (department) {
+//     if (!department.users.includes(this._id)) {
+//       department.users.push(this._id);
+//       await department.save();
+//     }
+//   }
+//   next();
+// });
+
+// userSchema.pre('save', async function (next) {
+//   const department = await mongoose
+//     .model('Department')
+//     .findOne({ name: this.department });
+//   if (department) {
+//     if (!department.users.includes(this._id)) {
+//       department.users.push(this._id);
+//       await department.save();
+//     }
+//   }
+//   // } else {
+//   //   await mongoose.model('Department').create({
+//   //     name: this.department,
+//   //     users: [this._id],
+//   //   });
+//   // }
+//   next();
+// });
+
+// für Datum funktioniert nicht
+// function formatCreatedAt(date) {
+//   return `${date.getDate()}.${
+//     date.getMonth() + 1
+//   }.${date.getFullYear()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+// }
+//
+// // Vor dem Speichern den createdAt-Wert konvertieren
+// userSchema.pre('save', function (next) {
+//   if (this.isNew || this.isModified('createdAt')) {
+//     this.createdAt = formatCreatedAt(this.createdAt);
+//   }
+//   next();
+// });
+
+// userSchema.pre('save', function (next) {
+//   if (!this.department) {
+//     this.department = 'Engineering';
+//   }
+//   next();
+// });
+
+// userSchema.pre('save', function (next) {
+//   const user = this;
+//
+//   User.distinct('department', function (err, departments) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       user.departments = departments;
+//       console.log(user.departments);
+//       next();
+//     }
+//   });
+// });
+
+// userSchema.post('save', function () {
+//   User.distinct('department', function (err, departments) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       User.departments = departments;
+//       console.log(User.departments);
+//     }
+//   });
+// });
+
+// userSchema.pre('save', async function (next) {
+//   console.log('bin pre save Engineering...');
+//   if (this.department === 'Engineering') {
+//     const department = await Department.findOne({ name: 'Engineering' });
+//     if (department) {
+//       this.department = department._id;
+//     }
+//   }
+//   next();
+// });
+// userSchema.pre('save', async function (next) {
+//   const departmentName = this.department;
+//   const department = await Department.findOne({ name: departmentName });
+//   department.users.push(this._id);
+//   await department.save();
+//   next();
+// });
+//
+// userSchema.pre('save', async function (next) {
+//   if (this.department) {
+//     console.log('this.department: ' + this.department);
+//     const department = await Department.findOne({ name: this.department });
+//     console.log('Gefunden department in Department: ' + department);
+//
+//     if (department) {
+//       department.employees.push(this._id);
+//       await department.save();
+//     }
+//   }
+//   next();
+// });
 
 //-----------------------------------------------Old-03.05.2023------------------------------------------------------
 // import crypto from 'crypto';
