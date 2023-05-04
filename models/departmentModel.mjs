@@ -164,7 +164,7 @@ departmentSchema.pre('save', function (next) {
 departmentSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'employees',
-    select: '-__v -passwordChangeAt', // was man nicht sehen möchte bei output
+    select: '-__v -passwordChangeAt -password', // was man nicht sehen möchte bei output
   });
 
   next();
