@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Department from './departmentModel.mjs';
 
 const machineSchema = new mongoose.Schema({
   name: {
@@ -9,7 +10,7 @@ const machineSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: '-',
+    required: [true, 'A machine must have a description!'],
   },
   machineNumber: {
     type: String,
@@ -79,6 +80,25 @@ const machineSchema = new mongoose.Schema({
     default: Date.now(),
     select: false, //dann sieht man nicht
   },
+});
+
+// Checks if the department exists and the machine only saves itself in it once, when creating a machine
+machineSchema.pre('save', async function (next) {
+  if (this.department) {
+    //console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
+    const department = await Department.findOne({ name: this.department });
+    //console.log('Gefunden department in Department: ' + department);
+
+    if (department) {
+      if (!department.machines.includes(this._id)) {
+        department.machines.push(this._id);
+        await department.save(); //department in Department
+      } else {
+        console.log('Die Maschine ist bereits in dieser Abteilung');
+      }
+    }
+  }
+  next();
 });
 
 const Machine = mongoose.model('Machine', machineSchema);

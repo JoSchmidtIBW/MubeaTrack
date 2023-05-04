@@ -19,6 +19,8 @@
   },
   {
     "_id": "64445692830afd3adeba2d39",
-    "name": "Rattunde 2"
+    "name": "Rattunde 2",
+    "description": "Säge- Anlage",
+    "department": "Anarbeit"
   }
 ]

@@ -72,13 +72,19 @@ const departmentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  // machines: [
+  //   {
+  //     name: String,
+  //     machineId: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: 'Machine',
+  //     },
+  //   },
+  // ],
   machines: [
     {
-      name: String,
-      machineId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Machine',
-      },
+      type: mongoose.Schema.ObjectId,
+      ref: 'Machine',
     },
   ],
   machinesCount: {
@@ -113,6 +119,19 @@ departmentSchema.pre('validate', function (next) {
   next();
 });
 
+// Count the machinery in this.department
+departmentSchema.pre('save', function (next) {
+  const machines = this;
+  machines.machinesCount = machines.machines.length;
+  next();
+});
+
+departmentSchema.pre('validate', function (next) {
+  const department = this;
+  department.machinesCount = department.machines.length;
+  next();
+});
+
 // departmentSchema.pre('findOneAndUpdate', function (next) {
 //   const department = this;
 //   const update = this.getUpdate();
@@ -126,13 +145,6 @@ departmentSchema.pre('validate', function (next) {
 //   department.employeesCount = department.employees.length;
 //   next();
 // });
-
-// Count the employees in this.department
-departmentSchema.pre('save', function (next) {
-  const machines = this;
-  machines.machinesCount = machines.machines.length;
-  next();
-});
 
 // DOKUMENT MIDDLEWARE   preSave und post-Save    pre vor post bei ausführung
 
