@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import mongoose from 'mongoose';
 import validator from 'validator';
+
 import bcrypt from 'bcryptjs';
 
 import Department from './departmentModel.mjs';
@@ -35,9 +36,14 @@ const userSchema = new mongoose.Schema({
     trim: true,
     select: true,
   },
-  age: {
-    type: Number,
-    default: 1,
+  // age: {
+  //   type: Number,
+  //   default: 1,
+  //   trim: true,
+  // },
+  birthDate: {
+    type: String,
+    required: [true, 'A user must have a birth date'],
     trim: true,
   },
   gender: {

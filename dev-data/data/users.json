@@ -4,7 +4,7 @@
     "_id": "643c1f042df0321cb8a06a47",
     "firstName": "Admin",
     "lastName": "Administrator",
-    "age": 1,
+    "birthDate": "01.01.1970",
     "gender": "XXX",
     "employeeNumber": 70916,
     "language": "Deutsch",

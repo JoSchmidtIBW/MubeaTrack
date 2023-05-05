@@ -61,7 +61,7 @@ if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    console.log('Role: ' + document.getElementById('role').value);
+    //console.log('Role: ' + document.getElementById('role').value);
 
     //auch photos
     const form = new FormData();
@@ -208,7 +208,7 @@ const showUsers = async () => {
           { data: 'employeeNumber' },
           { data: 'firstName' },
           { data: 'lastName' },
-          { data: 'age' },
+          { data: 'birthDate' },
           { data: 'gender' },
           { data: 'language' },
           { data: 'photo' },
@@ -298,7 +298,7 @@ if (newUserDataForm) {
     const employeeNumber = document.getElementById('employeeNumber').value;
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
-    const age = document.getElementById('age').value;
+    const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
     //const name = document.getElementById('name').value;
@@ -311,7 +311,7 @@ if (newUserDataForm) {
     console.log(employeeNumber);
     console.log(firstname);
     console.log(lastname);
-    console.log(age);
+    console.log(birthDate);
     console.log(gender);
     console.log(language);
     //console.log(name);
@@ -325,7 +325,7 @@ if (newUserDataForm) {
       employeeNumber,
       firstname,
       lastname,
-      age,
+      birthDate,
       gender,
       language,
       //name,
@@ -389,7 +389,7 @@ const createNewUser = async (
   employeeNumber,
   firstname,
   lastname,
-  age,
+  birthDate,
   gender,
   language,
   //name,
@@ -408,7 +408,7 @@ const createNewUser = async (
         employeeNumber: employeeNumber, //'66101',
         firstName: firstname, //'Erika',
         lastName: lastname, //'Schmidt',
-        age: age,
+        birthDate: birthDate,
         gender: gender,
         language: language,
         //name: name, //'erika',
@@ -447,7 +447,7 @@ if (updateUserByChefDataForm) {
     const employeeNumber = document.getElementById('employeeNumber').value;
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
-    const age = document.getElementById('age').value;
+    const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
     //const name = document.getElementById('name').value;
@@ -461,7 +461,7 @@ if (updateUserByChefDataForm) {
     console.log(employeeNumber);
     console.log(firstname);
     console.log(lastname);
-    console.log(age);
+    console.log(birthDate);
     console.log(gender);
     console.log(language);
     //console.log(name);
