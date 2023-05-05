@@ -84,6 +84,13 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   }
 });
 
+export const getMachine = catchAsync(async (req, res, next) => {
+  res.status(200).render('machine', {
+    //title: `${department.name} department`, //'The Forrest Hiker Tour',
+    //department,
+  });
+});
+
 export const getDepartment = catchAsync(async (req, res, next) => {
   // 1.) Get the data, from the requested tour (inclouding rewievs and guides)
   // const tour = await Tour.findOne({ slug: req.params.slug }).populate({

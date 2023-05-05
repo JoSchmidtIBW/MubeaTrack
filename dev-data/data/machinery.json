@@ -1,7 +1,7 @@
 [
   {
     "_id": "6444566c830afd3adeba2d38",
-    "name": "Rattunde 1",
+    "name": "Rattunde1",
     "description": "Säge- Anlage",
     "machineNumber": "14C31",
     "type": "ACS 105/2/BM+BDM100+wdm+TI+SRTH+CC+Pi",
@@ -19,7 +19,7 @@
   },
   {
     "_id": "64445692830afd3adeba2d39",
-    "name": "Rattunde 2",
+    "name": "Rattunde2",
     "description": "Säge- Anlage",
     "department": "Anarbeit"
   }

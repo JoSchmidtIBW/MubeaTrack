@@ -24,7 +24,8 @@ import {
   updatePassword,
 } from '../controllers/authController.mjs';
 
-const router = express.Router();
+//const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 //video159
 //router.use('/:tourId/reviews', reviewRouter); // muss oben sein     mointing a router       der reviewrouter braucht aber noch die tourId

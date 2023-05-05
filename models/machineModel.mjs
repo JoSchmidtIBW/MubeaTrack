@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import Department from './departmentModel.mjs';
 
+import slugify from 'slugify';
+
 const machineSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -8,6 +10,7 @@ const machineSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  slug: String,
   description: {
     type: String,
     required: [true, 'A machine must have a description!'],
@@ -82,6 +85,8 @@ const machineSchema = new mongoose.Schema({
   },
 });
 
+machineSchema.index({ slug: 1 });
+
 // Checks if the department exists and the machine only saves itself in it once, when creating a machine
 machineSchema.pre('save', async function (next) {
   if (this.department) {
@@ -90,8 +95,8 @@ machineSchema.pre('save', async function (next) {
     //console.log('Gefunden department in Department: ' + department);
 
     if (department) {
-      if (!department.machines.includes(this._id)) {
-        department.machines.push(this._id);
+      if (!department.machinery.includes(this._id)) {
+        department.machineery.push(this._id);
         await department.save(); //department in Department
       } else {
         console.log('Die Maschine ist bereits in dieser Abteilung');

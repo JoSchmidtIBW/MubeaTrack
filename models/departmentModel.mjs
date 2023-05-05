@@ -81,13 +81,13 @@ const departmentSchema = new mongoose.Schema({
   //     },
   //   },
   // ],
-  machines: [
+  machinery: [
     {
       type: mongoose.Schema.ObjectId,
       ref: 'Machine',
     },
   ],
-  machinesCount: {
+  machineryCount: {
     type: Number,
     default: 0,
   },
@@ -121,14 +121,14 @@ departmentSchema.pre('validate', function (next) {
 
 // Count the machinery in this.department
 departmentSchema.pre('save', function (next) {
-  const machines = this;
-  machines.machinesCount = machines.machines.length;
+  const machinery = this;
+  machinery.machineryCount = machinery.machinery.length;
   next();
 });
 
 departmentSchema.pre('validate', function (next) {
   const department = this;
-  department.machinesCount = department.machines.length;
+  department.machineryCount = department.machinery.length;
   next();
 });
 
@@ -211,7 +211,7 @@ departmentSchema.pre(/^find/, function (next) {
 // damit man zb bild, name von maschine in department.employees auf der Seite Schweisserei sieht
 departmentSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'machines',
+    path: 'machinery',
     select: '-__v', // was man nicht sehen möchte bei output
   });
 

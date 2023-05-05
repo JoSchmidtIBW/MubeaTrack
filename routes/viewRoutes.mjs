@@ -10,6 +10,7 @@ import {
   getManageUsers,
   getCreateNewUserForm,
   getUpdateUser,
+  getMachine,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -34,6 +35,14 @@ router.get('/overview', protect, isLoggedIn, getOverviewDepartment); // /overvie
 //http://localhost:4301/tours/the-forest-hiker
 //router.get('/tour/:slug', isLoggedIn, getTour);
 router.get('/departments/:slug', protect, isLoggedIn, getDepartment);
+
+router.get(
+  '/departments/:slug/machinery/:slug',
+  protect,
+  isLoggedIn,
+  getMachine
+);
+
 //router.get('/tour/:id', isLoggedIn, getTour);
 //router.get('/tour', isLoggedIn, getTour);
 
