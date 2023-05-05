@@ -10,10 +10,10 @@ import CryptoJS from 'crypto-js';
 import AppError from '../utils/appError.mjs';
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A User must have a name!'],
-  },
+  // name: {
+  //   type: String,
+  //   //required: [true, 'A User must have a name!'],
+  // },
   firstName: {
     type: String,
     required: [true, 'A User must have a firstName'],
@@ -197,12 +197,12 @@ userSchema.pre('save', async function (next) {
 
 // Checks when the admin updates that he cannot change his role as admin
 userSchema.pre('findOneAndUpdate', async function (next) {
-  //console.log('schau das Admin nicht seine rolle ändern kann');
+  console.log('schau das Admin nicht seine rolle ändern kann');
 
   const updatedFields = this.getUpdate();
-  // console.log('updatedFields');
-  // console.log(updatedFields);
-  // console.log(updatedFields.role);
+  console.log('updatedFields');
+  console.log(updatedFields);
+  console.log(updatedFields.role);
 
   const user = await this.findOne();
 

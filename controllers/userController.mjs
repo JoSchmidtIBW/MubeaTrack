@@ -126,12 +126,13 @@ export const updateMe = catchAsync(async (req, res, next) => {
   // 3.) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(
     req.body,
-    'name',
+    //'name',
     'email',
     'firstName',
     'lastName',
     'gender',
-    'language'
+    'language',
+    'role'
   ); // in req.body sind alle daten,
   // dem filteredBody auch noch photo hinzufügen, wenn req.file (photo) hat
   if (req.file) filteredBody.photo = req.file.filename;
@@ -240,7 +241,7 @@ export const createUser = catchAsync(async (req, res) => {
     age: req.body.age,
     gender: req.body.gender,
     language: req.body.language,
-    name: req.body.name,
+    //name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,

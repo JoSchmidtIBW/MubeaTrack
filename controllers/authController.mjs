@@ -92,7 +92,7 @@ export const signup = catchAsync(async (req, res, next) => {
     age: req.body.age,
     gender: req.body.gender,
     language: req.body.language,
-    name: req.body.name,
+    //name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
@@ -348,6 +348,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3.) sended back as an email      protokoll htttp oder https
   const resetURL = `${req.protokol}://${req.get(
+    // ev protocol
     'host'
   )}/api/v1/users/resetPassword/${resetToken}}`; // stored in res.protokoll
 

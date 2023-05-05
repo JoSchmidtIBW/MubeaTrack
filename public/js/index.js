@@ -61,6 +61,8 @@ if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    console.log('Role: ' + document.getElementById('role').value);
+
     //auch photos
     const form = new FormData();
     //console.log('testi: ' + document.getElementById('firstname').value);
@@ -69,13 +71,15 @@ if (userDataForm)
     form.append('gender', document.getElementById('gender').value);
     form.append('language', document.getElementById('language').value);
 
-    form.append('name', document.getElementById('name').value);
+    //form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
+    form.append('role', document.getElementById('role').value);
 
     form.append('photo', document.getElementById('photo').files[0]); // files sind array, brauchen erstes element
 
     console.log(
-      'form in index.js, wenn bild, sieht keine information: ' + form
+      'bin if(userDataForm), in index.js, wenn bild, sieht keine information sollte aber kein problem sein: ' +
+        form
     ); // man sieht hier keine information
 
     // const name = document.getElementById('name').value;
@@ -208,7 +212,7 @@ const showUsers = async () => {
           { data: 'gender' },
           { data: 'language' },
           { data: 'photo' },
-          { data: 'name' },
+          //{ data: 'name' },
           { data: 'email' },
           { data: 'role' },
           { data: 'department' },
@@ -240,13 +244,13 @@ const showUsers = async () => {
         ],
       });
 
-      // Define the buttons for sorting the name column
-      const $nameSortAscBtn = $(
-        '#manageUsersTable th button-upDown.spam.arrow-up'
-      );
-      const $nameSortDescBtn = $(
-        '#manageUsersTable th button-upDown.spam.arrow-down'
-      );
+      // // Define the buttons for sorting the name column
+      // const $nameSortAscBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-up'
+      // );
+      // const $nameSortDescBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-down'
+      // );
 
       const $employeeNumSortAscBtn = $(
         '#manageUsersTable th.employee-number button-upDown.spam.arrow-up'
@@ -255,17 +259,17 @@ const showUsers = async () => {
         '#manageUsersTable th.employee-number button-upDown.spam.arrow-down'
       );
 
-      // Add event listener to the button for ascending name sorting
-      $nameSortAscBtn.on('click', function () {
-        // Sort the data in the table by name in ascending order
-        table.order([2, 'asc']).draw();
-      });
-
-      // Add event listener to the button for descending name sorting
-      $nameSortDescBtn.on('click', function () {
-        // Sort the data in the table by name in descending order
-        table.order([2, 'desc']).draw();
-      });
+      // // Add event listener to the button for ascending name sorting
+      // $nameSortAscBtn.on('click', function () {
+      //   // Sort the data in the table by name in ascending order
+      //   table.order([2, 'asc']).draw();
+      // });
+      //
+      // // Add event listener to the button for descending name sorting
+      // $nameSortDescBtn.on('click', function () {
+      //   // Sort the data in the table by name in descending order
+      //   table.order([2, 'desc']).draw();
+      // });
 
       // Event-Listener zum Sortieren nach aufsteigender Employee-Nummer
       $employeeNumSortAscBtn.on('click', function () {
@@ -297,7 +301,7 @@ if (newUserDataForm) {
     const age = document.getElementById('age').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
-    const name = document.getElementById('name').value;
+    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
@@ -310,7 +314,7 @@ if (newUserDataForm) {
     console.log(age);
     console.log(gender);
     console.log(language);
-    console.log(name);
+    //console.log(name);
     console.log(email);
     console.log(password);
     console.log(passwordConfirm);
@@ -324,7 +328,7 @@ if (newUserDataForm) {
       age,
       gender,
       language,
-      name,
+      //name,
       email,
       password,
       passwordConfirm,
@@ -388,7 +392,7 @@ const createNewUser = async (
   age,
   gender,
   language,
-  name,
+  //name,
   email,
   password,
   passwordConfirm,
@@ -407,7 +411,7 @@ const createNewUser = async (
         age: age,
         gender: gender,
         language: language,
-        name: name, //'erika',
+        //name: name, //'erika',
         email: email,
         password: password, //'test1234',
         passwordConfirm: passwordConfirm, //'test1234',
@@ -446,7 +450,7 @@ if (updateUserByChefDataForm) {
     const age = document.getElementById('age').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
-    const name = document.getElementById('name').value;
+    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     //const passwordConfirm = document.getElementById('passwordConfirm').value;
@@ -460,7 +464,7 @@ if (updateUserByChefDataForm) {
     console.log(age);
     console.log(gender);
     console.log(language);
-    console.log(name);
+    //console.log(name);
     console.log(email);
     console.log(password);
     //console.log(passwordConfirm);

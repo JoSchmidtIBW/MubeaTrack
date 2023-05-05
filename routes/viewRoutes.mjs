@@ -4,7 +4,7 @@ import {
   getLoginForm,
   getDepartment,
   getAccount,
-  updateUserData,
+  //updateUserData,
   getStart,
   getOverviewDepartment,
   getManageUsers,
@@ -67,7 +67,7 @@ router.get(
 
 //wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
 // update User account
-router.post('/submit-user-data', protect, updateUserData);
+//router.post('/submit-user-data', protect, updateUserData);
 
 router.get(
   '/createNewUser',

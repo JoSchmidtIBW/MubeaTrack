@@ -10,7 +10,6 @@
     "language": "Deutsch",
     "role": "admin",
     "active": true,
-    "name": "admin",
     "email": "admin@admin.io",
     "password": "test1234",
     "photo": "user-109.jpg",

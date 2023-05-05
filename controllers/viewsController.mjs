@@ -248,27 +248,27 @@ export const getAccount = (req, res) => {
 
 //video 195 POST userData MEaccount, ohne API, mit POST wie bei ejs method=post
 //exports.updateUserData = catchAsync(async (req, res, next) => {
-export const updateUserData = catchAsync(async (req, res, next) => {
-  //console.log('req.User: ', req.user);
-  //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
-
-  const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
-    {
-      //req.user.id den suchen wir, um zu updaten
-      name: req.body.name, // req.body.name kommt von name des inputfeldes in pug or ejs
-      email: req.body.email,
-    },
-    {
-      // damit nur name und email update, aber keine anderen sachen        PW nicht mit findbyidandupdate machen!!!
-      new: true, // die updatet dokument soll neu sein,
-      runValidators: true,
-    }
-  );
-
-  //danach die gleiche seite, aber mit updatet sachen neu laden
-  res.status(200).render('account', {
-    title: 'Your account',
-    user: updatedUser, // user(daten) auf der seite sind updateUser,
-  });
-});
+// export const updateUserData = catchAsync(async (req, res, next) => {
+//   //console.log('req.User: ', req.user);
+//   //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
+//
+//   const updatedUser = await User.findByIdAndUpdate(
+//     req.user.id,
+//     {
+//       //req.user.id den suchen wir, um zu updaten
+//       //name: req.body.name, // req.body.name kommt von name des inputfeldes in pug or ejs
+//       email: req.body.email,
+//     },
+//     {
+//       // damit nur name und email update, aber keine anderen sachen        PW nicht mit findbyidandupdate machen!!!
+//       new: true, // die updatet dokument soll neu sein,
+//       runValidators: true,
+//     }
+//   );
+//
+//   //danach die gleiche seite, aber mit updatet sachen neu laden
+//   res.status(200).render('account', {
+//     title: 'Your account',
+//     user: updatedUser, // user(daten) auf der seite sind updateUser,
+//   });
+// });
