@@ -1,4 +1,5 @@
 import User from '../models/userModel.mjs';
+import Machine from '../models/machineModel.mjs';
 import Department from '../models/departmentModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
@@ -85,9 +86,25 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
 });
 
 export const getMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getMachine: ');
+  console.log(req.params);
+  console.log(req.params.slug);
+
+  const machine = await Machine.findOne({ name: req.params.slug });
+  // console.log('machine in DB: ' + machine);
+  console.log(machine.name);
+  console.log('-------------------------');
+  console.log('machine: ' + machine);
+  console.log('-------------------------');
+
+  if (!machine) {
+    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+  }
+
   res.status(200).render('machine', {
-    //title: `${department.name} department`, //'The Forrest Hiker Tour',
-    //department,
+    title: `${machine.name} machine`,
+    machine,
   });
 });
 
@@ -104,13 +121,13 @@ export const getDepartment = catchAsync(async (req, res, next) => {
 
   //todo hier wenn nicht abteilung, darf dies hier nicht sehen
 
-  // console.log('-------------------------');
-  // console.log('tour: ' + tour);
-  // console.log('-------------------------');
+  //console.log('-------------------------');
+  //console.log('department: ' + department);
+  //console.log('-------------------------');
 
   if (!department) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-    return next(new AppError('There is no tour with that name.', 404)); //404= not found
+    return next(new AppError('There is no department with that name.', 404)); //404= not found
   }
 
   // 2. Build template, but in real not in this controller
@@ -155,6 +172,15 @@ export const getLoginForm = (req, res) => {
     title: 'Log into your account', //
   });
 };
+
+export const getManageMachinery = catchAsync(async (req, res) => {
+  const machinery = await Machine.find().select('+createdAt');
+
+  res.status(200).render('manageMachinery', {
+    title: 'Manage Machinery',
+    machinery,
+  });
+});
 
 export const getManageUsers = catchAsync(async (req, res) => {
   const allUsers = await User.find().select(

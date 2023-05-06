@@ -1448,7 +1448,7 @@ table td {
 .table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    width: 99%;
     font-size: 10px;
 }
 
@@ -1456,7 +1456,7 @@ table td {
 
 .table td, #table th {
     border: 1px solid #ddd;
-    padding: 5px;
+    padding: 4px;
 }
 
 .table tr:nth-child(even){background-color: #f2f2f2;}
@@ -1465,13 +1465,14 @@ table td {
 
 .table th {
     padding-top: 12px;
-    padding-left: 5px;
+    padding-left: 4px;
     padding-bottom: 12px;
     border: 1px solid black;
     text-align: left;
     background-color: #04AA6D;
     color: white;
     font-size: 12px;
+
 }
 
 
@@ -1731,3 +1732,19 @@ input#employeeNumber.form__input[type=number] {
 
 
  */
+
+.technical-data__field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.technical-data__label {
+    flex-basis: 100px; /* anpassbare Breite */
+    text-align: left;
+}
+
+.technical-data__value {
+    margin-left: 20px;
+    text-align: left;
+}

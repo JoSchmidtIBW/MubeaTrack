@@ -8,6 +8,7 @@ import {
   getStart,
   getOverviewDepartment,
   getManageUsers,
+  getManageMachinery,
   getCreateNewUserForm,
   getUpdateUser,
   getMachine,
@@ -50,6 +51,13 @@ router.get(
 router.get('/login', isLoggedIn, getLoginForm);
 
 router.get('/me', protect, getAccount); // diese sollte protect sein
+
+router.get(
+  '/manage_machinery',
+  protect,
+  restrictTo('admin'),
+  getManageMachinery
+);
 
 router.get(
   '/manage_users',

@@ -5,7 +5,7 @@ import {
   createMachine,
   deleteMachine,
   getMachine,
-  getAllMachinery,
+  getMachinery,
   getMachineStats,
   updateMachine,
   uploadMachineImages,
@@ -60,7 +60,7 @@ router.route('/machine-stats').get(getMachineStats);
 
 router
   .route('/')
-  .get(getAllMachinery) // hier möchte man keine protect
+  .get(getMachinery) // hier möchte man keine protect
   .post(protect, restrictTo('admin', 'lead-guide'), createMachine);
 
 router

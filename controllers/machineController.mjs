@@ -15,6 +15,7 @@ import {
   updateOne,
   deleteOne,
 } from '../controllers/handlerFactory.mjs';
+import User from '../models/userModel.mjs';
 
 //erst daten lesen dann verwenden top level code
 //const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
@@ -116,11 +117,27 @@ export const aliasTopMachinery = async (req, res, next) => {
 };
 
 // 2. route handlers
-export const getAllMachinery = getAll(Machine);
+//export const getAllMachinery = getAll(Machine);
 export const getMachine = getOne(Machine);
 export const createMachine = createOne(Machine);
 export const updateMachine = updateOne(Machine);
 export const deleteMachine = deleteOne(Machine);
+
+export const getMachinery = catchAsync(async (req, res, next) => {
+  console.log('bin getAllUsers');
+
+  const machinery = await Machine.find().select('+createdAt');
+  // const users = await User.find().select('+createdAt').lean().exec();
+  // const usersJSON = JSON.parse(JSON.stringify(users));
+
+  res.status(200).json({
+    status: 'success',
+    results: machinery.length,
+    data: {
+      data: machinery,
+    },
+  });
+});
 
 //Video 102 Agregation Pipeline for MongoDB
 // soll statistiken zeigen von tours

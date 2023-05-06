@@ -83,9 +83,46 @@ const machineSchema = new mongoose.Schema({
     default: Date.now(),
     select: false, //dann sieht man nicht
   },
+  imageCover: {
+    type: String,
+    //required: [true, 'A Cover must have a Image'],
+  },
+  images: [String],
+  employees: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+  ],
+  employeesCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 machineSchema.index({ slug: 1 });
+
+machineSchema.pre('save', function (next) {
+  const employees = this;
+  employees.employeesCount = employees.employees.length;
+  next();
+});
+
+machineSchema.pre('validate', function (next) {
+  const machine = this;
+  machine.employeesCount = machine.employees.length;
+  next();
+});
+
+// damit man zb bild, name von user in machine.employees auf der Seite Rattunde1 sieht
+machineSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'employees',
+    select: '-__v -passwordChangeAt -password', // was man nicht sehen möchte bei output
+  });
+
+  next();
+});
 
 // Checks if the department exists and the machine only saves itself in it once, when creating a machine
 machineSchema.pre('save', async function (next) {
