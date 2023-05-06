@@ -34,7 +34,7 @@ router.get('/', getAllUsers);
 //http: //127.0.0.1:4301/api/v1/users/signup
 router.post('/signup', signup); //hat kein get, und kein update,     post in postman!// für jederman
 //http: //127.0.0.1:4301/api/v1/users/login
-router.post('/login', login); // nur post, sendet passwort und email, kein get, kein update  //für jederman
+router.post('/login', login); // nur post, sendet passwort und employeeNumber, kein get, kein update  //für jederman
 
 router.get('/logout', logout); // muss nur get sein, schicken keine daten oder ändern welche
 //{{URL}}api/v1/users/forgotPassword

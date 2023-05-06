@@ -40,10 +40,11 @@ if (loginForm)
     //document.querySelector('.form').addEventListener('submit', e => {
     e.preventDefault(); // element prevent from loading the page
 
-    const email = document.getElementById('email').value;
+    const employeeNumber = document.getElementById('employeeNumber').value;
+    //const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     //login({ email, password })
-    login(email, password);
+    login(employeeNumber, password);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);

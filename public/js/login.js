@@ -3,9 +3,9 @@
 import axios from 'axios';
 import { showAlert } from './alerts.js';
 
-export const login = async (email, password) => {
+export const login = async (employeeNumber, password) => {
   //alert(email)
-  console.log(email, password);
+  console.log(employeeNumber, password);
   //alert(`${email}, ${password}`);
   //alert(` ${password}`);
 
@@ -14,7 +14,7 @@ export const login = async (email, password) => {
       method: 'POST',
       url: 'http://127.0.0.1:7566/api/v1/users/login', //http://127.0.0.1:3000/api/v1/users/login => http://localhost:3000/api/v1/users/login
       data: {
-        email: email,
+        employeeNumber: employeeNumber,
         password: password,
       },
     });
@@ -42,13 +42,14 @@ export const login = async (email, password) => {
     ) {
       showAlert(
         'error',
-        JSON.stringify(err.response.data.message) + ' email not found in db'
+        JSON.stringify(err.response.data.message) +
+          ' employeeNumber not found in db'
       );
     } else if (err.response.data.message === 'isBcrypt is not defined') {
       showAlert(
         'error',
         JSON.stringify(err.response.data.message) +
-          ' password is wrong, email is found'
+          ' password is wrong, employeeNumber is found'
       );
     } else {
       showAlert(
