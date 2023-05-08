@@ -7,7 +7,7 @@
     }
   ],
   "env": {
-    "MONGO_URI": "mongodb+srv://flnc85:r9v5lGxvQ27M06xZ@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority",
+    "MONGO_URI": "mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority",
     "PORT": "env.PORT"
   },
 

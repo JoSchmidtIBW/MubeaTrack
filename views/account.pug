@@ -22,8 +22,9 @@ block content
                     .admin-nav
                         h5.admin-nav__heading= `${user.role}`
                         ul.side-nav
-                            +navItem('#', 'Manage tours', 'map')
                             +navItem('/api/v1/manage_users', 'Manage users', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
+                            +navItem('#', 'Manage tours', 'map')
                             +navItem('#', 'Manage reviews', 'star')
                             +navItem('#', 'Manage bookings', 'briefcase')
 
@@ -48,8 +49,8 @@ block content
                             label(class="form__label", for="lastname") Lastname
                             input#lastname(class="form__input", type="text", value=user.lastName)
                         div(class="form__group")
-                            label(class="form__label", for="age") Age
-                            input#age(class="form__input", type="text", value=user.age, readonly, style="background-color: lightgrey;")
+                            label(class="form__label", for="birthDate") Birth date
+                            input#birthDate(class="form__input", type="text", value=user.birthDate, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
                             label(class="form__label", for="gender") gender
                             //input#gender(class="form__input", type="text", value=user.gender)
@@ -69,7 +70,7 @@ block content
                         div(class="form__group")
                             label(class="form__label", for="role") Department
                             input#department(class="form__input", type="text", value=user.department, readonly, style="background-color: lightgrey;")
-                        .form__group
+                        //-.form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${user.name}`,autocomplete="user-name", required, name='name')
                         .form__group.ma-bt-md

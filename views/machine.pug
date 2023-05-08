@@ -1,0 +1,180 @@
+extends base
+
+mixin overviewBox(label, text, icon)
+    .overview-box__detail
+        svg.overview-box__icon
+            use(xlink:href=`/img/icons.svg#icon-${icon}`)
+        span.overview-box__label= label
+        span.overview-box__text= text
+
+block content
+    script.
+        console.log("machine.pug");
+    main
+        h1= `Bin ${machine.name}`
+        //div= machine
+
+        .technical-data
+          h2 Technical specifications
+          div(class="technical-data__field")
+            span(class="technical-data__label") Machine name:
+            span(class="technical-data__value")= machine.name
+          div(class="technical-data__field")
+            span(class="technical-data__label") Description:
+            span(class="technical-data__value")= machine.description
+          div(class="technical-data__field")
+            span(class="technical-data__label") Machine number:
+            span(class="technical-data__value")= machine.machineNumber
+          div(class="technical-data__field")
+            span(class="technical-data__label") Type:
+            span(class="technical-data__value")= machine.type
+          div(class="technical-data__field")
+            span(class="technical-data__label") Construction year:
+            span(class="technical-data__value")= machine.constructionYear
+          div(class="technical-data__field")
+            span(class="technical-data__label") Company machine:
+            span(class="technical-data__value")= machine.companyMachine
+          div(class="technical-data__field")
+            span(class="technical-data__label") Voltage:
+            span(class="technical-data__value")= machine.voltage
+          div(class="technical-data__field")
+            span(class="technical-data__label") Control voltage:
+            span(class="technical-data__value")= machine.controlVoltage
+          div(class="technical-data__field")
+            span(class="technical-data__label") Rated current:
+            span(class="technical-data__value")= machine.ratedCurrent
+          div(class="technical-data__field")
+            span(class="technical-data__label") Electrical fuse:
+            span(class="technical-data__value")= machine.electricalFuse
+          div(class="technical-data__field")
+            span(class="technical-data__label") Compressed air:
+            span(class="technical-data__value")= machine.compressedAir
+          div(class="technical-data__field")
+            span(class="technical-data__label") Weight mass:
+            span(class="technical-data__value")= machine.weightMass
+          div(class="technical-data__field")
+            span(class="technical-data__label") Dimensions:
+            span(class="technical-data__value")= machine.dimensions
+          div(class="technical-data__field")
+            span(class="technical-data__label") Drawing number:
+            span(class="technical-data__value")= machine.drawingNumber
+
+        div Hallo
+        div.overview-box__group
+            h2.heading-secondary.ma-bt-lg=`The ${machine.name} employees`
+            each employee in machine.employees
+               .overview-box__detail
+                  img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                  - if(employee.role === 'lead-guide')
+                                span.overview-box__label Lead guide
+                  - if(employee.role === 'guide')
+                                span.overview-box__label Tour guide
+                  - if(employee.role === 'Schichtleiter')
+                                span.overview-box__label Schichtleiter
+                  - if(employee.role === 'Bediener')
+                                span.overview-box__label Bediener
+                  span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+
+
+
+
+
+        //section
+        section.section-header
+            //-.header__hero
+                .header__hero-overlay &nbsp;
+                img.header__hero-img(src='#', alt=`${machine.name}`)
+
+            //-.heading-box
+                //-h1.heading-primary
+                    span= `${machine.name} department`
+                .heading-box__group
+                    //-.heading-box__detail
+                        svg.heading-box__icon
+                            use(xlink:href='/img/icons.svg#icon-clock')
+                    //-span.heading-box__text= `${department.duration} days`
+                .heading-box__detail
+                    //-svg.heading-box__icon
+                        use(xlink:href='/img/icons.svg#icon-map-pin')
+                    //-span.heading-box__text= department.location
+
+        section.section-description
+            .overview-box
+                div
+                .overview-box__group
+                    h2.heading-secondary.ma-bt-lg Quick facts
+
+                    +overviewBox('Employees', `${machine.name} persons`, 'user')
+                    //-+overviewBox('Machinery', `${department.machineryCount} machine`, 'machine')
+
+                .overview-box__group
+                    h2.heading-secondary.ma-bt-lg The department employees
+
+                    //-each employee in department.employees
+                        .overview-box__detail
+                            img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                            - if(employee.role === 'lead-guide')
+                                span.overview-box__label Lead guide
+                            - if(employee.role === 'guide')
+                                span.overview-box__label Tour guide
+                            - if(employee.role === 'Schichtleiter')
+                                span.overview-box__label Schichtleiter
+                            - if(employee.role === 'Bediener')
+                                span.overview-box__label Bediener
+                            //span.overview-box__label= guide.role
+                            span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    //- .overview-box__detail
+                    //-     img.overview-box__img(src='/img/users/user-18.jpg', alt='Tour guide')
+                    //-     span.overview-box__label Tour guide
+                    //-     span.overview-box__text Lisa Brown
+                    //- .overview-box__detail
+                    //-     img.overview-box__img(src='/img/users/user-17.jpg', alt='Intern')
+                    //-     span.overview-box__label Intern
+                    //-     span.overview-box__text Max Smith
+
+
+
+            .description-box
+                h2.heading-secondary.ma-bt-lg= `About ${machine.name} department`
+                // mache neue linie bei einem punkt im text
+                //-- const paragraphs = department.description.split('\n');
+                //-each p in paragraphs
+                    //-p.description__text= p
+                //p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                //p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!
+
+
+
+        //-section.section-description
+            //-.overview-box
+                div
+                .overview-box__group
+                    h1 Machinery
+                    each machine in department.machinery
+                        //-.overview-box__detail
+                        span.overview-box__label= machine.name
+                        //-= " "
+                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+
+        section.section-pictures
+            //-each img, i in department.images
+                //-.picture-box
+                    img.picture-box__img(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i+1}`)
+            //- .picture-box
+            //-     img.picture-box__img.picture-box__img--2(src='/img/tour-5-2.jpg', alt='The Park Camper Tour 1')
+            //- .picture-box
+            //-     img.picture-box__img.picture-box__img--3(src='/img/tour-5-3.jpg', alt='The Park Camper Tour 1')
+
+
+        section.section-cta
+            //-.cta
+                .cta__img.cta__img--logo
+                img(src='#', alt='MubeaTrack logo')
+                img.cta__img.cta__img--1(src=`/img/departments/${department.images[1]}`, alt='Department picture')
+                img.cta__img.cta__img--2(src=`/img/departments/${department.images[2]}`, alt='Department picture')
+                .cta__content
+                h2.heading-secondary What are you waiting for?
+                //-p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+                button.btn.btn--green.span-all-rows Book tour now!

@@ -72,16 +72,22 @@ const departmentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  machines: [
+  // machines: [
+  //   {
+  //     name: String,
+  //     machineId: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: 'Machine',
+  //     },
+  //   },
+  // ],
+  machinery: [
     {
-      name: String,
-      machineId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Machine',
-      },
+      type: mongoose.Schema.ObjectId,
+      ref: 'Machine',
     },
   ],
-  machinesCount: {
+  machineryCount: {
     type: Number,
     default: 0,
   },
@@ -113,6 +119,19 @@ departmentSchema.pre('validate', function (next) {
   next();
 });
 
+// Count the machinery in this.department
+departmentSchema.pre('save', function (next) {
+  const machinery = this;
+  machinery.machineryCount = machinery.machinery.length;
+  next();
+});
+
+departmentSchema.pre('validate', function (next) {
+  const department = this;
+  department.machineryCount = department.machinery.length;
+  next();
+});
+
 // departmentSchema.pre('findOneAndUpdate', function (next) {
 //   const department = this;
 //   const update = this.getUpdate();
@@ -126,13 +145,6 @@ departmentSchema.pre('validate', function (next) {
 //   department.employeesCount = department.employees.length;
 //   next();
 // });
-
-// Count the employees in this.department
-departmentSchema.pre('save', function (next) {
-  const machines = this;
-  machines.machinesCount = machines.machines.length;
-  next();
-});
 
 // DOKUMENT MIDDLEWARE   preSave und post-Save    pre vor post bei ausführung
 
@@ -164,7 +176,7 @@ departmentSchema.pre('save', function (next) {
 departmentSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'employees',
-    select: '-__v -passwordChangeAt', // was man nicht sehen möchte bei output
+    select: '-__v -passwordChangeAt -password', // was man nicht sehen möchte bei output
   });
 
   next();
@@ -199,7 +211,7 @@ departmentSchema.pre(/^find/, function (next) {
 // damit man zb bild, name von maschine in department.employees auf der Seite Schweisserei sieht
 departmentSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'machines',
+    path: 'machinery',
     select: '-__v', // was man nicht sehen möchte bei output
   });
 

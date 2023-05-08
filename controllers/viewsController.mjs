@@ -1,4 +1,5 @@
 import User from '../models/userModel.mjs';
+import Machine from '../models/machineModel.mjs';
 import Department from '../models/departmentModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
@@ -61,12 +62,15 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
 
   const currentUser = req.user;
 
+  const machinery = await Machine.find();
+
   if (currentUser.role === 'admin') {
-    const departmentsAll = await Department.find().sort('_id');
+    const departmentsAllAdmin = await Department.find().sort('_id');
 
     res.status(200).render('overview', {
       title: 'All Departments',
-      departments: departmentsAll, // erstes tours ist das template, zweites tours sind die tourdata
+      departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+      machinery: machinery,
       users: users,
       //user: currentUser,
     });
@@ -78,10 +82,34 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('overview', {
       title: 'All Departments',
       departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+      machinery: machinery,
       users: users,
       //user: currentUser,
     });
   }
+});
+
+export const getMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getMachine: ');
+  console.log(req.params);
+  console.log(req.params.slug);
+
+  const machine = await Machine.findOne({ name: req.params.slug });
+  // console.log('machine in DB: ' + machine);
+  console.log(machine.name);
+  console.log('-------------------------');
+  console.log('machine: ' + machine);
+  console.log('-------------------------');
+
+  if (!machine) {
+    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+  }
+
+  res.status(200).render('machine', {
+    title: `${machine.name} machine`,
+    machine,
+  });
 });
 
 export const getDepartment = catchAsync(async (req, res, next) => {
@@ -97,13 +125,13 @@ export const getDepartment = catchAsync(async (req, res, next) => {
 
   //todo hier wenn nicht abteilung, darf dies hier nicht sehen
 
-  // console.log('-------------------------');
-  // console.log('tour: ' + tour);
-  // console.log('-------------------------');
+  //console.log('-------------------------');
+  //console.log('department: ' + department);
+  //console.log('-------------------------');
 
   if (!department) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-    return next(new AppError('There is no tour with that name.', 404)); //404= not found
+    return next(new AppError('There is no department with that name.', 404)); //404= not found
   }
 
   // 2. Build template, but in real not in this controller
@@ -149,6 +177,15 @@ export const getLoginForm = (req, res) => {
   });
 };
 
+export const getManageMachinery = catchAsync(async (req, res) => {
+  const machinery = await Machine.find().select('+createdAt');
+
+  res.status(200).render('manageMachinery', {
+    title: 'Manage Machinery',
+    machinery,
+  });
+});
+
 export const getManageUsers = catchAsync(async (req, res) => {
   const allUsers = await User.find().select(
     '+createdAt +password' // +employeeNumber +password'
@@ -169,11 +206,34 @@ export const getManageUsers = catchAsync(async (req, res) => {
   });
 });
 
-export const getCreateNewUserForm = (req, res) => {
-  res.status(200).render('createNewUser', {
+export const getCreateMachineForm = (req, res) => {
+  res.status(200).render('createMachine', {
+    title: 'Create new machine',
+  });
+};
+
+export const getCreateUserForm = (req, res) => {
+  res.status(200).render('createUser', {
     title: 'Create new user',
   });
 };
+
+export const getUpdateMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateMachine');
+  const machineToUpdate = await Machine.findById({ _id: req.params.id });
+  //console.log(machineToUpdate);
+
+  if (!machineToUpdate) {
+    return next(new AppError('There is no machine with that ID.', 404));
+  }
+
+  res.status(200).render('updateMachine', {
+    title: 'Update machine',
+    data: {
+      machineToUpdate,
+    },
+  });
+});
 
 export const getUpdateUser = catchAsync(async (req, res, next) => {
   //console.log(req.body);
@@ -241,27 +301,27 @@ export const getAccount = (req, res) => {
 
 //video 195 POST userData MEaccount, ohne API, mit POST wie bei ejs method=post
 //exports.updateUserData = catchAsync(async (req, res, next) => {
-export const updateUserData = catchAsync(async (req, res, next) => {
-  //console.log('req.User: ', req.user);
-  //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
-
-  const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
-    {
-      //req.user.id den suchen wir, um zu updaten
-      name: req.body.name, // req.body.name kommt von name des inputfeldes in pug or ejs
-      email: req.body.email,
-    },
-    {
-      // damit nur name und email update, aber keine anderen sachen        PW nicht mit findbyidandupdate machen!!!
-      new: true, // die updatet dokument soll neu sein,
-      runValidators: true,
-    }
-  );
-
-  //danach die gleiche seite, aber mit updatet sachen neu laden
-  res.status(200).render('account', {
-    title: 'Your account',
-    user: updatedUser, // user(daten) auf der seite sind updateUser,
-  });
-});
+// export const updateUserData = catchAsync(async (req, res, next) => {
+//   //console.log('req.User: ', req.user);
+//   //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
+//
+//   const updatedUser = await User.findByIdAndUpdate(
+//     req.user.id,
+//     {
+//       //req.user.id den suchen wir, um zu updaten
+//       //name: req.body.name, // req.body.name kommt von name des inputfeldes in pug or ejs
+//       email: req.body.email,
+//     },
+//     {
+//       // damit nur name und email update, aber keine anderen sachen        PW nicht mit findbyidandupdate machen!!!
+//       new: true, // die updatet dokument soll neu sein,
+//       runValidators: true,
+//     }
+//   );
+//
+//   //danach die gleiche seite, aber mit updatet sachen neu laden
+//   res.status(200).render('account', {
+//     title: 'Your account',
+//     user: updatedUser, // user(daten) auf der seite sind updateUser,
+//   });
+// });

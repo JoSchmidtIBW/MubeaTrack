@@ -1329,6 +1329,7 @@ body {
     border-radius: 5px;
 }
 
+
 .form__input {
     display: block;
     font-family: inherit;
@@ -1344,10 +1345,12 @@ body {
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
     border-radius: 4px;
-    -webkit-box-sizing: border-box;
+    /*-webkit-box-sizing: border-box;*/
     box-sizing: border-box;
-    /* Pseudo element (a visible thing that isn't really in the DOM).
-      Also needs -ms- */
+
+
+    /* Pseudo element (a visible thing that isn't really in the DOM).Also needs -ms- */
+
 }
 
 .form__input:focus {
@@ -1362,6 +1365,17 @@ body {
 .form__input::-webkit-input-placeholder {
     color: #bbb;
 }
+
+
+/*--------------------------------------*/
+/*
+.form__input:focus:valid {
+    border-bottom: 3px solid #55c57a;
+    outline: none;
+}
+*/
+
+/* ----------------------------------------------------------*/
 
 .form__group:not(:last-child) {
     margin-bottom: 2.5rem;
@@ -1434,13 +1448,15 @@ table td {
 .table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    width: 99%;
     font-size: 10px;
 }
 
+
+
 .table td, #table th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 4px;
 }
 
 .table tr:nth-child(even){background-color: #f2f2f2;}
@@ -1449,12 +1465,14 @@ table td {
 
 .table th {
     padding-top: 12px;
+    padding-left: 4px;
     padding-bottom: 12px;
     border: 1px solid black;
     text-align: left;
     background-color: #04AA6D;
     color: white;
     font-size: 12px;
+
 }
 
 
@@ -1714,3 +1732,19 @@ input#employeeNumber.form__input[type=number] {
 
 
  */
+
+.technical-data__field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.technical-data__label {
+    flex-basis: 100px; /* anpassbare Breite */
+    text-align: left;
+}
+
+.technical-data__value {
+    margin-left: 20px;
+    text-align: left;
+}

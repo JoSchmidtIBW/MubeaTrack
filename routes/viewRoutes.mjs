@@ -3,13 +3,17 @@ import express from 'express';
 import {
   getLoginForm,
   getDepartment,
+  getMachine,
   getAccount,
-  updateUserData,
+  //updateUserData,
   getStart,
   getOverviewDepartment,
   getManageUsers,
-  getCreateNewUserForm,
+  getManageMachinery,
+  getCreateUserForm,
   getUpdateUser,
+  getCreateMachineForm,
+  getUpdateMachine,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -34,6 +38,14 @@ router.get('/overview', protect, isLoggedIn, getOverviewDepartment); // /overvie
 //http://localhost:4301/tours/the-forest-hiker
 //router.get('/tour/:slug', isLoggedIn, getTour);
 router.get('/departments/:slug', protect, isLoggedIn, getDepartment);
+
+router.get(
+  '/departments/:slug/machinery/:slug',
+  protect,
+  isLoggedIn,
+  getMachine
+);
+
 //router.get('/tour/:id', isLoggedIn, getTour);
 //router.get('/tour', isLoggedIn, getTour);
 
@@ -41,6 +53,13 @@ router.get('/departments/:slug', protect, isLoggedIn, getDepartment);
 router.get('/login', isLoggedIn, getLoginForm);
 
 router.get('/me', protect, getAccount); // diese sollte protect sein
+
+router.get(
+  '/manage_machinery',
+  protect,
+  restrictTo('admin'),
+  getManageMachinery
+);
 
 router.get(
   '/manage_users',
@@ -54,17 +73,26 @@ router.get(
   restrictTo('admin', 'Chef'),
   getUpdateUser
 );
+
+router.get(
+  '/manage_machinery/:id',
+  protect,
+  restrictTo('admin'),
+  getUpdateMachine
+);
 //router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);
 
 //wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
 // update User account
-router.post('/submit-user-data', protect, updateUserData);
+//router.post('/submit-user-data', protect, updateUserData);
+
+router.get('/createUser', protect, restrictTo('admin'), getCreateUserForm);
 
 router.get(
-  '/createNewUser',
+  '/createMachine',
   protect,
   restrictTo('admin'),
-  getCreateNewUserForm
+  getCreateMachineForm
 );
 
 export default router;

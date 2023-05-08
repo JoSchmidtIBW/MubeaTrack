@@ -4,6 +4,7 @@ extends base
 block content
     h1 This is the department overview
     h2= `Total: ${users.length} employees`
+    h2= `Total: ${machinery.length} machinery`
     // extends index.pug oder layout
     main.main
         .card-container
@@ -39,7 +40,7 @@ block content
                         .card__data
                             svg.card__icon
                                 use(xlink:href='/img/icons.svg#icon-machine')
-                            span= `${department.machinesCount} machines`
+                            span= `${department.machineryCount} machinery`
 
                     .card__footer
                         p

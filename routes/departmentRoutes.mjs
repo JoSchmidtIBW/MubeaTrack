@@ -23,9 +23,13 @@ import {
   updatePassword,
 } from '../controllers/authController.mjs';
 
+import machineRouter from '../routes/machineRoutes.mjs';
+
 const router = express.Router();
 
 console.log('bin departmentRoute.mjs');
+
+router.use('/:departmentId/machinery', machineRouter); // muss oben sein
 
 //router.use('/:departmentId', getDepartment); ////////////USE//////////////////
 

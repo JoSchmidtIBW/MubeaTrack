@@ -1,0 +1,61 @@
+extends base
+
+block content
+    main.main
+      div(class="user-view__content")
+        div(class="user-view__form-container")
+          h2.heading-secondary.ma-bt-md Create new Machine
+          form.form.form-new-machine-data
+            div(class="form__group")
+              label(class="form__label", for="name") Name
+              input#name(class="form__input" type="text" placeholder="Name" required="required")
+            div(class="form__group")
+              label(class="form__label", for="description") Description
+              input#description(class="form__input", type="text", placeholder="Description", required="required")
+            div(class="form__group")
+              label(class="form__label", for="type") Type
+              input#type(class="form__input", type="text", placeholder="Type")
+            div(class="form__group")
+              label(class="form__label", for="constructionYear") Construction year
+              input#constructionYear(class="form__input", type="text", placeholder="1980")
+            div(class="form__group")
+              label(class="form__label", for="companyMachine") Company machine
+              input#companyMachine(class="form__input", type="text", placeholder="Company machine")
+            div(class="form__group")
+              label(class="form__label", for="voltage") Voltage
+              input#voltage(class="form__input", type="text", placeholder="3x400 VAC 50 Hz")
+            div(class="form__group")
+              label(class="form__label", for="controlVoltage") Control voltage
+              input#controlVoltage(class="form__input", type="text", placeholder="24 VDC")
+            div(class="form__group")
+              label(class="form__label", for="ratedCurrent") Rated current
+              input#ratedCurrent(class="form__input", type="text", placeholder="60 A")
+            div(class="form__group")
+              label(class="form__label", for="electricalFuse") Electrical fuse
+              input#electricalFuse(class="form__input", type="text", placeholder="	250 A")
+            div(class="form__group")
+              label(class="form__label", for="compressedAir") Compressed air
+              input#compressedAir(class="form__input", type="text", placeholder="4000 l/m 7 bar")
+            div(class="form__group")
+              label(class="form__label", for="weightMass") Weight mass
+              input#weightMass(class="form__input", type="text", placeholder="12 t")
+            div(class="form__group")
+              label(class="form__label", for="dimensions") Dimensions
+              input#dimensions(class="form__input", type="text", placeholder="12975 x 9300 x 500")
+            div(class="form__group")
+              label(class="form__label", for="drawingNumber") Drawing number
+              input#drawingNumber(class="form__input", type="text", placeholder="0480.74240")
+            div(class="form__group")
+              label(class="form__label", for="department") Department
+              select#department(class="form__input")
+                option(value="Schweisserei") Schweisserei
+                option(value="Zieherei") Zieherei
+                option(value="Anarbeit") Anarbeit
+                option(value="Unterhalt") Unterhalt
+                option(value="IT") IT
+                option(value="Engineering") Engineering
+                option(value="Konstruktion") Konstruktion
+                option(value="Geschäfts-Führung") Geschäfts-Führung
+            div(class="form__group")
+              button.btn.btn--green Save
+              a.btn.btn--small(href=`/api/v1/manage_machinery`) Cancel

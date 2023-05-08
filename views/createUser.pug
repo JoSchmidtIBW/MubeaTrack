@@ -19,8 +19,8 @@ block content
               label(class="form__label", for="lastname") lastname
               input#lastname(class="form__input", type="text", placeholder="Mustermann", required="required")
             div(class="form__group")
-              label(class="form__label", for="age") age
-              input#age(class="form__input", type="number", placeholder="65", required="required", min="1" max="100")
+              label(class="form__label", for="birthDate") Birth date
+              input#birthDate(class="form__input", type="text", placeholder="01.01.2002", required="required", pattern="^(0[1-9]|[1-2][0-9]|3[0-1])[.](0[1-9]|1[0-2])[.][0-9]{4}$")
             div(class="form__group")
               label(class="form__label", for="gender") gender
               select#gender(class="form__input")

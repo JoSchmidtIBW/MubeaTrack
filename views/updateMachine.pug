@@ -1,0 +1,66 @@
+extends base
+
+block content
+    main.main
+      div(class="user-view__content")
+        div(class="user-view__form-container")
+          h2.heading-secondary.ma-bt-md= `Edit machine ${data.machineToUpdate.name}`
+          form.form.form-machine-data
+            input#machineId(type="hidden", value=data.machineToUpdate._id)
+            div(class="form__group")
+              label(class="form__label", for="name") Name
+              input#name(class="form__input", type="text", value=data.machineToUpdate.name,)
+            div(class="form__group")
+              label(class="form__label", for="description") Description
+              input#description(class="form__input", type="text", value=data.machineToUpdate.description)
+            div(class="form__group")
+              label(class="form__label", for="type") Type
+              input#type(class="form__input", type="text", value=data.machineToUpdate.type)
+            div(class="form__group")
+              label(class="form__label", for="constructionYear") Construction year
+              input#constructionYear(class="form__input", type="text", value=data.machineToUpdate.constructionYear)
+            div(class="form__group")
+              label(class="form__label", for="companyMachine") Company machine
+              input#companyMachine(class="form__input", type="text", value=data.machineToUpdate.companyMachine)
+            div(class="form__group")
+              label(class="form__label", for="voltage") Voltage
+              input#voltage(class="form__input", type="text", value=data.machineToUpdate.voltage)
+            div(class="form__group")
+              label(class="form__label", for="controlVoltage") Control voltage
+              input#controlVoltage(class="form__input", type="text", value=data.machineToUpdate.controlVoltage)
+            div(class="form__group")
+              label(class="form__label", for="ratedCurrent") Rated current
+              input#ratedCurrent(class="form__input", type="text", value=data.machineToUpdate.ratedCurrent)
+            div(class="form__group")
+              label(class="form__label", for="electricalFuse") Electrical fuse
+              input#electricalFuse(class="form__input", type="text", value=data.machineToUpdate.electricalFuse)
+            div(class="form__group")
+              label(class="form__label", for="compressedAir") Compressed air
+              input#compressedAir(class="form__input", type="text", value=data.machineToUpdate.compressedAir)
+            div(class="form__group")
+              label(class="form__label", for="weightMass") Weight mass
+              input#weightMass(class="form__input", type="text", value=data.machineToUpdate.weightMass)
+            div(class="form__group")
+              label(class="form__label", for="dimensions") Dimensions
+              input#dimensions(class="form__input", type="text", value=data.machineToUpdate.dimensions)
+            div(class="form__group")
+              label(class="form__label", for="drawingNumber") Drawing number
+              input#drawingNumber(class="form__input", type="text", value=data.machineToUpdate.drawingNumber)
+            div(class="form__group")
+              label(class="form__label", for="XXXXX") departmentXXXX
+              input#XXXXX(class="form__input", type="text", value=data.machineToUpdate.department)
+            div(class="form__group")
+              label(class="form__label", for="department") Department
+              select#department(class="form__input")
+                option(value="Schweisserei", selected=data.machineToUpdate.department.includes("Schweisserei")) Schweisserei
+                option(value="Zieherei", selected=data.machineToUpdate.department.includes("Zieherei")) Zieherei
+                option(value="Anarbeit", selected=data.machineToUpdate.department.includes("Anarbeit")) Anarbeit
+                option(value="Unterhalt", selected=data.machineToUpdate.department.includes("Unterhalt")) Unterhalt
+                option(value="IT", selected=data.machineToUpdate.department.includes("IT")) IT
+                option(value="Engineering", selected=data.machineToUpdate.department.includes("Engineering")) Engineering
+                option(value="Konstruktion", selected=data.machineToUpdate.department.includes("Konstruktion")) Konstruktion
+                option(value="Geschäfts-Führung", selected=data.machineToUpdate.department.includes("Geschäfts-Führung")) Geschäfts-Führung
+
+            button.btn.btn--small.btn--green.btn--saveUpdateMachine Save
+            button.btn.btn--small.btn--red.btn--deleteUpdateMachine Delete
+            a.btn.btn--small.btn--gray(href=`/api/v1/manage_machinery`) Cancel

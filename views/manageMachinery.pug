@@ -1,0 +1,57 @@
+extends base
+
+block content
+   main
+      h1 Bin Machinery.pug Liste
+      h2= machinery.length
+      table#manageMachineryTable.manageMachineryTable.table
+        thead
+          tr
+            th ID
+            th createdAt
+            th Name
+            th description
+            th type
+            th construction<br>Year
+            th company<br>Machine
+            th department
+            th voltage
+            th control<br>Voltage
+            th rated<br>Current
+            th electrical<br>Fuse
+            th compressed<br>Air
+            th weight<br>Mass
+            th dimensions
+            th drawing<br>Number
+            th employees<br>Count
+            th Edit
+        tbody
+          each machine in machinery
+            tr
+              td= machine._id
+              td= machine.createdAt
+              td= machine.name
+              td= machine.description
+              td= machine.type
+              td= machine.constructionYear
+              td= machine.companyMachine
+              td= machine.department
+              td= machine.voltage
+              td= machine.controlVoltage
+              td= machine.ratedCurrent
+              td= machine.electricalFuse
+              td= machine.compressedAir
+              td= machine.weightMass
+              td= machine.dimensions
+              td= machine.drawingNumber
+              td= machine.employeesCount
+              td
+                a.edit-button(href=`/machine/${machine._id}`) Edit
+                //-a.delete-button(data-id=machine._id) Delete
+
+      br
+      br
+      h1 hallo
+      br
+
+      a.btn.btn--small.btn--green(href="/api/v1/createMachine") Create new Machine

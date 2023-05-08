@@ -1,7 +1,10 @@
 [
   {
     "_id": "6444566c830afd3adeba2d38",
-    "name": "Rattunde 1",
+    "imageCover": "machine-cover-Rattunde1.jpg",
+    "images": ["machine-Rattunde1-1.jpg", "machine-Rattunde1-2.jpg", "machine-Rattunde1-3.jpg"],
+    "employees": ["643c1f042df0321cb8a06a47"],
+    "name": "Rattunde1",
     "description": "Säge- Anlage",
     "machineNumber": "14C31",
     "type": "ACS 105/2/BM+BDM100+wdm+TI+SRTH+CC+Pi",
@@ -19,6 +22,11 @@
   },
   {
     "_id": "64445692830afd3adeba2d39",
-    "name": "Rattunde 2"
+    "imageCover": "machine-cover-Rattunde2.jpg",
+    "images": ["machine-Rattunde2-1.jpg", "machine-Rattunde2-2.jpg", "machine-Rattunde2-3.jpg"],
+    "employees": [],
+    "name": "Rattunde2",
+    "description": "Säge- Anlage",
+    "department": "Anarbeit"
   }
 ]

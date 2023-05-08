@@ -92,7 +92,7 @@ export const signup = catchAsync(async (req, res, next) => {
     age: req.body.age,
     gender: req.body.gender,
     language: req.body.language,
-    name: req.body.name,
+    //name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
@@ -129,13 +129,19 @@ export const login = catchAsync(async (req, res, next) => {
   //const password = req.body.password;                      //const MA_Nummer = ...
   // das gibt fehler von linter, weil email und email...
   //desshalb:
-  const { email, password } = req.body; // das ist das, was user sendet bei login
-  console.log('------------------------------------: ' + email, password);
+  const { employeeNumber, password } = req.body; // das ist das, was user sendet bei login
+  console.log('--*-: ' + employeeNumber, password);
+
+  console.log(typeof employeeNumber);
+  const employeeNumberAsNumber = Number(employeeNumber);
+  console.log(typeof employeeNumberAsNumber);
 
   //1. check if email and password exist wenn gar nix steht!
-  if (!email || !password) {
+  if (!employeeNumber || !password) {
     // wenn nicht existiert, sende zu client
-    return next(new AppError('Pleace provide email and password!', 400)); //400 = bad request         wenn nicht return, in console. error
+    return next(
+      new AppError('Pleace provide employee-number and password!', 400)
+    ); //400 = bad request         wenn nicht return, in console. error
   }
 
   // if (!email) {
@@ -150,8 +156,10 @@ export const login = catchAsync(async (req, res, next) => {
 
   //2. check if user exists && password is correct
   //    user --> ist ein user-dokument
-  const user = await User.findOne({ email: email }).select('+password'); //geht auch const user = User.findOne({ email })        Achtung: passwort ist bei usermodel secret = false! also ist nur die email da, nicht das passwort, okay.. mit .selcte('+password') sieht man wieder
-  //console.log('user: ' + user);
+  const user = await User.findOne({
+    employeeNumber: employeeNumberAsNumber,
+  }).select('+password'); //geht auch const user = User.findOne({ email })        Achtung: passwort ist bei usermodel secret = false! also ist nur die email da, nicht das passwort, okay.. mit .selcte('+password') sieht man wieder
+  console.log('user in db  gefunden: ' + user);
   console.log('user.password: ' + user.password);
   console.log('password: ' + password);
 
@@ -348,6 +356,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3.) sended back as an email      protokoll htttp oder https
   const resetURL = `${req.protokol}://${req.get(
+    // ev protocol
     'host'
   )}/api/v1/users/resetPassword/${resetToken}}`; // stored in res.protokoll
 

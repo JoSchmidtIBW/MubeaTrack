@@ -25,6 +25,11 @@ const userPasswordForm = document.querySelector('.form-user-password');
 const manageUsersTable = document.querySelector('.manageUsersTable');
 const newUserDataForm = document.querySelector('.form-new-user-data');
 const updateUserByChefDataForm = document.querySelector('.form-worker-data');
+
+const manageMachineryTabel = document.querySelector('.manageMachineryTable');
+const newMachineDataForm = document.querySelector('.form-new-machine-data');
+const updateMachineForm = document.querySelector('.form-machine-data');
+
 //const createUserBtn = document.querySelector('.createUserBtn')
 
 //if (createUserBtn) createUserBtn.addEventListener('click', createUser);
@@ -40,10 +45,11 @@ if (loginForm)
     //document.querySelector('.form').addEventListener('submit', e => {
     e.preventDefault(); // element prevent from loading the page
 
-    const email = document.getElementById('email').value;
+    const employeeNumber = document.getElementById('employeeNumber').value;
+    //const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     //login({ email, password })
-    login(email, password);
+    login(employeeNumber, password);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
@@ -61,6 +67,8 @@ if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    //console.log('Role: ' + document.getElementById('role').value);
+
     //auch photos
     const form = new FormData();
     //console.log('testi: ' + document.getElementById('firstname').value);
@@ -69,13 +77,15 @@ if (userDataForm)
     form.append('gender', document.getElementById('gender').value);
     form.append('language', document.getElementById('language').value);
 
-    form.append('name', document.getElementById('name').value);
+    //form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
+    form.append('role', document.getElementById('role').value);
 
     form.append('photo', document.getElementById('photo').files[0]); // files sind array, brauchen erstes element
 
     console.log(
-      'form in index.js, wenn bild, sieht keine information: ' + form
+      'bin if(userDataForm), in index.js, wenn bild, sieht keine information sollte aber kein problem sein: ' +
+        form
     ); // man sieht hier keine information
 
     // const name = document.getElementById('name').value;
@@ -204,11 +214,11 @@ const showUsers = async () => {
           { data: 'employeeNumber' },
           { data: 'firstName' },
           { data: 'lastName' },
-          { data: 'age' },
+          { data: 'birthDate' },
           { data: 'gender' },
           { data: 'language' },
           { data: 'photo' },
-          { data: 'name' },
+          //{ data: 'name' },
           { data: 'email' },
           { data: 'role' },
           { data: 'department' },
@@ -240,13 +250,13 @@ const showUsers = async () => {
         ],
       });
 
-      // Define the buttons for sorting the name column
-      const $nameSortAscBtn = $(
-        '#manageUsersTable th button-upDown.spam.arrow-up'
-      );
-      const $nameSortDescBtn = $(
-        '#manageUsersTable th button-upDown.spam.arrow-down'
-      );
+      // // Define the buttons for sorting the name column
+      // const $nameSortAscBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-up'
+      // );
+      // const $nameSortDescBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-down'
+      // );
 
       const $employeeNumSortAscBtn = $(
         '#manageUsersTable th.employee-number button-upDown.spam.arrow-up'
@@ -255,17 +265,17 @@ const showUsers = async () => {
         '#manageUsersTable th.employee-number button-upDown.spam.arrow-down'
       );
 
-      // Add event listener to the button for ascending name sorting
-      $nameSortAscBtn.on('click', function () {
-        // Sort the data in the table by name in ascending order
-        table.order([2, 'asc']).draw();
-      });
-
-      // Add event listener to the button for descending name sorting
-      $nameSortDescBtn.on('click', function () {
-        // Sort the data in the table by name in descending order
-        table.order([2, 'desc']).draw();
-      });
+      // // Add event listener to the button for ascending name sorting
+      // $nameSortAscBtn.on('click', function () {
+      //   // Sort the data in the table by name in ascending order
+      //   table.order([2, 'asc']).draw();
+      // });
+      //
+      // // Add event listener to the button for descending name sorting
+      // $nameSortDescBtn.on('click', function () {
+      //   // Sort the data in the table by name in descending order
+      //   table.order([2, 'desc']).draw();
+      // });
 
       // Event-Listener zum Sortieren nach aufsteigender Employee-Nummer
       $employeeNumSortAscBtn.on('click', function () {
@@ -283,6 +293,7 @@ const showUsers = async () => {
 };
 
 if (manageUsersTable) {
+  //muss unterhalb showUsers sein
   console.log('bin If usertable');
   showUsers();
 }
@@ -294,10 +305,10 @@ if (newUserDataForm) {
     const employeeNumber = document.getElementById('employeeNumber').value;
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
-    const age = document.getElementById('age').value;
+    const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
-    const name = document.getElementById('name').value;
+    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
@@ -307,10 +318,10 @@ if (newUserDataForm) {
     console.log(employeeNumber);
     console.log(firstname);
     console.log(lastname);
-    console.log(age);
+    console.log(birthDate);
     console.log(gender);
     console.log(language);
-    console.log(name);
+    //console.log(name);
     console.log(email);
     console.log(password);
     console.log(passwordConfirm);
@@ -321,10 +332,10 @@ if (newUserDataForm) {
       employeeNumber,
       firstname,
       lastname,
-      age,
+      birthDate,
       gender,
       language,
-      name,
+      //name,
       email,
       password,
       passwordConfirm,
@@ -380,22 +391,21 @@ if (newUserDataForm) {
   });
 }
 
-//todo passwort als passwort machen!!!
 const createNewUser = async (
   employeeNumber,
   firstname,
   lastname,
-  age,
+  birthDate,
   gender,
   language,
-  name,
+  //name,
   email,
   password,
   passwordConfirm,
   role,
   department
 ) => {
-  console.log('bin signup zum serverschicken');
+  console.log('bin createNewUser zum serverschicken');
   try {
     const res = await axios({
       method: 'POST',
@@ -404,10 +414,10 @@ const createNewUser = async (
         employeeNumber: employeeNumber, //'66101',
         firstName: firstname, //'Erika',
         lastName: lastname, //'Schmidt',
-        age: age,
+        birthDate: birthDate,
         gender: gender,
         language: language,
-        name: name, //'erika',
+        //name: name, //'erika',
         email: email,
         password: password, //'test1234',
         passwordConfirm: passwordConfirm, //'test1234',
@@ -430,8 +440,122 @@ const createNewUser = async (
   }
 };
 
-const saveButton = document.querySelector('.btn--saveUpdateUserByChef');
-const deleteButton = document.querySelector('.btn--deleteUpdateUserByChef');
+const saveUpdateMachineButton = document.querySelector(
+  '.btn--saveUpdateMachine'
+);
+const deleteUpdateMachineButton = document.querySelector(
+  '.btn--deleteUpdateMachine'
+);
+
+if (updateMachineForm) {
+  updateMachineForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateMachineDataForm');
+
+    const id = document.getElementById('machineId').value;
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const type = document.getElementById('type').value;
+    const constructionYear = document.getElementById('constructionYear').value;
+    const companyMachine = document.getElementById('companyMachine').value;
+    const voltage = document.getElementById('voltage').value;
+    const controlVoltage = document.getElementById('controlVoltage').value;
+    const ratedCurrent = document.getElementById('ratedCurrent').value;
+    const electricalFuse = document.getElementById('electricalFuse').value;
+    const compressedAir = document.getElementById('compressedAir').value;
+    const weightMass = document.getElementById('weightMass').value;
+    const dimensions = document.getElementById('dimensions').value;
+    const drawingNumber = document.getElementById('drawingNumber').value;
+    const department = document.querySelector('#department').value;
+
+    console.log(id);
+    console.log(name);
+    console.log(description);
+    console.log(type);
+    console.log(constructionYear);
+    console.log(companyMachine);
+    console.log(voltage);
+    console.log(controlVoltage);
+    console.log(ratedCurrent);
+    console.log(electricalFuse);
+    console.log(compressedAir);
+    console.log(weightMass);
+    console.log(dimensions);
+    console.log(drawingNumber);
+    console.log(department);
+
+    if (e.submitter === saveUpdateMachineButton) {
+      updateMachine(
+        {
+          name,
+          description,
+          type,
+          constructionYear,
+          companyMachine,
+          voltage,
+          controlVoltage,
+          ratedCurrent,
+          electricalFuse,
+          compressedAir,
+          weightMass,
+          dimensions,
+          drawingNumber,
+          department,
+        },
+        id
+      );
+    } else if (e.submitter === deleteUpdateMachineButton) {
+      console.log('bin Delete in updateMachineDataForm');
+      deleteMachine(id);
+    }
+  });
+}
+
+const updateMachine = async (data, id) => {
+  console.log('bin updateMachine in index.js');
+  console.log(id);
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${apiUrl}/machinery/` + id,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Machine successfully updated');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const deleteMachine = async (id) => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${apiUrl}/machinery/${id}`,
+    });
+
+    if (res.status === 204) {
+      showAlert('success', 'Machine successfully deleted');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const saveUpdateUserByChefButton = document.querySelector(
+  '.btn--saveUpdateUserByChef'
+);
+const deleteUpdateUserByChefButton = document.querySelector(
+  '.btn--deleteUpdateUserByChef'
+);
 
 // todo !!! der chef darf nur die abteilung und Rolle des users zuordnen nichts mehr, der user darf sich sonst selber verändern!!!
 if (updateUserByChefDataForm) {
@@ -443,10 +567,10 @@ if (updateUserByChefDataForm) {
     const employeeNumber = document.getElementById('employeeNumber').value;
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
-    const age = document.getElementById('age').value;
+    const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
-    const name = document.getElementById('name').value;
+    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     //const passwordConfirm = document.getElementById('passwordConfirm').value;
@@ -457,10 +581,10 @@ if (updateUserByChefDataForm) {
     console.log(employeeNumber);
     console.log(firstname);
     console.log(lastname);
-    console.log(age);
+    console.log(birthDate);
     console.log(gender);
     console.log(language);
-    console.log(name);
+    //console.log(name);
     console.log(email);
     console.log(password);
     //console.log(passwordConfirm);
@@ -471,7 +595,7 @@ if (updateUserByChefDataForm) {
 
     console.log(departmentsArray);
     const department = departmentsArray;
-    if (e.submitter === saveButton) {
+    if (e.submitter === saveUpdateUserByChefButton) {
       updateUserByChef(
         {
           role,
@@ -479,7 +603,7 @@ if (updateUserByChefDataForm) {
         },
         id
       );
-    } else if (e.submitter === deleteButton) {
+    } else if (e.submitter === deleteUpdateUserByChefButton) {
       console.log('bin Delete in updateUserByChefDataForm');
       deleteUser(id);
     }
@@ -521,6 +645,275 @@ const updateUserByChef = async (data, id) => {
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
+};
+
+const showMachinery = async () => {
+  console.log('bin showMachinery');
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: `${apiUrl}/machinery`,
+    });
+    //
+    if (res.data.status === 'success') {
+      console.log('success in showMachinery');
+
+      $('#manageMachineryTable').DataTable().destroy();
+      // $('#manageUsersTable').on('click', '.delete-button', function () {
+      //   const id = $(this).attr('data-id');
+      //   //deleteUser(id);
+      // });
+      // $('#manageUsersTable').on('click', '.edit-button', function () {
+      //   const id = $(this).attr('id');
+      //   location.assign(`/userw/${id}`);
+      // });
+
+      $('#manageMachineryTable').DataTable({
+        data: res.data.data.data,
+        //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+        dom: 'l<"toolbar">frtip',
+        pagingType: 'full_numbers',
+        paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
+        //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+        language: {
+          lengthMenu: 'Display _MENU_ records per page',
+          zeroRecords: 'Nothing found - sorry',
+          info: 'Showing page _PAGE_ of _PAGES_',
+          infoEmpty: 'No records available',
+          infoFiltered: '(filtered from _MAX_ total records)',
+          paginate: {
+            first: 'First',
+            last: 'Last',
+            next: 'Next',
+            previous: 'Previous',
+          },
+        },
+        lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+        lengthMenu: [
+          [2, 5, 10, -1],
+          [2, 5, 10, 'All'],
+        ],
+        pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+        columns: [
+          {
+            data: '_id',
+            visible: false,
+          },
+          {
+            data: 'createdAt',
+            render: function (data) {
+              const date = new Date(data);
+              const options = {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              };
+              return date.toLocaleDateString('de-DE', options);
+            },
+          },
+          { data: 'name' },
+          { data: 'description' },
+          { data: 'type' },
+          { data: 'constructionYear' },
+          { data: 'companyMachine' },
+          { data: 'department' },
+          { data: 'voltage' },
+          { data: 'controlVoltage' },
+          { data: 'ratedCurrent' },
+          { data: 'electricalFuse' },
+          { data: 'compressedAir' },
+          { data: 'weightMass' },
+          { data: 'dimensions' },
+          { data: 'drawingNumber' },
+          { data: 'employeesCount' },
+          {
+            data: '_id',
+            render: function (data) {
+              // return `<a href="/user/${data}" class="edit-button">Edit</a>
+              // <button class="delete-button" data-id="${data}">Delete</button>`;
+              //return `<a href="/user/${data}" class="edit-button">Edit</a>`;
+              return `
+              <a href="/api/v1/manage_machinery/${data}" class="edit-button">
+                <svg class="heading-box__icon">
+                <use xlink:href="/img/icons.svg#icon-edit-3"></use>
+                </svg>
+              </a>`;
+              // '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>'`;
+              // return '<a href="#" class="edit-button"><i class="fas fa-edit"></i></a>';
+              //             svg.heading-box__icon
+              // use(xlink:href='/img/icons.svg#icon-map-pin')`;
+              //<svg className="edit-icon"><use xlink:href="#icon-edit"></use></svg>`;
+            },
+            orderable: false,
+          },
+        ],
+      });
+
+      // // Define the buttons for sorting the name column
+      // const $nameSortAscBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-up'
+      // );
+      // const $nameSortDescBtn = $(
+      //   '#manageUsersTable th button-upDown.spam.arrow-down'
+      // );
+
+      // const $employeeNumSortAscBtn = $(
+      //   '#manageUsersTable th.employee-number button-upDown.spam.arrow-up'
+      // );
+      // const $employeeNumSortDescBtn = $(
+      //   '#manageUsersTable th.employee-number button-upDown.spam.arrow-down'
+      // );
+
+      // // Add event listener to the button for ascending name sorting
+      // $nameSortAscBtn.on('click', function () {
+      //   // Sort the data in the table by name in ascending order
+      //   table.order([2, 'asc']).draw();
+      // });
+      //
+      // // Add event listener to the button for descending name sorting
+      // $nameSortDescBtn.on('click', function () {
+      //   // Sort the data in the table by name in descending order
+      //   table.order([2, 'desc']).draw();
+      // });
+
+      // Event-Listener zum Sortieren nach aufsteigender Employee-Nummer
+      // $employeeNumSortAscBtn.on('click', function () {
+      //   $('#manageUsersTable').DataTable().order([1, 'asc']).draw();
+      // });
+      //
+      // // Event-Listener zum Sortieren nach absteigender Employee-Nummer
+      // $employeeNumSortDescBtn.on('click', function () {
+      //   $('#manageUsersTable').DataTable().order([1, 'desc']).draw();
+      // });
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+if (manageMachineryTabel) {
+  //muss unterhalb showMachinery sein
+  console.log('bin If machinerytable');
+  showMachinery();
+}
+
+if (newMachineDataForm) {
+  newMachineDataForm.addEventListener('submit', async (e) => {
+    console.log('bin newMachineDataForm');
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const type = document.getElementById('type').value;
+    const constructionYear = document.getElementById('constructionYear').value;
+    const companyMachine = document.getElementById('companyMachine').value;
+    const voltage = document.getElementById('voltage').value;
+    const controlVoltage = document.getElementById('controlVoltage').value;
+    const ratedCurrent = document.getElementById('ratedCurrent').value;
+    const electricalFuse = document.getElementById('electricalFuse').value;
+    const compressedAir = document.getElementById('compressedAir').value;
+    const weightMass = document.getElementById('weightMass').value;
+    const dimensions = document.getElementById('dimensions').value;
+    const drawingNumber = document.getElementById('drawingNumber').value;
+    const department = document.querySelector('#department').value;
+
+    console.log(name);
+    console.log(description);
+    console.log(type);
+    console.log(constructionYear);
+    console.log(companyMachine);
+    console.log(voltage);
+    console.log(controlVoltage);
+    console.log(ratedCurrent);
+    console.log(electricalFuse);
+    console.log(compressedAir);
+    console.log(weightMass);
+    console.log(dimensions);
+    console.log(drawingNumber);
+    console.log(department);
+
+    createNewMachine(
+      name,
+      description,
+      type,
+      constructionYear,
+      companyMachine,
+      voltage,
+      controlVoltage,
+      ratedCurrent,
+      electricalFuse,
+      compressedAir,
+      weightMass,
+      dimensions,
+      drawingNumber,
+      department
+    );
+  });
+}
+
+const createNewMachine = async (
+  name,
+  description,
+  type,
+  constructionYear,
+  companyMachine,
+  voltage,
+  controlVoltage,
+  ratedCurrent,
+  electricalFuse,
+  compressedAir,
+  weightMass,
+  dimensions,
+  drawingNumber,
+  department
+) => {
+  console.log('bin createNewMachine zum serverschicken');
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: `${apiUrl}/machinery/createMachine`,
+      data: {
+        name: name, //'66101',
+        description: description, //'Erika',
+        type: type, //'Schmidt',
+        constructionYear: constructionYear,
+        companyMachine: companyMachine,
+        voltage: voltage,
+        controlVoltage: controlVoltage, //'erika',
+        ratedCurrent: ratedCurrent,
+        electricalFuse: electricalFuse, //'test1234',
+        compressedAir: compressedAir, //'test1234',
+        weightMass: weightMass, //'guide',
+        dimensions: dimensions, //'guide',
+        drawingNumber: drawingNumber, //'guide',
+        department: department, //'Unterhalt',
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Machine created successfully');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 1200);
+    } else {
+      console.log('nichts beim server /machinery/createMachine angekommen');
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+  //   if (res.data.status === 'success') {
+  //     showAlert('success', 'Machine created successfully');
+  //     window.setTimeout(() => {
+  //       location.assign('/api/v1/manage_machinery');
+  //     }, 1200);
+  //   } else {
+  //     console.log('nichts beim server /machinery/createMachine angekommen');
+  //   }
+  // } catch (err) {
+  //   showAlert('error', err.response.data.message);
+  // }
 };
 
 // const showUsers = async () => {
