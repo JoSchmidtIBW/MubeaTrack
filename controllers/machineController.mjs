@@ -119,12 +119,29 @@ export const aliasTopMachinery = async (req, res, next) => {
 // 2. route handlers
 //export const getAllMachinery = getAll(Machine);
 export const getMachine = getOne(Machine);
-export const createMachine = createOne(Machine);
+//export const createMachine = createOne(Machine);
 export const updateMachine = updateOne(Machine);
+// export const updateMachine = catchAsync(async (req, res, next) => {
+//   console.log('bin updateMachine');
+//   console.log(req.body);
+//
+//   // const machinery = await Machine.find().select('+createdAt');
+//   // // const users = await User.find().select('+createdAt').lean().exec();
+//   // // const usersJSON = JSON.parse(JSON.stringify(users));
+//   //
+//   // res.status(200).json({
+//   //   status: 'success',
+//   //   results: machinery.length,
+//   //   data: {
+//   //     data: machinery,
+//   //   },
+//   // });
+// });
+
 export const deleteMachine = deleteOne(Machine);
 
 export const getMachinery = catchAsync(async (req, res, next) => {
-  console.log('bin getAllUsers');
+  console.log('bin getMachinery');
 
   const machinery = await Machine.find().select('+createdAt');
   // const users = await User.find().select('+createdAt').lean().exec();
@@ -136,6 +153,41 @@ export const getMachinery = catchAsync(async (req, res, next) => {
     data: {
       data: machinery,
     },
+  });
+});
+
+//todo hier muss ev noch hinzugefügt werden, die MaschinenEinheiten und deteils, für danach fehler
+export const createMachine = catchAsync(async (req, res) => {
+  console.log('bin createMachine');
+
+  console.log(req.body);
+
+  const machineData = {
+    name: req.body.name,
+    description: req.body.description,
+    type: req.body.type ? req.body.type : '-',
+    constructionYear: req.body.constructionYear
+      ? req.body.constructionYear
+      : '-',
+    companyMachine: req.body.companyMachine ? req.body.companyMachine : '-',
+    voltage: req.body.voltage ? req.body.voltage : '-',
+    controlVoltage: req.body.controlVoltage ? req.body.controlVoltage : '-',
+    ratedCurrent: req.body.ratedCurrent ? req.body.ratedCurrent : '-',
+    electricalFuse: req.body.electricalFuse ? req.body.electricalFuse : '-',
+    compressedAir: req.body.compressedAir ? req.body.compressedAir : '-',
+    weightMass: req.body.weightMass ? req.body.weightMass : '-',
+    dimensions: req.body.dimensions ? req.body.dimensions : '-',
+    drawingNumber: req.body.drawingNumber ? req.body.drawingNumber : '-',
+    //photo: req.body.photo,
+    department: req.body.department,
+  };
+
+  const newMachine = new Machine(machineData);
+  await newMachine.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'A new machine is succefully created!',
   });
 });
 

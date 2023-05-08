@@ -3,15 +3,17 @@ import express from 'express';
 import {
   getLoginForm,
   getDepartment,
+  getMachine,
   getAccount,
   //updateUserData,
   getStart,
   getOverviewDepartment,
   getManageUsers,
   getManageMachinery,
-  getCreateNewUserForm,
+  getCreateUserForm,
   getUpdateUser,
-  getMachine,
+  getCreateMachineForm,
+  getUpdateMachine,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -71,17 +73,26 @@ router.get(
   restrictTo('admin', 'Chef'),
   getUpdateUser
 );
+
+router.get(
+  '/manage_machinery/:id',
+  protect,
+  restrictTo('admin'),
+  getUpdateMachine
+);
 //router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);
 
 //wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
 // update User account
 //router.post('/submit-user-data', protect, updateUserData);
 
+router.get('/createUser', protect, restrictTo('admin'), getCreateUserForm);
+
 router.get(
-  '/createNewUser',
+  '/createMachine',
   protect,
   restrictTo('admin'),
-  getCreateNewUserForm
+  getCreateMachineForm
 );
 
 export default router;

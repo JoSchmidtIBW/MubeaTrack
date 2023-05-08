@@ -87,10 +87,11 @@ block content
             .overview-box__group
                 h1 Machinery
                 each machine in department.machinery
-                    //-.overview-box__detail
-                    span.overview-box__label= machine.name
-                    //-= " "
-                    a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                    script.
+                        //-console.log(department.machinery)
+                    .overview-box__detail
+                        span.overview-box__label= machine.name
+                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
 
     section.section-pictures
         each img, i in department.images

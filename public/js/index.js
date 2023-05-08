@@ -27,6 +27,9 @@ const newUserDataForm = document.querySelector('.form-new-user-data');
 const updateUserByChefDataForm = document.querySelector('.form-worker-data');
 
 const manageMachineryTabel = document.querySelector('.manageMachineryTable');
+const newMachineDataForm = document.querySelector('.form-new-machine-data');
+const updateMachineForm = document.querySelector('.form-machine-data');
+
 //const createUserBtn = document.querySelector('.createUserBtn')
 
 //if (createUserBtn) createUserBtn.addEventListener('click', createUser);
@@ -388,7 +391,6 @@ if (newUserDataForm) {
   });
 }
 
-//todo passwort als passwort machen!!!
 const createNewUser = async (
   employeeNumber,
   firstname,
@@ -403,7 +405,7 @@ const createNewUser = async (
   role,
   department
 ) => {
-  console.log('bin signup zum serverschicken');
+  console.log('bin createNewUser zum serverschicken');
   try {
     const res = await axios({
       method: 'POST',
@@ -438,8 +440,122 @@ const createNewUser = async (
   }
 };
 
-const saveButton = document.querySelector('.btn--saveUpdateUserByChef');
-const deleteButton = document.querySelector('.btn--deleteUpdateUserByChef');
+const saveUpdateMachineButton = document.querySelector(
+  '.btn--saveUpdateMachine'
+);
+const deleteUpdateMachineButton = document.querySelector(
+  '.btn--deleteUpdateMachine'
+);
+
+if (updateMachineForm) {
+  updateMachineForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateMachineDataForm');
+
+    const id = document.getElementById('machineId').value;
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const type = document.getElementById('type').value;
+    const constructionYear = document.getElementById('constructionYear').value;
+    const companyMachine = document.getElementById('companyMachine').value;
+    const voltage = document.getElementById('voltage').value;
+    const controlVoltage = document.getElementById('controlVoltage').value;
+    const ratedCurrent = document.getElementById('ratedCurrent').value;
+    const electricalFuse = document.getElementById('electricalFuse').value;
+    const compressedAir = document.getElementById('compressedAir').value;
+    const weightMass = document.getElementById('weightMass').value;
+    const dimensions = document.getElementById('dimensions').value;
+    const drawingNumber = document.getElementById('drawingNumber').value;
+    const department = document.querySelector('#department').value;
+
+    console.log(id);
+    console.log(name);
+    console.log(description);
+    console.log(type);
+    console.log(constructionYear);
+    console.log(companyMachine);
+    console.log(voltage);
+    console.log(controlVoltage);
+    console.log(ratedCurrent);
+    console.log(electricalFuse);
+    console.log(compressedAir);
+    console.log(weightMass);
+    console.log(dimensions);
+    console.log(drawingNumber);
+    console.log(department);
+
+    if (e.submitter === saveUpdateMachineButton) {
+      updateMachine(
+        {
+          name,
+          description,
+          type,
+          constructionYear,
+          companyMachine,
+          voltage,
+          controlVoltage,
+          ratedCurrent,
+          electricalFuse,
+          compressedAir,
+          weightMass,
+          dimensions,
+          drawingNumber,
+          department,
+        },
+        id
+      );
+    } else if (e.submitter === deleteUpdateMachineButton) {
+      console.log('bin Delete in updateMachineDataForm');
+      deleteMachine(id);
+    }
+  });
+}
+
+const updateMachine = async (data, id) => {
+  console.log('bin updateMachine in index.js');
+  console.log(id);
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${apiUrl}/machinery/` + id,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Machine successfully updated');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const deleteMachine = async (id) => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${apiUrl}/machinery/${id}`,
+    });
+
+    if (res.status === 204) {
+      showAlert('success', 'Machine successfully deleted');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
+const saveUpdateUserByChefButton = document.querySelector(
+  '.btn--saveUpdateUserByChef'
+);
+const deleteUpdateUserByChefButton = document.querySelector(
+  '.btn--deleteUpdateUserByChef'
+);
 
 // todo !!! der chef darf nur die abteilung und Rolle des users zuordnen nichts mehr, der user darf sich sonst selber verändern!!!
 if (updateUserByChefDataForm) {
@@ -479,7 +595,7 @@ if (updateUserByChefDataForm) {
 
     console.log(departmentsArray);
     const department = departmentsArray;
-    if (e.submitter === saveButton) {
+    if (e.submitter === saveUpdateUserByChefButton) {
       updateUserByChef(
         {
           role,
@@ -487,7 +603,7 @@ if (updateUserByChefDataForm) {
         },
         id
       );
-    } else if (e.submitter === deleteButton) {
+    } else if (e.submitter === deleteUpdateUserByChefButton) {
       console.log('bin Delete in updateUserByChefDataForm');
       deleteUser(id);
     }
@@ -682,6 +798,123 @@ if (manageMachineryTabel) {
   console.log('bin If machinerytable');
   showMachinery();
 }
+
+if (newMachineDataForm) {
+  newMachineDataForm.addEventListener('submit', async (e) => {
+    console.log('bin newMachineDataForm');
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const type = document.getElementById('type').value;
+    const constructionYear = document.getElementById('constructionYear').value;
+    const companyMachine = document.getElementById('companyMachine').value;
+    const voltage = document.getElementById('voltage').value;
+    const controlVoltage = document.getElementById('controlVoltage').value;
+    const ratedCurrent = document.getElementById('ratedCurrent').value;
+    const electricalFuse = document.getElementById('electricalFuse').value;
+    const compressedAir = document.getElementById('compressedAir').value;
+    const weightMass = document.getElementById('weightMass').value;
+    const dimensions = document.getElementById('dimensions').value;
+    const drawingNumber = document.getElementById('drawingNumber').value;
+    const department = document.querySelector('#department').value;
+
+    console.log(name);
+    console.log(description);
+    console.log(type);
+    console.log(constructionYear);
+    console.log(companyMachine);
+    console.log(voltage);
+    console.log(controlVoltage);
+    console.log(ratedCurrent);
+    console.log(electricalFuse);
+    console.log(compressedAir);
+    console.log(weightMass);
+    console.log(dimensions);
+    console.log(drawingNumber);
+    console.log(department);
+
+    createNewMachine(
+      name,
+      description,
+      type,
+      constructionYear,
+      companyMachine,
+      voltage,
+      controlVoltage,
+      ratedCurrent,
+      electricalFuse,
+      compressedAir,
+      weightMass,
+      dimensions,
+      drawingNumber,
+      department
+    );
+  });
+}
+
+const createNewMachine = async (
+  name,
+  description,
+  type,
+  constructionYear,
+  companyMachine,
+  voltage,
+  controlVoltage,
+  ratedCurrent,
+  electricalFuse,
+  compressedAir,
+  weightMass,
+  dimensions,
+  drawingNumber,
+  department
+) => {
+  console.log('bin createNewMachine zum serverschicken');
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: `${apiUrl}/machinery/createMachine`,
+      data: {
+        name: name, //'66101',
+        description: description, //'Erika',
+        type: type, //'Schmidt',
+        constructionYear: constructionYear,
+        companyMachine: companyMachine,
+        voltage: voltage,
+        controlVoltage: controlVoltage, //'erika',
+        ratedCurrent: ratedCurrent,
+        electricalFuse: electricalFuse, //'test1234',
+        compressedAir: compressedAir, //'test1234',
+        weightMass: weightMass, //'guide',
+        dimensions: dimensions, //'guide',
+        drawingNumber: drawingNumber, //'guide',
+        department: department, //'Unterhalt',
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Machine created successfully');
+      window.setTimeout(() => {
+        location.assign('/api/v1/manage_machinery');
+      }, 1200);
+    } else {
+      console.log('nichts beim server /machinery/createMachine angekommen');
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+  //   if (res.data.status === 'success') {
+  //     showAlert('success', 'Machine created successfully');
+  //     window.setTimeout(() => {
+  //       location.assign('/api/v1/manage_machinery');
+  //     }, 1200);
+  //   } else {
+  //     console.log('nichts beim server /machinery/createMachine angekommen');
+  //   }
+  // } catch (err) {
+  //   showAlert('error', err.response.data.message);
+  // }
+};
 
 // const showUsers = async () => {
 //   console.log('Bin showUsers');

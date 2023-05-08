@@ -62,12 +62,15 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
 
   const currentUser = req.user;
 
+  const machinery = await Machine.find();
+
   if (currentUser.role === 'admin') {
-    const departmentsAll = await Department.find().sort('_id');
+    const departmentsAllAdmin = await Department.find().sort('_id');
 
     res.status(200).render('overview', {
       title: 'All Departments',
-      departments: departmentsAll, // erstes tours ist das template, zweites tours sind die tourdata
+      departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+      machinery: machinery,
       users: users,
       //user: currentUser,
     });
@@ -79,6 +82,7 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('overview', {
       title: 'All Departments',
       departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+      machinery: machinery,
       users: users,
       //user: currentUser,
     });
@@ -202,11 +206,34 @@ export const getManageUsers = catchAsync(async (req, res) => {
   });
 });
 
-export const getCreateNewUserForm = (req, res) => {
-  res.status(200).render('createNewUser', {
+export const getCreateMachineForm = (req, res) => {
+  res.status(200).render('createMachine', {
+    title: 'Create new machine',
+  });
+};
+
+export const getCreateUserForm = (req, res) => {
+  res.status(200).render('createUser', {
     title: 'Create new user',
   });
 };
+
+export const getUpdateMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateMachine');
+  const machineToUpdate = await Machine.findById({ _id: req.params.id });
+  //console.log(machineToUpdate);
+
+  if (!machineToUpdate) {
+    return next(new AppError('There is no machine with that ID.', 404));
+  }
+
+  res.status(200).render('updateMachine', {
+    title: 'Update machine',
+    data: {
+      machineToUpdate,
+    },
+  });
+});
 
 export const getUpdateUser = catchAsync(async (req, res, next) => {
   //console.log(req.body);

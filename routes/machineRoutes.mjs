@@ -23,6 +23,11 @@ import {
   resetPassword,
   updatePassword,
 } from '../controllers/authController.mjs';
+import {
+  deleteUser,
+  getUser,
+  updateUser,
+} from '../controllers/userController.mjs';
 
 //const router = express.Router();
 const router = express.Router({ mergeParams: true });
@@ -58,21 +63,23 @@ const router = express.Router({ mergeParams: true });
 //http://127.0.0.1:4301/api/v1/tours/tour-stats
 router.route('/machine-stats').get(getMachineStats);
 
+router.route('/').get(getMachinery); // hier möchte man keine protect
+//.post(protect, restrictTo('admin', 'lead-guide'), createMachine);
+
 router
-  .route('/')
-  .get(getMachinery) // hier möchte man keine protect
+  .route('/createMachine')
   .post(protect, restrictTo('admin', 'lead-guide'), createMachine);
+
+// router
+//   .route('/:id')
+//   .get(getMachine) //Kostenlos für jederman
+//   .patch(protect, restrictTo('admin'), updateMachine)
+//   .delete(protect, restrictTo('admin'), deleteMachine);
 
 router
   .route('/:id')
-  .get(getMachine) //Kostenlos für jederman
-  .patch(
-    protect,
-    restrictTo('admin', 'lead-guide'),
-    uploadMachineImages,
-    resizeMachineImages,
-    updateMachine
-  )
-  .delete(protect, restrictTo('admin', 'lead-guide'), deleteMachine);
+  .get(protect, getMachine)
+  .patch(updateMachine)
+  .delete(deleteMachine);
 
 export default router;
