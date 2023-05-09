@@ -228,6 +228,7 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 });
 
 // Checks if the department exists and the user only saves himself in it once, when creating a user
+// and if the user has multiple departments, check every department, if they exists and save the user once
 userSchema.pre('save', async function (next) {
   if (this.department && Array.isArray(this.department)) {
     //['IT','Engineering']
