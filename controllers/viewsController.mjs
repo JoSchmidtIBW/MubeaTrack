@@ -212,11 +212,16 @@ export const getCreateMachineForm = (req, res) => {
   });
 };
 
-export const getCreateUserForm = (req, res) => {
+export const getCreateUserForm = catchAsync(async (req, res, next) => {
+  const allDepartments = await Department.find().sort('_id');
+
   res.status(200).render('createUser', {
     title: 'Create new user',
+    data: {
+      departments: allDepartments,
+    },
   });
-};
+});
 
 export const getUpdateMachine = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateMachine');
@@ -248,7 +253,9 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
     '+password'
   );
 
-  const allDepartments = await Department.find().sort('_id');
+  const allDepartments = await Department.find()
+    .sort('_id')
+    .populate('machinery');
 
   // console.log(userToUpdate.firstName);
   //

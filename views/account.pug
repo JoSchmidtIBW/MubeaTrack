@@ -13,10 +13,8 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('#', 'Settings', 'settings', true)
-                    +navItem('#', 'My bookings', 'briefcase')
-                    +navItem('#', 'My reviews', 'star')
-                    +navItem('#', 'Billing', 'credit-card')
+                    +navItem('#', 'My Settings', 'settings', true)
+                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
@@ -24,9 +22,8 @@ block content
                         ul.side-nav
                             +navItem('/api/v1/manage_users', 'Manage users', 'users')
                             +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                            +navItem('#', 'Manage tours', 'map')
-                            +navItem('#', 'Manage reviews', 'star')
-                            +navItem('#', 'Manage bookings', 'briefcase')
+                            +navItem('#', 'Manage user/machine', 'user-m')
+                            +navItem('#', 'Manage ASMA/machine', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container

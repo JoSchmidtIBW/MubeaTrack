@@ -31,7 +31,7 @@ block content
               select#language(class="form__input")
                 option(value="Englisch") English
                 option(value="Deutsch") Deutsch
-            div(class="form__group")
+            //-div(class="form__group")
               label(class="form__label", for="name") Name
               input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
             div(class="form__group")
@@ -50,7 +50,7 @@ block content
                 option(value="Schichtleiter") Schichtleiter
                 option(value="user") User
                 option(value="admin") Admin
-            div(class="form__group")
+            //-div(class="form__group")
               label(class="form__label", for="department") Department
               select#department(class="form__input")
                 option(value="Schweisserei") Schweisserei
@@ -62,6 +62,70 @@ block content
                 option(value="Konstruktion") Konstruktion
                 option(value="Geschäfts-Führung") Geschäfts-Führung
             div(class="form__group")
+              label(class="form__label", for="department") Departments
+              each department in data.departments
+                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                  //-input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
+                  //-input#department-checkbox(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
+                  //-input#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
+                label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                  |
+                  input(type="checkbox", name="departments", value=department.name, checked=checked, id=`department-${department.name}`, style="width: 20px; height: 20px;")
+                  span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
+
+              //-each department in data.departments
+                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                  input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
+                  span.form__checkbox-name(style="font-size: 1.5rem;") #{department.name}
+
+              //-each department in data.departments
+                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                  |
+                  //-input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
+                  input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=department.checked,  style="width: 20px; height: 20px;")
+                  span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
+
+
+            div(class="form__group")
               button.btn.btn--green Save
               a.btn.btn--small(href=`/api/v1/manage_users`) Cancel
 
+            script.
+              function getSelectedDepartments() {
+                const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
+                let selectedDepartments = [];
+                departmentCheckboxes.forEach((checkbox) => {
+                  if (checkbox.checked) {
+                    selectedDepartments.push(checkbox.value);
+                  }
+                });
+                if (selectedDepartments.length > 0) {
+                  console.log(selectedDepartments + " sind angewählt");
+                  //#department === selectedDepartments
+                  //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
+                  document.querySelector('#department').value = selectedDepartments;
+                  //-document.querySelector('#department').value = selectedDepartmentsString
+                } else {
+                  console.log(selectedDepartments.length + " Departments!!!");
+                  alert('Bitte wählen Sie mindestens eine Abteilung aus.');
+                }
+              }
+            //-script.
+              function getSelectedDepartments() {
+                const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
+                consoloe.log("departmentCheckboxes: "+departmentCheckboxes)
+                let selectedDepartments = [];
+                departmentCheckboxes.forEach((checkbox) => {
+                  if (checkbox.checked) {
+                  console.log("checkbox.checked"+checkbox.checked)
+                    selectedDepartments.push(checkbox.value);
+                  }
+                });
+                if (selectedDepartments.length > 0) {
+                  console.log(selectedDepartments + " sind angewählt");
+                  document.querySelector('#departments').value = selectedDepartments.join(', ');
+                } else {
+                  console.log(selectedDepartments.length + " Departments!!!");
+                  alert('Bitte wählen Sie mindestens eine Abteilung aus.');
+                }
+              }
