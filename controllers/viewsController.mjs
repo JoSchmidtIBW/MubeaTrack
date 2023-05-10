@@ -213,8 +213,12 @@ export const getCreateMachineForm = (req, res) => {
 };
 
 export const getManageASMAMachine = catchAsync(async (req, res, next) => {
+  const machinery = await Machine.find(); //.select('createdAt');
   res.status(200).render('manageASMAMachine', {
     title: 'Manage ASMA/machine',
+    //data: {
+    machinery: machinery,
+    //},
   });
 });
 
