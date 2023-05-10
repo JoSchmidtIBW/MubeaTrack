@@ -1,0 +1,35 @@
+extend base
+
+block content
+    main.main
+      h1 Hallo bin manageASMAMachine.pug
+      h2 finde Anlage, frage, ob es zusätzSektoren hat
+      h3 frage, wie die Komponenten aussehen
+      h4 frage wie die details aussehen
+      h1 besteht aus Sektoren, komponenten, Details
+      <br>
+      <br>
+      table#manageASMAMachineTable.manageASMAMachineTable.table
+        thead
+          tr
+            th ID
+            th Name
+            th description
+            th department
+            th Edit
+        tbody
+          each machine in machinery
+            tr
+              td= machine._id
+              td= machine.name
+              td= machine.description
+              td= machine.department
+              td
+                a.edit-button(href=`/machine/${machine._id}`) Edit
+
+      br
+      br
+      h1 hallo
+      br
+
+      //a.btn.btn--small.btn--green(href="/api/v1/createMachine") Create new Machine

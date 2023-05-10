@@ -313,7 +313,14 @@ if (newUserDataForm) {
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
     const role = document.querySelector('#role').value;
-    const department = document.querySelector('#department').value;
+    // const departmentString = document.getElementById(
+    //   'department-checkbox'
+    // ).value;
+    //const departmentString = document.querySelector('#department').value;
+    const selectedDepartments = Array.from(
+      document.querySelectorAll('input[name="departments"]:checked')
+    ).map((department) => department.value);
+    //console.log('-------------------');
 
     console.log(employeeNumber);
     console.log(firstname);
@@ -326,7 +333,17 @@ if (newUserDataForm) {
     console.log(password);
     console.log(passwordConfirm);
     console.log(role);
-    console.log(department);
+    //console.log(department);
+
+    console.log('-------------------');
+    console.log(selectedDepartments);
+    // const departmentString = selectedDepartments.join(',');
+    // console.log(departmentString); // Konstruktion,Engineering
+    // const departmentsArray = departmentString.split(',');
+    // //
+    // console.log(departmentsArray);
+    // const department = departmentsArray;
+    const department = selectedDepartments;
 
     createNewUser(
       employeeNumber,
@@ -342,6 +359,7 @@ if (newUserDataForm) {
       role,
       department
     );
+
     // try {
     //   const url = '${apiUrl}/users/signup'; ////127.0.0.1:4301/api/v1/users/signup
     //
@@ -590,7 +608,7 @@ if (updateUserByChefDataForm) {
     //console.log(passwordConfirm);
     console.log(role);
 
-    console.log(departmentString);
+    console.log(departmentString); // Konstruktion,Engineering
     const departmentsArray = departmentString.split(',');
 
     console.log(departmentsArray);

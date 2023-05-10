@@ -228,16 +228,28 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 });
 
 // Checks if the department exists and the user only saves himself in it once, when creating a user
+// and if the user has multiple departments, check every department, if they exists and save the user once
 userSchema.pre('save', async function (next) {
-  if (this.department) {
-    console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
+  if (this.department && Array.isArray(this.department)) {
+    //['IT','Engineering']
+    console.log('this.department: ' + this.department);
+    for (const dep of this.department) {
+      const department = await Department.findOne({ name: dep });
+      if (department) {
+        if (!department.employees.includes(this._id)) {
+          department.employees.push(this._id);
+          await department.save();
+        } else {
+          console.log('Der Benutzer ist bereits in dieser Abteilung');
+        }
+      }
+    }
+  } else if (this.department) {
     const department = await Department.findOne({ name: this.department });
-    //console.log('Gefunden department in Department: ' + department);
-
     if (department) {
       if (!department.employees.includes(this._id)) {
         department.employees.push(this._id);
-        await department.save(); //department in Department
+        await department.save();
       } else {
         console.log('Der Benutzer ist bereits in dieser Abteilung');
       }
@@ -245,6 +257,23 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+// userSchema.pre('save', async function (next) {
+//   if (this.department) {
+//     console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
+//     const department = await Department.findOne({ name: this.department });
+//     //console.log('Gefunden department in Department: ' + department);
+//
+//     if (department) {
+//       if (!department.employees.includes(this._id)) {
+//         department.employees.push(this._id);
+//         await department.save(); //department in Department
+//       } else {
+//         console.log('Der Benutzer ist bereits in dieser Abteilung');
+//       }
+//     }
+//   }
+//   next();
+// });
 
 // soll die departments updaten, mit dem, was gerade aktuell im user.departmentArray drin ist
 // update all departments, Checks if user is assigned to departments and checks that

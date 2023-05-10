@@ -212,11 +212,59 @@ export const getCreateMachineForm = (req, res) => {
   });
 };
 
-export const getCreateUserForm = (req, res) => {
+export const getManageASMAMachine = catchAsync(async (req, res, next) => {
+  const machinery = await Machine.find(); //.select('createdAt');
+  res.status(200).render('manageASMAMachine', {
+    title: 'Manage ASMA/machine',
+    //data: {
+    machinery: machinery,
+    //},
+  });
+});
+
+export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutMubeaTrack', {
+    title: 'About MubeaTrack',
+  });
+});
+
+export const getAboutASMA = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutASMA', {
+    title: 'About ASMA',
+  });
+});
+
+export const getContact = catchAsync(async (req, res, next) => {
+  res.status(200).render('contact', {
+    title: 'Contact',
+  });
+});
+
+export const getManageUserMachine = catchAsync(async (req, res, next) => {
+  const departments = await Department.find().sort('_id').populate('machinery');
+  const machinery = await Machine.find().populate('employees');
+  const users = await User.find();
+
+  res.status(200).render('manageUserMachine', {
+    title: 'Manage user/machine',
+    data: {
+      departments: departments,
+      machinery: machinery,
+      users: users,
+    },
+  });
+});
+
+export const getCreateUserForm = catchAsync(async (req, res, next) => {
+  const allDepartments = await Department.find().sort('_id');
+
   res.status(200).render('createUser', {
     title: 'Create new user',
+    data: {
+      departments: allDepartments,
+    },
   });
-};
+});
 
 export const getUpdateMachine = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateMachine');
@@ -248,7 +296,9 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
     '+password'
   );
 
-  const allDepartments = await Department.find().sort('_id');
+  const allDepartments = await Department.find()
+    .sort('_id')
+    .populate('machinery');
 
   // console.log(userToUpdate.firstName);
   //

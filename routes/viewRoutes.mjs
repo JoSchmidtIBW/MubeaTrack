@@ -14,6 +14,11 @@ import {
   getUpdateUser,
   getCreateMachineForm,
   getUpdateMachine,
+  getManageUserMachine,
+  getManageASMAMachine,
+  getAboutMubeaTrack,
+  getAboutASMA,
+  getContact,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -80,6 +85,14 @@ router.get(
   restrictTo('admin'),
   getUpdateMachine
 );
+
+router.get(
+  '/manage_user-machine',
+  protect,
+  restrictTo('admin'),
+  getManageUserMachine
+);
+
 //router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);
 
 //wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
@@ -94,6 +107,21 @@ router.get(
   restrictTo('admin'),
   getCreateMachineForm
 );
+
+router.get(
+  '/manage_ASMAmachine',
+  protect,
+  restrictTo('admin'),
+  getManageASMAMachine
+);
+
+router.get('/aboutMubeaTrack', getAboutMubeaTrack);
+router.get('/aboutASMA', getAboutASMA);
+router.get('/contact', getContact);
+
+router.get('/aboutMubeaTrackInlogt', isLoggedIn, getAboutMubeaTrack);
+router.get('/aboutASMAInlogt', isLoggedIn, getAboutASMA);
+router.get('/contactInlogt', isLoggedIn, getContact);
 
 export default router;
 
