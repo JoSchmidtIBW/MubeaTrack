@@ -1,0 +1,21 @@
+header.header
+    nav.nav.nav--tours
+        if user
+            a.nav__el(href='/api/v1/overview') Übersicht
+    .header__logo
+        .LogoBildText
+            img(src='/img/Mubea_logo.svg.png', alt='Mubea logo')
+            a.logoTrack Track
+        //-div= user.name
+        //-div= user.photo
+    nav.nav.nav--user
+        if user
+            a.nav__el.nav__el--logout Log out
+            a.nav__el(href='/api/v1/me')
+                img.nav__user-img(src=`/img/users/${user.photo}`, alt=`Photo of ${user.firstName}`)
+                span= user.firstName
+                //-user.name.split(' ')[0]
+        else
+            //- kommt von isloggedIn- Middleware, wo res.locals.user = currentuser
+            a.nav__el(href='/api/v1/login') log in
+            a.nav__el.nav__el--cta(href='/#') Sign up

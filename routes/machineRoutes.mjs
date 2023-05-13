@@ -10,6 +10,10 @@ import {
   updateMachine,
   uploadMachineImages,
   resizeMachineImages,
+  getMachineryASMA,
+  createSectorASMA,
+  updateSectorASMA,
+  deleteSectorASMA,
 } from '../controllers/machineController.mjs';
 
 import {
@@ -64,7 +68,19 @@ const router = express.Router({ mergeParams: true });
 router.route('/machine-stats').get(getMachineStats);
 
 router.route('/').get(getMachinery); // hier möchte man keine protect
+router
+  .route('/machineryASMA')
+  .get(protect, restrictTo('admin'), getMachineryASMA);
 //.post(protect, restrictTo('admin', 'lead-guide'), createMachine);
+
+router
+  .route('/createSectorASMA/:id')
+  .patch(protect, restrictTo('admin'), createSectorASMA);
+
+router
+  .route('/:machineID/updateSectorASMA/:sectorASMAID')
+  .patch(protect, restrictTo('admin'), updateSectorASMA)
+  .delete(protect, restrictTo('admin'), deleteSectorASMA);
 
 router
   .route('/createMachine')

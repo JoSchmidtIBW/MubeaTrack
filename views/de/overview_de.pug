@@ -1,0 +1,56 @@
+extends base
+
+
+block content
+    h1 Übersicht aller Abteilungen
+    h2= `Total: ${users.length} Mitarbeiter`
+    h2= `Total: ${machinery.length} Maschinen`
+    // extends index.pug oder layout
+    main.main
+        .card-container
+            script.
+                console.log("Hello World- Overview");
+
+            //-if(user.department === 'Engineering')
+            //-h1= `About ${user.department}`
+            each department in departments
+                //-h6= `${department.name}`
+                //-if(user.department === department.name)
+                //h1= `${user.department}`
+                //h1= `${department.name}`
+                .card
+                    .card__header
+                        .card__picture
+                            card__picture-overlay &nbsp;
+                            img.card__picture-img(src=`/img/departments/departments-cover/${department.imageCover}`, alt=`${department.name}`)
+                        h3.heading-tertirary
+                            span= department.name
+
+                    .card__details
+                        h4.card__sub-heading= `${department.employeesCount}-Mann starke Truppe`
+                        p.card__text= department.summary
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-map-pin')
+                            span= department.location
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-user')
+                            span= `${department.employeesCount} employees`
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='/img/icons.svg#icon-machine')
+                            span= `${department.machineryCount} machinery`
+
+                    .card__footer
+                        p
+                            //-span.card__footer-value= `$${tour.price}`
+                            //-|
+                            //-span.card__footer-text per person
+                        //-p.card__ratings
+                            //-span.card__footer-value= tour.ratingsAverage
+                            |
+                            //-span.card__footer-text= `rating (${tour.ratingsQuantity})`
+                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.slug}`) Details
+
+

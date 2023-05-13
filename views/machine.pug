@@ -11,58 +11,58 @@ block content
     script.
         console.log("machine.pug");
     main
-        h1= `Bin ${machine.name}`
+        h1= `Bin ${data.machine.name}`
         //div= machine
 
         .technical-data
           h2 Technical specifications
           div(class="technical-data__field")
             span(class="technical-data__label") Machine name:
-            span(class="technical-data__value")= machine.name
+            span(class="technical-data__value")= data.machine.name
           div(class="technical-data__field")
             span(class="technical-data__label") Description:
-            span(class="technical-data__value")= machine.description
+            span(class="technical-data__value")= data.machine.description
           div(class="technical-data__field")
             span(class="technical-data__label") Machine number:
-            span(class="technical-data__value")= machine.machineNumber
+            span(class="technical-data__value")= data.machine.machineNumber
           div(class="technical-data__field")
             span(class="technical-data__label") Type:
-            span(class="technical-data__value")= machine.type
+            span(class="technical-data__value")= data.machine.type
           div(class="technical-data__field")
             span(class="technical-data__label") Construction year:
-            span(class="technical-data__value")= machine.constructionYear
+            span(class="technical-data__value")= data.machine.constructionYear
           div(class="technical-data__field")
             span(class="technical-data__label") Company machine:
-            span(class="technical-data__value")= machine.companyMachine
+            span(class="technical-data__value")= data.machine.companyMachine
           div(class="technical-data__field")
             span(class="technical-data__label") Voltage:
-            span(class="technical-data__value")= machine.voltage
+            span(class="technical-data__value")= data.machine.voltage
           div(class="technical-data__field")
             span(class="technical-data__label") Control voltage:
-            span(class="technical-data__value")= machine.controlVoltage
+            span(class="technical-data__value")= data.machine.controlVoltage
           div(class="technical-data__field")
             span(class="technical-data__label") Rated current:
-            span(class="technical-data__value")= machine.ratedCurrent
+            span(class="technical-data__value")= data.machine.ratedCurrent
           div(class="technical-data__field")
             span(class="technical-data__label") Electrical fuse:
-            span(class="technical-data__value")= machine.electricalFuse
+            span(class="technical-data__value")= data.machine.electricalFuse
           div(class="technical-data__field")
             span(class="technical-data__label") Compressed air:
-            span(class="technical-data__value")= machine.compressedAir
+            span(class="technical-data__value")= data.machine.compressedAir
           div(class="technical-data__field")
             span(class="technical-data__label") Weight mass:
-            span(class="technical-data__value")= machine.weightMass
+            span(class="technical-data__value")= data.machine.weightMass
           div(class="technical-data__field")
             span(class="technical-data__label") Dimensions:
-            span(class="technical-data__value")= machine.dimensions
+            span(class="technical-data__value")= data.machine.dimensions
           div(class="technical-data__field")
             span(class="technical-data__label") Drawing number:
-            span(class="technical-data__value")= machine.drawingNumber
+            span(class="technical-data__value")= data.machine.drawingNumber
 
         div Hallo
         div.overview-box__group
-            h2.heading-secondary.ma-bt-lg=`The ${machine.name} employees`
-            each employee in machine.employees
+            h2.heading-secondary.ma-bt-lg=`The ${data.machine.name} employees`
+            each employee in data.machine.employees
                .overview-box__detail
                   img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
@@ -82,6 +82,14 @@ block content
 
         //section
         section.section-header
+            if(data.machine.sectorASMA.length > 0)
+              h1= data.department._id
+              h1(style="color: green") diese maschine besitzt asma
+              //-h1= data.department.name
+              a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA
+            else
+              h1= data.department.name
+              h1(style= "color: red") diese maschine hat kein ASMA
             //-.header__hero
                 .header__hero-overlay &nbsp;
                 img.header__hero-img(src='#', alt=`${machine.name}`)
@@ -105,7 +113,7 @@ block content
                 .overview-box__group
                     h2.heading-secondary.ma-bt-lg Quick facts
 
-                    +overviewBox('Employees', `${machine.name} persons`, 'user')
+                    +overviewBox('Employees', `${data.machine.name} persons`, 'user')
                     //-+overviewBox('Machinery', `${department.machineryCount} machine`, 'machine')
 
                 .overview-box__group
@@ -137,7 +145,7 @@ block content
 
 
             .description-box
-                h2.heading-secondary.ma-bt-lg= `About ${machine.name} department`
+                h2.heading-secondary.ma-bt-lg= `About ${data.machine.name} department`
                 // mache neue linie bei einem punkt im text
                 //-- const paragraphs = department.description.split('\n');
                 //-each p in paragraphs

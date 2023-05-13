@@ -160,11 +160,12 @@ export const getMachinery = catchAsync(async (req, res, next) => {
 export const createMachine = catchAsync(async (req, res) => {
   console.log('bin createMachine');
 
-  console.log(req.body);
+  //console.log(req.body);
 
   const machineData = {
     name: req.body.name,
     description: req.body.description,
+    zone: req.body.zone ? req.body.zone : 'Sägen',
     type: req.body.type ? req.body.type : '-',
     constructionYear: req.body.constructionYear
       ? req.body.constructionYear
@@ -188,6 +189,186 @@ export const createMachine = catchAsync(async (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'A new machine is succefully created!',
+  });
+});
+
+export const getMachineryASMA = catchAsync(async (req, res, next) => {
+  const machinery = await Machine.find(); //.select('createdAt');
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: machinery,
+    },
+    //title: 'Manage ASMA/machine',
+    //data: {
+    //machinery: machinery,
+    //},
+  });
+});
+
+export const createSectorASMA = catchAsync(async (req, res, next) => {
+  console.log('bin createSectorASMA');
+  // console.log(req.body);
+  // console.log(req.params.id);
+  //
+  // console.log(req.body.sectionName);
+  // console.log(req.body.sectionDescription_de);
+  // console.log(req.body.sectionDescription_en);
+
+  // const machineForASMA = await Machine.findById(req.params.id);
+  // console.log(machineForASMA);
+
+  const machineSectorASMAData = {
+    name: req.body.sectionName,
+    description_de: req.body.sectionDescription_de,
+    description_en: req.body.sectionDescription_en,
+    components: [], //komponents sind noch leer
+    //zone: req.body.zone ? req.body.zone : 'Sägen',
+  };
+
+  // const machineForASMA = await Machine.findByIdAndUpdate(
+  //   req.params.id,
+  //   req.body,
+  //   {
+  //     //achtung mit patch und put, bei updatebyid
+  //     new: true,
+  //     runValidators: true, // falls price: 500 wäre ein string
+  //   }
+  // ); // in url /:63fb4c3baac7bf9eb4b72a76 , body: was geupdatet wird, 3, damit nur das geupdatet neue return wird
+  // //         // Tour.findOne({ _id: req.params.id})
+
+  const machineForASMA = await Machine.findByIdAndUpdate(
+    req.params.id,
+    { $push: { sectorASMA: machineSectorASMAData } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!machineForASMA) {
+    return next(new AppError('No machine found with that ID', 404));
+  }
+
+  console.log(
+    `Neuer sectorASMA wurde zur Maschine ${machineForASMA._id} hinzugefügt:`,
+    machineSectorASMAData
+  );
+  // machineForASMA.sectorASMA.push(machineSectorASMAData);
+  //
+  // machineForASMA.save((err, updatedMachine) => {
+  //   //speichere doku
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log(
+  //       `Neuer sectorASMA wurde zur Maschine ${updatedMachine._id} hinzugefügt:`,
+  //       sectorASMA
+  //     );
+  //   }
+  // });
+
+  res.status(200).json({
+    status: 'success',
+    message:
+      'New sectorASMA has been successfully added to the machine ${updatedMachine._id}:',
+  });
+});
+
+export const updateSectorASMA = catchAsync(async (req, res, next) => {
+  console.log('bin updateSectorASMA');
+
+  console.log(req.body);
+  console.log('------------');
+  console.log(req.params);
+  console.log('machineID: ' + req.params.machineID);
+  console.log('sectorASMAID: ' + req.params.sectorASMAID);
+
+  const machineID = req.params.machineID;
+  const sectorASMAID = req.params.sectorASMAID;
+
+  const name = req.body.sectorASMAName;
+  const description_de = req.body.sectorASMADescription_de;
+  const description_en = req.body.sectorASMADescription_en;
+
+  console.log('name: ' + name);
+  console.log('description_de: ' + description_de);
+  console.log('description_en: ' + description_en);
+
+  const updatedSectorASMA = await Machine.findByIdAndUpdate(
+    machineID,
+    {
+      $set: {
+        'sectorASMA.$[element].name': name,
+        'sectorASMA.$[element].description_de': description_de,
+        'sectorASMA.$[element].description_en': description_en,
+      },
+    },
+    { arrayFilters: [{ 'element._id': sectorASMAID }], new: true }
+  );
+
+  console.log(
+    `SectorASMA wurde bei Maschine ${
+      updatedSectorASMA.name
+    } und den SectorASMA: ${
+      updatedSectorASMA.sectorASMA.find(
+        (s) => s._id.toString() === sectorASMAID
+      ).name
+    }  aktualisiert:`,
+    updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+      .name,
+    updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+      .description_de,
+    updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+      .description_en
+    //updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID),// ganzes objekt, mit Komponente
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: 'erfolgreich',
+    //'sectorASMA ${updatedSectorASMA.sectorASMA.id.name} has been successfully updated to the machine ${machine.name}:'
+    //   message: `sectorASMA ${
+    //     updatedSectorASMA.sectorASMA.find(
+    //       (s) => s._id.toString() === sectorASMAID
+    //     ).name
+    //   } has been successfully updated to the machine ${updatedSectorASMA.name}.`,
+  });
+});
+
+export const deleteSectorASMA = catchAsync(async (req, res, next) => {
+  //console.log('bin deleteSectorASMA');
+  //console.log(req.params);
+  console.log(req);
+  //console.log(path);
+
+  // const machineID = req.params.machineID;
+  // const sectorASMAID = req.params.sectorASMAID;
+  // console.log('machineID: ' + req.params.machineID);
+  // console.log('sectorASMAID: ' + req.params.sectorASMAID);
+
+  const referer = req.headers.referer;
+  const ids = referer.match(/\/([\w\d]+)\/updateSectorASMA\/([\w\d]+)/);
+  const machineID = ids[1];
+  const sectorASMAID = ids[2];
+
+  console.log(`MachineID: ${machineID}`);
+  console.log(`SectorASMAID: ${sectorASMAID}`);
+
+  const updatedMachine = await Machine.findByIdAndUpdate(
+    machineID,
+    { $pull: { sectorASMA: { _id: sectorASMAID } } },
+    { new: true }
+  );
+
+  console.log(
+    `SectorASMA wurde bei Maschine ${updatedMachine.name} und den SectorASMA: ${sectorASMAID} gelöscht:`,
+    updatedMachine.sectorASMA
+  );
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });
 
