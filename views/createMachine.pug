@@ -13,6 +13,19 @@ block content
               label(class="form__label", for="description") Description
               input#description(class="form__input", type="text", placeholder="Description", required="required")
             div(class="form__group")
+              label(class="form__label", for="zone") zone
+              select#zone(class="form__input")
+                option(value="Sägen") Sägen
+                option(value="Schweissen") Schweissen
+                option(value="Spalten") Spalten
+                option(value="Spitzen") Spitzen
+                option(value="Ziehen") Ziehen
+                option(value="Richten") Richten
+                option(value="Glühen") Glühen
+                option(value="Recken") Recken
+                option(value="Beizen") Beizen
+                option(value="Sonstige") Sonstige
+            div(class="form__group")
               label(class="form__label", for="type") Type
               input#type(class="form__input", type="text", placeholder="Type")
             div(class="form__group")

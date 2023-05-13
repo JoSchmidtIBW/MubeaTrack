@@ -4,6 +4,8 @@ import Department from '../models/departmentModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 import APIFeatures from '../utils/apiFeatures.mjs';
+import mongoose from 'mongoose';
+import * as url from 'url';
 
 // http://127.0.0.1:7566/
 export const getStart = catchAsync(async (req, res, next) => {
@@ -67,13 +69,26 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   if (currentUser.role === 'admin') {
     const departmentsAllAdmin = await Department.find().sort('_id');
 
-    res.status(200).render('overview', {
-      title: 'All Departments',
-      departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
-      machinery: machinery,
-      users: users,
-      //user: currentUser,
-    });
+    const currentUserLanguage = currentUser.language;
+    console.log('currentUserLanguage: ' + currentUserLanguage);
+
+    if (currentUserLanguage === 'Deutsch') {
+      res.status(200).render('de/overview_de', {
+        title: 'All Departments',
+        departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+        machinery: machinery,
+        users: users,
+        //user: currentUser,
+      });
+    } else {
+      res.status(200).render('overview', {
+        title: 'All Departments',
+        departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+        machinery: machinery,
+        users: users,
+        //user: currentUser,
+      });
+    }
   } else {
     const departmentsUser = await Department.find({
       name: currentUser.department,
@@ -91,14 +106,37 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
 
 export const getMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMachine: ');
+  console.log('---------------------');
   console.log(req.params);
+  //console.log(req);
+  const referer = req.headers.referer; //'http://127.0.0.1:7566/api/v1/departments/anarbeit';
+  //const departmentName = referer.split('/').pop(); // 'anarbeit'
+
+  const departmentName =
+    referer.split('/').pop().charAt(0).toUpperCase() +
+    referer.split('/').pop().slice(1);
+  console.log('departmentName: ' + typeof departmentName);
+  console.log('departmentName: ' + departmentName);
+
+  //const department = await Department.findOne({ name: departmentName });
+  console.log('---------****------------');
+  // console.log(department);
+
+  const department = await Department.findOne({ name: departmentName });
+  console.log(department);
+
+  console.log('---------****------------');
+
+  console.log('departmentName: ' + departmentName);
+  console.log('---------------------');
   console.log(req.params.slug);
+  //console.log(req);
 
   const machine = await Machine.findOne({ name: req.params.slug });
   // console.log('machine in DB: ' + machine);
   console.log(machine.name);
   console.log('-------------------------');
-  console.log('machine: ' + machine);
+  //console.log('machine: ' + machine);
   console.log('-------------------------');
 
   if (!machine) {
@@ -108,8 +146,16 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
   res.status(200).render('machine', {
     title: `${machine.name} machine`,
-    machine,
+    data: {
+      machine,
+      department,
+    },
   });
+});
+
+export const getASMAMachine = catchAsync(async (req, res, next) => {
+  console.log('Bin getASMAMachine');
+  console.log(req.params);
 });
 
 export const getDepartment = catchAsync(async (req, res, next) => {
@@ -219,6 +265,67 @@ export const getManageASMAMachine = catchAsync(async (req, res, next) => {
     //data: {
     machinery: machinery,
     //},
+  });
+});
+
+export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateASMAMachine');
+  const machine = await Machine.findById(req.params.id);
+  console.log(req.params.id);
+
+  res.status(200).render('createASMAMachine', {
+    title: 'Create ASMAmachine',
+    data: {
+      machine: machine,
+    },
+  });
+});
+
+export const getCreateComponents = catchAsync(async (req, res, next) => {
+  console.log('bin getCreateComponents');
+  console.log(req.params.machineID);
+  console.log(req.params.sectorASMAID);
+});
+
+export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateSectorASMA');
+  const path = req.path; //
+  console.log('path: ' + path);
+  const pathArray = path.split('/');
+  const machineID = pathArray[2]; // 6444566c830afd3adeba2d38
+  // console.log('machineID: ' + machineID);
+  //
+  // console.log(req.params); // id SectorASMA
+  // console.log('-----------');
+  // console.log(req.params.id);
+  // console.log('-----------');
+  const machine = await Machine.findById(machineID);
+  const sectorASMAID = mongoose.Types.ObjectId(req.params.id); // req.params.id; //mongoose.Types.ObjectId(req.params.id); //req.params.id;
+
+  // console.log(machine);
+
+  // const sector = machine.sectorASMA.find(
+  //   (sector) => sector._id === sectorASMAID
+  // );
+  let sector;
+  for (let i = 0; i < machine.sectorASMA.length; i++) {
+    if (machine.sectorASMA[i]._id.equals(sectorASMAID)) {
+      sector = machine.sectorASMA[i];
+      break;
+    }
+  }
+
+  //console.log(sector);
+  // console.log('------****-----');
+  // console.log(sector);
+  // console.log('------****-----');
+
+  res.status(200).render('updateSectorASMA', {
+    title: 'Update sectorASMA',
+    data: {
+      machine: machine,
+      sectorASMA: sector,
+    },
   });
 });
 

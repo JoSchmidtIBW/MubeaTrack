@@ -17,6 +17,23 @@ const machineSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A machine must have a description!'],
   },
+  zone: {
+    type: String,
+    required: [true, 'A machine must have a zone'],
+    default: ['Sägen'],
+    enum: [
+      'Sägen',
+      'Schweissen',
+      'Spalten',
+      'Spitzen',
+      'Ziehen',
+      'Richten',
+      'Glühen',
+      'Recken',
+      'Beizen',
+      'Sonstige',
+    ],
+  },
   machineNumber: {
     type: String,
     trim: true,
@@ -100,9 +117,65 @@ const machineSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  sectorASMA: [
+    {
+      name: {
+        type: String,
+      },
+      description_de: {
+        type: String,
+      },
+      description_en: {
+        type: String,
+      },
+      components: [
+        {
+          name_de: {
+            type: String,
+          },
+          name_en: {
+            type: String,
+          },
+          description_de: {
+            type: String,
+          },
+          description_en: {
+            type: String,
+          },
+          componentDetails: [
+            {
+              name_de: {
+                type: String,
+              },
+              name_en: {
+                type: String,
+              },
+              status: {
+                type: Boolean,
+              },
+              // errors: [{
+              //   name: {
+              //     type: String,
+              //   },
+              //   description: {
+              //     type: String,
+              //   }
+              // }]
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
 
 machineSchema.index({ slug: 1 });
+
+// Middleware-Funktion, die das Leerzeichen im Namen entfernt
+machineSchema.pre('save', function (next) {
+  this.name = this.name.replace(/\s/g, '');
+  next();
+});
 
 machineSchema.pre('save', function (next) {
   const employees = this;

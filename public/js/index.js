@@ -3,6 +3,12 @@
 import '@babel/polyfill'; // first line of imports, für ältere Browser
 import { login, logout } from './login';
 import { createUser } from './user';
+import {
+  showASMAmachinery,
+  createSectorASMA,
+  updateSectorASMA,
+  deleteSectorASMA,
+} from './machineryASMA';
 
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
@@ -29,6 +35,14 @@ const updateUserByChefDataForm = document.querySelector('.form-worker-data');
 const manageMachineryTabel = document.querySelector('.manageMachineryTable');
 const newMachineDataForm = document.querySelector('.form-new-machine-data');
 const updateMachineForm = document.querySelector('.form-machine-data');
+
+const manageASMAMachineTable = document.querySelector(
+  '.manageASMAMachineTable'
+);
+const newSectorASMAform = document.querySelector('.form-new-sectorASMA-data');
+const updateSectorASMAForm = document.querySelector(
+  '.form-updateSectorASMA-data'
+);
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -529,6 +543,83 @@ if (updateMachineForm) {
   });
 }
 
+if (newSectorASMAform) {
+  newSectorASMAform.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin newSectorASMAform');
+
+    const machineId = document.getElementById('id').value;
+    const input_name = document.getElementById('input_name').value;
+    const input_description_de = document.getElementById(
+      'input_description_de'
+    ).value;
+    const input_description_en = document.getElementById(
+      'input_description_en'
+    ).value;
+
+    console.log('machineId: ' + machineId);
+    console.log('input_name: ' + input_name);
+    console.log('input_description_de: ' + input_description_de);
+    console.log('input_description_en: ' + input_description_en);
+
+    createSectorASMA(
+      machineId,
+      input_name,
+      input_description_de,
+      input_description_en
+    );
+  });
+}
+
+const saveUpdateSectorASMAButton = document.querySelector(
+  '.btn--saveUpdateSectorASMA'
+);
+const deleteSectorASMAButton = document.querySelector('.btn--deleteSectorASMA');
+
+if (updateSectorASMAForm) {
+  updateSectorASMAForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateSectorASMAForm');
+
+    // const machineIDdelete = document.getElementById('machineIDdelete').value;
+    // const sectorASMAIDdelete =
+    //   document.getElementById('sectorASMAIDdelete').value;
+    // console.log('machineIDdelete: ' + machineIDdelete);
+    // console.log('sectorASMAIDdelete: ' + sectorASMAIDdelete);
+
+    const machineID = document.getElementById('machineID').value;
+    const sectorASMAID = document.getElementById('sectorASMAID').value;
+    const sectorASMAName = document.getElementById('sectorASMAname').value;
+    const sectorASMADescription_de = document.getElementById(
+      'sectorASMAdescription_de'
+    ).value;
+    const sectorASMADescription_en = document.getElementById(
+      'sectorASMAdescription_en'
+    ).value;
+
+    console.log('machineID: ' + machineID);
+    console.log('sectorASMAID: ' + sectorASMAID);
+    console.log('sectorASMAName: ' + sectorASMAName);
+    console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
+    console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
+
+    if (e.submitter === saveUpdateSectorASMAButton) {
+      console.log('bin saveUpdateSectorASMAButton');
+      updateSectorASMA(
+        { sectorASMAName, sectorASMADescription_de, sectorASMADescription_en },
+        machineID,
+        sectorASMAID
+      );
+    } else if (e.submitter === deleteSectorASMAButton) {
+      console.log('bin deleteSectorASMAButton');
+      //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
+      deleteSectorASMA(machineID, sectorASMAID);
+    }
+  });
+}
+
+//----------------------------------------------------------------------------------
+
 const updateMachine = async (data, id) => {
   console.log('bin updateMachine in index.js');
   console.log(id);
@@ -824,6 +915,7 @@ if (newMachineDataForm) {
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
+    const zone = document.querySelector('#zone').value;
     const type = document.getElementById('type').value;
     const constructionYear = document.getElementById('constructionYear').value;
     const companyMachine = document.getElementById('companyMachine').value;
@@ -839,6 +931,7 @@ if (newMachineDataForm) {
 
     console.log(name);
     console.log(description);
+    console.log(zone);
     console.log(type);
     console.log(constructionYear);
     console.log(companyMachine);
@@ -855,6 +948,7 @@ if (newMachineDataForm) {
     createNewMachine(
       name,
       description,
+      zone,
       type,
       constructionYear,
       companyMachine,
@@ -874,6 +968,7 @@ if (newMachineDataForm) {
 const createNewMachine = async (
   name,
   description,
+  zone,
   type,
   constructionYear,
   companyMachine,
@@ -895,6 +990,7 @@ const createNewMachine = async (
       data: {
         name: name, //'66101',
         description: description, //'Erika',
+        zone: zone,
         type: type, //'Schmidt',
         constructionYear: constructionYear,
         companyMachine: companyMachine,
@@ -933,6 +1029,11 @@ const createNewMachine = async (
   //   showAlert('error', err.response.data.message);
   // }
 };
+
+if (manageASMAMachineTable) {
+  console.log('bin If manageASMAMachineTable');
+  showASMAmachinery();
+}
 
 // const showUsers = async () => {
 //   console.log('Bin showUsers');

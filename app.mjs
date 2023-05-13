@@ -34,7 +34,15 @@ const __dirname = path.dirname(__filename); //__dirname is not definet
 app.set('view engine', 'pug'); //oder ejs
 //app.set('view engine', 'ejs'); //oder ejs
 //app.set('views', './views/pages'); // aber besser nicht so
-app.set('views', path.join(__dirname, 'views')); // slash /views// mit path, könnte bug geben mit /\- im pfad
+
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'views', 'de'), path.join(__dirname, 'views', 'en')]);
+app.set('views', [
+  path.join(__dirname, 'views'),
+  path.join(__dirname, 'views', 'de'),
+  path.join(__dirname, 'views', 'en'),
+]);
+// slash /views// mit path, könnte bug geben mit /\- im pfad
 // could also be './views', but this is safer
 //app.set('views', path.join(__dirname, 'views/pages'));
 
