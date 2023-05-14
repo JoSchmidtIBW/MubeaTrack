@@ -6,8 +6,34 @@ block content
         h1 MaschinenID:
         h1= data.machine._id
         h1= data.machine.name
+        br
+
         each sector in data.machine.sectorASMA
+          h1(style="color:red") sector
+          h4= `ID: ${sector._id}`
+          h4= sector._id
           h1= sector.name
+          h1= sector.description_de
+          h1= sector.description_en
+          br
+          h1(style="color:blue") componenten:
+          each component in sector.components
+            h4= `ID: ${component._id}`
+            h4= component._id
+            h1= component.name_de
+            h1= component.name_en
+            h1= component.description_de
+            h1= component.description_en
+            br
+            h1(style="color:orange") componentDetails:
+            each detail in component.componentDetails
+              h4= `ID: ${detail._id}`
+              h4= detail._id
+              button= detail.name_de
+              button= detail.name_en
+              h1= detail.status
+              br
+          br
           //-each component in data.machine.sectorASMA.components
             h1= component.name_de
         h1 ----------------------------------
