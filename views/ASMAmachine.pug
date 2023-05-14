@@ -1,0 +1,13 @@
+extends base
+
+block content
+    main.main
+        br
+        h1 MaschinenID:
+        h1= data.machine._id
+        h1= data.machine.name
+        each sector in data.machine.sectorASMA
+          h1= sector.name
+          //-each component in data.machine.sectorASMA.components
+            h1= component.name_de
+        h1 ----------------------------------

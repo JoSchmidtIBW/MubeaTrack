@@ -9,6 +9,7 @@ block content
           h3.heading-secondary.ma-bt-md= `Sector: ${data.sectorASMA.name}`
 
           form.form.form-updateSectorASMA-data
+            //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
             input#machineID(type="text", value=data.machine._id)
             br
             input#sectorASMAID(type="text", value=data.sectorASMA._id)

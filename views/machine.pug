@@ -86,7 +86,7 @@ block content
               h1= data.department._id
               h1(style="color: green") diese maschine besitzt asma
               //-h1= data.department.name
-              a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA
+              a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA machine
             else
               h1= data.department.name
               h1(style= "color: red") diese maschine hat kein ASMA
