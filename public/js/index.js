@@ -10,6 +10,12 @@ import {
   deleteSectorASMA,
 } from './machineryASMA';
 
+import {
+  createComponentASMA,
+  updateComponentASMA,
+  deleteComponentASMA,
+} from './componentsASMA';
+
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
 import axios from 'axios';
@@ -42,6 +48,12 @@ const manageASMAMachineTable = document.querySelector(
 const newSectorASMAform = document.querySelector('.form-new-sectorASMA-data');
 const updateSectorASMAForm = document.querySelector(
   '.form-updateSectorASMA-data'
+);
+const newComponentASMAForm = document.querySelector(
+  '.form-new-componentsASMA-data'
+);
+const updateComponentASMAForm = document.querySelector(
+  '.form-updateComponentASMA-data'
 );
 
 //const createUserBtn = document.querySelector('.createUserBtn')
@@ -539,6 +551,96 @@ if (updateMachineForm) {
     } else if (e.submitter === deleteUpdateMachineButton) {
       console.log('bin Delete in updateMachineDataForm');
       deleteMachine(id);
+    }
+  });
+}
+
+if (newComponentASMAForm) {
+  newComponentASMAForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin newComponentASMAForm');
+
+    const machineId = document.getElementById('machineID').value;
+    const sectorASMAID = document.getElementById('sectorASMAID').value;
+    const input_name_de = document.getElementById('input_name_de').value;
+    const input_name_en = document.getElementById('input_name_en').value;
+    const input_description_de = document.getElementById(
+      'input_description_de'
+    ).value;
+    const input_description_en = document.getElementById(
+      'input_description_en'
+    ).value;
+
+    console.log('machineId: ' + machineId);
+    console.log('sectorASMAID: ' + sectorASMAID);
+    console.log('input_name_de: ' + input_name_de);
+    console.log('input_name_en: ' + input_name_en);
+    console.log('input_description_de: ' + input_description_de);
+    console.log('input_description_en: ' + input_description_en);
+
+    createComponentASMA(
+      machineId,
+      sectorASMAID,
+      input_name_de,
+      input_name_en,
+      input_description_de,
+      input_description_en
+    );
+  });
+}
+
+const saveUpdateComponentASMAButton = document.querySelector(
+  '.btn--saveUpdateComponentASMA'
+);
+const deleteComponentASMAButton = document.querySelector(
+  '.btn--deleteComponentASMA'
+);
+
+if (updateComponentASMAForm) {
+  updateComponentASMAForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateComponentASMAForm');
+
+    const machineID = document.getElementById('machineID').value;
+    const sectorASMAID = document.getElementById('sectorASMAID').value;
+    const componentASMAID = document.getElementById('componentASMAID').value;
+    const componentASMAName_de = document.getElementById(
+      'componentASMAName_de'
+    ).value;
+    const componentASMAName_en = document.getElementById(
+      'componentASMAName_en'
+    ).value;
+    const componentASMADescription_de = document.getElementById(
+      'componentASMAdescription_de'
+    ).value;
+    const componentASMADescription_en = document.getElementById(
+      'componentASMAdescription_en'
+    ).value;
+
+    console.log('machineID: ' + machineID);
+    console.log('sectorASMAID: ' + sectorASMAID);
+    console.log('componentASMAID: ' + componentASMAID);
+    console.log('componentASMAName_de: ' + componentASMAName_de);
+    console.log('componentASMAName_en: ' + componentASMAName_en);
+    console.log('componentASMADescription_de: ' + componentASMADescription_de);
+    console.log('componentASMADescription_en: ' + componentASMADescription_en);
+
+    if (e.submitter === saveUpdateComponentASMAButton) {
+      console.log('bin saveUpdateComponentASMAButton');
+      updateComponentASMA(
+        {
+          componentASMAName_de,
+          componentASMAName_en,
+          componentASMADescription_de,
+          componentASMADescription_en,
+        },
+        machineID,
+        sectorASMAID,
+        componentASMAID
+      );
+    } else if (e.submitter === deleteComponentASMAButton) {
+      console.log('bin deleteComponentASMAButton');
+      deleteComponentASMA(machineID, sectorASMAID, componentASMAID);
     }
   });
 }

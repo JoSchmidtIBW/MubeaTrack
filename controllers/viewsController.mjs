@@ -155,7 +155,22 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
 export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log('Bin getASMAMachine');
-  console.log(req.params);
+  console.log(req.params.machineName);
+
+  const machine = await Machine.findOne({ name: req.params.machineName });
+  console.log(machine);
+
+  if (!machine) {
+    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+  }
+
+  res.status(200).render('ASMAmachine', {
+    title: 'ASMAmachine',
+    data: {
+      machine: machine,
+    },
+  });
 });
 
 export const getDepartment = catchAsync(async (req, res, next) => {
@@ -281,10 +296,111 @@ export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getCreateComponentDetailsASMA = catchAsync(
+  async (req, res, next) => {
+    console.log('bin getCreateComponentDetailsASMA');
+    console.log(req.params.machineID);
+    console.log(req.params.sectorASMAID);
+    console.log(req.params.componentASMAID);
+
+    const machine = await Machine.findById(req.params.machineID);
+    // console.log(machine);
+    // const sectorASMA = machine.sectorsASMA.find((sector) =>
+    //   sector._id.equals(req.params.sectorASMAID)
+    // );
+    // const sectorASMA = machine.sectorsASMA.find((sector) =>
+    //   sector._id.equals(req.params.sectorASMAID)
+    // );
+    const sectorASMA = machine.sectorASMA.find(
+      (sector) => String(sector._id) === req.params.sectorASMAID
+    );
+
+    const componentASMA = machine.sectorASMA
+      .find((s) => s._id.toString() === req.params.sectorASMAID)
+      .components.find((c) => c._id.toString() === req.params.componentASMAID);
+
+    console.log(componentASMA);
+
+    //console.log(sectorASMA);
+    //console.log(sectorASMA.name);
+
+    res.status(200).render('createComponentDetailsASMa', {
+      title: 'Create componentDetailsASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+        componentASMA: componentASMA,
+      },
+    });
+  }
+);
+
 export const getCreateComponents = catchAsync(async (req, res, next) => {
   console.log('bin getCreateComponents');
   console.log(req.params.machineID);
   console.log(req.params.sectorASMAID);
+
+  const machine = await Machine.findById(req.params.machineID);
+  // console.log(machine);
+  // const sectorASMA = machine.sectorsASMA.find((sector) =>
+  //   sector._id.equals(req.params.sectorASMAID)
+  // );
+  // const sectorASMA = machine.sectorsASMA.find((sector) =>
+  //   sector._id.equals(req.params.sectorASMAID)
+  // );
+  const sectorASMA = machine.sectorASMA.find(
+    (sector) => String(sector._id) === req.params.sectorASMAID
+  );
+
+  //console.log(sectorASMA);
+
+  res.status(200).render('createComponentsASMa', {
+    title: 'Create componentsASMA',
+    data: {
+      machine: machine,
+      sectorASMA: sectorASMA,
+    },
+  });
+});
+
+export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateComponentASMA');
+  console.log('machineID: ' + req.params.machineID);
+  console.log('sectorASMAID: ' + req.params.sectorASMAID);
+  console.log('componentASMAID: ' + req.params.componentASMAID);
+
+  const machine = await Machine.findById(req.params.machineID);
+  if (!machine) {
+    return next(new AppError('No machine found with that ID', 404));
+  }
+
+  let sectorASMA;
+  for (let i = 0; i < machine.sectorASMA.length; i++) {
+    if (machine.sectorASMA[i]._id.equals(req.params.sectorASMAID)) {
+      sectorASMA = machine.sectorASMA[i];
+      break;
+    }
+  }
+  console.log(sectorASMA);
+  console.log('------------------');
+
+  let componentASMA;
+  for (let i = 0; i < sectorASMA.components.length; i++) {
+    if (sectorASMA.components[i]._id.equals(req.params.componentASMAID)) {
+      componentASMA = sectorASMA.components[i];
+      break;
+    }
+  }
+  console.log(componentASMA);
+
+  res.status(200).render('updateComponentASMa', {
+    title: 'Update componentASMA',
+    data: {
+      machine: machine,
+      sectorASMA: sectorASMA,
+      componentASMA: componentASMA,
+    },
+  });
 });
 
 export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {

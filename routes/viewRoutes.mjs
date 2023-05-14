@@ -23,6 +23,8 @@ import {
   getUpdateSectorASMA,
   getCreateComponents,
   getASMAMachine,
+  getUpdateComponentASMA,
+  getCreateComponentDetailsASMA,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -56,7 +58,7 @@ router.get(
 );
 
 router.get(
-  '/departments/:departmentName/ASMA/:machineNameu',
+  '/departments/:departmentName/ASMA/:machineName',
   protect,
   isLoggedIn,
   getASMAMachine
@@ -147,6 +149,21 @@ router.get(
   protect,
   restrictTo('admin'),
   getUpdateSectorASMA
+);
+
+router.get(
+  '/createASMAmachine/:machineID/:sectorASMAID/updateComponentASMA/:componentASMAID',
+  protect,
+  restrictTo('admin'),
+  getUpdateComponentASMA
+);
+
+///api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${sector.id}`)
+router.get(
+  '/createASMAmachine/:machineID/:sectorASMAID/createComponentDetails/:componentASMAID',
+  protect,
+  restrictTo('admin'),
+  getCreateComponentDetailsASMA
 );
 
 router.get('/aboutMubeaTrack', getAboutMubeaTrack);

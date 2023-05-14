@@ -403,6 +403,20 @@ app.use('/api/v1/departments', departmentRoute);
 app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);
 
+//---------------------------unit-test-test----Down--------------------------------
+// für UNIT-TEST- Versuch
+export function sum(a, b) {
+  return a + b;
+}
+//console.log("Für Unit Test... sum: "+sum(4,3));
+
+a_Plus_b(1, 2);
+function a_Plus_b(a, b) {
+  let result = a + b;
+  // console.log("UnitTest... a+b= "+ result);
+}
+//---------------------------unit-test-test----Up--------------------------------
+
 //um falsche urls eine fehlermeldung zu geben, muss dies unter den routen passieren
 // für all, get post put delete--> all      404 for not found
 //http://127.0.0.1:4301/api/tours       --> v1 zb nicht in url
