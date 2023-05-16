@@ -113,6 +113,9 @@ const machineSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+  statusRun: {
+    type: Boolean,
+  },
   employeesCount: {
     type: Number,
     default: 0,

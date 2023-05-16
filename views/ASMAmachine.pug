@@ -1,98 +1,155 @@
-extends base
+extend base
+
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`/img/icons.svg#icon-${icon}`)
+            | #{text}
 
 block content
-    main.mainMine
-      br
-      h1 MaschinenID:
-      h1= data.machine._id
-      h1= data.machine.name
-      br
+    main.main
+        .user-view
+            nav.user-view__menu
 
-      each sector in data.machine.sectorASMA
-          div.sector(style="border: 1px solid black; padding: 10px; margin-bottom: 10px;")
-              div.sectorTitle
-                  h1(style="color:red")= sector.name
-              div.right(style="border: 1px solid green;")
-                each component in sector.components
-                    div.componentFull(style="border: 1px solid blue;display: flex;  padding: 10px; margin-right: 50px;")
-                        div.left(style="border: 1px solid pink;margin-right: 50px;")
-                            h2= component.name_de
-                            //-h2= component.name_en
-                        div.right(style="border: 1px solid red; display: flex; flex-wrap: wrap; justify-content: flex-start;")
-                          -let detailsPerRow = 5
-                          -let rowIndex = 0
-                          each detail in component.componentDetails
-                              if rowIndex % detailsPerRow === 0
-                                  div(style="display: block; flex-wrap: wrap; justify-content: flex-start;") ccc
-                                      h1 XXX
-                                      br
-                              div(style="border: 1px solid pink; padding: 10px; margin: 5px;")
+                ul.side-nav
+                    +navItem('#', 'Störmeldung', 'settings', true)
+                    +navItem('#', 'Verbrauchsmaterial', 'user-error-report')
+                    +navItem('#', 'Prüfmittel', 'user-error-report')
+                    +navItem('#', 'Planung', 'user-error-report')
 
-                                  //button(class=`stoerBtn stoerBtn-${index}` id=`stoerBtn-${index}` style=(detail.status ? 'background-color: green' : 'background-color: red') data-status=detail.status)= detail.name_de
-                                  button(class=`stoerBtn stoerBtn-${index}` id=`stoerBtn-${index}` style=(detail.status ? 'background-color: green' : 'background-color: red') data-status=(detail.status ? 'true' : 'false'))= detail.name_de
-                                  //-button('id=`stoerBtn-${index}` id="stoerBtn" style=detail.status ? background-color: green : background-color: red, data-status=detail.status')= detail.name_de
-                                  //button= detail.name_de
-                                  //-button= detail.name_en
-                              -rowIndex++
 
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Your account settings
+                        //-form.form.form-ASMAbtn-data
+                        //-main.mainMine
+                        br
+                        h1 MaschinenID:
+                        h1= data.machine._id
+                        h1= data.machine.name
+                        br
+                        button(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: red')
+                            data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
+                        br
+                        table
+                          each sector in data.machine.sectorASMA
+                              tr
+                                td(colspan="2")
+                                      h1(style="color:red")= sector.name
+                                each component in sector.components
+                                    tr
+                                        td
+                                            h2= component.name_de
+                                        td
+                                            table
+                                              each detail, index in component.componentDetails
+                                                  if index % 5 === 0
+                                                      tr
+                                                  td(style="border: 1px solid pink; padding: 10px; margin: 5px;")
+                                                      button(
+                                                          class=`stoerBtn stoerBtn-${index}`,
+                                                          id=`stoerBtn-${index}`,
+                                                          style=(detail.status ? 'background-color: green' : 'background-color: red'),
+                                                          data-status=(detail.status ? 'true' : 'false'),data-detail-id=detail._id
+                                                      )= detail.name_de
+                                                      //-`${detail.name_de},${detail._id}`
+                    form.form.form-ASMAbtn-data
+                        //todo diese felder verstecken, nicht löschen! es braucht die ID's
+                        br
+                        input#machineID(type="text", name="machineID", value=data.machine._id)
+                        br
+                        input#currentUserID(type="text",  name="currentUserID", value=data.currentUser._id)
+                        br
+                        input(type="text", id="selectedIdsInput", name="selectedIds")
+                        input(type="text", id="selectedRunIdInput", name="selectedRunId")
+                        br
+                        button(id="abszBtn") Störung-Meldung absetzen
 
     script.
+      const machineStatusRunBtn = document.getElementById('machineStatusRunBtn')
+      const statusRun = machineStatusRunBtn.getAttribute('data-statusRun');
+      const machineIDRun = machineStatusRunBtn.getAttribute('data-machineIDRun')
+      let isOrange = true;
+      let isRed = true;
+      let selectedRunId = "";
+
+      machineStatusRunBtn.addEventListener('click', function() {
+        console.log("machineFireBtn click", statusRun,machineIDRun)
+        if (statusRun === 'true') {
+          if (isOrange) {
+            machineStatusRunBtn.style.backgroundColor = 'orange';
+            isOrange = false;
+            isRed = false;
+            //selectedRunId.push(componentDetail_id); // data-detail-id zum Array hinzu
+            selectedRunId = machineIDRun
+          } else {
+            machineStatusRunBtn.style.backgroundColor = 'lightgreen';
+            isOrange = true;
+            isPink = false;
+            //selectedRunId.splice(selectedIds.indexOf(componentDetail_id), 1); // Entferne die data-detail-id aus Array
+            selectedRunId = ""
+          }
+        } else {
+          if (isRed) {
+            machineStatusRunBtn.style.backgroundColor = 'pink';
+            isRed = false;
+            isOrange = false;
+
+          } else {
+            machineStatusRunBtn.style.backgroundColor = 'red';
+            isRed = true;
+            isOrange = false;
+
+          }
+        }
+      })
 
       const stoerBtns = document.querySelectorAll('.stoerBtn');
-      //console.log(stoerBtns)
-
-      // stoerBtns.forEach(function(btn) {
-      //   btn.addEventListener('click', function() {
-      //     console.log(btn.dataset.status);
-      //   });
-      // });
+      const selectedIds = [];
 
       stoerBtns.forEach(function(btn) {
         let status = btn.getAttribute('data-status');
-        console.log(status)
-        let isGreen = status === 'true';
-        let isRed = status === 'false';
-
+        let componentDetail_id = btn.getAttribute('data-detail-id');
         let isYellow = true;
-        let isPink = true
-
+        let isPink = true;
 
         btn.addEventListener('click', function() {
-          //console.log(btn.getAttribute('data-status'))
-          //console.log(btn.data-status)
-          //console.log(btn.getAttribute('data-status'));
-          if (isGreen) {
-            console.log(isGreen)
-            btn.style.backgroundColor = 'yellow';
-            //isGreen = false;
-            isYellow = true;
-            //isRed = false;
-            isPink = false
-          }
-          if (isYellow){
-            btn.style.backgroundColor = 'green';
-            isGreen = true;
-            isYellow = false;
-            //isRed = false;
-            isPink = false
-          }
-
-
-          if (isRed) {
-            btn.style.backgroundColor = 'pink';
-            //isGreen = false;
-            isYellow = false;
-            isRed = false;
-            isPink = true
-
-          } //else {
-          if(isPink){
-            btn.style.backgroundColor = 'red';
-            //isGreen = false;
-            isYellow = false;
-            isRed = true;
-            isPink = false
+          if (status === 'true') {
+            if (isYellow) {
+              btn.style.backgroundColor = 'yellow';
+              isYellow = false;
+              isPink = false;
+              selectedIds.push(componentDetail_id); // data-detail-id zum Array hinzu
+            } else {
+              btn.style.backgroundColor = 'green';
+              isYellow = true;
+              isPink = false;
+              selectedIds.splice(selectedIds.indexOf(componentDetail_id), 1); // Entferne data-detail-id aus Array
+            }
+          } else {
+            if (isPink) {
+              btn.style.backgroundColor = 'pink';
+              isPink = false;
+              isYellow = false;
+              //selectedIds.push(componentDetail_id); // braucht es nicht
+            } else {
+              btn.style.backgroundColor = 'red';
+              isPink = true;
+              isYellow = false;
+              //selectedIds.splice(selectedIds.indexOf(componentDetail_id), 1); // braucht es nicht
+            }
           }
         });
       });
 
+      const abszBtn = document.getElementById('abszBtn');
+
+      abszBtn.addEventListener('click', function() {
+        console.log(selectedIds); // Array mit ausgewählten data-detail-ids
+        console.log(selectedRunId)
+        selectedIdsInput.value = JSON.stringify(selectedIds);
+        selectedRunIdInput.value = JSON.stringify(selectedRunId);
+        // dieses array zu inputFeld(versteckt) beim button Absetzen Form senden
+      });
