@@ -160,6 +160,8 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
   const machine = await Machine.findOne({ name: req.params.machineName });
   console.log(machine);
 
+  console.log(req.user); //currentUser
+
   if (!machine) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
     return next(new AppError('There is no machine with that name.', 404)); //404= not found
@@ -169,6 +171,7 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
     title: 'ASMAmachine',
     data: {
       machine: machine,
+      currentUser: req.user,
     },
   });
 });

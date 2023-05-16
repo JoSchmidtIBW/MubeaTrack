@@ -181,6 +181,7 @@ export const createMachine = catchAsync(async (req, res) => {
     drawingNumber: req.body.drawingNumber ? req.body.drawingNumber : '-',
     //photo: req.body.photo,
     department: req.body.department,
+    statusRun: true,
   };
 
   const newMachine = new Machine(machineData);

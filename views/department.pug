@@ -92,6 +92,8 @@ block content
                     .overview-box__detail
                         span.overview-box__label= machine.name
                         a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                        span status:
+                        span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
 
     section.section-pictures
         each img, i in department.images

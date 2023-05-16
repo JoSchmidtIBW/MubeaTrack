@@ -26,6 +26,7 @@
     "dimensions": "12975 x 9300 x 500",
     "drawingNumber": "0480.74240",
     "department": "Anarbeit",
+    "statusRun": true,
     "sectorASMA": [
       {
         "name": "Rattunde1",
@@ -87,6 +88,7 @@
     "name": "Rattunde2",
     "zone": "Sägen",
     "description": "Säge- Anlage",
-    "department": "Anarbeit"
+    "department": "Anarbeit",
+    "statusRun": false
   }
 ]
