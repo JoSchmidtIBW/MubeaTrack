@@ -206,6 +206,96 @@ export const getMachineryASMA = catchAsync(async (req, res, next) => {
   });
 });
 
+export const createComponentDetailASMA = catchAsync(async (req, res, next) => {
+  console.log('bin createComponentDetailASMA');
+
+  console.log(req.params.machineID);
+  console.log(req.params.sectorASMAID);
+  console.log(req.params.componentASMAID);
+  const machineID = req.params.machineID;
+  const sectorASMAID = req.params.sectorASMAID;
+  const componentASMAID = req.params.componentASMAID;
+
+  console.log('name_de: ' + req.body.componentDetailName_de);
+  console.log('name_en: ' + req.body.componentDetailName_en);
+
+  const sectorComponentDetailASMAData = {
+    name_de: req.body.componentDetailName_de,
+    name_en: req.body.componentDetailName_en,
+    status: true,
+  };
+
+  const machine = await Machine.findOneAndUpdate(
+    {
+      _id: machineID,
+      'sectorASMA._id': sectorASMAID,
+      'sectorASMA.components._id': componentASMAID,
+    },
+    {
+      $push: {
+        'sectorASMA.$[sectorIndex].components.$[componentIndex].componentDetails':
+          sectorComponentDetailASMAData,
+      },
+    },
+    {
+      arrayFilters: [
+        { 'sectorIndex._id': sectorASMAID },
+        { 'componentIndex._id': componentASMAID },
+      ],
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!machine) {
+    return next(new AppError('No machine found with that ID', 404));
+  }
+
+  // console.log(machine);
+  machine.sectorASMA.forEach((sector) => {
+    sector.components.forEach((component) => {
+      component.componentDetails.forEach((detail) => {
+        console.log(detail);
+      });
+    });
+  });
+
+  // const sectorASMA = await machine.sectorASMA.find(
+  //   (s) => s._id.toString() === sectorASMAID
+  // );
+  // console.log('sector: ' + sectorASMA.name);
+
+  // const componentASMA = await machine.sectorASMA.components.find(
+  //   (s) => s._id.toString() === componentASMAID
+  // );
+  // console.log('component: ' + componentASMA.name_de);
+  const componentIndex = machine.sectorASMA.findIndex(
+    (s) => s._id.toString() === sectorASMAID
+  );
+  const sectorASMA = machine.sectorASMA[componentIndex];
+  const componentASMAIndex = sectorASMA.components.findIndex(
+    (c) => c._id.toString() === componentASMAID
+  );
+  console.log('sector: ' + sectorASMA.name);
+  const componentASMA = sectorASMA.components[componentASMAIndex];
+  console.log('component: ' + componentASMA.name_de);
+
+  const componentDetailASMA_New =
+    componentASMA.componentDetails[componentASMA.componentDetails.length - 1];
+  console.log('Neuestes hinzugefügtes Component Detail:');
+  console.log(componentDetailASMA_New);
+
+  console.log(
+    `Neues componentDetail wurde zur Maschine ${machine.name}, dem sectorASMA ${sectorASMA.name}, mit der componente ${componentASMA.name_de} hinzugefügt:`,
+    componentDetailASMA_New
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: `New componentDetail has been successfully added to the machine ${machine.name}, with sectorASMA ${sectorASMA.name_de} and component ${componentASMA.name_de}: ${componentDetailASMA_New}`,
+  });
+});
+
 export const createComponentASMA = catchAsync(async (req, res, next) => {
   console.log('bin createComponentASMA');
 
@@ -263,6 +353,102 @@ export const createComponentASMA = catchAsync(async (req, res, next) => {
     status: 'success',
     message:
       'New component has been successfully added to the machine ${machine.name} and the sectorASMA ${sectorASMAName}',
+  });
+});
+
+export const updateComponentDetailASMA = catchAsync(async (req, res, next) => {
+  console.log('bin updateComponentDetailASMA');
+
+  console.log('machineID: ' + req.params.machineID);
+  console.log('sectorASMAID: ' + req.params.sectorASMAID);
+  console.log('componentASMAID: ' + req.params.componentASMAID);
+  console.log('componentDetailASMAID: ' + req.params.componentDetailASMAID);
+
+  const machineID = req.params.machineID;
+  const sectorASMAID = req.params.sectorASMAID;
+  const componentASMAID = req.params.componentASMAID;
+  const componentDetailASMAID = req.params.componentDetailASMAID;
+
+  const name_de = req.body.componentDetailASMAName_de;
+  const name_en = req.body.componentDetailASMAName_en;
+  const status = true;
+
+  console.log('name_de: ' + name_de);
+  console.log('name_en: ' + name_en);
+  console.log('status: ' + status);
+
+  const updatedMachine = await Machine.findOneAndUpdate(
+    {
+      _id: machineID,
+      'sectorASMA._id': sectorASMAID,
+      'sectorASMA.components._id': componentASMAID,
+      'sectorASMA.components.componentDetails._id': componentDetailASMAID,
+    },
+    {
+      $set: {
+        'sectorASMA.$[sector].components.$[component].componentDetails.$[detail].name_de':
+          name_de,
+        'sectorASMA.$[sector].components.$[component].componentDetails.$[detail].name_en':
+          name_en,
+        'sectorASMA.$[sector].components.$[component].componentDetails.$[detail].status':
+          status,
+      },
+    },
+    {
+      arrayFilters: [
+        { 'sector._id': sectorASMAID },
+        { 'component._id': componentASMAID },
+        { 'detail._id': componentDetailASMAID },
+      ],
+      new: true,
+    }
+  ).populate('sectorASMA.components.componentDetails');
+
+  if (!updatedMachine) {
+    return next(new AppError('No machine found with that ID', 404));
+  }
+
+  // //console.log('Updated machine:', updatedMachine);
+  console.log(
+    `ComponentDetails wurde bei Maschine ${
+      updatedMachine.name
+    }, dem sectorASMA ${
+      updatedMachine.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+        .name
+    }, \nder componente 
+    ${
+      updatedMachine.sectorASMA
+        .find((s) => s._id.toString() === sectorASMAID)
+        .components.find((c) => c._id.toString() === componentASMAID).name_de
+    },\n und dem componentDetail 
+        ${
+          updatedMachine.sectorASMA
+            .find((s) => s._id.toString() === sectorASMAID)
+            .components.find((c) => c._id.toString() === componentASMAID)
+            .componentDetails.find(
+              (c) => c._id.toString() === componentDetailASMAID
+            ).name_de
+        } geupdatet`
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: `${updatedMachine.name}, sectorASMA ${
+      updatedMachine.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+        .name
+    } with the component ${
+      updatedMachine.sectorASMA
+        .find((s) => s._id.toString() === sectorASMAID)
+        .components.find((c) => c._id.toString() === componentASMAID).name_de
+    } and the componentDetail ${
+      updatedMachine.sectorASMA
+        .find((s) => s._id.toString() === sectorASMAID)
+        .components.find((c) => c._id.toString() === componentASMAID)
+        .componentDetails.find(
+          (c) => c._id.toString() === componentDetailASMAID
+        ).name_de
+    }
+     has been successfully updated`,
   });
 });
 
@@ -376,6 +562,84 @@ export const updateComponentASMA = catchAsync(async (req, res, next) => {
         .components.find((c) => c._id.toString() === componentASMAID).name_de
     }
      has been successfully updated`,
+  });
+});
+
+export const deleteComponentDetailASMA = catchAsync(async (req, res, next) => {
+  console.log('bin deleteComponentDetailASMA');
+  //console.log(req.params);
+  //console.log(req);
+  //console.log(path);
+
+  // const machineID = req.params.machineID;
+  // const sectorASMAID = req.params.sectorASMAID;
+
+  console.log('machineID: ' + req.params.machineID);
+  console.log('sectorASMAID: ' + req.params.sectorASMAID);
+  console.log('componentASMAID: ' + req.params.componentASMAID);
+  console.log('componentDetailASMAID: ' + req.params.componentDetailASMAID);
+  const machineID = req.params.machineID;
+  const sectorASMAID = req.params.sectorASMAID;
+  const componentASMAID = req.params.componentASMAID;
+  const componentDetailASMAID = req.params.componentDetailASMAID;
+
+  // const referer = req.headers.referer;
+  // const ids = referer.match(/\/([\w\d]+)\/updateSectorASMA\/([\w\d]+)/);
+  // const machineID = ids[1];
+  // const sectorASMAID = ids[2];
+
+  // console.log(`MachineID: ${machineID}`);
+  // console.log(`SectorASMAID: ${sectorASMAID}`);
+
+  const updatedMachine = await Machine.findByIdAndUpdate(
+    machineID,
+    {
+      $pull: {
+        'sectorASMA.$[sector].components.$[component].componentDetails': {
+          _id: componentDetailASMAID,
+        },
+      },
+    },
+    {
+      arrayFilters: [
+        { 'sector._id': sectorASMAID },
+        { 'component._id': componentASMAID },
+      ],
+      new: true,
+    }
+  );
+
+  console.log(
+    `Componente wurde bei Maschine ${updatedMachine.name} und dem sectorASMA ${
+      updatedMachine.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
+        .name
+    } und in der componente ${
+      updatedMachine.sectorASMA
+        .find((s) => s._id.toString() === sectorASMAID)
+        .components.find((s) => s._id.toString() === componentASMAID).name_de
+    }erfolgreich gelöscht...`,
+    'kann gelöschtes Objekt nicht mehr anzeigen...'
+    // `${
+    //   updatedMachine.sectorASMA
+    //     .find((s) => s._id.toString() === sectorASMAID)
+    //     .components.find((c) => c._id.toString() === componentASMAID).name_de
+    // }...`
+  );
+
+  // const updatedMachine = await Machine.findByIdAndUpdate(
+  //   machineID,
+  //   { $pull: { sectorASMA: { _id: sectorASMAID } } },
+  //   { new: true }
+  // );
+  //
+  // console.log(
+  //   `SectorASMA wurde bei Maschine ${updatedMachine.name} und den SectorASMA: ${sectorASMAID} gelöscht:`,
+  //   updatedMachine.sectorASMA
+  // );
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });
 

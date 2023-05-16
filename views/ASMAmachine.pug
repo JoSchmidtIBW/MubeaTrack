@@ -1,39 +1,98 @@
 extends base
 
 block content
-    main.main
-        br
-        h1 MaschinenID:
-        h1= data.machine._id
-        h1= data.machine.name
-        br
+    main.mainMine
+      br
+      h1 MaschinenID:
+      h1= data.machine._id
+      h1= data.machine.name
+      br
 
-        each sector in data.machine.sectorASMA
-          h1(style="color:red") sector
-          h4= `ID: ${sector._id}`
-          h4= sector._id
-          h1= sector.name
-          h1= sector.description_de
-          h1= sector.description_en
-          br
-          h1(style="color:blue") componenten:
-          each component in sector.components
-            h4= `ID: ${component._id}`
-            h4= component._id
-            h1= component.name_de
-            h1= component.name_en
-            h1= component.description_de
-            h1= component.description_en
-            br
-            h1(style="color:orange") componentDetails:
-            each detail in component.componentDetails
-              h4= `ID: ${detail._id}`
-              h4= detail._id
-              button= detail.name_de
-              button= detail.name_en
-              h1= detail.status
-              br
-          br
-          //-each component in data.machine.sectorASMA.components
-            h1= component.name_de
-        h1 ----------------------------------
+      each sector in data.machine.sectorASMA
+          div.sector(style="border: 1px solid black; padding: 10px; margin-bottom: 10px;")
+              div.sectorTitle
+                  h1(style="color:red")= sector.name
+              div.right(style="border: 1px solid green;")
+                each component in sector.components
+                    div.componentFull(style="border: 1px solid blue;display: flex;  padding: 10px; margin-right: 50px;")
+                        div.left(style="border: 1px solid pink;margin-right: 50px;")
+                            h2= component.name_de
+                            //-h2= component.name_en
+                        div.right(style="border: 1px solid red; display: flex; flex-wrap: wrap; justify-content: flex-start;")
+                          -let detailsPerRow = 5
+                          -let rowIndex = 0
+                          each detail in component.componentDetails
+                              if rowIndex % detailsPerRow === 0
+                                  div(style="display: block; flex-wrap: wrap; justify-content: flex-start;") ccc
+                                      h1 XXX
+                                      br
+                              div(style="border: 1px solid pink; padding: 10px; margin: 5px;")
+
+                                  //button(class=`stoerBtn stoerBtn-${index}` id=`stoerBtn-${index}` style=(detail.status ? 'background-color: green' : 'background-color: red') data-status=detail.status)= detail.name_de
+                                  button(class=`stoerBtn stoerBtn-${index}` id=`stoerBtn-${index}` style=(detail.status ? 'background-color: green' : 'background-color: red') data-status=(detail.status ? 'true' : 'false'))= detail.name_de
+                                  //-button('id=`stoerBtn-${index}` id="stoerBtn" style=detail.status ? background-color: green : background-color: red, data-status=detail.status')= detail.name_de
+                                  //button= detail.name_de
+                                  //-button= detail.name_en
+                              -rowIndex++
+
+
+    script.
+
+      const stoerBtns = document.querySelectorAll('.stoerBtn');
+      //console.log(stoerBtns)
+
+      // stoerBtns.forEach(function(btn) {
+      //   btn.addEventListener('click', function() {
+      //     console.log(btn.dataset.status);
+      //   });
+      // });
+
+      stoerBtns.forEach(function(btn) {
+        let status = btn.getAttribute('data-status');
+        console.log(status)
+        let isGreen = status === 'true';
+        let isRed = status === 'false';
+
+        let isYellow = true;
+        let isPink = true
+
+
+        btn.addEventListener('click', function() {
+          //console.log(btn.getAttribute('data-status'))
+          //console.log(btn.data-status)
+          //console.log(btn.getAttribute('data-status'));
+          if (isGreen) {
+            console.log(isGreen)
+            btn.style.backgroundColor = 'yellow';
+            //isGreen = false;
+            isYellow = true;
+            //isRed = false;
+            isPink = false
+          }
+          if (isYellow){
+            btn.style.backgroundColor = 'green';
+            isGreen = true;
+            isYellow = false;
+            //isRed = false;
+            isPink = false
+          }
+
+
+          if (isRed) {
+            btn.style.backgroundColor = 'pink';
+            //isGreen = false;
+            isYellow = false;
+            isRed = false;
+            isPink = true
+
+          } //else {
+          if(isPink){
+            btn.style.backgroundColor = 'red';
+            //isGreen = false;
+            isYellow = false;
+            isRed = true;
+            isPink = false
+          }
+        });
+      });
+
