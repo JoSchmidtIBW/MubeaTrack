@@ -408,13 +408,14 @@ app.use('/api/v1/users', userRoute);
 export function sum(a, b) {
   return a + b;
 }
-//console.log("Für Unit Test... sum: "+sum(4,3));
+console.log('Für Unit Test... sum: ' + sum(2, 3));
 
-a_Plus_b(1, 2);
-function a_Plus_b(a, b) {
-  let result = a + b;
-  // console.log("UnitTest... a+b= "+ result);
-}
+// a_Plus_b(1, 2);
+//
+// function a_Plus_b(a, b) {
+//   let result = a + b;
+//   // console.log("UnitTest... a+b= "+ result);
+// }
 //---------------------------unit-test-test----Up--------------------------------
 
 //um falsche urls eine fehlermeldung zu geben, muss dies unter den routen passieren
@@ -461,3 +462,4 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler);
 
 export default app;
+//export default { sum, app };

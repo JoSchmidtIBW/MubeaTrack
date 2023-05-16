@@ -25,6 +25,7 @@ import {
   getASMAMachine,
   getUpdateComponentASMA,
   getCreateComponentDetailsASMA,
+  getUpdateComponentDetailsASMA,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -164,6 +165,13 @@ router.get(
   protect,
   restrictTo('admin'),
   getCreateComponentDetailsASMA
+);
+
+router.get(
+  '/createASMAmachine/:machineID/:sectorASMAID/:componentASMAID/updateComponentDetail/:componentDetailASMAID',
+  protect,
+  restrictTo('admin'),
+  getUpdateComponentDetailsASMA
 );
 
 router.get('/aboutMubeaTrack', getAboutMubeaTrack);

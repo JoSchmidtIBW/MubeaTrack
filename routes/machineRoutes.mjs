@@ -17,6 +17,9 @@ import {
   createComponentASMA,
   updateComponentASMA,
   deleteComponentASMA,
+  createComponentDetailASMA,
+  updateComponentDetailASMA,
+  deleteComponentDetailASMA,
 } from '../controllers/machineController.mjs';
 
 import {
@@ -93,6 +96,19 @@ router // `${apiUrl}/machinery/${machineID}/${sectorASMAID}/updateComponentASMA/
   .route('/:machineID/:sectorASMAID/updateComponentASMA/:componentASMAID')
   .patch(protect, restrictTo('admin'), updateComponentASMA)
   .delete(protect, restrictTo('admin'), deleteComponentASMA);
+
+router
+  .route(
+    '/:machineID/:sectorASMAID/:componentASMAID/updateComponentDetailASMA/:componentDetailASMAID'
+  )
+  .patch(protect, restrictTo('admin'), updateComponentDetailASMA)
+  .delete(protect, restrictTo('admin'), deleteComponentDetailASMA);
+
+router
+  .route(
+    '/createSectorASMA/:machineID/:sectorASMAID/createComponentDetail/:componentASMAID'
+  )
+  .patch(protect, restrictTo('admin'), createComponentDetailASMA);
 
 router
   .route('/createMachine')
