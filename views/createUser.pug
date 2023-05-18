@@ -29,11 +29,14 @@ block content
             div(class="form__group")
               label(class="form__label", for="language") language
               select#language(class="form__input")
-                option(value="Englisch") English
-                option(value="Deutsch") Deutsch
+                option(value="en") English
+                option(value="de") Deutsch
             //-div(class="form__group")
               label(class="form__label", for="name") Name
               input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
+            div(class="form__group")
+              label(class="form__label", for="professional") professional
+              input#professional(class="form__input", type="text", placeholder="professional")
             div(class="form__group")
               label(class="form__label", for="email") Email address
               input#email(class="form__input", type="email", placeholder="you@mubea.com")

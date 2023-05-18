@@ -58,9 +58,12 @@ block content
                             label(class="form__label", for="language") Language
                             //input#language(class="form__input", type="text", value=user.language, readonly, style="background-color: lightgrey;")
                             select#language(class="form__input")
-                                option(value="Englisch", selected=user.language === 'Englisch') English
-                                option(value="Deutsch", selected=user.language === 'Deutsch') Deutsch
+                                option(value="en", selected=user.language === 'en') English
+                                option(value="de", selected=user.language === 'de') Deutsch
 
+                        div(class="form__group")
+                            label(class="form__label", for="role") Professional
+                            input#professional(class="form__input", type="text", value=user.professional, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
                             label(class="form__label", for="role") Role
                             input#role(class="form__input", type="text", value=user.role, readonly, style="background-color: lightgrey;")

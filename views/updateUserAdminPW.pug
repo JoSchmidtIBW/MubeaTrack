@@ -15,10 +15,10 @@ block content
               input#employeeNumber(class="form__input", type="number", value=data.userToUpdate.employeeNumber, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="firstname") Firstname
-              input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName, readonly, style="background-color: lightgrey;")
+              input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName)
             div(class="form__group")
               label(class="form__label", for="lastname") Lastname
-              input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName, readonly, style="background-color: lightgrey;")
+              input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
             div(class="form__group")
               label(class="form__label", for="birthDate") Birth date
               input#birthDate(class="form__input", type="text", value=data.userToUpdate.birthDate, readonly, style="background-color: lightgrey;")
@@ -31,6 +31,9 @@ block content
             div(class="form__group")
               label(class="form__label", for="language") Language
               input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+            div(class="form__group")
+              label(class="form__label", for="professional") professional
+              input#professional(class="form__input", type="text", value=data.userToUpdate.professional)
               //-select#language(class="form__input")
                 option(value="Englisch") English
                 option(value="Deutsch") Deutsch
@@ -39,7 +42,7 @@ block content
               input#name(class="form__input", type="text", value=data.userToUpdate.name, readonly, style="background-color: lightgrey;")
             div(class="form__group")
               label(class="form__label", for="email") E-Mail
-              input#email(class="form__input", type="email", value=data.userToUpdate.email, readonly, style="background-color: lightgrey;")
+              input#email(class="form__input", type="email", value=data.userToUpdate.email)
             div(class="form__group ma-bt-md")
               label(class="form__label", for="password") Password
               input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")

@@ -182,6 +182,15 @@ departmentSchema.pre(/^find/, function (next) {
   next();
 });
 
+// departmentSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'employees',
+//     select: '-__v -passwordChangeAt -password',
+//   });
+//
+//   next();
+// });
+
 //damit in compass, in department der vollständige user angezeigt wird, jedoch ohne sein passwort
 // departmentSchema.pre('save', function (next) {
 //   this.populate('employees', '-password', (err) => {

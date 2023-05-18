@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "643c1f042df0321cb8a06a47",
+    "firstName": "Admin",
+    "lastName": "Administrator",
+    "birthDate": "01.01.1970",
+    "gender": "XXX",
+    "employeeNumber": 70220,
+    "language": "Deutsch",
+    "role": "admin",
+    "active": true,
+    "email": "admin@admin.io",
+    "password": "test1234",
+    "photo": "user-Admin.jpg",
+    "department": ["IT"]
+  }
+]

@@ -199,6 +199,11 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   // const users = await User.find().select('+createdAt').lean().exec();
   // const usersJSON = JSON.parse(JSON.stringify(users));
 
+  // if (!users) {
+  //   return next(new AppError('No users found', 404));
+  // }
+  //console.log(users);
+
   res.status(200).json({
     status: 'success',
     results: users.length,
@@ -241,6 +246,7 @@ export const createUser = catchAsync(async (req, res) => {
     birthDate: req.body.birthDate,
     gender: req.body.gender,
     language: req.body.language,
+    professional: req.body.professional,
     //name: req.body.name,
     email: req.body.email,
     password: req.body.password,

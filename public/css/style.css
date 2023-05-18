@@ -1748,3 +1748,10 @@ input#employeeNumber.form__input[type=number] {
     margin-left: 20px;
     text-align: left;
 }
+
+
+/* das usersTable, das jqueri weiter unten ist */
+#manageUsersTable {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}

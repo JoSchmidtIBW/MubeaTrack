@@ -26,27 +26,213 @@
     "dimensions": "12975 x 9300 x 500",
     "drawingNumber": "0480.74240",
     "department": "Anarbeit",
-    "statusRun": true,
     "sectorASMA": [
       {
-        "name": "Rattunde1",
-        "description_de": "Säge- Anlage - Sektor",
-        "description_en": "Cutting machine - Sektor",
+        "name": "Addafer",
+        "description_de": "TXT- Kontrolle",
+        "description_en": "TXT-Controll",
         "components": [
           {
-            "name_de": "Bundlader",
-            "name_en": "MFL Loader",
+            "name_de": "Bundlader Adf.",
+            "name_en": "bundle loader Adf.",
             "description_de": "Da kommen die Mehrfachlängen in die Anlage",
-            "description_en": "there come the MFL to the machine",
+            "description_en": "This is where the multiple lengths come into the machine",
             "componentDetails": [
               {
                 "name_de": "Gurte",
-                "name_en": "Belt",
+                "name_en": "strap",
                 "status": true
               },
               {
-                "name_de": "Lichtschranke",
-                "name_en": "light barrier",
+                "name_de": "Lichtschranke 1",
+                "name_en": "Photoelectric barrier 1",
+                "status": true
+              },
+              {
+                "name_de": "Anschlag",
+                "name_en": "stop angle",
+                "status": true
+              },
+              {
+                "name_de": "Motor Gurte",
+                "name_en": "engine strap",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Vereinzelung",
+            "name_en": "separator",
+            "description_de": "Hier werden die Rohre vereinzelt",
+            "description_en": "here the tube are separated",
+            "componentDetails": [
+              {
+                "name_de": "Bolzen 1",
+                "name_en": "pin 1",
+                "status": true
+              },
+              {
+                "name_de": "Rollen schräg",
+                "name_en": "roll oblique",
+                "status": true
+              },
+              {
+                "name_de": "Bolzen 1-2-3",
+                "name_en": "pin 1-2-3",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Rollgang 1",
+            "name_en": "roller table 1",
+            "description_de": "Rollgang 1",
+            "description_en": "roller table 1",
+            "componentDetails": [
+              {
+                "name_de": "Rollen",
+                "name_en": "roller",
+                "status": true
+              },
+              {
+                "name_de": "Schweissnaht- Erkennung",
+                "name_en": "Welding seam- recognition",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Rollgang 2",
+            "name_en": "roller table 2",
+            "description_de": "Rollgang 2",
+            "description_en": "roller table 2",
+            "componentDetails": [
+              {
+                "name_de": "Rollen",
+                "name_en": "roller",
+                "status": true
+              },
+              {
+                "name_de": "Pich- Rolle AB",
+                "name_en": "pinch roll AB",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Messstation",
+            "name_en": "measuring station",
+            "description_de": "Misst TXT",
+            "description_en": "Measures TXT",
+            "componentDetails": [
+              {
+                "name_de": "Lichtschranken",
+                "name_en": "Light barrier",
+                "status": true
+              },
+              {
+                "name_de": "Laser",
+                "name_en": "Laser",
+                "status": true
+              },
+              {
+                "name_de": "US- Sensor",
+                "name_en": "US- Sensor",
+                "status": true
+              },
+              {
+                "name_de": "Türe",
+                "name_en": "door",
+                "status": true
+              },
+              {
+                "name_de": "Computer / IT",
+                "name_en": "Computer / IT",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Rollgang 3",
+            "name_en": "roller table 3",
+            "description_de": "Rollgang 3",
+            "description_en": "roller table 3",
+            "componentDetails": [
+              {
+                "name_de": "Rollen",
+                "name_en": "roller",
+                "status": true
+              },
+              {
+                "name_de": "Pich- Rolle C",
+                "name_en": "pinch roll C",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Rollgang 4",
+            "name_en": "roller table 4",
+            "description_de": "Rollgang 4",
+            "description_en": "roller table 4",
+            "componentDetails": [
+              {
+                "name_de": "Rollen",
+                "name_en": "roller",
+                "status": true
+              },
+              {
+                "name_de": "Lichtschranke 2",
+                "name_en": "light barrier 2",
+                "status": true
+              },
+              {
+                "name_de": "Rohr- Asuwerfer",
+                "name_en": "Tube throw out",
+                "status": true
+              },
+              {
+                "name_de": "Gurte",
+                "name_en": "Strap",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Walking Beam",
+            "name_en": "Walking Beam",
+            "description_de": "Rohr- Transportierrer",
+            "description_en": "Walking Beam",
+            "componentDetails": [
+              {
+                "name_de": "Rollen",
+                "name_en": "roller",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Dreh- Greifer",
+            "name_en": "rotary gripper",
+            "description_de": "Drehender Rohr- Greifer",
+            "description_en": "rotary tube gripper",
+            "componentDetails": [
+              {
+                "name_de": "Dreh- Greifer",
+                "name_en": "rotary gripper",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Rad Schwarz Rat.1",
+            "name_en": "wheel black Rat.1",
+            "description_de": "Rad Schwarz Rat.1",
+            "description_en": "wheel black Rat.1",
+            "componentDetails": [
+              {
+                "name_de": "Rad",
+                "name_en": "wheel",
                 "status": true
               }
             ]
@@ -54,13 +240,13 @@
         ]
       },
       {
-        "name": "Addafer",
-        "description_de": "Säge- TXT - Sektor",
-        "description_en": "TXT-Controll - Sektor",
+        "name": "Rattunde1",
+        "description_de": "Säge- Anlage",
+        "description_en": "sawing machine",
         "components": [
           {
-            "name_de": "Bundlader Addafer",
-            "name_en": "MFL Loader Addafer",
+            "name_de": "Bundlader Rattunde",
+            "name_en": "MFL Loader Rattunde",
             "description_de": "Da kommen die Mehrfachlängen in die Anlage",
             "description_en": "there come the MFL to the machine",
             "componentDetails": [
@@ -70,8 +256,311 @@
                 "status": true
               },
               {
-                "name_de": "Lichtschranke",
-                "name_en": "light barrier",
+                "name_de": "Lichtschranke 3",
+                "name_en": "light barrier 3",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Bundlader BM",
+            "name_en": "MFL Loader BM",
+            "description_de": "Da kommen die Mehrfachlängen in die Anlage",
+            "description_en": "there come the MFL to the machine",
+            "componentDetails": [
+              {
+                "name_de": "Gurte",
+                "name_en": "Belt",
+                "status": true
+              },
+              {
+                "name_de": "Lichtschranke 3",
+                "name_en": "light barrier 3",
+                "status": true
+              },
+              {
+                "name_de": "Anschlag",
+                "name_en": "stop angle",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Vereinzelung",
+            "name_en": "Separator",
+            "description_de": "Da werden die Rohre vereinzelt",
+            "description_en": "here the tube are separated",
+            "componentDetails": [
+              {
+                "name_de": "Bolzen 1",
+                "name_en": "pin 1",
+                "status": true
+              },
+              {
+                "name_de": "Rollen schwarz schräg",
+                "name_en": "roll black oblique",
+                "status": true
+              },
+              {
+                "name_de": "Bolzen 1-2-3",
+                "name_en": "pin 1-2-3",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Einschieber",
+            "name_en": "push in",
+            "description_de": "Schiebt das Rohr zur Säge",
+            "description_en": "push the tube to the saw",
+            "componentDetails": [
+              {
+                "name_de": "Restlängen- Sensor",
+                "name_en": "rest- lengths sensor",
+                "status": true
+              },
+              {
+                "name_de": "Belegungs- Sensor 1",
+                "name_en": "occupancy sensor 1",
+                "status": true
+              },
+              {
+                "name_de": "Belegungs- Sensor 2",
+                "name_en": "occupancy sensor 2",
+                "status": true
+              },
+              {
+                "name_de": "Achse Z1",
+                "name_en": "axis Z1",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Säge ACS",
+            "name_en": "Saw ACS",
+            "description_de": "Sägt das Rohr",
+            "description_en": "saw the tube",
+            "componentDetails": [
+              {
+                "name_de": "Achse Y1",
+                "name_en": "axis Y1",
+                "status": true
+              },
+              {
+                "name_de": "Achse CC1",
+                "name_en": "axis CC1",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Greifer ACS",
+            "name_en": "Handling ACS",
+            "description_de": "Greift das gesägte Rohr",
+            "description_en": "Grabs the sawed tube",
+            "componentDetails": [
+              {
+                "name_de": "Achse Z2",
+                "name_en": "axis Z2",
+                "status": true
+              },
+              {
+                "name_de": "Achse CC2",
+                "name_en": "axis CC2",
+                "status": true
+              },
+              {
+                "name_de": "Achse Y2",
+                "name_en": "axis Y2",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Längenmessung LM",
+            "name_en": "length measurement LM",
+            "description_de": "Misst die gesägte länge",
+            "description_en": "Measure the sawn length",
+            "componentDetails": [
+              {
+                "name_de": "LM",
+                "name_en": "LM",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Bürsten-Einheit BDM",
+            "name_en": "Brush unit",
+            "description_de": "Bürsten der gesägten Rohre",
+            "description_en": "Brushing the sawn tubes",
+            "componentDetails": [
+              {
+                "name_de": "Transportscheiben",
+                "name_en": "transport disks",
+                "status": true
+              },
+              {
+                "name_de": "Achse Z6",
+                "name_en": "axis Z6",
+                "status": true
+              },
+              {
+                "name_de": "Achse W1/2",
+                "name_en": "axis W1/2",
+                "status": true
+              },
+              {
+                "name_de": "Achse W3/4",
+                "name_en": "axis W3/4",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Wasch-Einheit WDM",
+            "name_en": "Wash unit WDM",
+            "description_de": "Wäscht die gesägten Rohre",
+            "description_en": "Washing the sawn tubes",
+            "componentDetails": [
+              {
+                "name_de": "Absaugung",
+                "name_en": "suction",
+                "status": true
+              },
+              {
+                "name_de": "Achse W5",
+                "name_en": "axis W5",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Kontroll- Tisch TI",
+            "name_en": "Control table TI",
+            "description_de": "Tisch mit Laufband",
+            "description_en": "table with treadmill",
+            "componentDetails": [
+              {
+                "name_de": "Lichtschranke TI/100%",
+                "name_en": "light barrier TI/100%",
+                "status": true
+              },
+              {
+                "name_de": "Laufband",
+                "name_en": "treadmill",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "Bündelstation SRT",
+            "name_en": "Bundle station SRT",
+            "description_de": "Bündelt die gesägten Rohre",
+            "description_en": "Bundles the sawed tubes",
+            "componentDetails": [
+              {
+                "name_de": "Lichtschranke SRT",
+                "name_en": "light barrier SRT",
+                "status": true
+              },
+              {
+                "name_de": "Laufband SRT",
+                "name_en": "treadmill SRT",
+                "status": true
+              },
+              {
+                "name_de": "Anschlag SRT",
+                "name_en": "stop angle SRT",
+                "status": true
+              },
+              {
+                "name_de": "Achse Z7",
+                "name_en": "axis Z7",
+                "status": true
+              },
+              {
+                "name_de": "Achse X7",
+                "name_en": "axis X7",
+                "status": true
+              },
+              {
+                "name_de": "Achse Y7",
+                "name_en": "axis Y7",
+                "status": true
+              },
+              {
+                "name_de": "Bündel-Gestell",
+                "name_en": "bundle rack",
+                "status": true
+              },
+              {
+                "name_de": "Rollen",
+                "name_en": "roll",
+                "status": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "100%",
+        "description_de": "TXT- Endkontrolle",
+        "description_en": "TXT-end- controll",
+        "components": [
+          {
+            "name_de": "Computer 100% / IT",
+            "name_en": "Computer 100% / IT",
+            "description_de": "Messprogramme und Verbindungen",
+            "description_en": "Measurement programs and connections",
+            "componentDetails": [
+              {
+                "name_de": "Messprogramm",
+                "name_en": "Measurement programs",
+                "status": true
+              },
+              {
+                "name_de": "Verbindung IT",
+                "name_en": "connections IT",
+                "status": true
+              },
+              {
+                "name_de": "Bedienpanel",
+                "name_en": "control panel",
+                "status": true
+              }
+            ]
+          },
+          {
+            "name_de": "100%",
+            "name_en": "100%- station",
+            "description_de": "Alles zur Messung",
+            "description_en": "all about meassure",
+            "componentDetails": [
+              {
+                "name_de": "Räder 1-3",
+                "name_en": "wheel 1-3",
+                "status": true
+              },
+              {
+                "name_de": "Zylinder 1-4",
+                "name_en": "cylinder 1-4",
+                "status": true
+              },
+              {
+                "name_de": "US-Sensor 1-4",
+                "name_en": "US-Sensor 1-4",
+                "status": true
+              },
+              {
+                "name_de": "Stop- Zylinder",
+                "name_en": "Stop- Cylinder",
+                "status": true
+              },
+              {
+                "name_de": "Koppelstück 1-4",
+                "name_en": "paddock piece 1-4",
                 "status": true
               }
             ]
@@ -88,7 +577,6 @@
     "name": "Rattunde2",
     "zone": "Sägen",
     "description": "Säge- Anlage",
-    "department": "Anarbeit",
-    "statusRun": false
+    "department": "Anarbeit"
   }
 ]
