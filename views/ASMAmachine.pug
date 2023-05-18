@@ -8,8 +8,8 @@ mixin navItem(link, text, icon, active)
             | #{text}
 
 block content
-    main.main
-        .user-view
+    main.mainASMAmachine
+        .user-viewASMAmachine
             nav.user-view__menu
 
                 ul.side-nav
@@ -21,8 +21,8 @@ block content
 
 
             .user-view__content
-                .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Your account settings
+                .user-view__ASMAform-container
+                    h2.heading-secondary.ma-bt-md Machine reporter
                         //-form.form.form-ASMAbtn-data
                         //-main.mainMine
                         br
@@ -38,10 +38,14 @@ block content
                               tr
                                 td(colspan="2")
                                       h1(style="color:red")= sector.name
+                                      h2= sector.description_de
+                                      br
                                 each component in sector.components
                                     tr
                                         td
                                             h2= component.name_de
+                                            h4= component.description_de
+                                            br
                                         td
                                             table
                                               each detail, index in component.componentDetails
