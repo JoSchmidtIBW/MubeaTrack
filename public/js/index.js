@@ -958,7 +958,7 @@ const updateUserByChef = async (data, id) => {
     if (res.data.status === 'success') {
       showAlert('success', 'User successfully updated');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_users');
+        location.assign('/api/v1/manage_users'); //
       }, 500);
     }
   } catch (err) {
