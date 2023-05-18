@@ -28,7 +28,7 @@
     "_id": "5c88fa8cf4afda39709c295a",
     "name": "Anarbeit",
     "guides": [],
-    "machinery": ["6444566c830afd3adeba2d38", "64445692830afd3adeba2d39"],
+    "machinery": ["6444566c830afd3adeba2d38", "64445692830afd3adeba2d39","64445692830afd3adeba2d56", "64445692830afd3adeba2d57"],
     "employees": ["643c1f042df0321cb8a06a51", "643c1f042df0321cb8a06a52", "643c1f042df0321cb8a06a53", "643c1f042df0321cb8a06a54", "643c1f042df0321cb8a06a55", "643c1f042df0321cb8a06a56"],
     "summary": "Hier werden die Fix- längen vorbereitet.\n Anlagen: Rattunde 1, Rattunde 2, Rattunde 3, Rattunde 4, Rattunde 5, Conni 1, TRT 1",
     "description": "Anarbeit: Hier werden die Fix- längen vorbereitet.\n Anlagen: Rattunde 1, Rattunde 2, Rattunde 3, Rattunde 4, Rattunde 5, Conni 1, TRT 1",

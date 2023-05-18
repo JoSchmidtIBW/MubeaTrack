@@ -1755,3 +1755,33 @@ input#employeeNumber.form__input[type=number] {
     margin-top: 20px;
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
+
+.mainASMAmachine {
+    background-color: #f7f7f7;
+    padding: 2rem 2rem;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+}
+
+.user-viewASMAmachine{
+    background-color: #fff;
+    max-width: 99%;
+    margin: 0 auto;
+    min-height: 100vh;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.user-view__ASMAform-container {
+    /*max-width: 68rem;*/
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
