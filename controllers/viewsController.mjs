@@ -72,7 +72,7 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     const currentUserLanguage = currentUser.language;
     console.log('currentUserLanguage: ' + currentUserLanguage);
 
-    if (currentUserLanguage === 'Deutsch') {
+    if (currentUserLanguage === 'de') {
       res.status(200).render('de/overview_de', {
         title: 'All Departments',
         departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
@@ -539,7 +539,7 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
 });
 
 export const getCreateUserForm = catchAsync(async (req, res, next) => {
-  const allDepartments = await Department.find().sort('_id');
+  const allDepartments = await Department.find().sort({ name: 1 });
 
   res.status(200).render('createUser', {
     title: 'Create new user',

@@ -257,7 +257,8 @@ const showUsers = async () => {
           { data: 'birthDate' },
           { data: 'gender' },
           { data: 'language' },
-          { data: 'photo' },
+          { data: 'professional' },
+          { data: 'photo', visible: false },
           //{ data: 'name' },
           { data: 'email' },
           { data: 'role' },
@@ -348,6 +349,7 @@ if (newUserDataForm) {
     const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
+    const professional = document.querySelector('#professional').value;
     //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -368,6 +370,7 @@ if (newUserDataForm) {
     console.log(birthDate);
     console.log(gender);
     console.log(language);
+    console.log(professional);
     //console.log(name);
     console.log(email);
     console.log(password);
@@ -392,6 +395,7 @@ if (newUserDataForm) {
       birthDate,
       gender,
       language,
+      professional,
       //name,
       email,
       password,
@@ -456,6 +460,7 @@ const createNewUser = async (
   birthDate,
   gender,
   language,
+  professional,
   //name,
   email,
   password,
@@ -475,6 +480,7 @@ const createNewUser = async (
         birthDate: birthDate,
         gender: gender,
         language: language,
+        professional: professional,
         //name: name, //'erika',
         email: email,
         password: password, //'test1234',
@@ -872,11 +878,12 @@ if (updateUserByChefDataForm) {
 
     const id = document.getElementById('userId').value;
     const employeeNumber = document.getElementById('employeeNumber').value;
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
+    const firstName = document.getElementById('firstname').value;
+    const lastName = document.getElementById('lastname').value;
     const birthDate = document.getElementById('birthDate').value;
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
+    const professional = document.querySelector('#professional').value;
     //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -886,11 +893,12 @@ if (updateUserByChefDataForm) {
 
     console.log(id);
     console.log(employeeNumber);
-    console.log(firstname);
-    console.log(lastname);
+    console.log(firstName);
+    console.log(lastName);
     console.log(birthDate);
     console.log(gender);
     console.log(language);
+    console.log(professional);
     //console.log(name);
     console.log(email);
     console.log(password);
@@ -905,6 +913,10 @@ if (updateUserByChefDataForm) {
     if (e.submitter === saveUpdateUserByChefButton) {
       updateUserByChef(
         {
+          firstName,
+          lastName,
+          professional,
+          email,
           role,
           department,
         },

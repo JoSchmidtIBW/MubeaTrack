@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
   },
   language: {
     type: String,
-    default: 'Deutsch',
+    default: 'de',
     trim: true,
   },
   // tour: {
@@ -60,12 +60,46 @@ const userSchema = new mongoose.Schema({
   //   ref: 'Tour',
   //   //required: [true, 'Review must belong a tour.']
   // },
+  professional: {
+    type: String,
+    trim: true,
+  },
   email: {
     type: String,
-    required: [true, 'Please provide your email!'],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, 'Please profide a valid email'],
+    //required: [true, 'Please provide your email!'],
+    // unique: true,
+    // validate: [
+    //   {
+    //     validator: function (value) {
+    //       // Überprüfen, ob entweder keine E-Mail-Adresse angegeben ist oder eine eindeutige E-Mail-Adresse verwendet wird
+    //       return (
+    //         !value ||
+    //         this.constructor
+    //           .findOne({ email: value })
+    //           .exec()
+    //           .then((user) => !user)
+    //       );
+    //     },
+    //     message: 'Email address is already in use!',
+    //   },
+    //   {
+    //     validator: function (value) {
+    //       // Überprüfen, ob die angegebene E-Mail-Adresse ein gültiges Format hat
+    //       return !value || validator.isEmail(value);
+    //     },
+    //     message: 'Please provide a valid email address!',
+    //   },
+    // ],
+
+    // validate: {
+    //   validator: async function (value) {
+    //     // Überprüfen, ob die E-Mail-Adresse bereits verwendet wird
+    //     const existingUser = await this.constructor.findOne({ email: value });
+    //     return !existingUser; // Gibt true zurück, wenn keine Übereinstimmung gefunden wurde (eindeutig)
+    //   },
+    // },
+    // lowercase: true,
+    //validate: [validator.isEmail, 'Please profide a valid email'],
   },
   photo: {
     type: String,
@@ -73,17 +107,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: [
-      'user',
-      'guide',
-      'lead-guide',
-      'admin',
-      'Chef',
-      'Schichtleiter',
-      'Bediener',
-      'Mechaniker',
-      'Elektriker',
-    ],
+    enum: ['user', 'admin', 'Chef', 'Schichtleiter', 'Unterhalt'],
     default: 'user',
     // validate: {
     //   validator: function (value) {
@@ -231,10 +255,25 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 // and if the user has multiple departments, check every department, if they exists and save the user once
 userSchema.pre('save', async function (next) {
   if (this.department && Array.isArray(this.department)) {
-    //['IT','Engineering']
-    console.log('this.department: ' + this.department);
-    for (const dep of this.department) {
-      const department = await Department.findOne({ name: dep });
+    try {
+      console.log('this.department: ' + this.department);
+      for (const dep of this.department) {
+        const department = await Department.findOne({ name: dep });
+        if (department) {
+          if (!department.employees.includes(this._id)) {
+            department.employees.push(this._id);
+            await department.save();
+          } else {
+            console.log('Der Benutzer ist bereits in dieser Abteilung');
+          }
+        }
+      }
+    } catch (error) {
+      // Handle error if any
+    }
+  } else if (this.department) {
+    try {
+      const department = await Department.findOne({ name: this.department });
       if (department) {
         if (!department.employees.includes(this._id)) {
           department.employees.push(this._id);
@@ -243,20 +282,40 @@ userSchema.pre('save', async function (next) {
           console.log('Der Benutzer ist bereits in dieser Abteilung');
         }
       }
-    }
-  } else if (this.department) {
-    const department = await Department.findOne({ name: this.department });
-    if (department) {
-      if (!department.employees.includes(this._id)) {
-        department.employees.push(this._id);
-        await department.save();
-      } else {
-        console.log('Der Benutzer ist bereits in dieser Abteilung');
-      }
+    } catch (error) {
+      // Handle error if any
     }
   }
   next();
 });
+// userSchema.pre('save', async function (next) {
+//   if (this.department && Array.isArray(this.department)) {
+//     //['IT','Engineering']
+//     console.log('this.department: ' + this.department);
+//     for (const dep of this.department) {
+//       const department = await Department.findOne({ name: dep });
+//       if (department) {
+//         if (!department.employees.includes(this._id)) {
+//           department.employees.push(this._id);
+//           await department.save();
+//         } else {
+//           console.log('Der Benutzer ist bereits in dieser Abteilung');
+//         }
+//       }
+//     }
+//   } else if (this.department) {
+//     const department = await Department.findOne({ name: this.department });
+//     if (department) {
+//       if (!department.employees.includes(this._id)) {
+//         department.employees.push(this._id);
+//         await department.save();
+//       } else {
+//         console.log('Der Benutzer ist bereits in dieser Abteilung');
+//       }
+//     }
+//   }
+//   next();
+// });
 // userSchema.pre('save', async function (next) {
 //   if (this.department) {
 //     console.log('this.department: ' + this.department); //this.department = userDepartment im usermodel
