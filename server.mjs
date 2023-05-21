@@ -17,10 +17,12 @@ import app from './app.mjs';
 // });
 
 //mongoose.connect();
+
 const DB = process.env.DATABASE_MONGODB.replace(
   '<PASSWORD>',
   process.env.DATABASE_MONGODB_PASSWORD
 );
+
 // mongoose
 //   .connect(DB, {
 //     useNewUrlParser: true,
@@ -33,16 +35,29 @@ const DB = process.env.DATABASE_MONGODB.replace(
 
 ////(node:9752) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitori
 // // ng engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
-mongoose
-  .connect(DB, {
-    //hostet db
-    //mongoose.connect(process.env.DATABASE_LOCAL, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('DB connection succeful!')); //.catch(err => console.log('ERROR DB-Connecting'))
+try {
+  mongoose
+    .connect(DB, {
+      //hostet db
+      //mongoose.connect(process.env.DATABASE_LOCAL, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    })
+    .then(() => console.log('DB connection succeful!')); //.catch(err => console.log('ERROR DB-Connecting'))
+} catch (err) {
+  console.log(
+    '******************************************************************'
+  );
+  console.log(
+    'Etwas mit MongoDB ging schief. Bin server.mjs, bin 2te funktion'
+  );
+  console.log('... wahrscheinlich auf MongoDB Atlas und add current IP');
+  console.log(
+    '******************************************************************'
+  );
+}
 
 //mongoose.connect(mongoConnectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 

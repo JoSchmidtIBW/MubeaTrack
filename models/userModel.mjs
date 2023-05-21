@@ -5,6 +5,7 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
 import Department from './departmentModel.mjs';
+import Machine from './machineModel.mjs';
 
 import { encryptData, decryptData } from '../utils/crypto.mjs';
 import CryptoJS from 'crypto-js';
@@ -139,18 +140,24 @@ const userSchema = new mongoose.Schema({
   //   default: '5c8a24822f8fb814b56fa192',
   //   required: [true, 'Please provide your department'],
   // },
-  machines: [
+  // machines: [
+  //   {
+  //     type: [String],
+  //     enum: [
+  //       'TRT 1',
+  //       'Conni 1',
+  //       'Rattunde 1',
+  //       'Rattunde 2',
+  //       'Rattunde 3',
+  //       'Rattunde 4',
+  //       'Rattunde 5',
+  //     ],
+  //   },
+  // ],
+  machinery: [
     {
-      type: [String],
-      enum: [
-        'TRT 1',
-        'Conni 1',
-        'Rattunde 1',
-        'Rattunde 2',
-        'Rattunde 3',
-        'Rattunde 4',
-        'Rattunde 5',
-      ],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Machine',
     },
   ],
   createdAt: {
@@ -244,8 +251,11 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 
   if (user._id.toString() === ADMIN_ID) {
     //console.log('ist ADMIN!!!!!!!!!!!!!**********!!!!');
-    if (updatedFields.role !== 'admin')
-      return next(new AppError('Admin- Role can not be changed!!!', 400));
+    // if (updatedFields.role !== 'admin')
+    //   return next(new AppError('Admin- Role can not be changed!!!', 400));
+    if (updatedFields.role && updatedFields.role !== user.role) {
+      return next(new AppError('Admin cannot update role field', 400));
+    }
   }
 
   next();

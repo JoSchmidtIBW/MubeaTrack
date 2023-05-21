@@ -94,6 +94,13 @@ const departmentSchema = new mongoose.Schema({
 });
 
 departmentSchema.index({ slug: 1 });
+//departmentSchema.index({ machinery: 1 }, { unique: true, sparse: true }); // wie unique, aber für Array
+
+// departmentSchema.pre('save', function (next) {
+//   const uniqueMachinery = [...new Set(this.machinery)];
+//   this.machinery = uniqueMachinery;
+//   next();
+// });
 
 // wenn departmentModel geladen wird, also nicht nur die departments
 

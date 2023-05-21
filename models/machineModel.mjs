@@ -18,8 +18,8 @@ const machineSchema = new mongoose.Schema({
     required: [true, 'A machine must have a description!'],
   },
   zone: {
-    type: String,
-    required: [true, 'A machine must have a zone'],
+    type: [String],
+    //required: [true, 'A machine must have a zone'],
     default: ['Sägen'],
     enum: [
       'Sägen',
@@ -107,12 +107,16 @@ const machineSchema = new mongoose.Schema({
     //required: [true, 'A Cover must have a Image'],
   },
   images: [String],
-  employees: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-  ],
+  employees: {
+    type: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
+    default: [],
+  },
+
   statusRun: {
     type: Boolean,
   },
@@ -185,43 +189,299 @@ machineSchema.pre('save', function (next) {
   employees.employeesCount = employees.employees.length;
   next();
 });
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('Bin in der Middleware');
+//   const update = this._update;
+//   console.log('Update:', update);
+//   console.log('Conditions:', this._conditions);
+//   console.log('Options:', this.options);
+//
+//   if (update.$set && update.$set.$pull && update.$set.$pull.employees) {
+//     const employees = update.$set.$pull.employees;
+//     console.log('Aktualisierte Mitarbeiter:', employees);
+//     update.$set.$pull.employeesCount = employees.length;
+//     console.log('Mitarbeiteranzahl aktualisiert:', employees.length);
+//   } else {
+//     console.log('Keine Mitarbeiter-Änderungen gefunden');
+//   }
+//
+//   console.log('Middleware beendet');
+//   next();
+// });
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('Bin in der Middleware');
+//   const update = this._update;
+//   console.log('Update:', update);
+//   console.log('Conditions:', this._conditions);
+//   console.log('Options:', this.options);
+//
+//   try {
+//     const machine = await this.model.findOne(this._conditions).exec();
+//     console.log('Gefundene Machine:', machine);
+//
+//     if (update.$pull && update.$pull.employees) {
+//       const employees = update.$pull.employees;
+//       console.log('Entfernte Mitarbeiter:', employees);
+//
+//       if (machine && machine.employees && machine.employees.length > 0) {
+//         const remainingEmployees = machine.employees.filter(
+//           (employee) => !employees.includes(employee.toString())
+//         );
+//         const employeesCount = remainingEmployees.length;
+//         update.$set = update.$set || {};
+//         update.$set.employeesCount = employeesCount;
+//         console.log('Mitarbeiteranzahl aktualisiert:', employeesCount);
+//
+//         machine.employees = remainingEmployees; // Aktualisiere die Mitarbeiter in der Machine
+//
+//         await machine.save(); // Speichere das Dokument in der Datenbank
+//
+//         console.log('Dokument erfolgreich aktualisiert');
+//       } else {
+//         console.log('Keine Mitarbeiter vorhanden');
+//       }
+//     } else {
+//       console.log('Keine Mitarbeiter-Änderungen gefunden');
+//     }
+//   } catch (error) {
+//     console.log('Fehler beim Suchen der Machine:', error);
+//   }
+//
+//   console.log('Middleware beendet');
+//   next();
+// });
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('Bin in der Middleware');
+//   const update = this._update;
+//   console.log('Update:', update);
+//   console.log('Conditions:', this._conditions);
+//   console.log('Options:', this.options);
+//
+//   try {
+//     const machine = await this.model.findOne(this._conditions).exec();
+//     console.log('Gefundene Machine:', machine);
+//
+//     if (update.$pull && update.$pull.employees) {
+//       const employees = update.$pull.employees;
+//       console.log('Entfernte Mitarbeiter:', employees);
+//
+//       if (machine && machine.employees && machine.employees.length > 0) {
+//         const remainingEmployees = machine.employees.filter(
+//           (employee) => !employees.includes(employee.toString())
+//         );
+//         const employeesCount = remainingEmployees.length;
+//         update.$set = update.$set || {};
+//         update.$set.employeesCount = employeesCount;
+//         console.log('Mitarbeiteranzahl aktualisiert:', employeesCount);
+//
+//         machine.employees = remainingEmployees;
+//         machine.markModified('employeesCount'); // Hinzufügen der Markierung für Änderungen
+//
+//         await machine.save();
+//
+//         console.log('Dokument erfolgreich aktualisiert');
+//       } else {
+//         console.log('Keine Mitarbeiter vorhanden');
+//       }
+//     } else {
+//       console.log('Keine Mitarbeiter-Änderungen gefunden');
+//     }
+//   } catch (error) {
+//     console.log('Fehler beim Suchen der Machine:', error);
+//   }
+//
+//   console.log('Middleware beendet');
+//   next();
+// });
 
-machineSchema.pre('validate', function (next) {
-  const machine = this;
-  machine.employeesCount = machine.employees.length;
-  next();
-});
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('Bin in der Middleware');
+//   const update = this._update;
+//   console.log('Update:', update);
+//   console.log('Conditions:', this._conditions);
+//   console.log('Options:', this.options);
+//
+//   if (update.$set && update.$set.employees) {
+//     const employees = update.$set.employees;
+//     console.log('Aktualisierte Mitarbeiter:', employees);
+//     update.$set.employeesCount = employees.length;
+//     console.log('Mitarbeiteranzahl aktualisiert:', employees.length);
+//   } else {
+//     console.log('Keine Mitarbeiter-Änderungen gefunden');
+//   }
+//
+//   console.log('Middleware beendet');
+//   next();
+// });
 
-// damit man zb bild, name von user in machine.employees auf der Seite Rattunde1 sieht
-machineSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'employees',
-    select: '-__v -passwordChangeAt -password', // was man nicht sehen möchte bei output
-  });
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   const machineId = this.getQuery()._id;
+//   const update = this.getUpdate();
+//
+//   // Überprüfen, ob das update.$pull.employees definiert ist
+//   if (update.$pull && update.$pull.employees) {
+//     const newEmployees = update.$pull.employees;
+//     const machine = await this.model.findById(machineId);
+//
+//     if (machine) {
+//       machine.employeesCount = machine.employees.length - newEmployees.length;
+//       await machine.save();
+//     }
+//   }
+//
+//   next();
+// });
+// machineSchema.pre('findOneAndUpdate', function (next) {
+//   console.log('bin findOneAndUpdate');
+//   const machine = this;
+//   console.log(this);
+//   const employees = machine.getUpdate().$set.employees; // Zugriff auf die aktualisierten Mitarbeiterdaten
+//   console.log(employees);
+//   console.log(employees.length);
+//
+//   if (employees) {
+//     machine
+//       .updateOne({ employeesCount: employees.length }) // Aktualisierung der Mitarbeiteranzahl
+//       .then(() => next())
+//       .catch((error) => next(error));
+//   } else {
+//     next();
+//   }
+// });
+// machineSchema.post('findByIdAndUpdate', async function (doc) {
+//   try {
+//     console.log('bin post findByIdAndUpdate');
+//     const machine = this;
+//     console.log(machine);
+//
+//     const updatedEmployees = doc.employees;
+//     console.log(updatedEmployees);
+//     console.log(updatedEmployees.length);
+//
+//     if (!updatedEmployees || updatedEmployees.length === 0) {
+//       machine.employeesCount = 0;
+//     } else {
+//       machine.employeesCount = updatedEmployees.length;
+//     }
+//
+//     await machine.save();
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
-  next();
-});
+// machineSchema.pre('findOneAndUpdate', async function (next) {
+//   try {
+//     console.log('bin findOneAndUpdate');
+//     const machine = this;
+//     console.log(this);
+//
+//     const employees = machine.getUpdate().$pull.employees; // Zugriff auf die zu entfernenden Mitarbeiterdaten
+//     console.log(employees);
+//     console.log(employees.length);
+//
+//     if (employees) {
+//       const machineId = machine._conditions._id;
+//       const foundMachine = await Machine.findById(machineId).populate(
+//         'employees'
+//       );
+//
+//       if (
+//         foundMachine &&
+//         foundMachine.employees &&
+//         foundMachine.employees.length > 0
+//       ) {
+//         const updatedEmployees = foundMachine.employees.filter(
+//           (employee) => !employees.includes(employee._id)
+//         );
+//         machine._update.$set.employees = updatedEmployees; // Aktualisierte Mitarbeiterliste
+//         machine._update.$set.employeesCount = updatedEmployees.length; // Aktualisierung der Mitarbeiteranzahl
+//       }
+//     }
+//
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+// const machine = await Machine.findOne({ _id: machineId }); // Maschine suchen
+//
+// if (machine) {
+//   machine.employees = machine.employees.filter(employee => employee.toString() !== userId); // Mitarbeiter entfernen
+//   machine.employeesCount = machine.employees.length; // Mitarbeiteranzahl aktualisieren
+//   await machine.save(); // Maschine speichern
+// }
+
+//
+// // damit man zb bild, name von user in machine.employees auf der Seite Rattunde1 sieht
+// machineSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'employees',
+//     select: '-__v -passwordChangeAt -password', // was man nicht sehen möchte bei output
+//   });
+//
+//   next();
+// });
 
 // Checks if the department exists and the machine only saves itself in it once, when creating a machine
 machineSchema.pre('save', async function (next) {
-  console.log('bin pre-save für create');
+  console.log('bin pre-save für create-machine in machineModel');
+  console.log('this._id hat id: ' + this._id);
   console.log(this.department);
   if (this.department) {
     console.log('this.department: ' + this.department); //this.department = machineDepartment im machineModel
     const department = await Department.findOne({ name: this.department });
-    //console.log('Gefunden department in Department: ' + department);
 
     if (department) {
       if (!department.machinery.includes(this._id)) {
         department.machinery.push(this._id);
         await department.save(); //department in Department
+        console.log(`The machine save in ${department.name}`);
       } else {
         console.log('The machine is already assigned to this department.');
       }
     }
   }
+
+  if (!this._id) {
+    console.log('this._id hat KEINE id');
+    console.log(this.department);
+    if (this.department) {
+      console.log('this.department: ' + this.department); //this.department = machineDepartment im machineModel
+      const department = await Department.findOne({ name: this.department });
+
+      if (department) {
+        if (!department.machinery.includes(this._id)) {
+          department.machinery.push(this._id);
+          await department.save(); //department in Department
+          console.log(`The machine save in ${department.name}`);
+        } else {
+          console.log('The machine is already assigned to this department.');
+        }
+      }
+    }
+  }
   next();
 });
+// machineSchema.pre('save', async function (next) {
+//   console.log('bin pre-save für create');
+//   console.log(this.department);
+//   if (this.department) {
+//     console.log('this.department: ' + this.department); //this.department = machineDepartment im machineModel
+//     const department = await Department.findOne({ name: this.department });
+//     //console.log('Gefunden department in Department: ' + department);
+//
+//     if (department) {
+//       if (!department.machinery.includes(this._id)) {
+//         department.machinery.push(this._id);
+//         await department.save(); //department in Department
+//       } else {
+//         console.log('The machine is already assigned to this department.');
+//       }
+//     }
+//   }
+//   next();
+// });
 
 // update all departments, Checks if machine is assigned to departments and checks that
 // the machine does not appear more than once in the same department

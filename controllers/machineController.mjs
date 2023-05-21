@@ -182,6 +182,8 @@ export const createMachine = catchAsync(async (req, res) => {
     //photo: req.body.photo,
     department: req.body.department,
     statusRun: true,
+    employees: [],
+    employeesCount: 0,
   };
 
   const newMachine = new Machine(machineData);

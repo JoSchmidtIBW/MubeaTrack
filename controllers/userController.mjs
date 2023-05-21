@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import User from '../models/userModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
+import mongoose from 'mongoose';
 //import factory from '../controllers/handlerFactory.mjs';
 import {
   getAll,
@@ -10,6 +11,9 @@ import {
   deleteOne,
   updateOne,
 } from '../controllers/handlerFactory.mjs';
+
+import Machine from '../models/machineModel.mjs';
+import Department from '../models/departmentModel.mjs';
 
 // setting destination and fileName     SPEICHERT IN...
 // const multerStorage = multer.diskStorage({
@@ -271,6 +275,832 @@ export const createUser = catchAsync(async (req, res) => {
   //   message: 'this route is not defined, pleace use /signup insteat',
   // }); // server error not implement
 });
+
+export const getUsersMachinery = catchAsync(async (req, res, next) => {
+  console.log('bin XXX getUsersMachinery');
+  // const departments = await Department.find().sort('_id').populate('machinery');
+  // const machinery = await Machine.find().select('+_id').populate('employees');
+  // const users = await User.find().populate('machinery'); //.select('+_id'); //.populate('machinery');
+
+  const departments = await Department.find().sort('_id').populate('machinery');
+  const machinery = await Machine.find().populate('employees');
+  const users = await User.find(); //.populate('machinery');
+
+  console.log(users.length);
+  console.log(users[0]._id);
+
+  if (!users) {
+    return next(new AppError('No users found', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      departments: departments,
+      machinery: machinery,
+      users: users,
+    },
+  });
+});
+
+export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
+  try {
+    console.log('Bin getUpdateUserMachinery');
+
+    const userID = req.params.userID;
+    console.log('userID: ' + userID);
+
+    console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+
+    if (req.body.machineryInDepartmentID.length === 0) {
+      console.log(
+        'Es wurde keine Machine ausgewählt! Der Benutzer sollte von allen Maschinen entfernt werden'
+      );
+
+      const machinesEmployeesWithUserIDBeforeUpdate = await Machine.find({
+        employees: userID,
+      }).populate('employees');
+
+      for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+        console.log('Machine Name: ' + machine.name);
+        console.log('Machine ID: ' + machine._id);
+
+        const machineID = machine._id;
+        console.log('machineID: ' + machineID);
+
+        try {
+          const findMachine = await Machine.findById(machineID).populate(
+            'employees'
+          );
+
+          if (findMachine) {
+            //console.log('Gefundene Machine: ', findMachine);
+
+            if (findMachine.employees && findMachine.employees.length > 0) {
+              const employeeIDs = findMachine.employees.map(
+                (employee) => employee._id
+              );
+
+              if (employeeIDs.includes(userID)) {
+                // Mitarbeiter gefunden
+                console.log(
+                  'Anzahl der gefundenen Mitarbeiter: ' +
+                    findMachine.employees.length
+                );
+
+                for (const employee of findMachine.employees) {
+                  console.log('-----------------------------------');
+                  console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+                  console.log('-----------------------------------');
+                }
+                //
+                // await Machine.findByIdAndUpdate(machineID, {
+                //   $pull: { employees: employeeIDs },
+                // });
+                // //--------------------------------------funktioniert
+                // await Machine.findByIdAndUpdate(machineID, {
+                //   $pull: { employees: userID },
+                // });
+                //--------------------------------------funktioniert
+                // await Machine.updateOne(machineID, {
+                //   $pull: { employees: userID },
+                // });
+                const updatedMachine = await Machine.findByIdAndUpdate(
+                  machineID,
+                  { $pull: { employees: userID } },
+                  { new: true }
+                );
+                await updatedMachine.save(); // wegen EmploeeCount, weil es anderst irgendwie nicht geht
+
+                //const user = User.findByIdAndUpdate(userID);
+                const user = await User.findByIdAndUpdate(
+                  userID,
+                  { $set: { machinery: [] } },
+                  { new: true }
+                );
+
+                if (!user) {
+                  // Benutzer nicht gefunden
+                  return res
+                    .status(404)
+                    .json({ message: 'Benutzer nicht gefunden' });
+                }
+
+                res.status(200).json({
+                  status: 'success',
+                  message:
+                    'Benutzer erfolgreich zur Maschine hinzugefügt/entfernt',
+                });
+
+                console.log('Mitarbeiter erfolgreich entfernt');
+              } else {
+                // Mitarbeiter nicht gefunden
+                console.log('Keine Mitarbeiter gefunden');
+              }
+            } else {
+              // Keine Mitarbeiter in der Machine vorhanden
+              console.log('Keine Mitarbeiter gefunden');
+            }
+          } else {
+            // Machine nicht gefunden
+            console.log('Machine nicht gefunden');
+          }
+        } catch (error) {
+          console.log('Fehler beim Suchen der Machine: ', error);
+        }
+      }
+    } else {
+      console.log('Es wurde eine Machine ausgewählt');
+
+      const machinesEmployeesWithUserIDBeforeUpdate2 = await Machine.find({
+        employees: userID,
+      }).populate('employees');
+
+      // if (machinesEmployeesWithUserIDBeforeUpdate2 === "" || machinesEmployeesWithUserIDBeforeUpdate2 === null ) {
+      // console.log(
+      //   '!machinesEmployeesWithUserIDBeforeUpdate2: ' +
+      //     machinesEmployeesWithUserIDBeforeUpdate2
+      // );
+      // }
+      if (machinesEmployeesWithUserIDBeforeUpdate2.length === 0) {
+        console.log('Der user hat noch in keiner Maschine gearbeitet');
+
+        const machineIDs = req.body.machineryInDepartmentID
+          .split(',')
+          .map((id) => mongoose.Types.ObjectId(id));
+        console.log(machineIDs);
+
+        const userWriteMachineID = await User.findByIdAndUpdate(
+          userID,
+          { $set: { machinery: machineIDs } },
+          { new: true }
+        );
+
+        const machines = await Machine.find({ _id: { $in: machineIDs } });
+        for (const machine of machines) {
+          machine.employees.push(userID);
+          await machine.save();
+        }
+        res.status(200).json({
+          status: 'success',
+          message: 'Benutzer erfolgreich zur Maschine hinzugefügt/entfernt',
+        });
+      }
+
+      for (const machine2 of machinesEmployeesWithUserIDBeforeUpdate2) {
+        console.log('Machine Name: ' + machine2.name);
+        console.log('Machine ID: ' + machine2._id);
+
+        const machineID2 = machine2._id;
+        console.log('machineID: ' + machineID2);
+
+        try {
+          const findMachine2 = await Machine.findById(machineID2).populate(
+            'employees'
+          );
+
+          if (findMachine2) {
+            //console.log('Gefundene Machine: ', findMachine);
+
+            if (findMachine2.employees && findMachine2.employees.length > 0) {
+              const employeeIDs2 = findMachine2.employees.map(
+                (employee) => employee._id
+              );
+
+              if (employeeIDs2.includes(userID)) {
+                // Mitarbeiter gefunden
+                console.log(
+                  'Anzahl der gefundenen Mitarbeiter: ' +
+                    findMachine2.employees.length
+                );
+
+                for (const employee2 of findMachine2.employees) {
+                  console.log('-----------------------------------');
+                  console.log('Gefundener Mitarbeiter: ' + employee2.firstName);
+                  console.log('-----------------------------------');
+                }
+                //
+                // await Machine.findByIdAndUpdate(machineID, {
+                //   $pull: { employees: employeeIDs },
+                // });
+                // //--------------------------------------funktioniert
+                // await Machine.findByIdAndUpdate(machineID, {
+                //   $pull: { employees: userID },
+                // });
+                //--------------------------------------funktioniert
+                // await Machine.updateOne(machineID, {
+                //   $pull: { employees: userID },
+                // });
+                const updatedMachine2 = await Machine.findByIdAndUpdate(
+                  machineID2,
+                  { $pull: { employees: userID } },
+                  { new: true }
+                );
+                await updatedMachine2.save(); // wegen EmploeeCount, weil es anderst irgendwie nicht geht
+
+                console.log('Mitarbeiter erfolgreich entfernt');
+                //------------------------------------------
+                const machineIDs = req.body.machineryInDepartmentID
+                  .split(',')
+                  .map((id) => mongoose.Types.ObjectId(id));
+                console.log(machineIDs);
+
+                for (const machineToWriteID of machineIDs) {
+                  console.log('machineToWriteID: ' + machineToWriteID);
+                  //await Machine.findById(machineToWriteID)userID
+                  const machine = await Machine.findByIdAndUpdate(
+                    machineToWriteID,
+                    { $addToSet: { employees: userID } }, // Füge den Benutzer zur "employees" Array-Liste hinzu
+                    { new: true }
+                  ).populate('employees');
+                  await machine.save(); // wegen EmploeeCount, weil es anderst irgendwie nicht geht
+
+                  if (!machine) {
+                    // Maschine nicht gefunden
+                    return res
+                      .status(404)
+                      .json({ message: 'Maschine nicht gefunden' });
+                  }
+
+                  //const user = User.findByIdAndUpdate(userID);
+                  const userDeleteMachineID = await User.findByIdAndUpdate(
+                    userID,
+                    { $set: { machinery: [] } },
+                    { new: true }
+                  );
+
+                  const userWriteMachineID = await User.findByIdAndUpdate(
+                    userID,
+                    { $set: { machinery: machineIDs } },
+                    { new: true }
+                  );
+                  res.status(200).json({
+                    status: 'success',
+                    message:
+                      'Benutzer erfolgreich zur Maschine hinzugefügt/entfernt',
+                  });
+                }
+              } else {
+                // Mitarbeiter nicht gefunden
+                console.log('Keine Mitarbeiter gefunden');
+              }
+            } else {
+              // Keine Mitarbeiter in der Machine vorhanden
+              console.log('Keine Mitarbeiter gefunden');
+            }
+          } else {
+            // Machine nicht gefunden
+            console.log('Machine nicht gefunden');
+          }
+        } catch (error) {
+          console.log('Fehler beim Suchen der Machine: ', error);
+        }
+      }
+    }
+    // return res
+    //   .status(200)
+    //   .json({
+    //     status: 'success',
+    //     message: 'Benutzer erfolgreich zur Maschine hinzugefügt/entfernt',
+    //   });
+  } catch (error) {
+    console.log('Ein Fehler ist aufgetreten: ', error);
+    return res
+      .status(500)
+      .json({ status: 'fail', message: 'Ein Fehler ist aufgetreten' });
+  }
+});
+// export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
+//   console.log('Bin getUpdateUserMachinery');
+//
+//   const userID = req.params.userID;
+//   console.log('userID: ' + userID);
+//
+//   console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+//
+//   if (req.body.machineryInDepartmentID.length === 0) {
+//     console.log(
+//       'Es wurde keine Machine ausgewählt! Der Benutzer sollte von allen Maschinen entfernt werden'
+//     );
+//
+//     const machinesEmployeesWithUserIDBeforeUpdate = await Machine.find({
+//       employees: userID,
+//     }).populate('employees');
+//
+//     for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+//       console.log('Machine Name: ' + machine.name);
+//       console.log('Machine ID: ' + machine._id);
+//
+//       const machineID = machine._id;
+//       console.log('machineID: ' + machineID);
+//
+//       try {
+//         const findMachine = await Machine.findById(machineID).populate(
+//           'employees'
+//         );
+//
+//         if (findMachine) {
+//           console.log('Gefundene Machine: ', findMachine);
+//
+//           if (findMachine.employees && findMachine.employees.length > 0) {
+//             const employeeIDs = findMachine.employees.map(
+//               (employee) => employee._id
+//             );
+//
+//             if (employeeIDs.includes(userID)) {
+//               // Mitarbeiter gefunden
+//               console.log(
+//                 'Anzahl der gefundenen Mitarbeiter: ' +
+//                   findMachine.employees.length
+//               );
+//
+//               for (const employee of findMachine.employees) {
+//                 console.log('-----------------------------------');
+//                 console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+//                 console.log('-----------------------------------');
+//               }
+//
+//               await Machine.findByIdAndUpdate(machineID, {
+//                 $pull: { employees: employeeIDs },
+//               });
+//
+//               console.log('Mitarbeiter erfolgreich entfernt');
+//             } else {
+//               // Mitarbeiter nicht gefunden
+//               console.log('Keine Mitarbeiter gefunden');
+//             }
+//           } else {
+//             // Keine Mitarbeiter in der Machine vorhanden
+//             console.log('Keine Mitarbeiter gefunden');
+//           }
+//         } else {
+//           // Machine nicht gefunden
+//           console.log('Machine nicht gefunden');
+//         }
+//       } catch (error) {
+//         console.log('Fehler beim Suchen der Machine: ', error);
+//       }
+//     }
+//   } else {
+//     console.log('Es wurde eine Machine ausgewählt');
+//   }
+// });
+
+// export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
+//   console.log('Bin getUpdateUserMachinery');
+//
+//   const userID = req.params.userID;
+//   console.log('userID: ' + userID);
+//
+//   console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+//
+//   if (req.body.machineryInDepartmentID.length === 0) {
+//     console.log(
+//       'Es wurde keine Machine ausgewählt! Der Benutzer sollte von allen Maschinen entfernt werden'
+//     );
+//
+//     const machinesEmployeesWithUserIDBeforeUpdate = await Machine.find({
+//       employees: userID,
+//     }).populate('employees');
+//
+//     for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+//       console.log('Machine Name: ' + machine.name);
+//       console.log('Machine ID: ' + machine._id);
+//
+//       const machineID = machine._id;
+//       console.log('machineID: ' + machineID);
+//
+//       try {
+//         const findMachine = await Machine.findById(machineID).populate(
+//           'employees'
+//         );
+//         console.log('Gefundene Machine: ', findMachine);
+//
+//         if (findMachine && findMachine.employees) {
+//           const employeeIDs = findMachine.employees.map(
+//             (employee) => employee._id
+//           );
+//
+//           if (employeeIDs.includes(userID)) {
+//             // Mitarbeiter gefunden
+//             console.log(
+//               'Anzahl der gefundenen Mitarbeiter: ' +
+//                 findMachine.employees.length
+//             );
+//
+//             for (const employee of findMachine.employees) {
+//               console.log('-----------------------------------');
+//               console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+//               console.log('-----------------------------------');
+//             }
+//
+//             await Machine.findByIdAndUpdate(machineID, {
+//               $pull: { employees: employeeIDs },
+//             });
+//
+//             console.log('Mitarbeiter erfolgreich entfernt');
+//           } else {
+//             // Mitarbeiter nicht gefunden
+//             console.log('Keine Mitarbeiter gefunden');
+//           }
+//         } else {
+//           // findMachine oder findMachine.employees ist undefined
+//           console.log('Keine Mitarbeiter gefunden');
+//         }
+//       } catch (error) {
+//         console.log('Fehler beim Suchen der Machine: ', error);
+//       }
+//     }
+//   } else {
+//     console.log('Es wurde eine Machine ausgewählt');
+//   }
+// });
+
+// export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
+//   console.log('Bin getUpdateUserMachinery');
+//
+//   const userID = req.params.userID;
+//   console.log('userID: ' + userID);
+//
+//   console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+//
+//   if (req.body.machineryInDepartmentID.length === 0) {
+//     console.log(
+//       'Es wurde keine Machine ausgewählt! Der Benutzer sollte von allen Maschinen entfernt werden'
+//     );
+//
+//     const machinesEmployeesWithUserIDBeforeUpdate = await Machine.find({
+//       employees: userID,
+//     }).populate('employees');
+//
+//     for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+//       console.log('Machine Name: ' + machine.name);
+//       console.log('Machine ID: ' + machine._id);
+//
+//       const machineID = machine._id;
+//       console.log('machineID: ' + machineID);
+//
+//       const findMachine = await Machine.findOne({ _id: machineID }).populate(
+//         'employees'
+//       );
+//
+//       if (findMachine && findMachine.employees) {
+//         const employeeIDs = findMachine.employees.map(
+//           (employee) => employee._id
+//         );
+//
+//         if (employeeIDs.includes(userID)) {
+//           // Mitarbeiter gefunden
+//           console.log(
+//             'Anzahl der gefundenen Mitarbeiter: ' + findMachine.employees.length
+//           );
+//
+//           for (const employee of findMachine.employees) {
+//             console.log('-----------------------------------');
+//             console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+//             console.log('-----------------------------------');
+//           }
+//
+//           await Machine.findByIdAndUpdate(machineID, {
+//             $pull: { employees: employeeIDs },
+//           });
+//         } else {
+//           // Mitarbeiter nicht gefunden
+//           console.log('Keine Mitarbeiter gefunden');
+//         }
+//       } else {
+//         // findMachine oder findMachine.employees ist undefined
+//         console.log('Keine Mitarbeiter gefunden');
+//       }
+//     }
+//   } else {
+//     console.log('Es wurde eine Machine ausgewählt');
+//   }
+// });
+
+// if (
+//   findMachine &&
+//   findMachine.employees &&
+//   findMachine.employees[0]._id === userID
+// ) {
+//   //findMachine && findMachine.employees
+//   console.log(
+//     'Anzahl der gefundenen Mitarbeiter: ' + findMachine.employees.length
+//   );
+//   for (const employee of findMachine.employees) {
+//     console.log('-----------------------------------');
+//     console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+//     console.log('-----------------------------------');
+//   }
+// const employeeIDs = findMachine.employees.map((employee) => employee._id);
+//
+// if (employeeIDs.includes(userID)) {
+//   // Mitarbeiter gefunden
+//   console.log(
+//     'Anzahl der gefundenen Mitarbeiter: ' + findMachine.employees.length
+//   );
+//
+//   for (const employee of findMachine.employees) {
+//     console.log('-----------------------------------');
+//     console.log('Gefundener Mitarbeiter: ' + employee.firstName);
+//     console.log('-----------------------------------');
+//   }
+//   await Machine.findByIdAndUpdate(machineID, {
+//     $pull: { employees: employeeIDs },
+//   });
+// } else {
+//   // Mitarbeiter nicht gefunden
+//   console.log('Keine Mitarbeiter gefunden');
+// }
+// } else {
+//   console.log('-----------------------------------');
+//   console.log('Keine Mitarbeiter gefunden');
+//   console.log('-----------------------------------');
+// }
+
+//   console.log('userID: ' + userID);
+//
+//   if (
+//     findMachine &&
+//     findMachine.employees &&
+//     findMachine.employees.includes(userID)
+//   ) {
+//     await Machine.findByIdAndUpdate(machineID, {
+//       $pull: { employees: userID },
+//     });
+//     console.log('Mitarbeiter erfolgreich entfernt');
+//   } else {
+//     console.log('userID: ' + userID);
+//     console.log(
+//       'JSON.stringify(findMachine.employees): ' +
+//         JSON.stringify(findMachine.employees)
+//     );
+//     console.log(
+//       'findMachine.employees.includes(userID): ' +
+//         findMachine.employees.includes(userID)
+//     );
+//     console.log(
+//       'findMachine.employees === userID: ' +
+//         (findMachine.employees === userID)
+//     );
+//     console.log('Mitarbeiter nicht gefunden in if');
+//     console.log('findMachine.employees: ' + findMachine.employees);
+//     console.log(
+//       'findMachine.employees.includes(userID): ' +
+//         findMachine.employees.includes(userID)
+//     );
+//     console.log(
+//       'userID === findMachine.employees._id: ' +
+//         (userID === findMachine.employees._id)
+//     );
+//     console.log(
+//       'req.params.userID === findMachine.employees._id: ' +
+//         (req.params.userID === findMachine.employees._id)
+//     );
+//     console.log('req.params.userID: ' + req.params.userID);
+//     console.log('findMachine.employees._id: ' + findMachine.employees._id);
+//     console.log('findMachine:', findMachine);
+//     console.log('userID:', userID);
+//     console.log('findMachine.employees._id:', findMachine.employees._id);
+//     console.log('typeof userID:', typeof userID);
+//     console.log(
+//       'typeof findMachine.employees._id:',
+//       typeof findMachine.employees._id
+//     );
+//     console.log('findMachine:', findMachine);
+//     console.log('findMachine.employees:', findMachine.employees);
+//     console.log('findMachine.employees._id:', findMachine.employees._id);
+//   }
+//     }
+//   } else {
+//     console.log('Es wurde eine Machine ausgewählt');
+//   }
+// });
+
+// export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
+//   console.log('Bin getUpdateUserMachinery');
+//
+//   const userID = req.params.userID;
+//   console.log('userID   p: ' + userID);
+//
+//   console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+//   //const machineDepartmentID = req.body
+//   //const updateUser = await User.findById(userID);
+//   //const machineIDs = req.body.machineryInDepartmentID;
+//
+//   if (req.body.machineryInDepartmentID.length === 0) {
+//     console.log(
+//       'Es wurde keine Machine angewählt! das heisst, der user sollte in allen machinen geöäscht werden'
+//     );
+//     const machinesEmployeesWithUserIDBeforeUpdate = await Machine.find({
+//       employees: userID,
+//     }).populate('employees');
+//
+//     //console.log(machinesEmployeesBeforeUpdate);
+//     for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+//       console.log(machine.name);
+//       console.log(machine._id);
+//
+//       const machineID = machine._id;
+//       console.log('machineID: ' + machineID);
+//       // machine.employees.pull(userID);
+//       // await machine.save();
+//       // if (machine.employees && machine.employees.length > 0) {
+//       //console.log('Bin in Ifschlaufe');
+//       const findMachine = await Machine.findById(machineID).populate(
+//         'employees'
+//       );
+//       //console.log('gefunden: ' + findMachine.name);
+//       //console.log('gefunden Employees: ' + findMachine.employees);
+//       // console.log('gefunden Employees.length: ' + findMachine.employees.length);
+//       if (findMachine && findMachine.employees) {
+//         for (const employee of findMachine.employees) {
+//           console.log('gefunden EmployeesFirstName: ' + employee.firstName);
+//         }
+//       }
+//
+//       console.log('userID: ' + userID);
+//
+//       if (
+//         findMachine &&
+//         findMachine.employees &&
+//         findMachine.employees.length > 0
+//       ) {
+//         await Machine.findByIdAndUpdate(machineID, {
+//           $pull: { employees: userID },
+//         });
+//       }
+//     }
+//   } else {
+//     console.log('Es wurde Machine angewählt');
+//   }
+// });
+// await Machine.findByIdAndUpdate(machineID, {
+//   $pull: { employees: userID },
+// });
+// await Machine.findByIdAndUpdate(machineID, {
+//   $pull: { employees: userID },
+//   });
+// }
+
+// if (
+//   findMachine &&
+//   findMachine.employees &&
+//   Array.isArray(findMachine.employees)
+// ) {
+//   console.log(findMachine.employees);
+//
+//   // Aktualisieren Sie das Feld "employees" der Maschine, um die userID zu entfernen
+//   await Machine.findByIdAndUpdate(machineID, {
+//     $pull: { employees: userID },
+//   });
+// }
+
+// for (const machine of machinesEmployeesWithUserIDBeforeUpdate) {
+//   console.log(machine.name);
+//   console.log(machine._id);
+//
+//   //const machineID = machine._id;
+//
+//   const machineID = mongoose.Types.ObjectId(machine._id);
+//   console.log(machineID);
+//   const findMachine = await Machine.findById(machineID);
+//   console.log('gefunden: ' + findMachine.name);
+//
+//   await Machine.findByIdAndUpdate(machineID, {
+//     $pull: { employees: userID },
+//   });
+// }
+
+// const machineIDs = req.body.machineryInDepartmentID
+//   .split(',')
+//   .map((id) => mongoose.Types.ObjectId(id));
+// console.log(machineIDs);
+
+//   // Überprüfen, ob die Maschine ein Feld "employees" hat und ob es definiert ist
+//   if (
+//     findMachine &&
+//     findMachine.employees &&
+//     Array.isArray(findMachine.employees)
+//   ) {
+//     console.log(findMachine.employees);
+//
+//     // Überprüfen, ob die userID im employees-Array vorhanden ist
+//     const index = findMachine.employees.indexOf(userID);
+//     if (index !== -1) {
+//       // userID aus dem employees-Array entfernen
+//       findMachine.employees.splice(index, 1);
+//       await findMachine.save();
+//     }
+//   }
+// }
+
+// // Überprüfen, ob die Maschine ein Feld "employees" hat und ob es definiert ist
+// if (
+//   findMachine &&
+//   findMachine.employees &&
+//   Array.isArray(findMachine.employees)
+// ) {
+//   console.log(findMachine.employees);
+//
+//   // Überprüfen, ob die userID in der Mitarbeiterliste enthalten ist
+//   const index = findMachine.employees.indexOf(userID);
+//   if (index !== -1) {
+//     // Entfernen Sie die userID aus dem Array
+//     findMachine.employees.splice(index, 1);
+//
+//     // Speichern Sie die aktualisierte Maschine
+//     await findMachine.save();
+//   }
+//
+//   }
+// try {
+//   // Benutzer anhand der userID aktualisieren und die neuen Maschinen-IDs setzen
+//   const updatedUser = await User.findByIdAndUpdate(
+//     userID,
+//     { $addToSet: { machinery: { $each: machineIDs } } },
+//     { new: true }
+//   );
+//
+//   // each machineID in machineIDs
+//   //
+//   // const updateMachine = await Machine.findByIdAndUpdate()
+//
+//   if (!updatedUser) {
+//     return next(new AppError('No user found with that ID', 404));
+//   } else {
+//     console.log('Benutzer erfolgreich gefunden');
+//   }
+// } catch (error) {
+//   console.log('Fehler beim Aktualisieren des Benutzers:', error);
+//   // Fehlerbehandlung für den Fall, dass ein Fehler beim Aktualisieren des Benutzers auftritt
+// }
+
+//-------------------machine---------------------------------------------------
+//const = machineIDs
+
+// const machinesEmployeesBeforeUpdate = await Machine.find({
+//   employees: userID,
+// });
+//
+// //console.log(machinesEmployeesBeforeUpdate);
+// for (const machineFoundUserID of machinesEmployeesBeforeUpdate) {
+//   console.log(machineFoundUserID.name);
+// }
+
+// for (const machine of machinesEmployeesBeforeUpdate) {
+//   machine.employees.pull(userID);
+//   await machine.save();
+// }
+//
+// console.log('Benutzer erfolgreich aus den Maschinen entfernt');
+
+//
+//
+// //finde alle maschinen wo userID drin ist.
+// const machinesEmployeesbebeforUpdate = await Machine.find({
+//   employees: userID,
+// });
+// for (const machine of machinesEmployeesbebeforUpdate) {
+// }
+//
+// for (const machineID of machineIDs) {
+//   // Aktualisiere das Feld "employees" der Maschine
+//   await Machine.findByIdAndUpdate(machineID, {
+//     $addToSet: { employees: userID },
+//   });
+// }
+// try {
+//   const machinesToRemove = machinesUserbeforIDs
+//     .filter((machine) => !machineIDs.includes(machine._id.toString()))
+//     .map((machine) => machine._id);
+//
+//   await Machine.updateMany(
+//     { _id: { $in: machinesToRemove } },
+//     { $pull: { employees: userID } }
+//   );
+//
+//   // await Machine.updateMany(
+//   //   { _id: { $in: machineIDs } },
+//   //   { $addToSet: { employees: userID } }
+//   // );
+//
+//   //try {
+//   // Iteriere über jede Maschinen-ID
+//   for (const machineID of machineIDs) {
+//     // Aktualisiere das Feld "employees" der Maschine
+//     await Machine.findByIdAndUpdate(machineID, {
+//       $addToSet: { employees: userID },
+//     });
+//   }
+//
+//   console.log('Maschinen erfolgreich aktualisiert');
+//   // Weitere Aktionen oder Rückgabe der Antwort...
+// } catch (error) {
+//   console.log('Fehler beim Aktualisieren der Maschinen:', error);
+//   // Fehlerbehandlung für den Fall, dass ein Fehler beim Aktualisieren der Maschinen auftritt
+// }
+//});
 
 // Do NOT update password with this!
 //exports.updateUser = factory.updateOne(User); // nur für admin, und update data that is not the passwort
