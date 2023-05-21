@@ -433,13 +433,39 @@ machineSchema.pre('save', async function (next) {
     const department = await Department.findOne({ name: this.department });
 
     if (department) {
-      if (!department.machinery.includes(this._id)) {
+      console.log('department gefunden');
+      console.log(department.name);
+      // for (const departmentFind in department) {
+      //   console.log(departmentFind.name);
+      // }
+      let machineExistsInDepartment = false;
+
+      for (const machineryFind of department.machinery) {
+        console.log('machineryFind: ' + machineryFind.name);
+        console.log('machineIDs: ' + machineryFind._id);
+
+        if (machineryFind._id.equals(this._id)) {
+          machineExistsInDepartment = true;
+          break;
+        }
+      }
+
+      if (!machineExistsInDepartment) {
+        console.log('Die Maschine gibt es noch nicht in department');
+        console.log('this._id machine: ' + this._id);
         department.machinery.push(this._id);
-        await department.save(); //department in Department
-        console.log(`The machine save in ${department.name}`);
+        await department.save();
+        console.log(`The machine is saved in ${department.name}`);
       } else {
+        console.log('Die Maschine gibt es schon in department');
         console.log('The machine is already assigned to this department.');
       }
+
+      // const machineryIds = department.machinery.map((machinery) =>
+      //   machinery.toString()
+      // );
+      // console.log('machineryIds: ' + machineryIds);
+      // console.log('this._id.toString(): ' + this._id.toString());
     }
   }
 
@@ -486,6 +512,7 @@ machineSchema.pre('save', async function (next) {
 // update all departments, Checks if machine is assigned to departments and checks that
 // the machine does not appear more than once in the same department
 machineSchema.pre('findOneAndUpdate', async function (next) {
+  console.log('bin findOneAndUpdate in machineModel');
   const { department } = this._update;
 
   if (department) {
@@ -514,6 +541,39 @@ machineSchema.pre('findOneAndUpdate', async function (next) {
   }
   next();
 });
+
+// // update all departments, Checks if machine is assigned to departments and checks that
+// // the machine does not appear more than once in the same department
+// machineSchema.pre('findByIdAndUpdate', async function (next) {
+//   console.log('bin findByIdAndUpdate in machineModel');
+//   const { department } = this._update;
+//
+//   if (department) {
+//     const newDepartments = await Department.find({ name: { $in: department } });
+//
+//     const machine = await Machine.findById(this._conditions._id);
+//     const oldDepartments = machine.department
+//       ? await Department.find({ name: { $in: machine.department } })
+//       : [];
+//
+//     for (const dep of oldDepartments) {
+//       if (!newDepartments.some((newDep) => newDep.name === dep.name)) {
+//         dep.machinery.pull(this._conditions._id);
+//         await dep.save();
+//       }
+//     }
+//
+//     for (const dep of newDepartments) {
+//       if (machine.department && machine.department.includes(dep.name)) {
+//         console.log('Die Maschine ist bereits in dieser Abteilung');
+//         continue;
+//       }
+//       dep.machinery.addToSet(this._conditions._id);
+//       await dep.save();
+//     }
+//   }
+//   next();
+// });
 
 // Checks that when a machine is deleted that also matches department.machineryCount,
 machineSchema.pre('findOneAndDelete', async function (next) {

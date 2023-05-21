@@ -224,6 +224,7 @@ export const getDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('department', {
       title: `${department.name} department`, //'The Forrest Hiker Tour',
       department,
+      currentUser,
     });
   } else {
     console.log('Arbeitet Nicht dort');
