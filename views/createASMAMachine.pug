@@ -40,9 +40,12 @@ block content
               label(class="form__label", for="description_en") Description_en
               input#description_en(class="form__input", type="text", value=sector.description_en, readonly, style="background-color: lightgrey;")
               //-a(href=`/api/v1/manage_updateASMAmachine/${data.machine._id}/sectorASMA/${sector._id}`) edit
-              a(href=`/api/v1/createASMAmachine/${data.machine._id}/updateSectorASMA/${sector.id}`) edit
               br
-              a(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${sector.id}`) Components
+              span
+                a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/updateSectorASMA/${sector.id}`, style="background-color:orange;") edit
+              //-br
+              span
+                a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${sector.id}`, style="background-color:lightblue;") Components
         button#btn-plus +
 
         form.form.form-new-sectorASMA-data

@@ -81,7 +81,11 @@ block content
                         label AMSA Run-ID
                         input(type="text", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
                         br
-                        button(id="abszBtn") Störung-Meldung absetzen
+                        br
+                        button.btn.btn--small.btn--gray(id="abszBtn") Störung-Meldung absetzen
+                        br
+                        br
+                        //-a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machineName}`) Return
 
     script.
       let pathValue = 'xx';

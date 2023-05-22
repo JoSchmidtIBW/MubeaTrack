@@ -25,7 +25,7 @@
   },
   {
     "images": ["department-Anarbeit-1.jpg", "department-Anarbeit-2.jpg", "department-Anarbeit-3.jpg"],
-    "_id": "5c88fa8cf4afda39709c295a",
+    "_id": "5c88fa8cf4afda39709c2952",
     "name": "Anarbeit",
     "guides": [],
     "machinery": ["6444566c830afd3adeba2d38", "64445692830afd3adeba2d39", "64445692830afd3adeba2d56"],
@@ -85,7 +85,7 @@
   },
   {
     "images": ["department-Unterhalt-1.jpg", "department-Unterhalt-2.jpg", "department-Unterhalt-3.jpg", "department-Unterhalt-4.jpg"],
-    "_id": "5c88fa8cf4afda39709c2961",
+    "_id": "5c88fa8cf4afda39709c2953",
     "name": "Unterhalt",
     "guides": [],
     "machinery": [],

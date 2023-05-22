@@ -10,5 +10,11 @@ footer.footer
             li: a(href='/api/v1/aboutMubeaTrack') About MubeaTrack
             li: a(href='/api/v1/aboutASMA') About ASMA
             li: a(href='/api/v1/contact') Contact
-    p.footer__copyright &copy; by John Schmidt. All rights reserved. Feel free to use this project for your own purposes, EXPECT producing your own course or tutorials!
+    p.footer__copyright &copy; by John Schmidt. All rights reserved. Feel free to use this project for your own purposes, EXPECT producing your own course or tutorials! Version 1.0
+    span#p1
+    //-p#p1
+    script.
+       var date = new Date();
+       var current_date = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+       document.getElementById("p1").innerHTML = current_date;
 
