@@ -1678,7 +1678,7 @@ button-upDown {
     margin-right: 30px;
     margin-bottom: 4px;
     padding-bottom: 5px;
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .form__checkbox-box {
@@ -1689,7 +1689,7 @@ button-upDown {
 
     vertical-align: middle;
     margin-bottom: 3px;
-    margin-left: 0px;
+    margin-left: 5px;
     margin-right: 0px;
 }
 
@@ -1784,4 +1784,20 @@ input#employeeNumber.form__input[type=number] {
     margin: 0 auto;
     padding: 0 2rem;
 }
+
+
+.user-viewAccount{
+    background-color: #fff;
+    max-width: 150rem;
+    margin: 0 auto;
+    min-height: 100vh;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
 
