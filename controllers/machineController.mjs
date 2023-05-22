@@ -2,6 +2,9 @@ import multer from 'multer';
 import sharp from 'sharp';
 
 import Machine from '../models/machineModel.mjs';
+import MalReport from '../models/malReportModel.mjs';
+
+import mongoose from 'mongoose';
 
 import APIFeatures from '../utils/apiFeatures.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
@@ -153,6 +156,134 @@ export const getMachinery = catchAsync(async (req, res, next) => {
     data: {
       data: machinery,
     },
+  });
+});
+
+export const updateASMAMachine = catchAsync(async (req, res, next) => {
+  console.log('bin updateASMAMachine');
+  console.log(req.body.currentUserID);
+  console.log(req.body.machineID);
+  //console.log(req.body.url);
+  console.log(req.body);
+  //console.log(req.body.currentUserID)
+
+  const currentUserID = req.body.currentUserID;
+  const selectedRunID = req.body.selectedRunIdBtn;
+  //const selectedIdsArr = req.body.selectedIdsBtnArr;
+  const selectedIdsArr = JSON.parse(req.body.selectedIdsBtnArr);
+  const machineID = req.body.machineID;
+
+  console.log('selectedRunID: ' + selectedRunID);
+  console.log('selectedIdsArr: ' + selectedIdsArr);
+  console.log('machineID: ' + machineID);
+
+  const componentDetailID = mongoose.Types.ObjectId(selectedIdsArr);
+
+
+  if (selectedRunID.length === 0) {
+    console.log('es wurde keine selectedRunID angewählt');
+  } else {
+    //const machine = Machine.findById({ _id: machineID });
+    try {
+      await Machine.updateOne({ _id: machineID }, { statusRun: false });
+      console.log(
+        `statusRun für machine mit ID ${machineID} erfolgreich auf false gesetzt.`
+      );
+      //---------------------------------------------
+      const malReport = new MalReport({
+        userMal: currentUserID,
+      });
+      await malReport.save();
+    } catch (error) {
+      console.error(
+        `Fehler beim Setzen von statusRun für machine mit ID ${machineID}:`,
+        error
+      );
+      //-----------------------------------------------
+    }
+  }
+
+  if (selectedIdsArr.length === 0) {
+    console.log('es wurde keine selectedIdsArr angewählt');
+  } else {
+    const selectedObjectIdsArr = selectedIdsArr.map((id) =>
+      mongoose.Types.ObjectId(id)
+    );
+
+    try {
+      await Machine.updateOne(
+        { _id: machineID },
+        {
+          $set: {
+            'sectorASMA.$[].components.$[].componentDetails.$[detail].status': false,
+          },
+        },
+        { arrayFilters: [{ 'detail._id': { $in: selectedObjectIdsArr } }] }
+      );
+      console.log(
+        `Status der ausgewählten componentDetails für machine mit ID ${machineID} erfolgreich auf false gesetzt.`
+      );
+      //---------------------------------------------
+      const componentDetailID = 'ID der Komponenten-Detail';
+
+      try {
+
+        const machine = await Machine.findOne({
+          'sectorASMA.components.componentDetails._id': componentDetailID,
+        });
+
+        if (machine) {
+          const component = machine.sectorASMA.components.find((comp) =>
+            comp.componentDetails.some(
+              (detail) => detail._id.toString() === componentDetailID
+            )
+          );
+
+          if (component) {
+            const componentDetail = component.componentDetails.find(
+              (detail) => detail._id.toString() === componentDetailID
+            );
+
+            if (componentDetail) {
+              const selectedSectorASMAName = machine.sectorASMA.name;
+              const selectedComponentName = component.name_de;
+              const selectedIdsArr = [componentDetailID];
+
+              console.log('selectedSectorASMAName:', selectedSectorASMAName);
+              console.log('selectedComponentName:', selectedComponentName);
+              console.log('selectedIdsArr:', selectedIdsArr);
+
+
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Fehler beim Suchen der Komponenten-Detail:', error);
+      }
+      //   const machine = await Machine.findById(machineID);
+      //   if (machine) {
+      //     console.log(machine);
+      //     const malReport = new MalReport({
+      //       userMal: currentUserID,
+      //       machineNameMal: machine.name,
+      //     });
+      //     await malReport.save();
+      //     console.log('MalReport erfolgreich erstellt.');
+      //   } else {
+      //     console.log('Maschine nicht gefunden.');
+      //   }
+    } catch (error) {
+      console.error(
+        `Fehler beim Setzen des status für componentDetails der machine mit ID ${machineID}:`,
+        error
+      );
+      //---------------------------------------------
+    }
+  }
+
+  res.status(200).json({
+    status: 'success',
+    message: 'ASMAMachine succefully updated!',
   });
 });
 

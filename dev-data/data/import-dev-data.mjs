@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'; //__dirname is not definet
 
 // eslint-disable-next-line node/no-missing-import
 import User from '../../models/userModel.mjs';
+import MalReport from '../../models/malReportModel.mjs';
 
 import Machine from '../../models/machineModel.mjs';
 import Department from '../../models/departmentModel.mjs';
@@ -57,6 +58,9 @@ mongoose
 
 // READ JSON-file
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8')); //, 'utf-8'
+const malReports = JSON.parse(
+  fs.readFileSync(`${__dirname}/malReports.json`, 'utf-8')
+);
 const machinery = JSON.parse(
   fs.readFileSync(`${__dirname}/machinery.json`, 'utf-8')
 ); //, 'utf-8'
@@ -68,6 +72,7 @@ const departments = JSON.parse(
 const importData = async () => {
   try {
     await User.create(users, { validateBeforeSave: false });
+    await MalReport.create(malReports, { validateBeforeSave: false });
     await Machine.create(machinery, { validateBeforeSave: false });
     await Department.create(departments, { validateBeforeSave: false });
     //await User.create(users, { validateBeforeSave: false }); //gibt validierungsfehler wenn --import     in model turn off passwort bei pre-save 2x //comment this out for import data, nacher wieder rückgänging
@@ -84,6 +89,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany();
+    await MalReport.deleteMany();
     await Machine.deleteMany();
     await Department.deleteMany();
     console.log('Data successfully deleted!');

@@ -34,6 +34,8 @@ import {
 
 import { showUsersMachinery, updateUserMachinery } from './usersMachinery';
 
+import { updateASMAMachine } from './ASMAmachine';
+
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
 import axios from 'axios';
@@ -92,6 +94,8 @@ const manageUsersMachineryTable = document.querySelector(
 );
 
 const updateUserMashineForm = document.querySelector('.form-userMachine-data');
+
+const ASMAbtnForm = document.querySelector('.form-ASMAbtn-data');
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -794,6 +798,39 @@ if (newSectorASMAform) {
 const saveUpdateUserMachine = document.querySelector(
   '.btn--saveUpdateUserMachine'
 );
+
+if (ASMAbtnForm) {
+  ASMAbtnForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin ASMAbtnForm');
+
+    const currentUserID = document.getElementById('currentUserID').value;
+    const machineID = document.getElementById('machineID').value;
+    const departmentName = document.getElementById('departmentName').value;
+    const machineName = document.getElementById('machineName').value;
+    const selectedIdsBtnArr = document.getElementById('selectedIdsInput').value;
+    const selectedRunIdBtn =
+      document.getElementById('selectedRunIdInput').value;
+
+    console.log('currentUserID: ' + currentUserID);
+    console.log('machineID: ' + machineID);
+    console.log('departmentName: ' + departmentName);
+    console.log('machineName: ' + machineName);
+    console.log('selectedIdsBtnArr: ' + selectedIdsBtnArr);
+    console.log('selectedRunIdBtn: ' + selectedRunIdBtn);
+
+    //if (e.submitter === saveUpdateUserMachine) {
+    console.log('bin abszBtn');
+    updateASMAMachine(
+      { selectedIdsBtnArr, selectedRunIdBtn, currentUserID, machineID },
+      //currentUserID,
+      machineID,
+      departmentName,
+      machineName
+    );
+    //}
+  });
+}
 
 if (updateUserMashineForm) {
   updateUserMashineForm.addEventListener('submit', (e) => {

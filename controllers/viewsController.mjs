@@ -157,12 +157,17 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
 export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log('Bin getASMAMachine');
-  console.log(req.params.machineName);
+  //console.log(req.params.machineName);
+  console.log(req.params);
+  const departmentName = req.params.departmentName;
+  const machineName = req.params.machineName;
+  console.log(departmentName);
+  console.log(machineName);
 
   const machine = await Machine.findOne({ name: req.params.machineName });
-  console.log(machine);
+  //console.log(machine);
 
-  console.log(req.user); //currentUser
+  //console.log(req.user); //currentUser
 
   if (!machine) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
@@ -174,6 +179,8 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
     data: {
       machine: machine,
       currentUser: req.user,
+      departmentName: departmentName,
+      machineName: machineName,
     },
   });
 });
