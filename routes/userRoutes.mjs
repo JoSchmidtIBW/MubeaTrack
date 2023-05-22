@@ -9,6 +9,8 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  getUsersMachinery,
+  getUpdateUserMachinery,
   uploadUserPhoto,
   resizeUserPhoto,
 } from '../controllers/userController.mjs';
@@ -29,6 +31,14 @@ const router = express.Router();
 
 //http: //127.0.0.1:4301/api/v1/users/
 router.get('/', getAllUsers);
+
+router
+  .route('/usersMachinery')
+  .get(protect, restrictTo('admin'), getUsersMachinery);
+
+router
+  .route('/updateUserMachinery/:userID')
+  .patch(protect, restrictTo('admin'), getUpdateUserMachinery);
 
 //authentication
 //http: //127.0.0.1:4301/api/v1/users/signup

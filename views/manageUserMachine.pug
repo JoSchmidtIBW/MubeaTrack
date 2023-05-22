@@ -2,7 +2,49 @@ extend base
 
 block content
     main.main
-      h1 Hallo manageUserMachine
-      h2 entweder, finde user, und in denen abteilungen, in welchem er arbeitet, zeige maschine und weise ihn zu
-      h3 oder finde abteilung, zeige alle user und alle maschinen, weise zu
-      h4 oder finde anlage, finde abteilung, in welcher sie steht, suche alle user und weise zu
+          h1 Hallo manageUserMachine
+          h2 entweder, finde user, und in denen abteilungen, in welchem er arbeitet, zeige maschine und weise ihn zu
+          h3 oder finde abteilung, zeige alle user und alle maschinen, weise zu
+          h4 oder finde anlage, finde abteilung, in welcher sie steht, suche alle user und weise zu
+          //-h1= data.users
+
+          table#manageUsersMachineryTable.manageUsersMachineryTable.table
+              thead
+                  tr
+                      th User ID
+                      th Employee Number
+                          button-upDown
+                              spam.arrow-up
+                          button-upDown
+                              spam.arrow-down
+                      th firstName
+                      th lastName
+                      th professional
+                      th department
+                      th machinery
+                      th Edit
+              tbody
+                each user in data.users
+                    tr
+                        td= user._id
+                        td= user.employeeNumber
+                        td= user.firstName
+                        td= user.lastName
+                        td= user.professional
+                        td= user.department
+                        td= user.machinery
+                            if user.machinery
+
+                              each machineId in user.machinery
+                                - const machine = data.machinery.find(m => m._id.toString() === machineId.toString())
+                                if machine
+                                    span= machine.name
+                                else
+                                    span No machine found
+                            else
+                                span No machine assigned
+                        td
+                            //-a.edit-button(href=`/user/${user._id}`) Edit
+                            //-a.delete-button(data-id=user._id) Delete
+
+          br

@@ -86,14 +86,29 @@ block content
             div
             .overview-box__group
                 h1 Machinery
-                each machine in department.machinery
-                    script.
-                        //-console.log(department.machinery)
-                    .overview-box__detail
-                        span.overview-box__label= machine.name
-                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
-                        span status:
-                        span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                if(currentUser.role === 'admin')
+                    each machine in department.machinery
+                        script.
+                            //-console.log(department.machinery)
+                        .overview-box__detail
+                            span.overview-box__label= machine.name
+                            a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                            span status:
+                            span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                else
+                    each machineID in currentUser.machinery
+                          - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
+                          if machine
+                                p Machine ID: #{machine._id}
+                                p Machine Name: #{machine.name}
+
+                                    .overview-box__detail
+                                        span.overview-box__label= `currentUser ${machineID}`
+                                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                                        span status:
+                                        span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+
+
 
     section.section-pictures
         each img, i in department.images

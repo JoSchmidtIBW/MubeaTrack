@@ -13,7 +13,18 @@
     "email": "admin@admin.io",
     "password": "test1234",
     "photo": "user-Admin.jpg",
-    "department": ["IT"]
+    "department": ["IT", "Anarbeit"],
+    "machinery": [
+      {
+        "_id": "6444566c830afd3adeba2d38"
+      },
+      {
+        "_id": "64445692830afd3adeba2d39"
+      },
+      {
+        "_id": "64445692830afd3adeba2d56"
+      }
+    ]
   },
   {
     "_id": "643c1f042df0321cb8a06a50",
@@ -29,7 +40,8 @@
     "email": "hans@maier.io",
     "password": "test1234",
     "photo": "user-Boss-1.jpg",
-    "department": ["IT"]
+    "department": ["IT"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a51",
@@ -45,7 +57,8 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Bediener-2.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a52",
@@ -61,7 +74,8 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Bediener-1.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a53",
@@ -77,7 +91,8 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Bediener-3.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a54",
@@ -93,7 +108,8 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Bediener-4.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a55",
@@ -109,7 +125,8 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Schichtleiter-1.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
   },
   {
     "_id": "643c1f042df0321cb8a06a56",
@@ -125,6 +142,24 @@
     "email": "",
     "password": "test1234",
     "photo": "user-Boss-2.jpg",
-    "department": ["Anarbeit"]
+    "department": ["Anarbeit"],
+    "machinery":[]
+  },
+  {
+    "_id": "643c1f042df0321cb8a06100",
+    "firstName": "Sadi",
+    "lastName": "Aspi",
+    "birthDate": "03.23.1979",
+    "gender": "male",
+    "employeeNumber": 70231,
+    "language": "de",
+    "professional": "Chef",
+    "role": "Chef",
+    "active": true,
+    "email": "",
+    "password": "test1234",
+    "photo": "user-Boss-3.jpg",
+    "department": ["Schweisserei"],
+    "machinery":[]
   }
 ]

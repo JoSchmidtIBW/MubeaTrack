@@ -117,7 +117,9 @@ block content
                     //-+overviewBox('Machinery', `${department.machineryCount} machine`, 'machine')
 
                 .overview-box__group
-                    h2.heading-secondary.ma-bt-lg The department employees
+                    h2.heading-secondary.ma-bt-lg The machine employees
+                    +overviewBox('Employees', `${data.machine.employeesCount} persons`, 'user')
+
 
                     //-each employee in department.employees
                         .overview-box__detail
@@ -145,7 +147,7 @@ block content
 
 
             .description-box
-                h2.heading-secondary.ma-bt-lg= `About ${data.machine.name} department`
+                h2.heading-secondary.ma-bt-lg= `About ${data.machine.name} machine`
                 // mache neue linie bei einem punkt im text
                 //-- const paragraphs = department.description.split('\n');
                 //-each p in paragraphs

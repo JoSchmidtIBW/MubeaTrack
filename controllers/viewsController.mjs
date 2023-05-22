@@ -132,7 +132,9 @@ export const getMachine = catchAsync(async (req, res, next) => {
   console.log(req.params.slug);
   //console.log(req);
 
-  const machine = await Machine.findOne({ name: req.params.slug });
+  const machine = await Machine.findOne({ name: req.params.slug }).populate(
+    'employees'
+  );
   // console.log('machine in DB: ' + machine);
   console.log(machine.name);
   console.log('-------------------------');
@@ -155,12 +157,17 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
 export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log('Bin getASMAMachine');
-  console.log(req.params.machineName);
+  //console.log(req.params.machineName);
+  console.log(req.params);
+  const departmentName = req.params.departmentName;
+  const machineName = req.params.machineName;
+  console.log(departmentName);
+  console.log(machineName);
 
   const machine = await Machine.findOne({ name: req.params.machineName });
-  console.log(machine);
+  //console.log(machine);
 
-  console.log(req.user); //currentUser
+  //console.log(req.user); //currentUser
 
   if (!machine) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
@@ -172,6 +179,8 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
     data: {
       machine: machine,
       currentUser: req.user,
+      departmentName: departmentName,
+      machineName: machineName,
     },
   });
 });
@@ -222,6 +231,7 @@ export const getDepartment = catchAsync(async (req, res, next) => {
     res.status(200).render('department', {
       title: `${department.name} department`, //'The Forrest Hiker Tour',
       department,
+      currentUser,
     });
   } else {
     console.log('Arbeitet Nicht dort');
@@ -526,7 +536,12 @@ export const getContact = catchAsync(async (req, res, next) => {
 export const getManageUserMachine = catchAsync(async (req, res, next) => {
   const departments = await Department.find().sort('_id').populate('machinery');
   const machinery = await Machine.find().populate('employees');
-  const users = await User.find();
+  const users = await User.find(); //.populate('machinery');
+
+  console.log(users.length);
+
+  // Machine.find({_id: })
+  // console.log()
 
   res.status(200).render('manageUserMachine', {
     title: 'Manage user/machine',
@@ -534,6 +549,30 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
       departments: departments,
       machinery: machinery,
       users: users,
+    },
+  });
+});
+
+export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateUsersMachinery');
+  const userID = req.params.id;
+  console.log('userID: ' + userID);
+
+  const user = await User.findById(userID).populate('departments');
+  console.log(user.firstName);
+
+  const departments = await Department.find().populate(
+    'employees',
+    'machinery'
+  );
+  const machinery = await Machine.find();
+
+  res.status(200).render('updateUserMachine', {
+    title: 'Update user/machine',
+    data: {
+      user: user,
+      departments: departments,
+      machine: machinery,
     },
   });
 });
@@ -590,6 +629,20 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
     return next(new AppError('There is no User with that ID.', 404));
   }
 
+  const currentUser = req.user;
+  //console.log('currentUser: ' + currentUser);
+
+  // res.status(200).render('updateUserAdminPW', {
+  //   title: 'Update user',
+  //   //data: userToUpdate,
+  //   data: {
+  //     userToUpdate: userToUpdate,
+  //     departments: allDepartments,
+  //     currentUser: currentUser,
+  //     //currentUserLoggedIn,
+  //   },
+  // });
+
   if (userToUpdate.role === 'admin' && req.user.role !== 'admin') {
     //damit niemand den admin verändert
     //res.redirect('/api/v1/manage_users');
@@ -609,16 +662,19 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
       data: {
         userToUpdate: userToUpdate,
         departments: allDepartments,
+        currentUser: currentUser,
         //currentUserLoggedIn,
       },
     });
   } else {
-    res.status(200).render('updateUser', {
+    res.status(200).render('updateUserByChef', {
       title: 'Update user',
       //data: userToUpdate,
       data: {
         userToUpdate: userToUpdate,
         //currentUserLoggedIn,
+        departments: allDepartments,
+        currentUser: currentUser,
       },
     });
   }

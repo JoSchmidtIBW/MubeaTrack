@@ -1,29 +1,25 @@
 /* eslint-disable */
 
 import axios from 'axios';
-import { showAlert } from './alerts.js';
+import { showAlert } from './alerts';
 
 // const process = require("process");
 const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
 const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
 
-//todo auch der button ManagerUsers soll von hier geöffnet werden
-
-//todo showUsers zu showUsersManagement
-export const showUsers = async () => {
-  console.log('bin showUsers');
-
+export const showMachinery = async () => {
+  console.log('bin showMachinery');
   try {
     const res = await axios({
       method: 'GET',
-      url: `${apiUrl}/users`,
+      url: `${apiUrl}/machinery`,
     });
-
+    //
     if (res.data.status === 'success') {
-      console.log('success in ShowUsers');
+      console.log('success in showMachinery');
 
-      $('#manageUsersTable').DataTable().destroy();
+      $('#manageMachineryTable').DataTable().destroy();
       // $('#manageUsersTable').on('click', '.delete-button', function () {
       //   const id = $(this).attr('data-id');
       //   //deleteUser(id);
@@ -33,7 +29,7 @@ export const showUsers = async () => {
       //   location.assign(`/userw/${id}`);
       // });
 
-      $('#manageUsersTable').DataTable({
+      $('#manageMachineryTable').DataTable({
         data: res.data.data.data,
         //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
         dom: 'l<"toolbar">frtip',
@@ -78,37 +74,35 @@ export const showUsers = async () => {
               return date.toLocaleDateString('de-DE', options);
             },
           },
-          { data: 'employeeNumber' },
-          { data: 'firstName' },
-          { data: 'lastName' },
-          { data: 'birthDate' },
-          { data: 'gender' },
-          { data: 'language' },
-          { data: 'professional' },
-          { data: 'photo', visible: false },
-          //{ data: 'name' },
-          { data: 'email' },
-          { data: 'role' },
+          { data: 'name' },
+          { data: 'description' },
+          { data: 'type' },
+          { data: 'constructionYear' },
+          { data: 'companyMachine' },
           { data: 'department' },
-          { data: 'password', visible: false },
+          { data: 'voltage' },
+          { data: 'controlVoltage' },
+          { data: 'ratedCurrent' },
+          { data: 'electricalFuse' },
+          { data: 'compressedAir' },
+          { data: 'weightMass' },
+          { data: 'dimensions' },
+          { data: 'drawingNumber' },
+          { data: 'employeesCount' },
           {
             data: '_id',
             render: function (data) {
               // return `<a href="/user/${data}" class="edit-button">Edit</a>
               // <button class="delete-button" data-id="${data}">Delete</button>`;
-
               //return `<a href="/user/${data}" class="edit-button">Edit</a>`;
-
               return `
-              <a href="/api/v1/manage_users/${data}" class="edit-button">
+              <a href="/api/v1/manage_machinery/${data}" class="edit-button">
                 <svg class="heading-box__icon">
                 <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                 </svg>
               </a>`;
               // '<a href="#" id="' + data + '" class="edit-button"><i class="fas fa-edit"></i></a>'`;
-
               // return '<a href="#" class="edit-button"><i class="fas fa-edit"></i></a>';
-
               //             svg.heading-box__icon
               // use(xlink:href='/img/icons.svg#icon-map-pin')`;
               //<svg className="edit-icon"><use xlink:href="#icon-edit"></use></svg>`;
@@ -126,12 +120,12 @@ export const showUsers = async () => {
       //   '#manageUsersTable th button-upDown.spam.arrow-down'
       // );
 
-      const $employeeNumSortAscBtn = $(
-        '#manageUsersTable th.employee-number button-upDown.spam.arrow-up'
-      );
-      const $employeeNumSortDescBtn = $(
-        '#manageUsersTable th.employee-number button-upDown.spam.arrow-down'
-      );
+      // const $employeeNumSortAscBtn = $(
+      //   '#manageUsersTable th.employee-number button-upDown.spam.arrow-up'
+      // );
+      // const $employeeNumSortDescBtn = $(
+      //   '#manageUsersTable th.employee-number button-upDown.spam.arrow-down'
+      // );
 
       // // Add event listener to the button for ascending name sorting
       // $nameSortAscBtn.on('click', function () {
@@ -146,83 +140,99 @@ export const showUsers = async () => {
       // });
 
       // Event-Listener zum Sortieren nach aufsteigender Employee-Nummer
-      $employeeNumSortAscBtn.on('click', function () {
-        $('#manageUsersTable').DataTable().order([1, 'asc']).draw();
-      });
-
-      // Event-Listener zum Sortieren nach absteigender Employee-Nummer
-      $employeeNumSortDescBtn.on('click', function () {
-        $('#manageUsersTable').DataTable().order([1, 'desc']).draw();
-      });
+      // $employeeNumSortAscBtn.on('click', function () {
+      //   $('#manageUsersTable').DataTable().order([1, 'asc']).draw();
+      // });
+      //
+      // // Event-Listener zum Sortieren nach absteigender Employee-Nummer
+      // $employeeNumSortDescBtn.on('click', function () {
+      //   $('#manageUsersTable').DataTable().order([1, 'desc']).draw();
+      // });
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
 };
 
-export const createNewUser = async (
-  employeeNumber,
-  firstname,
-  lastname,
-  birthDate,
-  gender,
-  language,
-  professional,
-  //name,
-  email,
-  password,
-  passwordConfirm,
-  role,
+export const createNewMachine = async (
+  name,
+  description,
+  zone,
+  type,
+  constructionYear,
+  companyMachine,
+  voltage,
+  controlVoltage,
+  ratedCurrent,
+  electricalFuse,
+  compressedAir,
+  weightMass,
+  dimensions,
+  drawingNumber,
   department
 ) => {
-  console.log('bin createNewUser zum serverschicken');
+  console.log('bin createNewMachine zum serverschicken');
   try {
     const res = await axios({
       method: 'POST',
-      url: `${apiUrl}/users/createNewUser`,
+      url: `${apiUrl}/machinery/createMachine`,
       data: {
-        employeeNumber: employeeNumber, //'66101',
-        firstName: firstname, //'Erika',
-        lastName: lastname, //'Schmidt',
-        birthDate: birthDate,
-        gender: gender,
-        language: language,
-        professional: professional,
-        //name: name, //'erika',
-        email: email,
-        password: password, //'test1234',
-        passwordConfirm: passwordConfirm, //'test1234',
-        role: role, //'guide',
+        name: name, //'66101',
+        description: description, //'Erika',
+        zone: zone,
+        type: type, //'Schmidt',
+        constructionYear: constructionYear,
+        companyMachine: companyMachine,
+        voltage: voltage,
+        controlVoltage: controlVoltage, //'erika',
+        ratedCurrent: ratedCurrent,
+        electricalFuse: electricalFuse, //'test1234',
+        compressedAir: compressedAir, //'test1234',
+        weightMass: weightMass, //'guide',
+        dimensions: dimensions, //'guide',
+        drawingNumber: drawingNumber, //'guide',
         department: department, //'Unterhalt',
-        active: true,
       },
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'User signed up successfully');
+      showAlert('success', 'Machine created successfully');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_users');
+        location.assign('/api/v1/manage_machinery');
       }, 1200);
     } else {
-      console.log('nixxxx');
+      console.log('nichts beim server /machinery/createMachine angekommen');
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
+  //   if (res.data.status === 'success') {
+  //     showAlert('success', 'Machine created successfully');
+  //     window.setTimeout(() => {
+  //       location.assign('/api/v1/manage_machinery');
+  //     }, 1200);
+  //   } else {
+  //     console.log('nichts beim server /machinery/createMachine angekommen');
+  //   }
+  // } catch (err) {
+  //   showAlert('error', err.response.data.message);
+  // }
 };
 
-export const updateUser = async (data, id) => {
+export const updateMachine = async (data, id) => {
+  console.log('bin updateMachine in index.js');
+  console.log(id);
   try {
     const res = await axios({
       method: 'PATCH',
-      url: `${apiUrl}/users/` + id,
+      url: `${apiUrl}/machinery/` + id,
       data,
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'User successfully updated');
+      showAlert('success', 'Machine successfully updated');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_users'); //
+        location.assign('/api/v1/manage_machinery');
       }, 500);
     }
   } catch (err) {
@@ -230,79 +240,20 @@ export const updateUser = async (data, id) => {
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteMachine = async (id) => {
   try {
     const res = await axios({
       method: 'DELETE',
-      url: `${apiUrl}/users/${id}`,
+      url: `${apiUrl}/machinery/${id}`,
     });
 
     if (res.status === 204) {
-      showAlert('success', 'User successfully deleted');
+      showAlert('success', 'Machine successfully deleted');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_users');
+        location.assign('/api/v1/manage_machinery');
       }, 500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
 };
-
-// export const createUser = async (email, password) => {
-//   //alert(email)
-//   console.log(email, password);
-//   //alert(`${email}, ${password}`);
-//   //alert(` ${password}`);
-//
-//   try {
-//     const res = await axios({
-//       method: 'POST',
-//       url: 'http://127.0.0.1:7566/api/v1/users/login', //http://127.0.0.1:3000/api/v1/users/login => http://localhost:3000/api/v1/users/login
-//       data: {
-//         email: email,
-//         password: password,
-//       },
-//     });
-//
-//     if (res.data.status === 'success') {
-//       // das ist der gesendete status in data
-//       //alert('Logged in successfully!');
-//       showAlert('success', 'Logged in successfully!');
-//       window.setTimeout(() => {
-//         location.assign('/overview'); //wie redirect
-//       }, 1500);
-//     }
-//
-//     //console.log(res)
-//   } catch (err) {
-//     console.log(JSON.stringify(err.response.data) + ' bin login in login.js'); // kommt von axios documentation
-//     console.log(
-//       JSON.stringify(err.response.data.message) + ' bin login in login.js'
-//     );
-//     // alert(JSON.stringify(err.response.data.message) + " bin login in login.js") // data ist data-responce
-//
-//     if (
-//       err.response.data.message ===
-//       "Cannot read properties of null (reading 'password')"
-//     ) {
-//       showAlert(
-//         'error',
-//         JSON.stringify(err.response.data.message) + ' email not found in db'
-//       );
-//     } else if (err.response.data.message === 'isBcrypt is not defined') {
-//       showAlert(
-//         'error',
-//         JSON.stringify(err.response.data.message) +
-//           ' password is wrong, email is found'
-//       );
-//     } else {
-//       showAlert(
-//         'error',
-//         JSON.stringify(err.response.data.message) + ' bin login in login.js'
-//       );
-//     }
-//
-//     //console.log(JSON.parse(err.response.data) + " bin login in login.js")
-//     //console.log(err.response.data + " bin login in login.js")
-//   }
-// };

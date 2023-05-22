@@ -2,11 +2,11 @@ extends base
 
 block content
   main.main
-    h1(style="background-color: red;") BY ADMIN
+    h1(style="background-color: orange;") BY CHEF
     div(class="user-view__content")
       div(class="user-view__form-container")
         h2.heading-secondary.ma-bt-md= `Edit User ${data.userToUpdate.firstName}`
-        form.form.form-workerAdmin-data
+        form.form.form-workerChef-data
           //-input#userId(type="hidden", value=data.userToUpdate._id)
           div(class="form__group ma-bt-md")
             label(class="form__label", for="userId") UserId
@@ -29,7 +29,7 @@ block content
             //-select#gender(class="form__input")
               option(value="male") Male
               option(value="Female") Female
-          div(class="form__group")
+          //div(class="form__group")
             label(class="form__label", for="language") Language
             input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
           div(class="form__group")
@@ -60,16 +60,24 @@ block content
                 let iv = CryptoJS.enc.Base64.parse('');
                 let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
                 document.getElementById("passwordEncripted").value = decryptedPassword;
-          div(class="form__group")
-            label(class="form__label", for="language") Language
-            input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="role") Role
-            select#role(class="form__input")
-              option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
-              option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
-              option(value="user", selected=data.userToUpdate.role === 'user') User
-              option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
+          if(data.userToUpdate.role === 'admin')
+            div(class="form__group")
+              label(class="form__label", for="language") Language from admin can not be changed
+          else
+            div(class="form__group")
+              label(class="form__label", for="language") Language
+              input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+          if(data.userToUpdate.role === 'admin')
+            div(class="form__group")
+              label(class="form__label", for="role") Role from admin can not be changed
+          else
+            div(class="form__group")
+              label(class="form__label", for="role") Role
+              select#role(class="form__input")
+                option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
+                option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
+                option(value="user", selected=data.userToUpdate.role === 'user') User
+                option(value="Unterhalt", selected=data.userToUpdate.role === 'Unterhalt') Unterhalt
           div(class="form__group")
             label(class="form__label", for="departments") Departments
             input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
@@ -105,8 +113,8 @@ block content
 
 
 
-          button.btn.btn--small.btn--green.btn--saveUpdateUserByAdmin Save
-          button.btn.btn--small.btn--red.btn--deleteUpdateUserByAdmin Delete
+          button.btn.btn--small.btn--green.btn--saveUpdateUserByChef Save
+          button.btn.btn--small.btn--red.btn--deleteUpdateUserByChef Delete
           a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
 
           script.

@@ -30,7 +30,7 @@ block content
                         h1= data.machine._id
                         h1= data.machine.name
                         br
-                        button(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: red')
+                        button.btn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: red')
                             data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
                         br
                         table
@@ -49,29 +49,44 @@ block content
                                         td
                                             table
                                               each detail, index in component.componentDetails
-                                                  if index % 5 === 0
+                                                  if index % 4 === 0
                                                       tr
                                                   td(style="border: 1px solid pink; padding: 10px; margin: 5px;")
-                                                      button(
+                                                      button.btn(
                                                           class=`stoerBtn stoerBtn-${index}`,
                                                           id=`stoerBtn-${index}`,
                                                           style=(detail.status ? 'background-color: green' : 'background-color: red'),
                                                           data-status=(detail.status ? 'true' : 'false'),data-detail-id=detail._id
                                                       )= detail.name_de
                                                       //-`${detail.name_de},${detail._id}`
+                                                  br
                     form.form.form-ASMAbtn-data
                         //todo diese felder verstecken, nicht löschen! es braucht die ID's
                         br
-                        input#machineID(type="text", name="machineID", value=data.machine._id)
+                        label machineID
+                        input#machineID(type="text", name="machineID", value=data.machine._id, style="width: 300px;")
                         br
-                        input#currentUserID(type="text",  name="currentUserID", value=data.currentUser._id)
+                        label CurrentUserID
+                        input#currentUserID(type="text",  name="currentUserID", value=data.currentUser._id, style="width: 300px;")
                         br
-                        input(type="text", id="selectedIdsInput", name="selectedIds")
-                        input(type="text", id="selectedRunIdInput", name="selectedRunId")
+                        label departmentName
+                        input(type="text", id="departmentName", name="departmentName",value=data.departmentName, style="width: 600px;")
+                        br
+                        label machineName
+                        input(type="text", id="machineName", name="machineName",value=data.machineName, style="width: 600px;")
+                        br
+                        label ASMABTNid's
+                        input(type="text", id="selectedIdsInput", name="selectedIds",  style="width: 600px;")
+                        br
+                        label AMSA Run-ID
+                        input(type="text", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
                         br
                         button(id="abszBtn") Störung-Meldung absetzen
 
     script.
+      let pathValue = 'xx';
+
+      console.log("pathValue: " + pathValue);
       const machineStatusRunBtn = document.getElementById('machineStatusRunBtn')
       const statusRun = machineStatusRunBtn.getAttribute('data-statusRun');
       const machineIDRun = machineStatusRunBtn.getAttribute('data-machineIDRun')

@@ -10,6 +10,7 @@ import {
   getOverviewDepartment,
   getManageUsers,
   getManageMachinery,
+  getUpdateUserMachine,
   getCreateUserForm,
   getUpdateUser,
   getCreateMachineForm,
@@ -105,6 +106,13 @@ router.get(
   protect,
   restrictTo('admin'),
   getManageUserMachine
+);
+
+router.get(
+  '/manage_usersMachinery/:id',
+  protect,
+  restrictTo('admin'),
+  getUpdateUserMachine
 );
 
 //router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);

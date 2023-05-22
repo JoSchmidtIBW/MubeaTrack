@@ -20,6 +20,7 @@ import {
   createComponentDetailASMA,
   updateComponentDetailASMA,
   deleteComponentDetailASMA,
+  updateASMAMachine,
 } from '../controllers/machineController.mjs';
 
 import {
@@ -78,6 +79,10 @@ router
   .route('/machineryASMA')
   .get(protect, restrictTo('admin'), getMachineryASMA);
 //.post(protect, restrictTo('admin', 'lead-guide'), createMachine);
+
+router
+  .route('/updateASMAMachine/:machineID')
+  .patch(protect, restrictTo('admin', 'user'), updateASMAMachine);
 
 router
   .route('/createSectorASMA/:id')
