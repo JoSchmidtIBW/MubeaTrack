@@ -1,0 +1,55 @@
+extends base
+
+block content
+    main.main
+        h1 ASMAUnterhaltMachineObepMalReports
+        br
+        br
+        //-h1= data.malReports
+        br
+        br
+        table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
+            thead
+                tr
+                    th ID
+                    th createAt_Mal
+                    th user_Mal fN
+                    th user_Mal lN
+                    th nameMachine_Mal
+                    th nameSector_Mal
+                    th nameComponent_Mal
+                    th nameComponentDetail_Mal
+                    th repairStatus
+
+                    //-th ASMAmachinery
+                    th statusRun_Mal
+                    th statusOpenClose_Mal
+                    th Edit
+            tbody
+              each malReport in data.malReports
+                  tr
+                      td= malReport._id
+                      td= malReport.createAt_Mal.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                      td= malReport.user_Mal.firstName
+                      td= malReport.user_Mal.lastName
+                      td= malReport.nameMachine_Mal
+                      td= malReport.nameSector_Mal
+                      td= malReport.nameComponent_Mal
+                      td= malReport.nameComponentDetail_Mal
+                      td
+                        each repairStatus in malReport.repairStatus
+                            p= repairStatus._id
+                            p= repairStatus.isElektroMech_Repair
+                            p= `${repairStatus.Status_Repair}%`
+                            p= repairStatus.createAt_Repair.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                            p= repairStatus.message_Repair
+                            p= repairStatus.geschaetzterAufwand_Repair
+                            p= repairStatus.user_Repair ? repairStatus.user_Repair.firstName : 'No user'
+                            a(href='#') YY
+                      td= malReport.statusRun_Mal
+                      td= malReport.statusOpenClose_Mal
+                      td
+                          a(href='#') xx
+                          //-a.edit-button(href=`/api/v1/${data.departmentName}/ASMA/${data.malReports.nameMachine_Mal}`) Edit
+
+        br

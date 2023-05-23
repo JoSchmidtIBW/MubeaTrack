@@ -190,14 +190,63 @@ export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
   const malReports = await MalReport.find().populate('user_Mal');
   const machinery = await Machine.find();
 
+  const departmentName = req.params.departmentName;
+  console.log('departmentName: ' + departmentName);
+
   res.status(200).render('ASMAUnterhalt', {
     title: 'ASMAUnterhalt',
     data: {
       malReports: malReports,
       machinery: machinery,
+      departmentName: departmentName,
     },
   });
 });
+
+export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
+  async (req, res, next) => {
+    console.log('bin getASMAUnterhaltMachineOpenMalReports');
+    const departmentName = req.params.departmentName;
+    console.log('departmentName: ' + departmentName);
+
+    const machineName = req.params.machineName;
+    console.log('machineName: ' + machineName);
+
+    const malReports = await MalReport.find({
+      nameMachine_Mal: machineName,
+    })
+      .select(
+        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal'
+      )
+      .populate('user_Mal')
+      .populate({
+        path: 'repairStatus',
+        populate: {
+          path: 'user_Repair',
+          model: 'User',
+        },
+      });
+    // .populate('repairStatus')
+    // .populate('repairStatus.user_Repair');
+
+    //.select('Status_Repair');
+
+    // .populate({
+    //     path: 'repairStatus.Status_Repair',
+    //     model: 'Status_Repair',
+    //   })
+    console.log(malReports);
+
+    res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
+      title: 'MachineOpenMalReports',
+      data: {
+        malReports: malReports,
+        departmentName: departmentName,
+        machineName: machineName,
+      },
+    });
+  }
+);
 
 export const getDepartment = catchAsync(async (req, res, next) => {
   // 1.) Get the data, from the requested tour (inclouding rewievs and guides)

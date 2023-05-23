@@ -28,6 +28,7 @@ import {
   getCreateComponentDetailsASMA,
   getUpdateComponentDetailsASMA,
   getASMAUnterhalt,
+  getASMAUnterhaltMachineOpenMalReports,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -60,11 +61,20 @@ router.get(
   getMachine
 );
 
+///api/v1/Unterhalt/ASMA
 router.get(
   '/:departmentName/ASMA',
   protect,
   restrictTo('admin', 'Unterhalt'),
   getASMAUnterhalt
+);
+
+///api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`
+router.get(
+  '/:departmentName/ASMA/:machineName/MalReports',
+  protect,
+  restrictTo('admin', 'Unterhalt'),
+  getASMAUnterhaltMachineOpenMalReports
 );
 
 router.get(
