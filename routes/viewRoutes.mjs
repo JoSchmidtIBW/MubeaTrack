@@ -27,6 +27,7 @@ import {
   getUpdateComponentASMA,
   getCreateComponentDetailsASMA,
   getUpdateComponentDetailsASMA,
+  getASMAUnterhalt,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -57,6 +58,13 @@ router.get(
   protect,
   isLoggedIn,
   getMachine
+);
+
+router.get(
+  '/:departmentName/ASMA',
+  protect,
+  restrictTo('admin', 'Unterhalt'),
+  getASMAUnterhalt
 );
 
 router.get(
