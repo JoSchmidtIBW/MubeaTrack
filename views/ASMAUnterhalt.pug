@@ -3,6 +3,7 @@ extends base
 block content
     main.main
         h1 bin ASMAUnterhalt.pug
+        h1
         table
           each machine, index in data.machinery
               if index % 1 === 0
@@ -10,6 +11,8 @@ block content
                       td
                           span= machine.name
                           span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                          a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`)= machine.name
+
 
               else
                   td

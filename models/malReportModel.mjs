@@ -39,7 +39,7 @@ const malReportSchema = new mongoose.Schema({
       },
       createAt_Repair: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
       },
       // Status_Repair: {
       //   type: Number,
@@ -47,23 +47,23 @@ const malReportSchema = new mongoose.Schema({
       Status_Repair: {
         type: Number,
       },
-      percentage: {
-        type: String,
-        get: function (value) {
-          if (typeof value === 'number') {
-            return value + '%';
-          }
-          return value;
-        },
-      },
+      // percentage: {
+      //   type: String,
+      //   get: function (value) {
+      //     if (typeof value === 'number') {
+      //       return value + '%';
+      //     }
+      //     return value;
+      //   },
+      // },
       message_Repair: {
         type: String,
       },
-      geschätzterAufwand_Repair: {
+      geschaetzterAufwand_Repair: {
         type: String,
       },
       isElektroMech_Repair: {
-        type: Boolean,
+        type: String,
       },
     },
   ],

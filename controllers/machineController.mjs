@@ -268,14 +268,18 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
           const malReport = new MalReport({
             user_Mal: currentUserID,
             nameMachine_Mal: machine.name,
-            nameSector_Mal: componentInfo.componentNameDE,
+            nameSector_Mal: componentInfo.sectorASMAName,
             nameComponent_Mal: componentInfo.componentNameDE,
             nameComponentDetail_Mal: componentInfo.componentDetailNameDE,
             statusRun_Mal: true,
             statusOpenClose_Mal: 'open',
             repairStatus: [
               {
+                //user_Repair: currentUserID,
                 Status_Repair: 0,
+                message_Repair: '-',
+                geschaetzterAufwand_Repair: '-',
+                isElektroMech_Repair: 'elekt.-mech',
               },
             ],
           });
