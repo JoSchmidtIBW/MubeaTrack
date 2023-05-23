@@ -1756,6 +1756,20 @@ input#employeeNumber.form__input[type=number] {
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
 
+#manageUsersMachineryTable {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
+
+#manageMachineryTable {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
+
+
+
+
+
 .mainASMAmachine {
     background-color: #f7f7f7;
     padding: 2rem 2rem;
@@ -1799,5 +1813,6 @@ input#employeeNumber.form__input[type=number] {
     display: -ms-flexbox;
     display: flex;
 }
+
 
 

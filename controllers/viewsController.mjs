@@ -1,6 +1,7 @@
 import User from '../models/userModel.mjs';
 import Machine from '../models/machineModel.mjs';
 import Department from '../models/departmentModel.mjs';
+import MalReport from '../models/malReportModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 import APIFeatures from '../utils/apiFeatures.mjs';
@@ -181,6 +182,19 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
       currentUser: req.user,
       departmentName: departmentName,
       machineName: machineName,
+    },
+  });
+});
+
+export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
+  const malReports = await MalReport.find().populate('user_Mal');
+  const machinery = await Machine.find();
+
+  res.status(200).render('ASMAUnterhalt', {
+    title: 'ASMAUnterhalt',
+    data: {
+      malReports: malReports,
+      machinery: machinery,
     },
   });
 });

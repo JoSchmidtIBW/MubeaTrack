@@ -1,0 +1,17 @@
+extends base
+
+block content
+    main.main
+        h1 bin ASMAUnterhalt.pug
+        table
+          each machine, index in data.machinery
+              if index % 1 === 0
+                  tr
+                      td
+                          span= machine.name
+                          span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+
+              else
+                  td
+                      span= machine.name
+                      span(style=(machine.statusRun ? "color:green" : "color:red"))= machine.statusRun
