@@ -39,7 +39,7 @@ const malReportSchema = new mongoose.Schema({
       },
       createAt_Repair: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
       },
       // Status_Repair: {
       //   type: Number,

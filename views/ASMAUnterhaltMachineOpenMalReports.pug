@@ -7,19 +7,30 @@ block content
         br
         //-h1= data.malReports
         br
+        a.btn.btn--gray(href='#')= `zu den geschlossenen Punkten von ${data.machineName}`
+        br
+        br
         br
         table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
             thead
                 tr
                     th ID
-                    th createAt_Mal
-                    th user_Mal fN
+                    th createAt<br>_Mal
+                    th user<br>_Mal fN
                     th user_Mal lN
-                    th nameMachine_Mal
-                    th nameSector_Mal
-                    th nameComponent_Mal
-                    th nameComponentDetail_Mal
-                    th repairStatus
+                    th Machine<br>_Mal
+                    th Sector<br>_Mal
+                    th Component<br>_Mal
+                    th Component<br>Detail_Mal
+                    th repairStatus ID
+                    th elektromech
+                    th user fN
+                    th user ln
+                    th repairStatus<br> createdt
+                    th editdd
+                    th xx
+                    //-th ff
+                    th rrr
 
                     //-th ASMAmachinery
                     th statusRun_Mal
@@ -28,7 +39,7 @@ block content
             tbody
               each malReport in data.malReports
                   tr
-                      td= malReport._id
+                      td(style="color:red;")= malReport._id
                       td= malReport.createAt_Mal.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
                       td= malReport.user_Mal.firstName
                       td= malReport.user_Mal.lastName
@@ -36,20 +47,21 @@ block content
                       td= malReport.nameSector_Mal
                       td= malReport.nameComponent_Mal
                       td= malReport.nameComponentDetail_Mal
-                      td
+                        //td
                         each repairStatus in malReport.repairStatus
-                            p= repairStatus._id
-                            p= repairStatus.isElektroMech_Repair
-                            p= `${repairStatus.Status_Repair}%`
-                            p= repairStatus.createAt_Repair.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-                            p= repairStatus.message_Repair
-                            p= repairStatus.geschaetzterAufwand_Repair
-                            p= repairStatus.user_Repair ? repairStatus.user_Repair.firstName : 'No user'
-                            a(href='#') YY
-                      td= malReport.statusRun_Mal
+                            td(style="color:blue;")= repairStatus._id
+                            td= repairStatus.isElektroMech_Repair
+                            td= `${repairStatus.Status_Repair}%`
+                            td= repairStatus.createAt_Repair.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                            td= repairStatus.message_Repair
+                            td= repairStatus.geschaetzterAufwand_Repair
+                            td= repairStatus.user_Repair ? repairStatus.user_Repair.firstName : 'No user'
+                            td
+                              a(href='#') YY
+                      td(style=malReport.statusRun_Mal ? '' : 'background-color: coral')= malReport.statusRun_Mal
                       td= malReport.statusOpenClose_Mal
                       td
-                          a(href='#') xx
+                          a(href='#', style="color:red;") xx
                           //-a.edit-button(href=`/api/v1/${data.departmentName}/ASMA/${data.malReports.nameMachine_Mal}`) Edit
 
         br
