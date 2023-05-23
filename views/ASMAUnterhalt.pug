@@ -10,6 +10,7 @@ block content
                       td
                           span= machine.name
                           span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                          a.btn()
 
               else
                   td
