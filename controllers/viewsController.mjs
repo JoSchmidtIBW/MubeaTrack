@@ -216,11 +216,11 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
       nameMachine_Mal: machineName,
     })
       .select(
-        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal'
+        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
       )
       .populate('user_Mal')
       .populate({
-        path: 'repairStatus',
+        path: 'logFal_Repair',
         populate: {
           path: 'user_Repair',
           model: 'User',

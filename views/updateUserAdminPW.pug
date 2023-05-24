@@ -72,7 +72,7 @@ block content
               option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
           div(class="form__group")
             label(class="form__label", for="departments") Departments
-            //-input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
+            input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
             script.
               console.log("test2222")
             //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
@@ -110,6 +110,7 @@ block content
           a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
 
           script.
+            console.log("bin Skript")
             function getSelectedDepartments() {
               const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
               let selectedDepartments = [];
@@ -131,6 +132,6 @@ block content
             }
 
             // Rufen Sie die Funktion auf, wenn der "Speichern"-Button geklickt wird
-            document.querySelector('.btn--saveUpdateUserByChef').addEventListener('click', () => {
+            document.querySelector('.btn--saveUpdateUserByAdmin').addEventListener('click', () => {
               getSelectedDepartments();
             });

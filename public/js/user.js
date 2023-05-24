@@ -212,6 +212,7 @@ export const createNewUser = async (
 };
 
 export const updateUser = async (data, id) => {
+  console.log('bin updateUser in user.js');
   try {
     const res = await axios({
       method: 'PATCH',
