@@ -216,11 +216,11 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
       nameMachine_Mal: machineName,
     })
       .select(
-        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal'
+        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
       )
       .populate('user_Mal')
       .populate({
-        path: 'repairStatus',
+        path: 'logFal_Repair',
         populate: {
           path: 'user_Repair',
           model: 'User',
@@ -337,16 +337,29 @@ export const getManageUsers = catchAsync(async (req, res) => {
   //   .paginate(); // Hier wird das Limit auf 5 gesetzt
   // const users = await features.query;
 
-  res.status(200).render('manageUsers', {
-    title: 'Manage Users',
-    users: allUsers, //users, //allUsers,
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('manageUsers_de', {
+      title: 'Benutzer- Verwaltung',
+      users: allUsers, //users, //allUsers,
+    });
+  } else {
+    res.status(200).render('manageUsers', {
+      title: 'Manage Users',
+      users: allUsers, //users, //allUsers,
+    });
+  }
 });
 
 export const getCreateMachineForm = (req, res) => {
-  res.status(200).render('createMachine', {
-    title: 'Create new machine',
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('createMachine_de', {
+      title: 'Erstelle neue Maschine',
+    });
+  } else {
+    res.status(200).render('createMachine', {
+      title: 'Create new machine',
+    });
+  }
 };
 
 export const getManageASMAMachine = catchAsync(async (req, res, next) => {
@@ -579,21 +592,39 @@ export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
 });
 
 export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
-  res.status(200).render('aboutMubeaTrack', {
-    title: 'About MubeaTrack',
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('aboutMubeaTrack_de', {
+      title: 'Über MubeaTrack',
+    });
+  } else {
+    res.status(200).render('aboutMubeaTrack', {
+      title: 'About MubeaTrack',
+    });
+  }
 });
 
 export const getAboutASMA = catchAsync(async (req, res, next) => {
-  res.status(200).render('aboutASMA', {
-    title: 'About ASMA',
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('aboutASMA_de', {
+      title: 'Über ASMA',
+    });
+  } else {
+    res.status(200).render('aboutASMA', {
+      title: 'About ASMA',
+    });
+  }
 });
 
 export const getContact = catchAsync(async (req, res, next) => {
-  res.status(200).render('contact', {
-    title: 'Contact',
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('contact_de', {
+      title: 'Kontakt',
+    });
+  } else {
+    res.status(200).render('contact', {
+      title: 'Contact',
+    });
+  }
 });
 
 export const getManageUserMachine = catchAsync(async (req, res, next) => {
@@ -746,9 +777,16 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
 export const getAccount = (req, res) => {
   // da protect und isLoggedin middleware bereits user wissen, muss hier nicht fragen
   // frage, der user ist in der req.user drin, jedoch wiso wird der user nicht gesendet unterhalb des titels?
-  res.status(200).render('account', {
-    title: 'Your account',
-  });
+
+  if (req.user.language === 'de') {
+    res.status(200).render('account_de', {
+      title: 'Dein Konto',
+    });
+  } else {
+    res.status(200).render('account', {
+      title: 'Your account',
+    });
+  }
 };
 
 //video 195 POST userData MEaccount, ohne API, mit POST wie bei ejs method=post

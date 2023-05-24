@@ -200,7 +200,8 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         nameMachine_Mal: machine.name,
         statusRun_Mal: false,
         statusOpenClose_Mal: 'open',
-        repairStatus: [
+        estimatedStatus: 0,
+        logFal_Repair: [
           {
             Status_Repair: 0,
           },
@@ -273,13 +274,14 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
             nameComponentDetail_Mal: componentInfo.componentDetailNameDE,
             statusRun_Mal: true,
             statusOpenClose_Mal: 'open',
-            repairStatus: [
+            estimatedStatus: 0,
+            logFal_Repair: [
               {
                 //user_Repair: currentUserID,
                 Status_Repair: 0,
                 message_Repair: '-',
-                geschaetzterAufwand_Repair: '-',
-                isElektroMech_Repair: 'elekt.-mech',
+                estimatedTime_Repair: '-',
+                isElectroMechanical_Repair: 'elekt.-mech',
               },
             ],
           });

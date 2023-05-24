@@ -1,0 +1,61 @@
+extends base
+
+block content
+    main.main2
+        table#manageUsersTable.manageUsersTable.table
+            thead
+                tr
+                    th ID
+                    th Erstellt am
+                    th Mitarbeiter- Nummer
+                        button-upDown
+                            spam.arrow-up
+                        button-upDown
+                            spam.arrow-down
+                    th Vorname
+                    th Nachname
+                    th Geburtsdatum
+                    th Geschlecht
+                    th Sprache
+                    th Beruf
+                    th Foto
+                    //-th Name
+                      //-span Name
+                      //-.arrowUpDown
+                      button-upDown
+                        spam.arrow-up
+                      button-upDown
+                        spam.arrow-down
+                    th E-Mail
+                    th Rolle
+                    th Abteilung
+                    th Passwort
+                    th Bearbeiten
+            tbody
+              each user in users
+                  tr
+                      td= user._id
+                      td= user.createdAt
+                      td= user.employeeNumber
+                      td= user.firstName
+                      td= user.lastName
+                      td= user.birthDate
+                      td= user.gender
+                      td= user.language
+                      td= user.professional
+                      td= user.photo
+                      //td= user.name
+                      td= user.email
+                      td= user.role
+                      td= user.department
+                      td= user.password
+                      td
+                          //-a.edit-button(href=`/user/${user._id}`) Edit
+                          //-a.delete-button(data-id=user._id) Delete
+
+        br
+        br
+        //-h1 hallo
+        br
+
+        a.btn.btn--small.btn--green(href="/api/v1/createUser") Erstelle neuen Benutzer

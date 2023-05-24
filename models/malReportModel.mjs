@@ -31,7 +31,10 @@ const malReportSchema = new mongoose.Schema({
     enum: ['open', 'close'],
     default: 'open',
   },
-  repairStatus: [
+  estimatedStatus: {
+    type: Number,
+  },
+  logFal_Repair: [
     {
       user_Repair: {
         type: mongoose.Schema.Types.ObjectId,
@@ -59,10 +62,10 @@ const malReportSchema = new mongoose.Schema({
       message_Repair: {
         type: String,
       },
-      geschaetzterAufwand_Repair: {
+      estimatedTime_Repair: {
         type: String,
       },
-      isElektroMech_Repair: {
+      isElectroMechanical_Repair: {
         type: String,
       },
     },
