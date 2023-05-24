@@ -1814,5 +1814,27 @@ input#employeeNumber.form__input[type=number] {
     display: flex;
 }
 
+.overview-box__label_little {
+    font-weight: 700;
+    margin-right: 2.25rem;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+}
+
+.overview-box__label_big {
+    font-weight: 700;
+    color: rgba(49,52,49,0.81);
+    margin-right: 2.25rem;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+}
 
 
+.createMachine-view__menu {
+    -webkit-box-flex: 32rem;
+    -ms-flex: 32rem 0 0px;
+    flex: 32rem 0 0;
+    background-image: -webkit-gradient( linear, left top, right bottom, from(#5B14BD), to(#28b487));
+    background-image: linear-gradient(to right bottom, #5B14BD, #28b487);
+    padding: 4rem 0;
+}

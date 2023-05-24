@@ -49,14 +49,14 @@ block content
                     .overview-box__detail
                         img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
-                        - if(employee.role === 'lead-guide')
-                            span.overview-box__label Lead guide
-                        - if(employee.role === 'guide')
-                            span.overview-box__label Tour guide
+                        - if(employee.role === 'Chef')
+                            span.overview-box__label_big Chef
+                        - if(employee.role === 'Unterhalt')
+                            span.overview-box__label_little=employee.professional
                         - if(employee.role === 'Schichtleiter')
                             span.overview-box__label Schichtleiter
-                        - if(employee.role === 'Bediener')
-                            span.overview-box__label Bediener
+                        - if(employee.role === 'user')
+                            span.overview-box__label_little=employee.professional
                         //span.overview-box__label= guide.role
                         span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                 //- .overview-box__detail

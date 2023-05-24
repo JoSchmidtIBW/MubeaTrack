@@ -13,21 +13,21 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('#', 'My Settings', 'settings', true)
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                    +navItem('#', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
-                    .admin-nav
-                        h5.admin-nav__heading= `${user.role}`
-                        ul.side-nav
-                            +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                            +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                            +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                            +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+                .admin-nav
+                  h5.admin-nav__heading= `${user.role}`
+                  ul.side-nav
+                      +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                      +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                      +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                      +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Your account settings
+                    h2.heading-secondary.ma-bt-md Deine Konto-Daten
 
                     //- Without API
                     //- form.form.form-user-data(action='/submit-user-data' method='POST')
@@ -36,39 +36,39 @@ block content
                     //- WITH API    darf dann nicht stehen method=POST usw
                     form.form.form-user-data
                         input#userId(type="hidden", value=`${user._id}`)
-                        div(class="form__group")
-                            label(class="form__label", for="employeeNumber") Employee Number
+                        //div(class="form__group")
+                            label(class="form__label", for="employeeNumber") Mitarbeiter- Number
                             input#employeeNumber(class="form__input", type="number", value=user.employeeNumber, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
-                            label(class="form__label", for="firstname") Firstname
+                            label(class="form__label", for="firstname") Vorname
                             input#firstname(class="form__input", type="text", value=user.firstName)
                         div(class="form__group")
-                            label(class="form__label", for="lastname") Lastname
+                            label(class="form__label", for="lastname") Nachname
                             input#lastname(class="form__input", type="text", value=user.lastName)
                         div(class="form__group")
-                            label(class="form__label", for="birthDate") Birth date
+                            label(class="form__label", for="birthDate") Geburtsdatum
                             input#birthDate(class="form__input", type="text", value=user.birthDate, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
-                            label(class="form__label", for="gender") Gender
+                            label(class="form__label", for="gender") Geschlecht
                             //input#gender(class="form__input", type="text", value=user.gender)
                             select#gender(class="form__input", value=user.gender)
-                                option(value="male", selected=user.gender === 'male') Male
-                                option(value="female", selected=user.gender === 'female') Female
+                                option(value="male", selected=user.gender === 'male') männlich
+                                option(value="female", selected=user.gender === 'female') weiblich
                         div(class="form__group")
-                            label(class="form__label", for="language") Language
+                            label(class="form__label", for="language") Sprache
                             //input#language(class="form__input", type="text", value=user.language, readonly, style="background-color: lightgrey;")
                             select#language(class="form__input")
-                                option(value="en", selected=user.language === 'en') English
-                                option(value="de", selected=user.language === 'de') German
+                                option(value="en", selected=user.language === 'en') Englisch
+                                option(value="de", selected=user.language === 'de') Deutsch
 
                         div(class="form__group")
-                            label(class="form__label", for="role") Professional
+                            label(class="form__label", for="role") Beruf
                             input#professional(class="form__input", type="text", value=user.professional, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
-                            label(class="form__label", for="role") Role
+                            label(class="form__label", for="role") Rolle
                             input#role(class="form__input", type="text", value=user.role, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
-                            label(class="form__label", for="role") Department
+                            label(class="form__label", for="role") Abteilung
                             input#department(class="form__input", type="text", value=user.department, readonly, style="background-color: lightgrey;")
                         //-.form__group
                             label.form__label(for='name') Name
@@ -80,27 +80,27 @@ block content
                             img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
 
                             input.form__upload(type='file', accept='image/*', id='photo', name='photo')
-                            label(for='photo') Choose new photo
+                            label(for='photo') Wähle neues Foto
 
                         .form__group.right
-                            button.btn.btn--small.btn--green Save settings
+                            button.btn.btn--small.btn--green Speichern der Einstellungen
 
                 .line &nbsp;
 
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Password change
+                    h2.heading-secondary.ma-bt-md Password- Wechsel
                     form.form.form-user-password
                         //-.form__group     //- damit Fehler weg geht: Password forms should have (optionally hidden) username fields for accessibility: aber egal
                             label.form__label(for='username') Username (optional)
                             input#username.form__input(type='hidden', autocomplete='username', placeholder='Enter your username (optional)', aria-label='Username', hidden)
                         .form__group
-                            label.form__label(for='password-current') Current password
+                            label.form__label(for='password-current') Aktuelles Passowrt
                             input#password-current.form__input(type='password',autocomplete='current-password', placeholder='••••••••', required, minlength='8')
                         .form__group
-                            label.form__label(for='password') New password
+                            label.form__label(for='password') Neues Passwort
                             input#password.form__input(type='password', autocomplete='new-password', placeholder='••••••••',  required, minlength='8')
                         .form__group.ma-bt-lg
-                            label.form__label(for='password-confirm') Confirm password
+                            label.form__label(for='password-confirm') Passwort bestätigen
                             input#password-confirm.form__input(type='password', autocomplete='new-password', placeholder='••••••••', required, minlength='8')
                         .form__group.right
-                            button.btn.btn--small.btn--green.btn--save-password Save password
+                            button.btn.btn--small.btn--green.btn--save-password Speichern Passwort
