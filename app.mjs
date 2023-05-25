@@ -20,6 +20,7 @@ import userRoute from './routes/userRoutes.mjs';
 import machineRoute from './routes/machineRoutes.mjs';
 import viewRoute from './routes/viewRoutes.mjs';
 import departmentRoute from './routes/departmentRoutes.mjs';
+import malReportRoute from './routes/malReportRoutes.mjs'
 import startRoute from './routes/startRoute.mjs';
 
 import globalErrorHandler from './controllers/errorController.mjs'; //globalError..., kann nennen wie man möchte
@@ -402,6 +403,7 @@ app.use('/api/v1', viewRoute); // sollte der erste sein
 app.use('/api/v1/departments', departmentRoute);
 app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/malReports',malReportRoute)
 
 //---------------------------unit-test-test----Down--------------------------------
 // für UNIT-TEST- Versuch

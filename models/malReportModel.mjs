@@ -59,7 +59,10 @@ const malReportSchema = new mongoose.Schema({
       //     return value;
       //   },
       // },
-      message_Repair: {
+      messageProblem_Repair: {
+        type: String,
+      },
+      messageMission_Repair: {
         type: String,
       },
       estimatedTime_Repair: {

@@ -204,6 +204,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         logFal_Repair: [
           {
             Status_Repair: 0,
+            messageProblem_Repair: '-',
+            messageMission_Repair: '-',
+            estimatedTime_Repair: '-',
+            isElectroMechanical_Repair: 'elekt.-mech',
           },
         ],
       });
@@ -279,7 +283,8 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
               {
                 //user_Repair: currentUserID,
                 Status_Repair: 0,
-                message_Repair: '-',
+                messageProblem_Repair: '-',
+                messageMission_Repair: '-',
                 estimatedTime_Repair: '-',
                 isElectroMechanical_Repair: 'elekt.-mech',
               },

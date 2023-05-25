@@ -162,7 +162,7 @@ const userSchema = new mongoose.Schema({
   ],
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now, //Date.now(),
     select: false, //dann sieht man nicht
   },
   // department: {

@@ -235,7 +235,7 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     //     path: 'repairStatus.Status_Repair',
     //     model: 'Status_Repair',
     //   })
-    console.log(malReports);
+    // console.log(malReports);
 
     res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
       title: 'MachineOpenMalReports',
