@@ -106,7 +106,116 @@ export const resizeMachineImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+export const getMalReportsMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getMalReportsMachine');
 
-export const getMalReports = catchAsync(async (req, res, next) =>{
-  console.log("bin getMalReports")
-})
+  const machineID = req.params.machineID;
+  console.log(machineID);
+
+  const machine = await Machine.findOne({ _id: machineID });
+  console.log(machine.name);
+  const machineName = machine.name;
+
+  if (!machine) {
+    return next(new AppError('No machine found', 404));
+  }
+
+  const malReportsMachine = await MalReport.find({
+    nameMachine_Mal: machineName,
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    });
+
+  if (!malReportsMachine) {
+    return next(new AppError('No malReportsMachine found', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      malReportsMachine: malReportsMachine,
+    },
+  });
+});
+
+export const getUpdateLogFal = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateLogFal');
+  ///:malReportID/updateLogFal/:malReportLogFalID'
+  const malReportID = req.params.malReportID;
+  const logFalID = req.params.malReportLogFalID;
+  console.log(malReportID);
+  console.log(logFalID);
+
+  console.log(req.body);
+  const estimatedStatus = req.body.estimatedStatus;
+  console.log(estimatedStatus);
+
+  // const malReport = await MalReport.findByIdAndUpdate(
+  //   malReportID,
+  //   estimatedStatus
+  // );
+
+  console.log('---------------------------------');
+  console.log(req.body.currentUser._id);
+  const currentUser = JSON.parse(req.body.currentUser);
+  const user_Repair = mongoose.Types.ObjectId(currentUser._id);
+  console.log(user_Repair);
+  console.log('---------------------------------');
+  const createAt_Repair = req.body.createAt_Repair;
+  const Status_Repair = req.body.Status_Repair;
+  const messageProblem_Repair = req.body.messageProblem;
+  const messageMission_Repair = req.body.messageMission;
+  const estimatedTime_Repair = req.body.estimatedTime;
+  const isElectroMechanical_Repair = req.body.elektroMech;
+
+  const logFal = await MalReport.findOneAndUpdate(
+    { _id: malReportID, 'logFal_Repair._id': logFalID },
+    {
+      $set: {
+        'logFal_Repair.$.user_Repair': user_Repair,
+        'logFal_Repair.$.createAt_Repair': createAt_Repair,
+        'logFal_Repair.$.Status_Repair': Status_Repair,
+        'logFal_Repair.$.messageProblem_Repair': messageProblem_Repair,
+        'logFal_Repair.$.messageMission_Repair': messageMission_Repair,
+        'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair,
+        'logFal_Repair.$.isElectroMechanical_Repair':
+          isElectroMechanical_Repair,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!logFal) {
+    return next(new AppError('No logFal found with that ID', 404));
+  }
+
+  const malReport = await MalReport.findByIdAndUpdate(
+    malReportID,
+    { estimatedStatus: estimatedStatus },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!malReport) {
+    return next(new AppError('No malReport found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    msg: 'malReport-Status and logFal successfully updated',
+  });
+});

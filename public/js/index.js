@@ -36,6 +36,8 @@ import { showUsersMachinery, updateUserMachinery } from './usersMachinery';
 
 import { updateASMAMachine } from './ASMAmachine';
 
+import { showOpenMalReports, updateLogFal } from './malReport';
+
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
 import axios from 'axios';
@@ -96,6 +98,12 @@ const manageUsersMachineryTable = document.querySelector(
 const updateUserMashineForm = document.querySelector('.form-userMachine-data');
 
 const ASMAbtnForm = document.querySelector('.form-ASMAbtn-data');
+
+const manageASMAUnterhaltMachineOpenMalReportsTable = document.querySelector(
+  '.manageASMAUnterhaltMachineOpenMalReportsTable'
+);
+
+const updateLogFalForm = document.querySelector('.form-updateLogFal-data');
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -910,4 +918,67 @@ if (manageUsersMachineryTable) {
 if (manageASMAMachineTable) {
   console.log('bin If manageASMAMachineTable');
   showASMAmachinery();
+}
+
+if (manageASMAUnterhaltMachineOpenMalReportsTable) {
+  console.log('bin if manageASMAUnterhaltMachineOpenMalReportsTable');
+  showOpenMalReports();
+}
+
+if (updateLogFalForm) {
+  updateLogFalForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateLogFalForm');
+
+    const currentUser = document.getElementById('currentUser').value; //departmentName
+    const malReportID = document.getElementById('malReportID').value;
+    const malReportLogFalID =
+      document.getElementById('malReportLogFalID').value;
+    const machineName = document.getElementById('machineName').value; //estimatedStatus
+    const departmentName = document.getElementById('departmentName').value;
+    const estimatedStatus = document.getElementById('estimatedStatus').value;
+    const elektroMech = document.getElementById('elektroMech').value;
+    const estimatedTime = document.getElementById('estimatedTime_Repair').value;
+    const Status_Repair = document.getElementById('Status_Repair').value;
+    const messageProblem = document.getElementById(
+      'messageProblem_Repair'
+    ).value;
+    const messageMission = document.getElementById(
+      'messageMission_Repair'
+    ).value;
+    const createAt_Repair = document.getElementById('createAt_Repair').value;
+
+    console.log('currentUser: ' + currentUser);
+    console.log('malReportID: ' + malReportID);
+    console.log('malReportLogFalID: ' + malReportLogFalID);
+    console.log('machineName: ' + machineName);
+    console.log('departmentName: ' + departmentName);
+    console.log('estimatedStatus: ' + estimatedStatus);
+    console.log('elektroMech: ' + elektroMech);
+    console.log('estimatedTime: ' + estimatedTime);
+    console.log('Status_Repair: ' + Status_Repair);
+    console.log('messageProblem: ' + messageProblem);
+    console.log('messageMission: ' + messageMission);
+    console.log('createAt_Repair: ' + createAt_Repair);
+
+    // //if (e.submitter === saveUpdateUserMachine) {
+    console.log('bin saveUpdateLogFal');
+    updateLogFal(
+      {
+        currentUser,
+        elektroMech,
+        estimatedTime,
+        Status_Repair,
+        messageProblem,
+        messageMission,
+        createAt_Repair,
+        estimatedStatus,
+      },
+      malReportID,
+      malReportLogFalID,
+      machineName,
+      departmentName
+    );
+    // //}
+  });
 }

@@ -1,9 +1,14 @@
 import express from 'express';
 
-import { getMalReports } from '../controllers/malReportController.mjs'
+import {
+  getMalReportsMachine,
+  getUpdateLogFal,
+} from '../controllers/malReportController.mjs';
 
 const router = express.Router();
 
-router.get('/', getMalReports);
+router.get('/:machineID', getMalReportsMachine);
+//${apiUrl}/malReports/${malReportID}/updateLogFal/${malReportLogFalID}`,
+router.patch('/:malReportID/updateLogFal/:malReportLogFalID', getUpdateLogFal);
 
 export default router;

@@ -29,6 +29,7 @@ import {
   getUpdateComponentDetailsASMA,
   getASMAUnterhalt,
   getASMAUnterhaltMachineOpenMalReports,
+  getASMAUnterhaltMachineUpdateLogFal,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -75,6 +76,14 @@ router.get(
   protect,
   restrictTo('admin', 'Unterhalt'),
   getASMAUnterhaltMachineOpenMalReports
+);
+
+///api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/logFal_Repair._id
+router.get(
+  '/:departmentName/ASMA/:machineName/MalReport_updateLogFal/:logFalID',
+  protect,
+  restrictTo('admin', 'Unterhalt'),
+  getASMAUnterhaltMachineUpdateLogFal
 );
 
 router.get(

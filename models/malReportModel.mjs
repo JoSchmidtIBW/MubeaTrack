@@ -14,16 +14,28 @@ const malReportSchema = new mongoose.Schema({
   nameMachine_Mal: {
     type: String,
   },
+  idMachine_Mal: {
+    type: String,
+  },
   statusRun_Mal: {
     type: Boolean,
   },
   nameSector_Mal: {
     type: String,
   },
+  idSector_Mal: {
+    type: String,
+  },
   nameComponent_Mal: {
     type: String,
   },
+  idComponent_Mal: {
+    type: String,
+  },
   nameComponentDetail_Mal: {
+    type: String,
+  },
+  idComponentDetail_Mal: {
     type: String,
   },
   statusOpenClose_Mal: {

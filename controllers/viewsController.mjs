@@ -212,6 +212,9 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     const machineName = req.params.machineName;
     console.log('machineName: ' + machineName);
 
+    const machine = await Machine.findOne({ name: machineName });
+    console.log(machine._id);
+
     const malReports = await MalReport.find({
       nameMachine_Mal: machineName,
     })
@@ -243,6 +246,37 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
         malReports: malReports,
         departmentName: departmentName,
         machineName: machineName,
+        machineID: machine._id,
+      },
+    });
+  }
+);
+
+export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
+  async (req, res, next) => {
+    console.log('Bin getASMAUnterhaltMachineUpdateLogFal');
+    const machineName = req.params.machineName;
+    const departmentName = req.params.departmentName;
+    const logFalID = req.params.logFalID;
+
+    console.log('machineName: ' + machineName);
+    console.log('departmentName: ' + departmentName);
+    console.log('logFalID: ' + logFalID);
+
+    const malReportLogFal = await MalReport.findOne({
+      nameMachine_Mal: machineName,
+      'logFal_Repair._id': logFalID,
+    });
+
+    console.log(malReportLogFal);
+
+    res.status(200).render('updateLogFal', {
+      title: 'Update LogFal',
+      data: {
+        machineName: machineName,
+        departmentName: departmentName,
+        malReportLogFal: malReportLogFal,
+        currentUser: req.user,
       },
     });
   }

@@ -198,6 +198,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
       const malReport = new MalReport({
         user_Mal: currentUserID,
         nameMachine_Mal: machine.name,
+        idMachine_Mal: machineID,
+        nameSector_Mal: '-',
+        nameComponent_Mal: '-',
+        nameComponentDetail_Mal: '-',
         statusRun_Mal: false,
         statusOpenClose_Mal: 'open',
         estimatedStatus: 0,
@@ -259,7 +263,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         );
 
         if (componentInfo) {
-          console.log('SectorASMA Name:', componentInfo.sectorASMAName);
+          console.log('SectorASMA Name:', componentInfo.sectorASMAName); //sectorASMAID
+          console.log('SectorASMA ID:', componentInfo.sectorASMAID); //componentID//componentDetailID
+          console.log('component ID:', componentInfo.componentID);
+          console.log('componentDetail ID:', componentInfo.componentDetailID);
           console.log(
             'Component Name (name_de):',
             componentInfo.componentNameDE
@@ -273,9 +280,13 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
           const malReport = new MalReport({
             user_Mal: currentUserID,
             nameMachine_Mal: machine.name,
+            idMachine_Mal: machineID,
             nameSector_Mal: componentInfo.sectorASMAName,
+            idSector_Mal: componentInfo.sectorASMAID,
             nameComponent_Mal: componentInfo.componentNameDE,
+            idComponent_Mal: componentInfo.componentID,
             nameComponentDetail_Mal: componentInfo.componentDetailNameDE,
+            idComponentDetail_Mal: componentInfo.componentDetailID,
             statusRun_Mal: true,
             statusOpenClose_Mal: 'open',
             estimatedStatus: 0,
@@ -321,8 +332,11 @@ async function findComponentDetailInfo(machineID, componentDetailID) {
         if (componentDetail) {
           return {
             sectorASMAName: sector.name,
+            sectorASMAID: sector._id,
             componentNameDE: component.name_de,
+            componentID: component._id,
             componentDetailNameDE: componentDetail.name_de,
+            componentDetailID: componentDetail._id,
           };
         }
       }
