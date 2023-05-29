@@ -124,7 +124,7 @@ export const getMalReportsMachine = catchAsync(async (req, res, next) => {
     nameMachine_Mal: machineName,
   })
     .select(
-      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus'
     )
     .populate('user_Mal')
     .populate({
@@ -172,8 +172,10 @@ export const getUpdateLogFal = catchAsync(async (req, res, next) => {
   console.log('---------------------------------');
   const createAt_Repair = req.body.createAt_Repair;
   const Status_Repair = req.body.Status_Repair;
-  const messageProblem_Repair = req.body.messageProblem;
-  const messageMission_Repair = req.body.messageMission;
+  const messageProblem_de_Repair = req.body.messageProblem_de;
+  const messageProblem_en_Repair = req.body.messageProblem_en;
+  const messageMission_de_Repair = req.body.messageMission_de;
+  const messageMission_en_Repair = req.body.messageMission_en;
   const estimatedTime_Repair = req.body.estimatedTime;
   const isElectroMechanical_Repair = req.body.elektroMech;
 
@@ -184,8 +186,10 @@ export const getUpdateLogFal = catchAsync(async (req, res, next) => {
         'logFal_Repair.$.user_Repair': user_Repair,
         'logFal_Repair.$.createAt_Repair': createAt_Repair,
         'logFal_Repair.$.Status_Repair': Status_Repair,
-        'logFal_Repair.$.messageProblem_Repair': messageProblem_Repair,
-        'logFal_Repair.$.messageMission_Repair': messageMission_Repair,
+        'logFal_Repair.$.messageProblem_de_Repair': messageProblem_de_Repair,
+        'logFal_Repair.$.messageProblem_en_Repair': messageProblem_en_Repair,
+        'logFal_Repair.$.messageMission_de_Repair': messageMission_de_Repair,
+        'logFal_Repair.$.messageMission_en_Repair': messageMission_en_Repair,
         'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair,
         'logFal_Repair.$.isElectroMechanical_Repair':
           isElectroMechanical_Repair,

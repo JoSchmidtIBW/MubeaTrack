@@ -940,11 +940,17 @@ if (updateLogFalForm) {
     const elektroMech = document.getElementById('elektroMech').value;
     const estimatedTime = document.getElementById('estimatedTime_Repair').value;
     const Status_Repair = document.getElementById('Status_Repair').value;
-    const messageProblem = document.getElementById(
-      'messageProblem_Repair'
+    const messageProblem_de = document.getElementById(
+      'messageProblem_de_Repair'
     ).value;
-    const messageMission = document.getElementById(
-      'messageMission_Repair'
+    const messageProblem_en = document.getElementById(
+      'messageProblem_en_Repair'
+    ).value;
+    const messageMission_de = document.getElementById(
+      'messageMission_de_Repair'
+    ).value;
+    const messageMission_en = document.getElementById(
+      'messageMission_en_Repair'
     ).value;
     const createAt_Repair = document.getElementById('createAt_Repair').value;
 
@@ -957,8 +963,10 @@ if (updateLogFalForm) {
     console.log('elektroMech: ' + elektroMech);
     console.log('estimatedTime: ' + estimatedTime);
     console.log('Status_Repair: ' + Status_Repair);
-    console.log('messageProblem: ' + messageProblem);
-    console.log('messageMission: ' + messageMission);
+    console.log('messageProblem_de: ' + messageProblem_de);
+    console.log('messageProblem_en: ' + messageProblem_en);
+    console.log('messageMission_de: ' + messageMission_de);
+    console.log('messageMission_en: ' + messageMission_en);
     console.log('createAt_Repair: ' + createAt_Repair);
 
     // //if (e.submitter === saveUpdateUserMachine) {
@@ -969,8 +977,10 @@ if (updateLogFalForm) {
         elektroMech,
         estimatedTime,
         Status_Repair,
-        messageProblem,
-        messageMission,
+        messageProblem_de,
+        messageProblem_en,
+        messageMission_de,
+        messageMission_en,
         createAt_Repair,
         estimatedStatus,
       },

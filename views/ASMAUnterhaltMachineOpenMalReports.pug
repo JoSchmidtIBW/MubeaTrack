@@ -84,6 +84,7 @@ block content
             //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
             input#machineID(type="text", value=data.machineID)
             input#machineName(type="text", value=data.machineName)
+            input#currentUser(type="text", value=data.currentUser)
             //input#urlText(type="text", value=window.location.href)
             <input id="urlText" type="text" value="">
             thead
@@ -126,8 +127,8 @@ block content
                       td= malReport.user_Mal.lastName
                       td= malReport.nameMachine_Mal
                       td= malReport.nameSector_Mal ? malReport.nameSector_Mal : '-'
-                      td= malReport.nameComponent_Mal ? malReport.nameComponent_Mal : '-'
-                      td= malReport.nameComponentDetail_Mal ? malReport.nameComponentDetail_Mal : '-'
+                      td= malReport.nameComponent_de_Mal ? malReport.nameComponent_de_Mal : '-'
+                      td= malReport.nameComponentDetail_de_Mal ? malReport.nameComponentDetail_de_Mal : '-'
                       td= `${malReport.estimatedStatus}%`
                       //td ist leer
                           //td
@@ -151,8 +152,8 @@ block content
                                 each logFal_Repair in malReport.logFal_Repair
                                     tr
                                         td(style="color:blue;")= logFal_Repair._id
-                                        td= logFal_Repair.messageProblem_Repair
-                                        td= logFal_Repair.messageMission_Repair
+                                        td= logFal_Repair.messageProblem_de_Repair
+                                        td= logFal_Repair.messageMission_de_Repair
                                         td= logFal_Repair.isElectroMechanical_Repair
                                         td= logFal_Repair.estimatedTime_Repair
                                         td= `${logFal_Repair.Status_Repair}%`

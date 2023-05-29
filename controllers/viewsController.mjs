@@ -247,6 +247,7 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
         departmentName: departmentName,
         machineName: machineName,
         machineID: machine._id,
+        currentUser: req.user,
       },
     });
   }
@@ -281,6 +282,33 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
     });
   }
 );
+
+export const getUpdateMalReport = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateMalReport');
+
+  const machineName = req.params.machineName;
+  const departmentName = req.params.departmentName;
+  const malReportID = req.params.malReportID;
+
+  console.log('machineName: ' + machineName);
+  console.log('departmentName: ' + departmentName);
+  console.log('malReportID: ' + malReportID);
+
+  const malReport = await MalReport.findOne({
+    _id: malReportID,
+  });
+
+  console.log(malReport);
+
+  res.status(200).render('updateMalReport', {
+    title: 'Update MalReport',
+    data: {
+      malReport: malReport,
+      machineName: machineName,
+      departmentName: departmentName,
+    },
+  });
+});
 
 export const getDepartment = catchAsync(async (req, res, next) => {
   // 1.) Get the data, from the requested tour (inclouding rewievs and guides)

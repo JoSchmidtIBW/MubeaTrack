@@ -4,7 +4,7 @@ block content
     main.main
         div(class="user-view__content")
             div(class="user-view__form-container")
-                h2.heading-secondary.ma-bt-md= `Edit logFal ${data.malReportLogFal.nameComponentDetail_Mal} von ${data.malReportLogFal.nameMachine_Mal}`
+                h2.heading-secondary.ma-bt-md= `Edit logFal ${data.malReportLogFal.nameComponentDetail_en_Mal} von ${data.malReportLogFal.nameMachine_Mal}`
                 form.form.form-updateLogFal-data
                     //todo make hidden, not delete!
                     input#machineName(type="text", value=data.machineName)
@@ -19,11 +19,13 @@ block content
                         label(class="form__label", for="nameSector_Mal") Name SectorASMA
                         input#nameSector_Mal(class="form__input", type="text", value=data.malReportLogFal.nameSector_Mal,readonly, style="background-color: lightgrey;")
                     div(class="form__group")
-                        label(class="form__label", for="nameComponent_Mal") Name Componente
-                        input#nameComponent_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponent_Mal,readonly, style="background-color: lightgrey;")
+                        label(class="form__label", for="nameComponent_en_Mal") Name Componente_en
+                        input#nameComponent_en_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponent_en_Mal,readonly, style="background-color: lightgrey;")
+                        input#nameComponent_de_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponent_de_Mal,readonly, style="background-color: lightgrey;")
                     div(class="form__group")
-                        label(class="form__label", for="nameComponentDetail_Mal") Name Component-Detail
-                        input#nameComponentDetail_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponentDetail_Mal,readonly, style="background-color: lightgrey;")
+                        label(class="form__label", for="nameComponentDetail_en_Mal") Name Component-Detail_en
+                        input#nameComponentDetail_en_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponentDetail_en_Mal,readonly, style="background-color: lightgrey;")
+                        input#nameComponentDetail_de_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponentDetail_de_Mal,readonly, style="background-color: lightgrey;")
                     div(class="form__group")
                         label(class="form__label", for="elektroMech") ElektroMech
                         //input#elektroMech(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].isElectroMechanical_Repair)
@@ -51,11 +53,15 @@ block content
                             option(value=75, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===75) 75%
                             option(value=100, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===100, class="Status_Repair100") 100%
                     div(class="form__group")
-                        label(class="form__label", for="messageProblem_Repair") messageProblem_Repair
-                        input#messageProblem_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_Repair)
+                        label(class="form__label", for="messageProblem_de_Repair") messageProblem_de_Repair
+                        input#messageProblem_de_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_de_Repair)
+                        label(class="form__label", for="messageProblem_en_Repair") messageProblem_en_Repair
+                        input#messageProblem_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_en_Repair)
                     div(class="form__group")
-                        label(class="form__label", for="messageMission_Repair") messageMission_Repair
-                        input#messageMission_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_Repair)
+                        label(class="form__label", for="messageMission_de_Repair") messageMission_de_Repair
+                        input#messageMission_de_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_de_Repair)
+                        label(class="form__label", for="messageMission_en_Repair") messageMission_en_Repair
+                        input#messageMission_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_en_Repair)
                     div(class="form__group")
                         label(class="form__label", for="createAt_Repair") createAt_Repair
                         //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)

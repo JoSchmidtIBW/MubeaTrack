@@ -26,13 +26,19 @@ const malReportSchema = new mongoose.Schema({
   idSector_Mal: {
     type: String,
   },
-  nameComponent_Mal: {
+  nameComponent_de_Mal: {
+    type: String,
+  },
+  nameComponent_en_Mal: {
     type: String,
   },
   idComponent_Mal: {
     type: String,
   },
-  nameComponentDetail_Mal: {
+  nameComponentDetail_de_Mal: {
+    type: String,
+  },
+  nameComponentDetail_en_Mal: {
     type: String,
   },
   idComponentDetail_Mal: {
@@ -71,10 +77,16 @@ const malReportSchema = new mongoose.Schema({
       //     return value;
       //   },
       // },
-      messageProblem_Repair: {
+      messageProblem_de_Repair: {
         type: String,
       },
-      messageMission_Repair: {
+      messageProblem_en_Repair: {
+        type: String,
+      },
+      messageMission_de_Repair: {
+        type: String,
+      },
+      messageMission_en_Repair: {
         type: String,
       },
       estimatedTime_Repair: {

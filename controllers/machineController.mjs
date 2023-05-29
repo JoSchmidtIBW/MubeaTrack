@@ -208,8 +208,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         logFal_Repair: [
           {
             Status_Repair: 0,
-            messageProblem_Repair: '-',
-            messageMission_Repair: '-',
+            messageProblem_de_Repair: '-',
+            messageProblem_en_Repair: '-',
+            messageMission_de_Repair: '-',
+            messageMission_en_Repair: '-',
             estimatedTime_Repair: '-',
             isElectroMechanical_Repair: 'elekt.-mech',
           },
@@ -272,8 +274,16 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
             componentInfo.componentNameDE
           );
           console.log(
+            'Component Name (name_en):',
+            componentInfo.componentNameEN
+          );
+          console.log(
             'Component Detail Name (name_de):',
             componentInfo.componentDetailNameDE
+          );
+          console.log(
+            'Component Detail Name (name_en):',
+            componentInfo.componentDetailNameEN
           );
           // }
           // if (componentInfo) {
@@ -283,9 +293,11 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
             idMachine_Mal: machineID,
             nameSector_Mal: componentInfo.sectorASMAName,
             idSector_Mal: componentInfo.sectorASMAID,
-            nameComponent_Mal: componentInfo.componentNameDE,
+            nameComponent_de_Mal: componentInfo.componentNameDE,
+            nameComponent_en_Mal: componentInfo.componentNameEN,
             idComponent_Mal: componentInfo.componentID,
-            nameComponentDetail_Mal: componentInfo.componentDetailNameDE,
+            nameComponentDetail_de_Mal: componentInfo.componentDetailNameDE,
+            nameComponentDetail_en_Mal: componentInfo.componentDetailNameEN,
             idComponentDetail_Mal: componentInfo.componentDetailID,
             statusRun_Mal: true,
             statusOpenClose_Mal: 'open',
@@ -294,8 +306,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
               {
                 //user_Repair: currentUserID,
                 Status_Repair: 0,
-                messageProblem_Repair: '-',
-                messageMission_Repair: '-',
+                messageProblem_de_Repair: '-',
+                messageProblem_en_Repair: '-',
+                messageMission_de_Repair: '-',
+                messageMission_en_Repair: '-',
                 estimatedTime_Repair: '-',
                 isElectroMechanical_Repair: 'elekt.-mech',
               },
@@ -334,8 +348,10 @@ async function findComponentDetailInfo(machineID, componentDetailID) {
             sectorASMAName: sector.name,
             sectorASMAID: sector._id,
             componentNameDE: component.name_de,
+            componentNameEN: component.name_en,
             componentID: component._id,
             componentDetailNameDE: componentDetail.name_de,
+            componentDetailNameEN: componentDetail.name_en,
             componentDetailID: componentDetail._id,
           };
         }

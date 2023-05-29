@@ -1,0 +1,62 @@
+extends base
+
+block content
+    main.main
+        div(class="user-view__content")
+            div(class="user-view__form-container")
+                h2.heading-secondary.ma-bt-md= `Edit MalReport ${data.malReport.nameComponentDetail_Mal}`
+                form.form.form-updateMalReport-data
+                    //todo make hidden, not delete!
+                    input#malReportID(type="text", value=data.malReport._id)
+                    div(class="form__group")
+                        label(class="form__label", for="nameMachineMal") Name Machine
+                        input#nameMachineMal(class="form__input", type="text", value=data.malReport.nameMachine_Mal,readonly, style="background-color: lightgrey;")
+                    div(class="form__group")
+                        label(class="form__label", for="nameSector_Mal") Name SectorASMA
+                        input#nameSector_Mal(class="form__input", type="text", value=data.malReport.nameSector_Mal,readonly, style="background-color: lightgrey;")
+                    div(class="form__group")
+                        label(class="form__label", for="nameComponent_Mal") Name Componente
+                        input#nameComponent_Mal(class="form__input", type="text", value=data.malReport.nameComponent_Mal,readonly, style="background-color: lightgrey;")
+                    div(class="form__group")
+                        label(class="form__label", for="nameComponentDetail_Mal") Name Component-Detail
+                        input#nameComponentDetail_Mal(class="form__input", type="text", value=data.malReport.nameComponentDetail_Mal,readonly, style="background-color: lightgrey;")
+                    //div(class="form__group")
+                        label(class="form__label", for="Status_Repair") Status_Repair
+                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                        select#Status_Repair(class="form__input")
+                            option(value=0, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===0,class="Status_Repair0") 0%
+                            option(value=10, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===10) 10%
+                            option(value=25, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===25) 25%
+                            option(value=50, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===50) 50%
+                            option(value=75, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===75) 75%
+                            option(value=100, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===100, class="Status_Repair100") 100%
+                    //div(class="form__group")
+                        label(class="form__label", for="messageProblem_Repair") messageProblem_Repair
+                        input#messageProblem_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_Repair)
+                    //div(class="form__group")
+                        label(class="form__label", for="messageMission_Repair") messageMission_Repair
+                        input#messageMission_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_Repair)
+                    //div(class="form__group")
+                        label(class="form__label", for="createAt_Repair") createAt_Repair
+                        //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
+                        input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
+                        //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                          }),readonly, style="background-color: lightgrey;")
+                    //div(class="form__group")
+                        label(class="form__label", for="estimatedStatus") Status_Gesamt
+                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                        select#estimatedStatus(class="form__input")
+                            option(value=0, selected=data.malReportLogFal.estimatedStatus === 0,class="Status_Repair0") 0%
+                            option(value=10, selected=data.malReportLogFal.estimatedStatus === 10) 10%
+                            option(value=25, selected=data.malReportLogFal.estimatedStatus === 25) 25%
+                            option(value=50, selected=data.malReportLogFal.estimatedStatus === 50) 50%
+                            option(value=75, selected=data.malReportLogFal.estimatedStatus === 75) 75%
+
+                    button.btn.btn--small.btn--green.btn--saveUpdateMalReport Save
+                    button.btn 100% Abschliessen????
+                    a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
