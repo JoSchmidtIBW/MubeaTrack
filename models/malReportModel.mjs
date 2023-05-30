@@ -14,16 +14,34 @@ const malReportSchema = new mongoose.Schema({
   nameMachine_Mal: {
     type: String,
   },
+  idMachine_Mal: {
+    type: String,
+  },
   statusRun_Mal: {
     type: Boolean,
   },
   nameSector_Mal: {
     type: String,
   },
-  nameComponent_Mal: {
+  idSector_Mal: {
     type: String,
   },
-  nameComponentDetail_Mal: {
+  nameComponent_de_Mal: {
+    type: String,
+  },
+  nameComponent_en_Mal: {
+    type: String,
+  },
+  idComponent_Mal: {
+    type: String,
+  },
+  nameComponentDetail_de_Mal: {
+    type: String,
+  },
+  nameComponentDetail_en_Mal: {
+    type: String,
+  },
+  idComponentDetail_Mal: {
     type: String,
   },
   statusOpenClose_Mal: {
@@ -33,6 +51,11 @@ const malReportSchema = new mongoose.Schema({
   },
   estimatedStatus: {
     type: Number,
+  },
+  finishAt_Mal: {
+    type: Date,
+    default: Date.now(),
+    select: false,
   },
   logFal_Repair: [
     {
@@ -59,7 +82,16 @@ const malReportSchema = new mongoose.Schema({
       //     return value;
       //   },
       // },
-      message_Repair: {
+      messageProblem_de_Repair: {
+        type: String,
+      },
+      messageProblem_en_Repair: {
+        type: String,
+      },
+      messageMission_de_Repair: {
+        type: String,
+      },
+      messageMission_en_Repair: {
         type: String,
       },
       estimatedTime_Repair: {

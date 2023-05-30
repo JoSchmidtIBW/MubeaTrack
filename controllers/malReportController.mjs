@@ -1,0 +1,331 @@
+import multer from 'multer';
+import sharp from 'sharp';
+
+import Machine from '../models/machineModel.mjs';
+import MalReport from '../models/malReportModel.mjs';
+
+import mongoose from 'mongoose';
+
+import APIFeatures from '../utils/apiFeatures.mjs';
+import catchAsync from '../utils/catchAsync.mjs';
+
+import AppError from '../utils/appError.mjs';
+//import factory from '../controllers/handlerFactory.mjs';
+import {
+  getAll,
+  getOne,
+  createOne,
+  updateOne,
+  deleteOne,
+} from '../controllers/handlerFactory.mjs';
+import User from '../models/userModel.mjs';
+
+//erst daten lesen dann verwenden top level code
+//const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
+
+// right here on the top
+const multerStorage = multer.memoryStorage(); // stored as a buffer
+
+// nur für bilder erlaubt zum hochladen, dafür dieser filter
+// test if uploaded file is an image, wenn true, --> cb (callBack) = filename und destination
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    //mimetype: 'image/jpeg',
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false); // 400 bad request, (null(error), false)
+  }
+};
+
+// hier bei beginning
+//const upload = multer({ dest: 'public/img/users' }) // das ist der ort, wo alle fotos von user gespeichert werden sollen
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+// in updateMe wird nun geschaut, das das hochgeladene neue bild, ins onbjekt des users geschrieben wird
+
+//video 204     upload.fiels = mix von upload.single und uploads.array
+export const uploadMachineImages = upload.fields([
+  // in tourModel, images ist ein array, welches aus drei, anstatt einem bild wie bei usermodel besteht
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+// wenn es nur eins, anstatt drei images wären, würde man das so machen:
+// upload.single('image')   // req.file
+// // wenn multiple images dann so:
+// upload.array('images', 5)// 'images' = name of the field // req.files
+
+// diese middleware macht den process von den geladenen bilder bzw macht die grösse
+export const resizeMachineImages = catchAsync(async (req, res, next) => {
+  //console.log("req.files: " + req.files) // mit S wegen multiple files  der hier darf nicht stehen, sonst gibt es ein error bei mir!!!
+
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  // 1.) Cover image
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+
+  await sharp(req.files.imageCover[0].buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 }) //90=90%
+    .toFile(`public/img/tours/${req.body.imageCover}`);
+
+  // const imageCoverFilename = `tour-${req.params.id}-${Date.now()}-cover.jpeg`
+
+  // await sharp(req.files.imageCover[0].buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+  // .resize(2000, 1333)
+  // .toFormat('jpeg')
+  // .jpeg({ quality: 90 }) //90=90%
+  // .toFile(`public/img/tours/${imageCoverFilename}`)
+
+  // req.body.imageCover = imageCoverFilename
+
+  // 2.) other images in a loop
+
+  req.body.images = [];
+
+  //req.files.images.foreach(async (file, i) => {
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      // map, weil async await nur in der foreach schlaufe, und nicht im gesammten, mit map geht
+      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+      await sharp(file.buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 }) //90=90%
+        .toFile(`public/img/tours/${filename}`);
+
+      req.body.images.push(filename);
+    })
+  );
+
+  console.log(req.body);
+  next();
+});
+
+export const getMalReportsMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getMalReportsMachine');
+
+  const machineID = req.params.machineID;
+  console.log(machineID);
+
+  const machine = await Machine.findOne({ _id: machineID });
+  console.log(machine.name);
+  const machineName = machine.name;
+
+  if (!machine) {
+    return next(new AppError('No machine found', 404));
+  }
+
+  const malReportsMachine = await MalReport.find({
+    nameMachine_Mal: machineName,
+    statusOpenClose_Mal: 'open',
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    });
+
+  if (!malReportsMachine) {
+    return next(new AppError('No malReportsMachine found', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      malReportsMachine: malReportsMachine,
+    },
+  });
+});
+
+export const getUpdateLogFal = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateLogFal');
+  ///:malReportID/updateLogFal/:malReportLogFalID'
+  const malReportID = req.params.malReportID;
+  const logFalID = req.params.malReportLogFalID;
+  console.log(malReportID);
+  console.log(logFalID);
+
+  console.log(req.body);
+  const estimatedStatus = req.body.estimatedStatus;
+  console.log(estimatedStatus);
+
+  // const malReport = await MalReport.findByIdAndUpdate(
+  //   malReportID,
+  //   estimatedStatus
+  // );
+
+  console.log('---------------------------------');
+  console.log(req.body.currentUser._id);
+  const currentUser = JSON.parse(req.body.currentUser);
+  const user_Repair = mongoose.Types.ObjectId(currentUser._id);
+  console.log(user_Repair);
+  console.log('---------------------------------');
+  const createAt_Repair = req.body.createAt_Repair;
+  const Status_Repair = req.body.Status_Repair;
+  const messageProblem_de_Repair = req.body.messageProblem_de;
+  const messageProblem_en_Repair = req.body.messageProblem_en;
+  const messageMission_de_Repair = req.body.messageMission_de;
+  const messageMission_en_Repair = req.body.messageMission_en;
+  const estimatedTime_Repair = req.body.estimatedTime;
+  const isElectroMechanical_Repair = req.body.elektroMech;
+
+  const logFal = await MalReport.findOneAndUpdate(
+    { _id: malReportID, 'logFal_Repair._id': logFalID },
+    {
+      $set: {
+        'logFal_Repair.$.user_Repair': user_Repair,
+        'logFal_Repair.$.createAt_Repair': createAt_Repair,
+        'logFal_Repair.$.Status_Repair': Status_Repair,
+        'logFal_Repair.$.messageProblem_de_Repair': messageProblem_de_Repair,
+        'logFal_Repair.$.messageProblem_en_Repair': messageProblem_en_Repair,
+        'logFal_Repair.$.messageMission_de_Repair': messageMission_de_Repair,
+        'logFal_Repair.$.messageMission_en_Repair': messageMission_en_Repair,
+        'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair,
+        'logFal_Repair.$.isElectroMechanical_Repair':
+          isElectroMechanical_Repair,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!logFal) {
+    return next(new AppError('No logFal found with that ID', 404));
+  }
+
+  const malReport = await MalReport.findByIdAndUpdate(
+    malReportID,
+    { estimatedStatus: estimatedStatus },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!malReport) {
+    return next(new AppError('No malReport found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    msg: 'malReport-Status and logFal successfully updated',
+  });
+});
+
+export const getCloseMalReport = catchAsync(async (req, res, next) => {
+  console.log('bin getCloseMalReport');
+  const malReportID = req.params.malReportID;
+  console.log('malReportID: ' + malReportID);
+
+  const malReportToClose = await MalReport.findOne({ _id: malReportID });
+  //console.log(malReportToClose);
+
+  if (!malReportToClose) {
+    return next(new AppError('No malReport found with that ID', 404));
+  }
+
+  malReportToClose.statusOpenClose_Mal = 'close';
+  malReportToClose.finishAt_Mal = new Date().toISOString();
+  malReportToClose.estimatedStatus = 100;
+
+  await malReportToClose.save();
+
+  console.log(malReportToClose);
+  console.log(malReportToClose.idMachine_Mal);
+
+  console.log(
+    'malReportToClose.idComponentDetail_Mal: ' +
+      malReportToClose.idComponentDetail_Mal
+  );
+
+  //--------------------------------------------------------------------------------------
+  console.log('machineID: ' + malReportToClose.idMachine_Mal);
+  const machineId = mongoose.Types.ObjectId(malReportToClose.idMachine_Mal);
+  //6444566c830afd3adeba2d38
+  console.log(machineId);
+
+  const sectorID = mongoose.Types.ObjectId(malReportToClose.idSector_Mal);
+  //64751fca589f7d6f248806e0 component
+  const componentID = mongoose.Types.ObjectId(malReportToClose.idComponent_Mal);
+
+  const componentDetailId = mongoose.Types.ObjectId(
+    malReportToClose.idComponentDetail_Mal
+  );
+  //64751fca589f7d6f248806e1
+  console.log(componentDetailId);
+
+  //const machine = await Machine.findOne({ _id: machineId });
+
+  const machine = await Machine.findOneAndUpdate(
+    {
+      _id: machineId,
+      'sectorASMA._id': sectorID,
+      'sectorASMA.components._id': componentID,
+      'sectorASMA.components.componentDetails._id': componentDetailId,
+    },
+    {
+      $set: {
+        'sectorASMA.$[sector].components.$[comp].componentDetails.$[detail].status': true,
+      },
+    },
+    {
+      new: true,
+      arrayFilters: [
+        { 'sector._id': sectorID },
+        { 'comp._id': componentID },
+        { 'detail._id': componentDetailId },
+      ],
+    }
+  );
+
+  // const machine = await Machine.findOneAndUpdate(
+  //   {
+  //     _id: machineId,
+  //     'componentDetails._id': componentDetailId,
+  //   },
+  //   {
+  //     $set: {
+  //       'componentDetails.$.status': true,
+  //     },
+  //   },
+  //   { new: true }
+  // );
+  console.log('-----------------------');
+  console.log(machine);
+  console.log('-----------------------');
+  if (!machine) {
+    return next(new AppError('No machine found with that ID', 404));
+  }
+  console.log(machine);
+  console.log('componentDetail ist wieder true');
+
+  malReportToClose.logFal_Repair.forEach((logFal) => {
+    if (logFal.Status_Repair === 100) {
+      console.log('Status_Repair ist 100');
+      res.status(200).json({
+        status: 'success',
+        msg: 'malReport successfully closed',
+      });
+    } else {
+      console.log('Status_Repair ist nicht 100');
+      // res.status(200).json({
+      //   status: 'fail',
+      //   msg: 'the malReport has open Points!!!',
+      // });
+      return next(new AppError('the malReport has open Points!!!', 400));
+    }
+  });
+});

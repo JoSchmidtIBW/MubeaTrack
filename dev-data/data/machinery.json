@@ -208,8 +208,8 @@
             "description_en": "Walking Beam",
             "componentDetails": [
               {
-                "name_de": "Rollen",
-                "name_en": "roller",
+                "name_de": "Walking Beam",
+                "name_en": "Walking Beam",
                 "status": true
               }
             ]

@@ -212,8 +212,12 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     const machineName = req.params.machineName;
     console.log('machineName: ' + machineName);
 
+    const machine = await Machine.findOne({ name: machineName });
+    console.log(machine._id);
+
     const malReports = await MalReport.find({
       nameMachine_Mal: machineName,
+      statusOpenClose_Mal: 'open',
     })
       .select(
         'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
@@ -235,7 +239,12 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     //     path: 'repairStatus.Status_Repair',
     //     model: 'Status_Repair',
     //   })
-    console.log(malReports);
+    // console.log(malReports);
+    //console.log(malReports);
+    //console.log(JSON.stringify(malReports, null, 2));
+    malReports.forEach((malReport) => {
+      console.log(malReport);
+    });
 
     res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
       title: 'MachineOpenMalReports',
@@ -243,10 +252,69 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
         malReports: malReports,
         departmentName: departmentName,
         machineName: machineName,
+        machineID: machine._id,
+        currentUser: req.user,
       },
     });
   }
 );
+
+export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
+  async (req, res, next) => {
+    console.log('Bin getASMAUnterhaltMachineUpdateLogFal');
+    const machineName = req.params.machineName;
+    const departmentName = req.params.departmentName;
+    const logFalID = req.params.logFalID;
+
+    console.log('machineName: ' + machineName);
+    console.log('departmentName: ' + departmentName);
+    console.log('logFalID: ' + logFalID);
+
+    const malReportLogFal = await MalReport.findOne({
+      nameMachine_Mal: machineName,
+      'logFal_Repair._id': logFalID,
+    });
+
+    console.log(malReportLogFal);
+
+    res.status(200).render('updateLogFal', {
+      title: 'Update LogFal',
+      data: {
+        machineName: machineName,
+        departmentName: departmentName,
+        malReportLogFal: malReportLogFal,
+        currentUser: req.user,
+      },
+    });
+  }
+);
+
+export const getUpdateMalReport = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateMalReport');
+
+  const machineName = req.params.machineName;
+  const departmentName = req.params.departmentName;
+  const malReportID = req.params.malReportID;
+
+  console.log('machineName: ' + machineName);
+  console.log('departmentName: ' + departmentName);
+  console.log('malReportID: ' + malReportID);
+
+  const malReport = await MalReport.findOne({
+    _id: malReportID,
+  });
+
+  console.log(malReport);
+
+  res.status(200).render('updateMalReport', {
+    title: 'Update MalReport',
+    data: {
+      malReport: malReport,
+      machineName: machineName,
+      departmentName: departmentName,
+    },
+  });
+});
 
 export const getDepartment = catchAsync(async (req, res, next) => {
   // 1.) Get the data, from the requested tour (inclouding rewievs and guides)

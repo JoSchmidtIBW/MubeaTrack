@@ -36,6 +36,8 @@ import { showUsersMachinery, updateUserMachinery } from './usersMachinery';
 
 import { updateASMAMachine } from './ASMAmachine';
 
+import { showOpenMalReports, updateLogFal, closeMalReport } from './malReport';
+
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
 import axios from 'axios';
@@ -96,6 +98,15 @@ const manageUsersMachineryTable = document.querySelector(
 const updateUserMashineForm = document.querySelector('.form-userMachine-data');
 
 const ASMAbtnForm = document.querySelector('.form-ASMAbtn-data');
+
+const manageASMAUnterhaltMachineOpenMalReportsTable = document.querySelector(
+  '.manageASMAUnterhaltMachineOpenMalReportsTable'
+);
+
+const updateLogFalForm = document.querySelector('.form-updateLogFal-data');
+const updateMalReportForm = document.querySelector(
+  '.form-updateMalReport-data'
+);
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -852,6 +863,46 @@ if (updateUserMashineForm) {
   });
 }
 
+const closeMalReportButton = document.querySelector('.btn--closeMalReport');
+const saveNewLogfalButton = document.querySelector('.btn--saveNewLogfal');
+
+if (updateMalReportForm) {
+  updateMalReportForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateMalReportForm');
+
+    const malReportID = document.getElementById('malReportID').value;
+    const departmentName = document.getElementById('departmentName').value;
+    const machineName = document.getElementById('machineName').value;
+    // const sectorASMADescription_de = document.getElementById(
+    //   'sectorASMAdescription_de'
+    // ).value;
+    // const sectorASMADescription_en = document.getElementById(
+    //   'sectorASMAdescription_en'
+    // ).value;
+    //
+    console.log('malReportID: ' + malReportID);
+    console.log('departmentName: ' + departmentName);
+    console.log('machineName: ' + machineName);
+    // console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
+    // console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
+
+    if (e.submitter === closeMalReportButton) {
+      console.log('bin closeMalReportButton');
+      // updateSectorASMA(
+      //   { sectorASMAName, sectorASMADescription_de, sectorASMADescription_en },
+      //   machineID,
+      //   sectorASMAID
+      // );
+      closeMalReport(malReportID, machineName, departmentName);
+    } else if (e.submitter === saveNewLogfalButton) {
+      console.log('bin saveNewLogfalButton');
+      //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
+      //deleteSectorASMA(machineID, sectorASMAID);
+    }
+  });
+}
+
 const saveUpdateSectorASMAButton = document.querySelector(
   '.btn--saveUpdateSectorASMA'
 );
@@ -910,4 +961,77 @@ if (manageUsersMachineryTable) {
 if (manageASMAMachineTable) {
   console.log('bin If manageASMAMachineTable');
   showASMAmachinery();
+}
+
+if (manageASMAUnterhaltMachineOpenMalReportsTable) {
+  console.log('bin if manageASMAUnterhaltMachineOpenMalReportsTable');
+  showOpenMalReports();
+}
+
+if (updateLogFalForm) {
+  updateLogFalForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateLogFalForm');
+
+    const currentUser = document.getElementById('currentUser').value; //departmentName
+    const malReportID = document.getElementById('malReportID').value;
+    const malReportLogFalID =
+      document.getElementById('malReportLogFalID').value;
+    const machineName = document.getElementById('machineName').value; //estimatedStatus
+    const departmentName = document.getElementById('departmentName').value;
+    const estimatedStatus = document.getElementById('estimatedStatus').value;
+    const elektroMech = document.getElementById('elektroMech').value;
+    const estimatedTime = document.getElementById('estimatedTime_Repair').value;
+    const Status_Repair = document.getElementById('Status_Repair').value;
+    const messageProblem_de = document.getElementById(
+      'messageProblem_de_Repair'
+    ).value;
+    const messageProblem_en = document.getElementById(
+      'messageProblem_en_Repair'
+    ).value;
+    const messageMission_de = document.getElementById(
+      'messageMission_de_Repair'
+    ).value;
+    const messageMission_en = document.getElementById(
+      'messageMission_en_Repair'
+    ).value;
+    const createAt_Repair = document.getElementById('createAt_Repair').value;
+
+    console.log('currentUser: ' + currentUser);
+    console.log('malReportID: ' + malReportID);
+    console.log('malReportLogFalID: ' + malReportLogFalID);
+    console.log('machineName: ' + machineName);
+    console.log('departmentName: ' + departmentName);
+    console.log('estimatedStatus: ' + estimatedStatus);
+    console.log('elektroMech: ' + elektroMech);
+    console.log('estimatedTime: ' + estimatedTime);
+    console.log('Status_Repair: ' + Status_Repair);
+    console.log('messageProblem_de: ' + messageProblem_de);
+    console.log('messageProblem_en: ' + messageProblem_en);
+    console.log('messageMission_de: ' + messageMission_de);
+    console.log('messageMission_en: ' + messageMission_en);
+    console.log('createAt_Repair: ' + createAt_Repair);
+
+    // //if (e.submitter === saveUpdateUserMachine) {
+    console.log('bin saveUpdateLogFal');
+    updateLogFal(
+      {
+        currentUser,
+        elektroMech,
+        estimatedTime,
+        Status_Repair,
+        messageProblem_de,
+        messageProblem_en,
+        messageMission_de,
+        messageMission_en,
+        createAt_Repair,
+        estimatedStatus,
+      },
+      malReportID,
+      malReportLogFalID,
+      machineName,
+      departmentName
+    );
+    // //}
+  });
 }
