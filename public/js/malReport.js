@@ -434,6 +434,32 @@ export const updateLogFal = async (
   }
 };
 
+//closeMalReport
+export const closeMalReport = async (
+  malReportID,
+  machineName,
+  departmentName
+) => {
+  console.log('bin closeMalReport in malReports.js');
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${apiUrl}/malReports/closeMalReport/` + malReportID,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', res.data.msg);
+      window.setTimeout(() => {
+        location.assign(
+          `/api/v1/${departmentName}/ASMA/${machineName}/MalReports`
+        ); //Unterhalt/ASMA/Rattunde1/MalReports
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 // function generateNestedTableRows(data) {
 //   let rows = '';
 //

@@ -4,10 +4,12 @@ block content
     main.main
         div(class="user-view__content")
             div(class="user-view__form-container")
-                h2.heading-secondary.ma-bt-md= `Edit MalReport ${data.malReport.nameComponentDetail_Mal}`
+                h2.heading-secondary.ma-bt-md= `Edit MalReport ${data.malReport.nameComponentDetail_de_Mal}`
                 form.form.form-updateMalReport-data
                     //todo make hidden, not delete!
                     input#malReportID(type="text", value=data.malReport._id)
+                    input#machineName(type="text", value=data.machineName)
+                    input#departmentName(type="text", value=data.departmentName)
                     div(class="form__group")
                         label(class="form__label", for="nameMachineMal") Name Machine
                         input#nameMachineMal(class="form__input", type="text", value=data.malReport.nameMachine_Mal,readonly, style="background-color: lightgrey;")
@@ -15,11 +17,11 @@ block content
                         label(class="form__label", for="nameSector_Mal") Name SectorASMA
                         input#nameSector_Mal(class="form__input", type="text", value=data.malReport.nameSector_Mal,readonly, style="background-color: lightgrey;")
                     div(class="form__group")
-                        label(class="form__label", for="nameComponent_Mal") Name Componente
-                        input#nameComponent_Mal(class="form__input", type="text", value=data.malReport.nameComponent_Mal,readonly, style="background-color: lightgrey;")
+                        label(class="form__label", for="nameComponent_de_Mal") Name Componente_de
+                        input#nameComponent_de_Mal(class="form__input", type="text", value=data.malReport.nameComponent_de_Mal,readonly, style="background-color: lightgrey;")
                     div(class="form__group")
-                        label(class="form__label", for="nameComponentDetail_Mal") Name Component-Detail
-                        input#nameComponentDetail_Mal(class="form__input", type="text", value=data.malReport.nameComponentDetail_Mal,readonly, style="background-color: lightgrey;")
+                        label(class="form__label", for="nameComponentDetail_de_Mal") Name Component-Detail_de
+                        input#nameComponentDetail_de_Mal(class="form__input", type="text", value=data.malReport.nameComponentDetail_de_Mal,readonly, style="background-color: lightgrey;")
                     //div(class="form__group")
                         label(class="form__label", for="Status_Repair") Status_Repair
                         //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
@@ -57,6 +59,10 @@ block content
                             option(value=50, selected=data.malReportLogFal.estimatedStatus === 50) 50%
                             option(value=75, selected=data.malReportLogFal.estimatedStatus === 75) 75%
 
-                    button.btn.btn--small.btn--green.btn--saveUpdateMalReport Save
-                    button.btn 100% Abschliessen????
+                    //-button.btn.btn--small.btn--green.btn--saveUpdateMalReport Save
+                    button.btn.btn--closeMalReport 100% Abschliessen????
                     a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
+                    br
+                    button.btn neuer Punkt erstellen?
+                    br
+                    button.btn.btn--saveNewLogfal save new Logfal speichern

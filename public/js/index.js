@@ -36,7 +36,7 @@ import { showUsersMachinery, updateUserMachinery } from './usersMachinery';
 
 import { updateASMAMachine } from './ASMAmachine';
 
-import { showOpenMalReports, updateLogFal } from './malReport';
+import { showOpenMalReports, updateLogFal, closeMalReport } from './malReport';
 
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
@@ -104,6 +104,9 @@ const manageASMAUnterhaltMachineOpenMalReportsTable = document.querySelector(
 );
 
 const updateLogFalForm = document.querySelector('.form-updateLogFal-data');
+const updateMalReportForm = document.querySelector(
+  '.form-updateMalReport-data'
+);
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -857,6 +860,46 @@ if (updateUserMashineForm) {
     console.log('bin saveUpdateUserMachinery');
     updateUserMachinery({ machineryInDepartmentID }, userID);
     //}
+  });
+}
+
+const closeMalReportButton = document.querySelector('.btn--closeMalReport');
+const saveNewLogfalButton = document.querySelector('.btn--saveNewLogfal');
+
+if (updateMalReportForm) {
+  updateMalReportForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    console.log('bin updateMalReportForm');
+
+    const malReportID = document.getElementById('malReportID').value;
+    const departmentName = document.getElementById('departmentName').value;
+    const machineName = document.getElementById('machineName').value;
+    // const sectorASMADescription_de = document.getElementById(
+    //   'sectorASMAdescription_de'
+    // ).value;
+    // const sectorASMADescription_en = document.getElementById(
+    //   'sectorASMAdescription_en'
+    // ).value;
+    //
+    console.log('malReportID: ' + malReportID);
+    console.log('departmentName: ' + departmentName);
+    console.log('machineName: ' + machineName);
+    // console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
+    // console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
+
+    if (e.submitter === closeMalReportButton) {
+      console.log('bin closeMalReportButton');
+      // updateSectorASMA(
+      //   { sectorASMAName, sectorASMADescription_de, sectorASMADescription_en },
+      //   machineID,
+      //   sectorASMAID
+      // );
+      closeMalReport(malReportID, machineName, departmentName);
+    } else if (e.submitter === saveNewLogfalButton) {
+      console.log('bin saveNewLogfalButton');
+      //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
+      //deleteSectorASMA(machineID, sectorASMAID);
+    }
   });
 }
 

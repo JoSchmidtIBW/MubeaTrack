@@ -52,16 +52,19 @@ block content
                             option(value=50, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===50) 50%
                             option(value=75, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===75) 75%
                             option(value=100, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===100, class="Status_Repair100") 100%
+                        br
                     div(class="form__group")
                         label(class="form__label", for="messageProblem_de_Repair") messageProblem_de_Repair
                         input#messageProblem_de_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_de_Repair)
-                        label(class="form__label", for="messageProblem_en_Repair") messageProblem_en_Repair
-                        input#messageProblem_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_en_Repair)
-                    div(class="form__group")
                         label(class="form__label", for="messageMission_de_Repair") messageMission_de_Repair
                         input#messageMission_de_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_de_Repair)
+                        br
+                    div(class="form__group")
+                        label(class="form__label", for="messageProblem_en_Repair") messageProblem_en_Repair
+                        input#messageProblem_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_en_Repair)
                         label(class="form__label", for="messageMission_en_Repair") messageMission_en_Repair
                         input#messageMission_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_en_Repair)
+                        br
                     div(class="form__group")
                         label(class="form__label", for="createAt_Repair") createAt_Repair
                         //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)

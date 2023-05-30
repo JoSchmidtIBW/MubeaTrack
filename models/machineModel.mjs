@@ -513,9 +513,16 @@ machineSchema.pre('save', async function (next) {
 // the machine does not appear more than once in the same department
 machineSchema.pre('findOneAndUpdate', async function (next) {
   console.log('bin findOneAndUpdate in machineModel');
-  const { department } = this._update;
+  console.log(this._conditions._id);
+  const { componentDetail, department } = this._update;
+
+  if (componentDetail) {
+    console.log('bin if componentDetail in findOneAndUpdate in machineModel');
+    next();
+  }
 
   if (department) {
+    console.log('bin if department');
     const newDepartments = await Department.find({ name: { $in: department } });
 
     const machine = await Machine.findById(this._conditions._id);
@@ -539,6 +546,7 @@ machineSchema.pre('findOneAndUpdate', async function (next) {
       await dep.save();
     }
   }
+  console.log('mache next');
   next();
 });
 

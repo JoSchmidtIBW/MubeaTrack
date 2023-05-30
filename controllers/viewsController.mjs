@@ -217,6 +217,7 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
 
     const malReports = await MalReport.find({
       nameMachine_Mal: machineName,
+      statusOpenClose_Mal: 'open',
     })
       .select(
         'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
@@ -239,6 +240,11 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     //     model: 'Status_Repair',
     //   })
     // console.log(malReports);
+    //console.log(malReports);
+    //console.log(JSON.stringify(malReports, null, 2));
+    malReports.forEach((malReport) => {
+      console.log(malReport);
+    });
 
     res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
       title: 'MachineOpenMalReports',

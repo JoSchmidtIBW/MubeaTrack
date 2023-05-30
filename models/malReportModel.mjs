@@ -52,6 +52,11 @@ const malReportSchema = new mongoose.Schema({
   estimatedStatus: {
     type: Number,
   },
+  finishAt_Mal: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
   logFal_Repair: [
     {
       user_Repair: {
