@@ -36,7 +36,12 @@ import { showUsersMachinery, updateUserMachinery } from './usersMachinery';
 
 import { updateASMAMachine } from './ASMAmachine';
 
-import { showOpenMalReports, updateLogFal, closeMalReport } from './malReport';
+import {
+  showOpenMalReports,
+  updateLogFal,
+  closeMalReport,
+  createLogFal,
+} from './malReport';
 
 import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
@@ -871,34 +876,71 @@ if (updateMalReportForm) {
     e.preventDefault(); // Verhindert das Standardverhalten des Formulars
     console.log('bin updateMalReportForm');
 
+    const currentUser = document.getElementById('currentUser').value;
     const malReportID = document.getElementById('malReportID').value;
     const departmentName = document.getElementById('departmentName').value;
     const machineName = document.getElementById('machineName').value;
-    // const sectorASMADescription_de = document.getElementById(
-    //   'sectorASMAdescription_de'
-    // ).value;
-    // const sectorASMADescription_en = document.getElementById(
-    //   'sectorASMAdescription_en'
-    // ).value;
-    //
+    const elektroMech = document.getElementById('elektroMech').value;
+    const estimatedTime_Repair = document.getElementById(
+      'estimatedTime_Repair'
+    ).value;
+    const Status_Repair = document.getElementById('Status_Repair').value;
+    const messageProblem_de_Repair = document.getElementById(
+      'messageProblem_de_Repair'
+    ).value;
+    const messageMission_de_Repair = document.getElementById(
+      'messageMission_de_Repair'
+    ).value;
+    const messageProblem_en_Repair = document.getElementById(
+      'messageProblem_en_Repair'
+    ).value;
+    const messageMission_en_Repair = document.getElementById(
+      'messageMission_en_Repair'
+    ).value;
+    const createAt_Repair = document.getElementById('createAt_Repair').value;
+    const estimatedStatus = document.getElementById('estimatedStatus').value;
+
+    console.log('currentUser: ' + currentUser);
     console.log('malReportID: ' + malReportID);
     console.log('departmentName: ' + departmentName);
     console.log('machineName: ' + machineName);
-    // console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
-    // console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
+
+    console.log('elektroMech: ' + elektroMech);
+    console.log('---------------------------');
+    console.log('estimatedTime_Repair: ' + estimatedTime_Repair);
+    console.log('---------------------------');
+    console.log('Status_Repair: ' + Status_Repair);
+    console.log('messageProblem_de_Repair: ' + messageProblem_de_Repair);
+    console.log('messageMission_de_Repair: ' + messageMission_de_Repair);
+    console.log('messageProblem_en_Repair: ' + messageProblem_en_Repair);
+    console.log('messageMission_en_Repair: ' + messageMission_en_Repair);
+    console.log('createAt_Repair: ' + createAt_Repair);
+    console.log('estimatedStatus: ' + estimatedStatus);
 
     if (e.submitter === closeMalReportButton) {
       console.log('bin closeMalReportButton');
-      // updateSectorASMA(
-      //   { sectorASMAName, sectorASMADescription_de, sectorASMADescription_en },
-      //   machineID,
-      //   sectorASMAID
-      // );
       closeMalReport(malReportID, machineName, departmentName);
     } else if (e.submitter === saveNewLogfalButton) {
       console.log('bin saveNewLogfalButton');
       //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
       //deleteSectorASMA(machineID, sectorASMAID);
+      createLogFal(
+        {
+          currentUser,
+          elektroMech,
+          estimatedTime_Repair,
+          Status_Repair,
+          messageProblem_de_Repair,
+          messageMission_de_Repair,
+          messageProblem_en_Repair,
+          messageMission_en_Repair,
+          createAt_Repair,
+          estimatedStatus,
+        },
+        machineName,
+        departmentName,
+        malReportID
+      );
     }
   });
 }

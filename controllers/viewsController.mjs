@@ -346,12 +346,18 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
 
   console.log(malReport);
 
+  // const malReportLogFal = await MalReport.findOne({
+  //   nameMachine_Mal: machineName,
+  //   'logFal_Repair._id': logFalID,
+  // });
+
   res.status(200).render('updateMalReport', {
     title: 'Update MalReport',
     data: {
       malReport: malReport,
       machineName: machineName,
       departmentName: departmentName,
+      currentUser: req.user,
     },
   });
 });

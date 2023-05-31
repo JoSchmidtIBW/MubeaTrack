@@ -401,6 +401,37 @@ export const showOpenMalReports = async () => {
   }
 };
 
+export const createLogFal = async (
+  data,
+  machineName,
+  departmentName,
+  malReportID
+) => {
+  console.log('bin createLogFal in malReport.js');
+  console.log(malReportID);
+  console.log(machineName);
+  console.log(departmentName);
+
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: `${apiUrl}/malReports/${malReportID}/createLogFal`,
+      data,
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', res.data.msg);
+      window.setTimeout(() => {
+        location.assign(
+          `/api/v1/${departmentName}/ASMA/${machineName}/MalReports`
+        );
+      }, 500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
+
 export const updateLogFal = async (
   data,
   malReportID,
