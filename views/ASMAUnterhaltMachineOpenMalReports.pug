@@ -33,7 +33,7 @@ block content
                 td  Table 1.
         //-h1= data.malReports
         br
-        a.btn.btn--gray(href='#')= `zu den geschlossenen Punkten von ${data.machineName}`
+        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`)= `zu den geschlossenen Punkten von ${data.machineName}`
         br
         //-table(border="2", bordercolor="green")
             tr

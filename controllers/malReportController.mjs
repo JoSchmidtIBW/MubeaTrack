@@ -237,95 +237,179 @@ export const getCloseMalReport = catchAsync(async (req, res, next) => {
     return next(new AppError('No malReport found with that ID', 404));
   }
 
-  malReportToClose.statusOpenClose_Mal = 'close';
-  malReportToClose.finishAt_Mal = new Date().toISOString();
-  malReportToClose.estimatedStatus = 100;
-
-  await malReportToClose.save();
-
-  console.log(malReportToClose);
-  console.log(malReportToClose.idMachine_Mal);
-
-  console.log(
-    'malReportToClose.idComponentDetail_Mal: ' +
-      malReportToClose.idComponentDetail_Mal
-  );
-
-  //--------------------------------------------------------------------------------------
-  console.log('machineID: ' + malReportToClose.idMachine_Mal);
-  const machineId = mongoose.Types.ObjectId(malReportToClose.idMachine_Mal);
-  //6444566c830afd3adeba2d38
-  console.log(machineId);
-
-  const sectorID = mongoose.Types.ObjectId(malReportToClose.idSector_Mal);
-  //64751fca589f7d6f248806e0 component
-  const componentID = mongoose.Types.ObjectId(malReportToClose.idComponent_Mal);
-
-  const componentDetailId = mongoose.Types.ObjectId(
-    malReportToClose.idComponentDetail_Mal
-  );
-  //64751fca589f7d6f248806e1
-  console.log(componentDetailId);
-
-  //const machine = await Machine.findOne({ _id: machineId });
-
-  const machine = await Machine.findOneAndUpdate(
-    {
-      _id: machineId,
-      'sectorASMA._id': sectorID,
-      'sectorASMA.components._id': componentID,
-      'sectorASMA.components.componentDetails._id': componentDetailId,
-    },
-    {
-      $set: {
-        'sectorASMA.$[sector].components.$[comp].componentDetails.$[detail].status': true,
-      },
-    },
-    {
-      new: true,
-      arrayFilters: [
-        { 'sector._id': sectorID },
-        { 'comp._id': componentID },
-        { 'detail._id': componentDetailId },
-      ],
-    }
-  );
-
-  // const machine = await Machine.findOneAndUpdate(
-  //   {
-  //     _id: machineId,
-  //     'componentDetails._id': componentDetailId,
-  //   },
-  //   {
-  //     $set: {
-  //       'componentDetails.$.status': true,
-  //     },
-  //   },
-  //   { new: true }
-  // );
-  console.log('-----------------------');
-  console.log(machine);
-  console.log('-----------------------');
-  if (!machine) {
-    return next(new AppError('No machine found with that ID', 404));
-  }
-  console.log(machine);
-  console.log('componentDetail ist wieder true');
-
-  malReportToClose.logFal_Repair.forEach((logFal) => {
+  malReportToClose.logFal_Repair.forEach(async (logFal) => {
     if (logFal.Status_Repair === 100) {
       console.log('Status_Repair ist 100');
-      res.status(200).json({
-        status: 'success',
-        msg: 'malReport successfully closed',
-      });
+
+      malReportToClose.statusOpenClose_Mal = 'close';
+      malReportToClose.finishAt_Mal = new Date().toISOString();
+      malReportToClose.estimatedStatus = 100;
+
+      await malReportToClose.save();
+
+      console.log(malReportToClose);
+      console.log(malReportToClose.idMachine_Mal);
+
+      console.log(
+        'malReportToClose.idComponentDetail_Mal: ' +
+          malReportToClose.idComponentDetail_Mal
+      );
+
+      //--------------------------------------------------------------------------------------
+      console.log('machineID: ' + malReportToClose.idMachine_Mal);
+      const machineId = mongoose.Types.ObjectId(malReportToClose.idMachine_Mal);
+      //6444566c830afd3adeba2d38
+      console.log(machineId);
+
+      const sectorID = mongoose.Types.ObjectId(malReportToClose.idSector_Mal);
+      //64751fca589f7d6f248806e0 component
+      const componentID = mongoose.Types.ObjectId(
+        malReportToClose.idComponent_Mal
+      );
+
+      const componentDetailId = mongoose.Types.ObjectId(
+        malReportToClose.idComponentDetail_Mal
+      );
+      //64751fca589f7d6f248806e1
+      console.log(componentDetailId);
+
+      //const machine = await Machine.findOne({ _id: machineId });
+
+      const machine = await Machine.findOneAndUpdate(
+        {
+          _id: machineId,
+          'sectorASMA._id': sectorID,
+          'sectorASMA.components._id': componentID,
+          'sectorASMA.components.componentDetails._id': componentDetailId,
+        },
+        {
+          $set: {
+            'sectorASMA.$[sector].components.$[comp].componentDetails.$[detail].status': true,
+          },
+        },
+        {
+          new: true,
+          arrayFilters: [
+            { 'sector._id': sectorID },
+            { 'comp._id': componentID },
+            { 'detail._id': componentDetailId },
+          ],
+        }
+      );
+
+      // const machine = await Machine.findOneAndUpdate(
+      //   {
+      //     _id: machineId,
+      //     'componentDetails._id': componentDetailId,
+      //   },
+      //   {
+      //     $set: {
+      //       'componentDetails.$.status': true,
+      //     },
+      //   },
+      //   { new: true }
+      // );
+      console.log('-----------------------');
+      console.log(machine);
+      console.log('-----------------------');
+      if (!machine) {
+        return next(new AppError('No machine found with that ID', 404));
+      }
+      console.log(machine);
+      console.log('componentDetail ist wieder true');
     } else {
       console.log('Status_Repair ist nicht 100');
-      // res.status(200).json({
-      //   status: 'fail',
-      //   msg: 'the malReport has open Points!!!',
-      // });
       return next(new AppError('the malReport has open Points!!!', 400));
     }
+  });
+
+  // malReportToClose.logFal_Repair.forEach((logFal) => {
+  //   if (logFal.Status_Repair === 100) {
+  //     console.log('Status_Repair ist 100');
+  res.status(200).json({
+    status: 'success',
+    msg: 'malReport successfully closed',
+  });
+  //   } else {
+  //     console.log('Status_Repair ist nicht 100');
+  //     // res.status(200).json({
+  //     //   status: 'fail',
+  //     //   msg: 'the malReport has open Points!!!',
+  //     // });
+  //     return next(new AppError('the malReport has open Points!!!', 400));
+  //   }
+  // });
+});
+
+export const getCreateLogFal = catchAsync(async (req, res, next) => {
+  console.log('bin getCreateLogFal');
+
+  const malReportID = req.params.malReportID;
+  console.log(malReportID);
+
+  const currentUser = JSON.parse(req.body.currentUser);
+  //console.log(currentUser);
+  const user_Repair = mongoose.Types.ObjectId(currentUser._id);
+  console.log(user_Repair);
+
+  const estimatedStatus = req.body.estimatedStatus;
+  const isElectroMechanical_Repair = req.body.elektroMech;
+  const estimatedTime_Repair = req.body.estimatedTime_Repair;
+  const Status_Repair = req.body.Status_Repair;
+  const messageProblem_de_Repair = req.body.messageProblem_de
+    ? req.body.messageProblem_de
+    : '-';
+  const messageMission_de_Repair = req.body.messageMission_de
+    ? req.body.messageMission_de
+    : '-';
+  const messageProblem_en_Repair = req.body.messageProblem_en
+    ? req.body.messageProblem_en
+    : '-';
+  const messageMission_en_Repair = req.body.messageMission_en
+    ? req.body.messageMission_en
+    : '-';
+  const createAt_Repair = req.body.createAt_Repair;
+
+  console.log('estimatedStatus: ' + estimatedStatus);
+  console.log('isElectroMechanical_Repair: ' + isElectroMechanical_Repair);
+  console.log('estimatedTime_Repair: ' + estimatedTime_Repair);
+  console.log('Status_Repair: ' + Status_Repair);
+  console.log('messageProblem_de_Repair: ' + messageProblem_de_Repair);
+  console.log('messageMission_de_Repair: ' + messageMission_de_Repair);
+  console.log('messageProblem_en_Repair: ' + messageProblem_en_Repair);
+  console.log('messageMission_en_Repair: ' + messageMission_en_Repair);
+  console.log('createAt_Repair: ' + createAt_Repair);
+
+  const malReport = await MalReport.findOne({ _id: malReportID });
+  console.log(malReport);
+
+  if (!malReport) {
+    return next(new AppError('No malReport found with that ID', 404));
+  }
+
+  const newLogFal = {
+    user_Repair: user_Repair,
+    isElectroMechanical_Repair: isElectroMechanical_Repair,
+    estimatedTime_Repair: estimatedTime_Repair,
+    Status_Repair: Status_Repair,
+    messageProblem_de_Repair: messageProblem_de_Repair,
+    messageMission_de_Repair: messageMission_de_Repair,
+    messageProblem_en_Repair: messageProblem_en_Repair,
+    messageMission_en_Repair: messageMission_en_Repair,
+    createAt_Repair: createAt_Repair,
+  };
+
+  // const createAt_RepairDate = new Date(createAt_Repair);
+  // newLogFal.createAt_Repair = createAt_RepairDate;
+
+  malReport.estimatedStatus = estimatedStatus;
+  malReport.logFal_Repair.push(newLogFal);
+  await malReport.save();
+
+  console.log('MalReport updated with new LogFal');
+
+  res.status(200).json({
+    status: 'success',
+    msg: 'MalReport updated with new LogFal',
   });
 });

@@ -259,6 +259,46 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
   }
 );
 
+export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
+  async (req, res, next) => {
+    console.log('Bin getASMAUnterhaltMachineClosedMalReports');
+    const machineName = req.params.machineName;
+    const departmentName = req.params.departmentName;
+
+    const closedMalReports = await MalReport.find({
+      nameMachine_Mal: machineName,
+      statusOpenClose_Mal: 'close',
+    })
+      .select(
+        'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
+      )
+      .populate('user_Mal')
+      .populate({
+        path: 'logFal_Repair',
+        populate: {
+          path: 'user_Repair',
+          model: 'User',
+        },
+      });
+
+    if (!closedMalReports) {
+      // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+      return next(new AppError('There is no machine with that name.', 404)); //404= not found
+    }
+
+    console.log(closedMalReports);
+
+    res.status(200).render('ASMAUnterhaltMachineClosedMalreports', {
+      title: 'Closed MalReports',
+      data: {
+        machineName: machineName,
+        departmentName: departmentName,
+        closedMalReports: closedMalReports,
+      },
+    });
+  }
+);
+
 export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
   async (req, res, next) => {
     console.log('Bin getASMAUnterhaltMachineUpdateLogFal');
@@ -306,12 +346,18 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
 
   console.log(malReport);
 
+  // const malReportLogFal = await MalReport.findOne({
+  //   nameMachine_Mal: machineName,
+  //   'logFal_Repair._id': logFalID,
+  // });
+
   res.status(200).render('updateMalReport', {
     title: 'Update MalReport',
     data: {
       malReport: malReport,
       machineName: machineName,
       departmentName: departmentName,
+      currentUser: req.user,
     },
   });
 });
