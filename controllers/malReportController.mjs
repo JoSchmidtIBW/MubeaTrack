@@ -191,7 +191,10 @@ export const getUpdateLogFal = catchAsync(async (req, res, next) => {
         'logFal_Repair.$.messageProblem_en_Repair': messageProblem_en_Repair,
         'logFal_Repair.$.messageMission_de_Repair': messageMission_de_Repair,
         'logFal_Repair.$.messageMission_en_Repair': messageMission_en_Repair,
-        'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair,
+        //'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair,
+        'logFal_Repair.$.estimatedTime_Repair': estimatedTime_Repair
+          .replace('&lt;', '<')
+          .replace('&gt;', '>'),
         'logFal_Repair.$.isElectroMechanical_Repair':
           isElectroMechanical_Repair,
       },
@@ -390,7 +393,10 @@ export const getCreateLogFal = catchAsync(async (req, res, next) => {
   const newLogFal = {
     user_Repair: user_Repair,
     isElectroMechanical_Repair: isElectroMechanical_Repair,
-    estimatedTime_Repair: estimatedTime_Repair,
+    //estimatedTime_Repair: estimatedTime_Repair,
+    estimatedTime_Repair: estimatedTime_Repair
+      .replace('&lt;', '<')
+      .replace('&gt;', '>'),
     Status_Repair: Status_Repair,
     messageProblem_de_Repair: messageProblem_de_Repair,
     messageMission_de_Repair: messageMission_de_Repair,

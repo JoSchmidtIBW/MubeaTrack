@@ -1,19 +1,18 @@
 extends base
 
 block content
-    main.main2
+    main.main
         table#manageUsersTable.manageUsersTable.table
             thead
                 tr
                     th ID
-                    th Erstellt am
                     th Mitarbeiter- Nummer
                         button-upDown
                             spam.arrow-up
                         button-upDown
                             spam.arrow-down
-                    th Vorname
                     th Nachname
+                    th Vorname
                     th Geburtsdatum
                     th Geschlecht
                     th Sprache
@@ -30,15 +29,15 @@ block content
                     th Rolle
                     th Abteilung
                     th Passwort
+                    th Erstellt am
                     th Bearbeiten
             tbody
               each user in users
                   tr
                       td= user._id
-                      td= user.createdAt
                       td= user.employeeNumber
-                      td= user.firstName
                       td= user.lastName
+                      td= user.firstName
                       td= user.birthDate
                       td= user.gender
                       td= user.language
@@ -49,6 +48,7 @@ block content
                       td= user.role
                       td= user.department
                       td= user.password
+                      td= user.createdAt
                       td
                           //-a.edit-button(href=`/user/${user._id}`) Edit
                           //-a.delete-button(data-id=user._id) Delete

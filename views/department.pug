@@ -11,7 +11,6 @@ block content
     script.
         console.log("Department");
     main.main
-    //-h1= `About ${department.name} department`
     section.section-header
         .header__hero
             .header__hero-overlay &nbsp;
@@ -27,131 +26,93 @@ block content
                 span.heading-box__text= department.location
 
     section.section-description
-        .overview-box
-            div
-            //.overview-box__group
+        .description-box
+            .overview-box__group
                 h2.heading-secondary.ma-bt-lg Quick facts
 
                 +overviewBox('Employees', `${department.employeesCount} persons`, 'user')
                 +overviewBox('Machinery', `${department.machineryCount} machine`, 'machine')
 
-            //.overview-box__group
-              h2.heading-secondary.ma-bt-lg The department employees
+            .description-box
+                div
+                .overview-box__group
+                        h1 Machinery
+                        if(currentUser.role === 'admin')
+                          each machine in department.machinery
+                              //script.
+                              //-console.log(department.machinery)
+                              .overview-box__detail
+                                  span.overview-box__label= machine.name
+                                  a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                                  span status:
+                                  span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                        else
+                          each machineID in currentUser.machinery
+                            - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
+                            if machine
+                                p Machine ID: #{machine._id}
+                                p Machine Name: #{machine.name}
 
+                                .overview-box__detail
+                                        span.overview-box__label= `currentUser ${machineID}`
+                                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                                        span status:
+                                        span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                        if(department.name === 'Unterhalt')
+                            h1 Bin UnterhaltASMAAAAA
+                            a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
+        .description-box
+              h2.heading-secondary.ma-bt-lg= `About ${department.name} department`
+              // mache neue linie bei einem punkt im text
+              - const paragraphs = department.description_en.split('\n');
+              each p in paragraphs
+                  p.description__text= p
+                  //p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                  //p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!
+              br
+              br
+              br
+              .overview-box
+                  .overview-box__group
+                     h2.heading-secondary.ma-bt-lg The department employees
+
+              //.overview-box__group
               each employee in department.employees
                   .overview-box__detail
-                    img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+                      img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
 
-                    - if(employee.role === 'admin')
-                      span.overview-box__label_big Admin
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                    - if(employee.role === 'Chef')
-                        span.overview-box__label_big Chef
-                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                    - if(employee.role === 'Unterhalt')
-                        span.overview-box__label_little=employee.professional
-                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                    - if(employee.role === 'Schichtleiter')
-                        span.overview-box__label Schichtleiter
-                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                    - if(employee.role === 'user')
-                        span.overview-box__label_little=employee.professional
-                        //span.overview-box__label= guide.role
-                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-
-
-
-        .description-box
-          h2.heading-secondary.ma-bt-lg= `About ${department.name} department`
-            // mache neue linie bei einem punkt im text
-          - const paragraphs = department.description_en.split('\n');
-          each p in paragraphs
-              p.description__text= p
-              //p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              //p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!
-          br
-          .overview-box__group
-                h2.heading-secondary.ma-bt-lg Quick facts
-
-                +overviewBox('Employees', `${department.employeesCount} persons`, 'user')
-                +overviewBox('Machinery', `${department.machineryCount} machine`, 'machine')
-
-          .overview-box__group
-             h2.heading-secondary.ma-bt-lg The department employees
-
-             //.overview-box__group
-             each employee in department.employees
-              .overview-box__detail
-                  img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
-
-
-                  - if(employee.role === 'admin')
-                      span.overview-box__label_big Admin
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                  - if(employee.role === 'Chef')
-                      span.overview-box__label_big Chef
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                  - if(employee.role === 'Unterhalt')
-                      span.overview-box__label_little=employee.professional
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                  - if(employee.role === 'Schichtleiter')
-                      span.overview-box__label Schichtleiter
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                  - if(employee.role === 'user')
-                      span.overview-box__label_little=employee.professional
-                      //span.overview-box__label= guide.role
-                      span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                      - if(employee.role === 'admin')
+                          span.overview-box__label_big Admin
+                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                      - if(employee.role === 'Chef')
+                          span.overview-box__label_big Chef
+                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                      - if(employee.role === 'Unterhalt')
+                          span.overview-box__label_little=employee.professional
+                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                      - if(employee.role === 'Schichtleiter')
+                          span.overview-box__label Schichtleiter
+                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                      - if(employee.role === 'user')
+                          span.overview-box__label_little=employee.professional
+                          //span.overview-box__label= guide.role
+                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
 
     section.section-description
-        .overview-box
+        .description-box
             div
-            .overview-box__group
-                h1 Machinery
-                if(currentUser.role === 'admin')
-                  each machine in department.machinery
-                      script.
-                      //-console.log(department.machinery)
-                      .overview-box__detail
-                          span.overview-box__label= machine.name
-                          a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
-                          span status:
-                          span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                else
-                  each machineID in currentUser.machinery
-                    - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
-                    if machine
-                        p Machine ID: #{machine._id}
-                        p Machine Name: #{machine.name}
-
-                            .overview-box__detail
-                                span.overview-box__label= `currentUser ${machineID}`
-                                a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
-                                span status:
-                                span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                if(department.name === 'Unterhalt')
-                    h1 Bin UnterhaltASMAAAAA
-                    a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
-
-
+            div
+            div
+            br
+            h1 hallo
+            br
+            br
+            br
+            br
 
     section.section-pictures
       each img, i in department.images
           .picture-box
-              img.picture-box__img(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i+1}`)
-                //- .picture-box
-                //-     img.picture-box__img.picture-box__img--2(src='/img/tour-5-2.jpg', alt='The Park Camper Tour 1')
-                //- .picture-box
-                //-     img.picture-box__img.picture-box__img--3(src='/img/tour-5-3.jpg', alt='The Park Camper Tour 1')
-
-
-    section.section-cta
-        .cta
-            .cta__img.cta__img--logo
-            img(src='#', alt='MubeaTrack logo')
-            img.cta__img.cta__img--1(src=`/img/departments/${department.images[1]}`, alt='Department picture')
-            img.cta__img.cta__img--2(src=`/img/departments/${department.images[2]}`, alt='Department picture')
-            .cta__content
-            h2.heading-secondary What are you waiting for?
-            //-p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
-            button.btn.btn--green.span-all-rows Book tour now!
+              img.picture-box__img(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i + 1}`)
+    br
