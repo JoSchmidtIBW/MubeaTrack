@@ -1,0 +1,110 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`/img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content
+    main.main
+        .user-viewMachine
+            nav.user-view__menu
+
+              ul.side-nav
+                  +navItem('#', `${data.machine.name}`, 'machine', true)
+                  +navItem('#', 'Sonstige', 'settings')
+
+              //- if(user.role === 'admin' || user.role === 'Chef')
+              .admin-navs
+                  h5.admin-nav__heading= `${user.role}`
+                  ul.side-nav
+                      +navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
+                      +navItem('#', 'Verbrauchs- Material', 'user-error-report')
+                      +navItem('#', 'Prüfmittel', 'user-error-report')
+                      +navItem('#', 'sonstige', 'user-error-report')
+                      if(data.machine.sectorASMA.length > 0)
+                          +navItem('#', 'ASMA', 'machine-asma')
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md= `technical data from ${data.machine.name}`
+                    .technical-data
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Description:
+                            span(class="technical-data__value")= data.machine.description
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Machine number:
+                            span(class="technical-data__value")= data.machine.machineNumber
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Type:
+                            span(class="technical-data__value")= data.machine.type
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Construction year:
+                            span(class="technical-data__value")= data.machine.constructionYear
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Company machine:
+                            span(class="technical-data__value")= data.machine.companyMachine
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Voltage:
+                            span(class="technical-data__value")= data.machine.voltage
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Control voltage:
+                            span(class="technical-data__value")= data.machine.controlVoltage
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Rated current:
+                            span(class="technical-data__value")= data.machine.ratedCurrent
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Electrical fuse:
+                            span(class="technical-data__value")= data.machine.electricalFuse
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Compressed air:
+                            span(class="technical-data__value")= data.machine.compressedAir
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Weight mass:
+                            span(class="technical-data__value")= data.machine.weightMass
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Dimensions:
+                            span(class="technical-data__value")= data.machine.dimensions
+                        div(class="technical-data__field")
+                            span(class="technical-data__label") Drawing number:
+                            span(class="technical-data__value")= data.machine.drawingNumber
+
+                    br
+                    br
+                    br
+                    div.overview-box__group
+                      h2.heading-secondary.ma-bt-lg=`the employees from ${data.machine.name}`
+                      each employee in data.machine.employees
+                          .overview-box__detail
+                            img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                            - if(employee.role === 'lead-guide')
+                            span.overview-box__label Lead guide
+                            - if(employee.role === 'guide')
+                            span.overview-box__label Tour guide
+                            - if(employee.role === 'Schichtleiter')
+                            span.overview-box__label Schichtleiter
+                            - if(employee.role === 'Bediener')
+                            span.overview-box__label Bediener
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    br
+
+                    //section
+                    section.section-header
+                        if(data.machine.sectorASMA.length > 0)
+                            //- h1= data.department._id
+                            //-h1= data.machine.name
+                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
+                            h1(style="color: green") this machine has asma
+                            br
+                            a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
+                        else
+                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
+                            h1(style= "color: red") diese maschine hat kein ASMA
+                        //-.header__hero
+                            .header__hero-overlay &nbsp;
+                            img.header__hero-img(src='#', alt=`${machine.name}`)
+
+                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.department.name.toLowerCase()}`) Retour

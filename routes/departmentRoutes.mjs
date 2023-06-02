@@ -46,7 +46,7 @@ router
   .get(getDepartment) //Kostenlos für jederman
   .patch(
     protect,
-    restrictTo('admin', 'lead-guide'),
+    restrictTo('admin'),
     //uploadDepartmentImages,
     //resizeDepartmentImages,
     updateDepartment

@@ -34,11 +34,11 @@ router.get('/', getAllUsers);
 
 router
   .route('/usersMachinery')
-  .get(protect, restrictTo('admin'), getUsersMachinery);
+  .get(protect, restrictTo('admin', 'Chef'), getUsersMachinery);
 
 router
   .route('/updateUserMachinery/:userID')
-  .patch(protect, restrictTo('admin'), getUpdateUserMachinery);
+  .patch(protect, restrictTo('admin', 'Chef'), getUpdateUserMachinery);
 
 //authentication
 //http: //127.0.0.1:4301/api/v1/users/signup

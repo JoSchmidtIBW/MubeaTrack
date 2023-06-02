@@ -18,11 +18,15 @@ import app from './app.mjs';
 
 //mongoose.connect();
 
+//try {
 const DB = process.env.DATABASE_MONGODB.replace(
   '<PASSWORD>',
   process.env.DATABASE_MONGODB_PASSWORD
 );
-
+//} catch (err) {
+//  console.log('keine Internet- Verbindung?');
+//}
+//console.log(DB);
 // mongoose
 //   .connect(DB, {
 //     useNewUrlParser: true,
@@ -53,7 +57,9 @@ try {
   console.log(
     'Etwas mit MongoDB ging schief. Bin server.mjs, bin 2te funktion'
   );
-  console.log('... wahrscheinlich auf MongoDB Atlas und add current IP');
+  console.log(
+    '... wahrscheinlich auf MongoDB Atlas und auf --> Add Current IP Adress'
+  );
   console.log(
     '******************************************************************'
   );

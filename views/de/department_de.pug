@@ -1,0 +1,162 @@
+extends base
+//- base.bug laden
+
+mixin overviewBox(label, text, icon)
+    .overview-box__detail
+        svg.overview-box__icon
+            use(xlink:href=`/img/icons.svg#icon-${icon}`)
+        span.overview-box__label= label
+        span.overview-box__text= text
+
+block content
+    script.
+      console.log("Department");
+    main.main
+    section.section-header
+        .header__hero
+            .header__hero-overlay &nbsp;
+            img.header__hero-img(src=`/img/departments/departments-cover/${department.imageCover}`, alt=`${department.name}`)
+
+        .heading-box
+            h1.heading-primary
+                span= `${department.name} `
+            br
+            br
+            .heading-box__detail
+                svg.heading-box__icon
+                    use(xlink:href='/img/icons.svg#icon-map-pin')
+                span.heading-box__text= department.location
+
+    section.section-description
+      .description-box
+        .overview-box__group
+             h2.heading-secondary.ma-bt-lg Schnelle Information
+
+             +overviewBox('Mitarbeiter', `${department.employeesCount} Personen`, 'user')
+             +overviewBox('Maschine', `${department.machineryCount} Maschine`, 'machine')
+
+
+        .description-box
+
+            div
+            .overview-box__group
+                h2.heading-secondary.ma-bt-lg Maschinen
+                if(currentUser.role === 'admin')
+                  each machine in department.machinery
+                      //script.
+                      //-console.log(department.machinery)
+                      .overview-box__detail
+                          span.overview-box__label= machine.name
+                          a.btn--green.btn--small(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) Status
+                          a.btn-space
+                          a.btn.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
+                          //a.btn-space
+                          //a.btn.btn--small1(href=`/api/v1/${department.name}/ASMA/${machine.name}/MalReports`, style="background-color:lightblue;") ASMA Unterhalt
+                else
+                  each machineID in currentUser.machinery
+                    - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
+                    if machine
+                        p Machine ID: #{machine._id}
+                        p Machine Name: #{machine.name}
+
+                        .overview-box__detail
+                                span.overview-box__label= `currentUser ${machineID}`
+                                a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                                span status:
+                                span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+
+                if(department.name === 'Unterhalt')
+                    //-h1 Bin Unterhalt
+                    a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
+
+      .description-box
+                h2.heading-secondary.ma-bt-lg= `Über die ${department.name} Abteilung`
+
+                - const paragraphs = department.description_de.split('\n');
+                each p in paragraphs
+                    p.description__text= p
+                br
+                br
+                br
+                .overview-box
+                  .overview-box__group
+                        h2.heading-secondary.ma-bt-lg Die Mitarbeiter der Abteilung
+
+                each employee in department.employees
+                      .overview-box__detail
+                          img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                          - if(employee.role === 'admin')
+                              span.overview-box__label_big Admin
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                          - if(employee.role === 'Chef')
+                              span.overview-box__label_big Chef
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                          - if(employee.role === 'Unterhalt')
+                              span.overview-box__label_little=employee.professional
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                          - if(employee.role === 'Schichtleiter')
+                              span.overview-box__label Schichtleiter
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                          - if(employee.role === 'user')
+                              span.overview-box__label_little=employee.professional
+                              //span.overview-box__label= guide.role
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+
+
+
+    //section.section-description
+       .description-box
+        .overview-box
+          .overview-box__group
+                h2.heading-secondary.ma-bt-lg Die Mitarbeiter der Abteilung
+
+                each employee in department.employees
+                  .overview-box__detail
+                    img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                    - if(employee.role === 'admin')
+                        span.overview-box__label_big Admin
+                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    - if(employee.role === 'Chef')
+                        span.overview-box__label_big Chef
+                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    - if(employee.role === 'Unterhalt')
+                        span.overview-box__label_little=employee.professional
+                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    - if(employee.role === 'Schichtleiter')
+                        span.overview-box__label Schichtleiter
+                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                    - if(employee.role === 'user')
+                        span.overview-box__label_little=employee.professional
+                        //span.overview-box__label= guide.role
+                        span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+
+    section.section-description
+      .description-box
+        div
+        div
+        div
+        br
+        h1 hallo
+        br
+        br
+        br
+        br
+
+
+
+
+
+
+    section.section-pictures
+      each img, i in department.images
+          .picture-box
+              img.picture-box__img(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i + 1}`)
+    //section.section-pictures
+      each img, i in department.images
+          .picture-box
+              img.picture-box__img1(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i+1}`)
+
+    br
+    //br

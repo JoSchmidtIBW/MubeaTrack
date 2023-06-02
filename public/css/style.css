@@ -98,7 +98,7 @@ body {
 
 .main {
     background-color: #f7f7f7;
-    padding: 8rem 6rem;
+    padding: 4rem 4rem 1rem;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
@@ -205,7 +205,8 @@ body {
     font-size: 5rem;
     text-align: center;
     width: 70%;
-    margin: 0 auto;
+    /*margin-right: 200px;*/
+    /*margin: 0 auto;*/
 }
 
 .heading-tertirary {
@@ -271,6 +272,14 @@ body {
     color: #fff;
 }
 
+.btn--green1 {
+    background-color: #55c57a;
+    color: #fff;
+    text-decoration: solid;
+    padding: 1.25rem 2rem !important;
+    font-size: 1.8rem !important;
+}
+
 .btn--green::after {
     background-color: #55c57a;
 }
@@ -287,6 +296,7 @@ body {
 .btn--gray {
     background-color: #999999;
     color: #fff;
+    /*height: 47px;*/
 }
 
 .btn--gray::after {
@@ -296,6 +306,25 @@ body {
 .btn--small {
     padding: 1.25rem 3rem !important;
     font-size: 1.4rem !important;
+    height: 47px;
+}
+
+.btn--small1 {
+    margin-top: 5px;
+    margin-bottom: 3px;
+    padding: 1.25rem 4rem !important;
+    font-size: 1.4rem !important;
+    width: 200px;
+    height: 47px;
+}
+
+.btn--little {
+    padding: 1.0rem 2rem !important;
+    font-size: 1.0rem !important;
+    height: 25px;
+    line-height: 5px;
+    background-color:  #9edfa7;
+    color: white;
 }
 
 .btn-small,
@@ -353,6 +382,11 @@ body {
     outline-offset: 3px;
 }
 
+.btn-space {
+    margin-left: 4px; /* Anpassen der Leerzeichenbreite */
+    display: inline-block;
+}
+
 .header {
     background-color: #444;
     padding: 0 5rem;
@@ -393,14 +427,17 @@ body {
 }
 
 .section-header {
+    margin-top: -25px;
     position: relative;
-    height: 38vw;
+    height: 28vw;
     clip-path: polygon( 0 0, 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%);
     -webkit-clip-path: polygon( 0 0, 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%);
 }
 
 .header__hero {
     height: 100%;
+    margin-left: 10px;
+    /*margin-right: 10px;*/
 }
 
 .header__hero-img {
@@ -445,6 +482,8 @@ body {
 }
 
 .heading-box__detail {
+    /*margin-left: 0rem;*/
+    margin-left: 0 auto;
     font-size: 1.5rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -462,6 +501,7 @@ body {
 }
 
 .heading-box__detail:not(:last-child) {
+    /*margin-left: 4rem;*/
     margin-right: 4rem;
 }
 
@@ -475,16 +515,19 @@ body {
 
 .section-description {
     background-color: #fcfcfc;
-    margin-top: calc(0px - var(--section-rotate));
+    /*margin-top: calc(0px - var(--section-rotate));*/
+    margin-top: 0px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
 .section-description>* {
-    padding: 0 8vw;
-    padding-top: 14vw;
-    padding-bottom: calc(1vw + var(--section-rotate));
+    /*padding: 0 8vw;*/
+    padding-top: 2vw;
+    padding-left: 4vw;
+    padding-bottom: 1vw;
+    /*padding-bottom: calc(1vw + var(--section-rotate));*/
     -webkit-box-flex: 0;
     -ms-flex: 0 0 50%;
     flex: 0 0 50%;
@@ -509,7 +552,7 @@ body {
     display: flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    justify-content: center;
+    /*justify-content: center;*/
 }
 
 .overview-box__group:not(:last-child) {
@@ -805,7 +848,7 @@ body {
 
 .user-view {
     background-color: #fff;
-    max-width: 120rem;
+    max-width: 150rem;
     margin: 0 auto;
     min-height: 100vh;
     border-radius: 3px;
@@ -820,7 +863,7 @@ body {
 .user-view__menu {
     -webkit-box-flex: 32rem;
     -ms-flex: 32rem 0 0px;
-    flex: 32rem 0 0;
+    flex: 28rem 0 0;
     background-image: -webkit-gradient( linear, left top, right bottom, from(#7dd56f), to(#28b487));
     background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
     padding: 4rem 0;
@@ -1156,11 +1199,12 @@ body {
 }
 
 .card-container {
-    max-width: 120rem;
-    margin: 0 auto;
+    /*max-width: 120rem;*/
+    margin: 10px 30px 30px 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 7rem;
+    /*height: 1500px;*/
 }
 
 .card {
@@ -1190,7 +1234,7 @@ body {
     position: relative;
     -webkit-clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
     clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
-    height: 22rem;
+    height: 35rem;
 }
 
 .card__picture-overlay {
@@ -1321,11 +1365,12 @@ body {
 
 .login-form {
     margin: 0 auto;
-    max-width: 55rem;
-    background-color: #fff;
+    max-width: 50rem;
+    /*background-color: #fff;*/
+    /*background-color: rgba(255, 255, 255, 1);*/
     -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
     box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
-    padding: 5rem 7rem;
+    padding: 2rem 4rem;
     border-radius: 5px;
 }
 
@@ -1766,21 +1811,38 @@ input#employeeNumber.form__input[type=number] {
 
  */
 
+
 .technical-data__field {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
 }
+/*
+.technical-data__label {
+    flex-basis: 100px;
+    text-align: left;
+}
+.technical-data__value {
+    margin-left: 20px;
+    text-align: left;
+}
+*/
 
 .technical-data__label {
-    flex-basis: 100px; /* anpassbare Breite */
+    flex-basis: 150px;
     text-align: left;
+    font-size: 14px;
+    color: #494a4d;
 }
 
 .technical-data__value {
     margin-left: 20px;
     text-align: left;
+    font-size: 14px;
+    color: #494a4d;
 }
+
+
 
 
 /* das usersTable, das jqueri weiter unten ist */
@@ -1866,7 +1928,7 @@ input#employeeNumber.form__input[type=number] {
 .createMachine-view__menu {
     -webkit-box-flex: 32rem;
     -ms-flex: 32rem 0 0px;
-    flex: 32rem 0 0;
+    flex: 28rem 0 0;
     background-image: -webkit-gradient( linear, left top, right bottom, from(#5B14BD), to(#28b487));
     background-image: linear-gradient(to right bottom, #5B14BD, #28b487);
     padding: 4rem 0;
@@ -1918,4 +1980,26 @@ input#employeeNumber.form__input[type=number] {
 .isElectroMechanical_Einkauf {
     background-color: #DCDCDA;
     color: gray;
+}
+
+.card:hover {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+    -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+
+.user-viewMachine {
+    background-color: #fff;
+    max-width: 180rem;
+    margin: 0 0 0;
+    min-height: 100vh;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 }
