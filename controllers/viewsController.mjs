@@ -64,21 +64,22 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
   const currentUser = req.user;
+  console.log('currentUser.language: ' + currentUser.language);
 
   const machinery = await Machine.find();
+  const currentUserLanguage = currentUser.language;
+  console.log('currentUserLanguage: ' + currentUserLanguage);
 
   if (currentUser.role === 'admin') {
     const departmentsAllAdmin = await Department.find().sort('_id');
 
-    const currentUserLanguage = currentUser.language;
-    console.log('currentUserLanguage: ' + currentUserLanguage);
-
     if (currentUserLanguage === 'de') {
       res.status(200).render('de/overview_de', {
-        title: 'All Departments',
+        title: 'Alle Abteilungen',
         departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
         machinery: machinery,
         users: users,
+        currentUser: currentUser,
         //user: currentUser,
       });
     } else {
@@ -87,6 +88,7 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
         departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
         machinery: machinery,
         users: users,
+        currentUser: currentUser,
         //user: currentUser,
       });
     }
@@ -95,13 +97,25 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
       name: currentUser.department,
     }).sort('_id');
 
-    res.status(200).render('overview', {
-      title: 'All Departments',
-      departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
-      machinery: machinery,
-      users: users,
-      //user: currentUser,
-    });
+    if (currentUserLanguage === 'de') {
+      res.status(200).render('overview_de', {
+        title: 'Alle Abteilungen',
+        departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+        machinery: machinery,
+        users: users,
+        currentUser: currentUser,
+        //user: currentUser,
+      });
+    } else {
+      res.status(200).render('overview', {
+        title: 'All Departments',
+        departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+        machinery: machinery,
+        users: users,
+        currentUser: currentUser,
+        //user: currentUser,
+      });
+    }
   }
 });
 
@@ -147,13 +161,23 @@ export const getMachine = catchAsync(async (req, res, next) => {
     return next(new AppError('There is no machine with that name.', 404)); //404= not found
   }
 
-  res.status(200).render('machine', {
-    title: `${machine.name} machine`,
-    data: {
-      machine,
-      department,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('machine_de', {
+      title: `${machine.name} Maschine`,
+      data: {
+        machine,
+        department,
+      },
+    });
+  } else {
+    res.status(200).render('machine', {
+      title: `${machine.name} machine`,
+      data: {
+        machine,
+        department,
+      },
+    });
+  }
 });
 
 export const getASMAMachine = catchAsync(async (req, res, next) => {
@@ -405,11 +429,20 @@ export const getDepartment = catchAsync(async (req, res, next) => {
     currentUser.role === 'admin'
   ) {
     console.log('Arbeitet dort');
-    res.status(200).render('department', {
-      title: `${department.name} department`, //'The Forrest Hiker Tour',
-      department,
-      currentUser,
-    });
+
+    if (req.user.language === 'de') {
+      res.status(200).render('department_de', {
+        title: `${department.name} Abteilung`, //'The Forrest Hiker Tour',
+        department,
+        currentUser,
+      });
+    } else {
+      res.status(200).render('department', {
+        title: `${department.name} department`, //'The Forrest Hiker Tour',
+        department,
+        currentUser,
+      });
+    }
   } else {
     console.log('Arbeitet Nicht dort');
     // res.status(403).render('error', {
@@ -478,12 +511,22 @@ export const getCreateMachineForm = (req, res) => {
 
 export const getManageASMAMachine = catchAsync(async (req, res, next) => {
   const machinery = await Machine.find(); //.select('createdAt');
-  res.status(200).render('manageASMAMachine', {
-    title: 'Manage ASMA/machine',
-    //data: {
-    machinery: machinery,
-    //},
-  });
+
+  if (req.user.language === 'de') {
+    res.status(200).render('manageASMAMachine_de', {
+      title: 'ASMA/Maschine Verwaltung',
+      //data: {
+      machinery: machinery,
+      //},
+    });
+  } else {
+    res.status(200).render('manageASMAMachine', {
+      title: 'Manage ASMA/machine',
+      //data: {
+      machinery: machinery,
+      //},
+    });
+  }
 });
 
 export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
@@ -491,12 +534,21 @@ export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
   const machine = await Machine.findById(req.params.id);
   console.log(req.params.id);
 
-  res.status(200).render('createASMAMachine', {
-    title: 'Create ASMAmachine',
-    data: {
-      machine: machine,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('createASMAMachine_de', {
+      title: 'Erstelle ASMAmachine',
+      data: {
+        machine: machine,
+      },
+    });
+  } else {
+    res.status(200).render('createASMAMachine', {
+      title: 'Create ASMAmachine',
+      data: {
+        machine: machine,
+      },
+    });
+  }
 });
 
 export const getCreateComponentDetailsASMA = catchAsync(
@@ -527,14 +579,25 @@ export const getCreateComponentDetailsASMA = catchAsync(
     //console.log(sectorASMA);
     //console.log(sectorASMA.name);
 
-    res.status(200).render('createComponentDetailsASMa', {
-      title: 'Create componentDetailsASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-        componentASMA: componentASMA,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('createComponentDetailsASMa_de', {
+        title: 'Erstelle componentDetailsASMA',
+        data: {
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+        },
+      });
+    } else {
+      res.status(200).render('createComponentDetailsASMa', {
+        title: 'Create componentDetailsASMA',
+        data: {
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+        },
+      });
+    }
   }
 );
 
@@ -583,15 +646,27 @@ export const getUpdateComponentDetailsASMA = catchAsync(
     }
     console.log(componentDetailASMA);
 
-    res.status(200).render('updateComponentDetailASMa', {
-      title: 'Update componentASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-        componentASMA: componentASMA,
-        componentDetailASMA: componentDetailASMA,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('updateComponentDetailASMa_de', {
+        title: 'Aktualisiere componentASMA',
+        data: {
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+          componentDetailASMA: componentDetailASMA,
+        },
+      });
+    } else {
+      res.status(200).render('updateComponentDetailASMa', {
+        title: 'Update componentASMA',
+        data: {
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+          componentDetailASMA: componentDetailASMA,
+        },
+      });
+    }
   }
 );
 
@@ -614,13 +689,23 @@ export const getCreateComponents = catchAsync(async (req, res, next) => {
 
   //console.log(sectorASMA);
 
-  res.status(200).render('createComponentsASMa', {
-    title: 'Create componentsASMA',
-    data: {
-      machine: machine,
-      sectorASMA: sectorASMA,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('createComponentsASMa_de', {
+      title: 'Erstelle componentsASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+      },
+    });
+  } else {
+    res.status(200).render('createComponentsASMa', {
+      title: 'Create componentsASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+      },
+    });
+  }
 });
 
 export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
@@ -653,14 +738,25 @@ export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
   }
   console.log(componentASMA);
 
-  res.status(200).render('updateComponentASMa', {
-    title: 'Update componentASMA',
-    data: {
-      machine: machine,
-      sectorASMA: sectorASMA,
-      componentASMA: componentASMA,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('updateComponentASMa_de', {
+      title: 'Aktualisiere componentASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+        componentASMA: componentASMA,
+      },
+    });
+  } else {
+    res.status(200).render('updateComponentASMa', {
+      title: 'Update componentASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+        componentASMA: componentASMA,
+      },
+    });
+  }
 });
 
 export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
@@ -696,13 +792,23 @@ export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
   // console.log(sector);
   // console.log('------****-----');
 
-  res.status(200).render('updateSectorASMA', {
-    title: 'Update sectorASMA',
-    data: {
-      machine: machine,
-      sectorASMA: sector,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('updateSectorASMA_de', {
+      title: 'Aktualisiere sectorASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sector,
+      },
+    });
+  } else {
+    res.status(200).render('updateSectorASMA', {
+      title: 'Update sectorASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sector,
+      },
+    });
+  }
 });
 
 export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
@@ -788,12 +894,21 @@ export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
 export const getCreateUserForm = catchAsync(async (req, res, next) => {
   const allDepartments = await Department.find().sort({ name: 1 });
 
-  res.status(200).render('createUser', {
-    title: 'Create new user',
-    data: {
-      departments: allDepartments,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('createUser_de', {
+      title: 'Erstellen neuer User',
+      data: {
+        departments: allDepartments,
+      },
+    });
+  } else {
+    res.status(200).render('createUser', {
+      title: 'Create new user',
+      data: {
+        departments: allDepartments,
+      },
+    });
+  }
 });
 
 export const getUpdateMachine = catchAsync(async (req, res, next) => {
@@ -805,12 +920,21 @@ export const getUpdateMachine = catchAsync(async (req, res, next) => {
     return next(new AppError('There is no machine with that ID.', 404));
   }
 
-  res.status(200).render('updateMachine', {
-    title: 'Update machine',
-    data: {
-      machineToUpdate,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('updateMachine_de', {
+      title: 'Aktualisiere machine',
+      data: {
+        machineToUpdate,
+      },
+    });
+  } else {
+    res.status(200).render('updateMachine', {
+      title: 'Update machine',
+      data: {
+        machineToUpdate,
+      },
+    });
+  }
 });
 
 export const getUpdateUser = catchAsync(async (req, res, next) => {

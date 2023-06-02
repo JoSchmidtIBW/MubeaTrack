@@ -21,12 +21,22 @@ const departmentSchema = new mongoose.Schema({
     //validate: [validator.isAlpha, 'Tour name must only contain characters and no spaces'] // github --> validator     npm i validator
   },
   slug: String,
-  summary: {
+  summary_de: {
     type: String,
     trim: true,
     //required: [true, 'A Department must have a desription'],
   },
-  description: {
+  summary_en: {
+    type: String,
+    trim: true,
+    //required: [true, 'A Department must have a desription'],
+  },
+  description_de: {
+    type: String,
+    trim: true,
+    required: [true, 'A Department must have a desription'],
+  },
+  description_en: {
     type: String,
     trim: true,
     required: [true, 'A Department must have a desription'],
@@ -45,12 +55,6 @@ const departmentSchema = new mongoose.Schema({
     type: String,
     default: 'Arbon - Switzerland',
   },
-  guides: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-  ],
   employees: [
     {
       type: mongoose.Schema.ObjectId,

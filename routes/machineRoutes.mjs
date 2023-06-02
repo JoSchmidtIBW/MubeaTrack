@@ -77,47 +77,47 @@ router.route('/machine-stats').get(getMachineStats);
 router.route('/').get(getMachinery); // hier möchte man keine protect
 router
   .route('/machineryASMA')
-  .get(protect, restrictTo('admin'), getMachineryASMA);
+  .get(protect, restrictTo('admin', 'Chef'), getMachineryASMA);
 //.post(protect, restrictTo('admin', 'lead-guide'), createMachine);
 
 router
   .route('/updateASMAMachine/:machineID')
-  .patch(protect, restrictTo('admin', 'user'), updateASMAMachine);
+  .patch(protect, restrictTo('admin', 'Chef'), updateASMAMachine);
 
 router
   .route('/createSectorASMA/:id')
-  .patch(protect, restrictTo('admin'), createSectorASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), createSectorASMA);
 
 router
   .route('/:machineID/updateSectorASMA/:sectorASMAID')
-  .patch(protect, restrictTo('admin'), updateSectorASMA)
-  .delete(protect, restrictTo('admin'), deleteSectorASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), updateSectorASMA)
+  .delete(protect, restrictTo('admin', 'Chef'), deleteSectorASMA);
 
 router
   .route('/createSectorASMA/:machineID/createComponent/:sectorASMAID') //createSectorASMA/${machineId}/createComponent/${sectorASMAID}
-  .patch(protect, restrictTo('admin'), createComponentASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), createComponentASMA);
 
 router // `${apiUrl}/machinery/${machineID}/${sectorASMAID}/updateComponentASMA/${componentASMAID}`, // +
   .route('/:machineID/:sectorASMAID/updateComponentASMA/:componentASMAID')
-  .patch(protect, restrictTo('admin'), updateComponentASMA)
-  .delete(protect, restrictTo('admin'), deleteComponentASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), updateComponentASMA)
+  .delete(protect, restrictTo('admin', 'Chef'), deleteComponentASMA);
 
 router
   .route(
     '/:machineID/:sectorASMAID/:componentASMAID/updateComponentDetailASMA/:componentDetailASMAID'
   )
-  .patch(protect, restrictTo('admin'), updateComponentDetailASMA)
-  .delete(protect, restrictTo('admin'), deleteComponentDetailASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), updateComponentDetailASMA)
+  .delete(protect, restrictTo('admin', 'Chef'), deleteComponentDetailASMA);
 
 router
   .route(
     '/createSectorASMA/:machineID/:sectorASMAID/createComponentDetail/:componentASMAID'
   )
-  .patch(protect, restrictTo('admin'), createComponentDetailASMA);
+  .patch(protect, restrictTo('admin', 'Chef'), createComponentDetailASMA);
 
 router
   .route('/createMachine')
-  .post(protect, restrictTo('admin', 'lead-guide'), createMachine);
+  .post(protect, restrictTo('admin', 'Chef'), createMachine);
 
 // router
 //   .route('/:id')

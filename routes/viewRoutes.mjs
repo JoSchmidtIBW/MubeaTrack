@@ -123,7 +123,7 @@ router.get('/me', protect, getAccount); // diese sollte protect sein
 router.get(
   '/manage_machinery',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getManageMachinery
 );
 
@@ -143,21 +143,21 @@ router.get(
 router.get(
   '/manage_machinery/:id',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getUpdateMachine
 );
 
 router.get(
   '/manage_user-machine',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getManageUserMachine
 );
 
 router.get(
   '/manage_usersMachinery/:id',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getUpdateUserMachine
 );
 
@@ -167,33 +167,38 @@ router.get(
 // update User account
 //router.post('/submit-user-data', protect, updateUserData);
 
-router.get('/createUser', protect, restrictTo('admin'), getCreateUserForm);
+router.get(
+  '/createUser',
+  protect,
+  restrictTo('admin', 'Chef'),
+  getCreateUserForm
+);
 
 router.get(
   '/createMachine',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getCreateMachineForm
 );
 
 router.get(
   '/manage_ASMAmachine',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getManageASMAMachine
 );
 
 router.get(
   '/createASMAmachine/:id',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getCreateASMAMachine
 );
 
 router.get(
   '/createASMAmachine/:machineID/createComponents/:sectorASMAID',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getCreateComponents
 );
 
@@ -202,14 +207,14 @@ router.get(
 router.get(
   '/createASMAmachine/:id/updateSectorASMA/:id',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getUpdateSectorASMA
 );
 
 router.get(
   '/createASMAmachine/:machineID/:sectorASMAID/updateComponentASMA/:componentASMAID',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getUpdateComponentASMA
 );
 
@@ -217,14 +222,14 @@ router.get(
 router.get(
   '/createASMAmachine/:machineID/:sectorASMAID/createComponentDetails/:componentASMAID',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getCreateComponentDetailsASMA
 );
 
 router.get(
   '/createASMAmachine/:machineID/:sectorASMAID/:componentASMAID/updateComponentDetail/:componentDetailASMAID',
   protect,
-  restrictTo('admin'),
+  restrictTo('admin', 'Chef'),
   getUpdateComponentDetailsASMA
 );
 

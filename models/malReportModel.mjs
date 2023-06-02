@@ -8,7 +8,7 @@ const malReportSchema = new mongoose.Schema({
   },
   createAt_Mal: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
     select: false,
   },
   nameMachine_Mal: {
