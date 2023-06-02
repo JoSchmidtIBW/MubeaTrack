@@ -310,7 +310,16 @@ export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
       return next(new AppError('There is no machine with that name.', 404)); //404= not found
     }
 
-    console.log(closedMalReports);
+    //ausgabe LogFal in closedMalReports
+    closedMalReports.forEach((closedMalReport) => {
+      console.log('Log Fal Repair:');
+
+      closedMalReport.logFal_Repair.forEach((log) => {
+        console.log(`Create Date: ${log.createAt_Repair}`);
+        console.log(`estimatedTime_Repair: ${log.estimatedTime_Repair}`);
+      });
+      console.log('------------------------');
+    });
 
     res.status(200).render('ASMAUnterhaltMachineClosedMalreports', {
       title: 'Closed MalReports',
@@ -988,27 +997,53 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
     //   new AppError('You do not have permission to perform this action!', 403)
     // );
   } else if (req.user.role === 'admin') {
-    res.status(200).render('updateUserAdminPW', {
-      title: 'Update user',
-      //data: userToUpdate,
-      data: {
-        userToUpdate: userToUpdate,
-        departments: allDepartments,
-        currentUser: currentUser,
-        //currentUserLoggedIn,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('updateUserAdminPW_de', {
+        title: 'Aktualisiere Benutzer',
+        //data: userToUpdate,
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+          //currentUserLoggedIn,
+        },
+      });
+    } else {
+      res.status(200).render('updateUserAdminPW', {
+        title: 'Update user',
+        //data: userToUpdate,
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+          //currentUserLoggedIn,
+        },
+      });
+    }
   } else {
-    res.status(200).render('updateUserByChef', {
-      title: 'Update user',
-      //data: userToUpdate,
-      data: {
-        userToUpdate: userToUpdate,
-        //currentUserLoggedIn,
-        departments: allDepartments,
-        currentUser: currentUser,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('updateUserByChef_de', {
+        title: 'Aktualisiere Benutzer',
+        //data: userToUpdate,
+        data: {
+          userToUpdate: userToUpdate,
+          //currentUserLoggedIn,
+          departments: allDepartments,
+          currentUser: currentUser,
+        },
+      });
+    } else {
+      res.status(200).render('updateUserByChef', {
+        title: 'Update user',
+        //data: userToUpdate,
+        data: {
+          userToUpdate: userToUpdate,
+          //currentUserLoggedIn,
+          departments: allDepartments,
+          currentUser: currentUser,
+        },
+      });
+    }
   }
 });
 

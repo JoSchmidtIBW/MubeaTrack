@@ -397,6 +397,8 @@ if (updateUserByAdminDataForm) {
         {
           firstName,
           lastName,
+          birthDate,
+          gender,
           professional,
           email,
           role,
@@ -463,6 +465,8 @@ if (updateUserByChefDataForm) {
           firstName,
           lastName,
           professional,
+          birthDate,
+          gender,
           email,
           role,
           department,

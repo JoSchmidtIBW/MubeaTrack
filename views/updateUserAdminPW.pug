@@ -1,137 +1,161 @@
 extends base
 
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
 block content
   main.main
-    h1(style="background-color: red;") BY ADMIN
-    div(class="user-view__content")
-      div(class="user-view__form-container")
-        h2.heading-secondary.ma-bt-md= `Edit User ${data.userToUpdate.firstName}`
-        form.form.form-workerAdmin-data
-          //-input#userId(type="hidden", value=data.userToUpdate._id)
-          div(class="form__group ma-bt-md")
-            label(class="form__label", for="userId") UserId
-            input#userId(class="form__input", type="text", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="employeeNumber") Employee Number
-            input#employeeNumber(class="form__input", type="number", value=data.userToUpdate.employeeNumber, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="firstname") Firstname
-            input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName)
-          div(class="form__group")
-            label(class="form__label", for="lastname") Lastname
-            input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
-          div(class="form__group")
-            label(class="form__label", for="birthDate") Birth date
-            input#birthDate(class="form__input", type="text", value=data.userToUpdate.birthDate, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="gender") gender
-            input#gender(class="form__input", type="text", value=data.userToUpdate.gender, readonly, style="background-color: lightgrey;")
-            //-select#gender(class="form__input")
-              option(value="male") Male
-              option(value="Female") Female
-          div(class="form__group")
-            label(class="form__label", for="language") Language
-            input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="professional") professional
-            input#professional(class="form__input", type="text", value=data.userToUpdate.professional)
-            //-select#language(class="form__input")
-              option(value="Englisch") English
-              option(value="Deutsch") Deutsch
-          //-div(class="form__group")
-            label(class="form__label", for="name") Name
-            input#name(class="form__input", type="text", value=data.userToUpdate.name, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="email") E-Mail
-            input#email(class="form__input", type="email", value=data.userToUpdate.email)
-          if (data.userToUpdate.role === 'admin' && !data.currentUser.role === 'admin')
-            div(class="form__group ma-bt-md")
-              label(class="form__label", for="password") Password
-              input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
-            div(class="form__group ma-bt-md")
-              label(class="form__label", for="passwordEncripted") decryptedPassword
+    .user-view
+      nav.user-view__menu
 
-              input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
+          ul.side-nav
+              +navItem('/api/v1/me', 'My Settings', 'settings', true)
+              +navItem('#', 'My ASMA-error reports', 'user-error-report')
 
-              script.
-                console.log("test")
-                let encryptedPassword = "#{data.userToUpdate.password}";
-                let key = CryptoJS.SHA256('mySecretKey1');
-                let iv = CryptoJS.enc.Base64.parse('');
-                let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
-                document.getElementById("passwordEncripted").value = decryptedPassword;
-          div(class="form__group")
-            label(class="form__label", for="language") Language
-            input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
-          div(class="form__group")
-            label(class="form__label", for="role") Role
-            select#role(class="form__input")
-              option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
-              option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
-              option(value="user", selected=data.userToUpdate.role === 'user') User
-              option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
-          div(class="form__group")
-            label(class="form__label", for="departments") Departments
-            input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
-            script.
-              console.log("test2222")
-            //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
+          - if(user.role === 'admin' || user.role === 'Chef')
+              .admin-nav
+                  h5.admin-nav__heading= `${user.role}`
+                  ul.side-nav
+                      +navItem('/api/v1/manage_users', 'Manage users', 'users', true)
+                      +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
+                      +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
+                      +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
 
-            each department in data.departments
-              - var checked = data.userToUpdate.department && data.userToUpdate.department.includes(department.name)
+      .user-view__content1
+        .user-view__form-container1
+            div(class="user-view__content")
+              div(class="user-view__form-container")
+                h1(style="background-color: red;") BY ADMIN
+                br
+                h2.heading-secondary.ma-bt-md= `Edit User ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
+                form.form.form-workerAdmin-data
+                  //-input#userId(type="hidden", value=data.userToUpdate._id)
+                  div(class="form__group ma-bt-md")
+                    //-label(class="form__label", for="userId") UserId
+                    input#userId(class="form__input", type="hidden", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")
+                  div(class="form__group")
+                    label(class="form__label", for="employeeNumber") Employee Number
+                    input#employeeNumber(class="form__input", type="number", value=data.userToUpdate.employeeNumber, readonly, style="background-color: lightgrey;")
+                  div(class="form__group")
+                    label(class="form__label", for="firstname") Firstname
+                    input#firstname(class="form__input", type="text", value=data.userToUpdate.firstName)
+                  div(class="form__group")
+                    label(class="form__label", for="lastname") Lastname
+                    input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
+                  div(class="form__group")
+                    label(class="form__label", for="birthDate") Birth date
+                    input#birthDate(class="form__input", type="text", value=data.userToUpdate.birthDate, pattern="^(0[1-9]|[1-2][0-9]|3[0-1])[.](0[1-9]|1[0-2])[.][0-9]{4}$")
+                  div(class="form__group")
+                    label(class="form__label", for="gender") Gender
+                    //input#gender(class="form__input", type="text", value=data.userToUpdate.gender, readonly, style="background-color: lightgrey;")
+                    select#gender(class="form__input")
+                      option(value=data.userToUpdate.gender, selected, style="background-color: #98B7E1; color: white;") #{data.userToUpdate.gender}
+                      option(value="male", selected=data.userToUpdate.gender === 'male') male
+                      option(value="female", selected=data.userToUpdate.gender === 'female') female
 
-              label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                |
-                input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
-                span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
+                  //div(class="form__group")
+                    label(class="form__label", for="language") Language
+                    input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+                  div(class="form__group")
+                    label(class="form__label", for="professional") Professional
+                    input#professional(class="form__input", type="text", value=data.userToUpdate.professional)
+                    //-select#language(class="form__input")
+                      option(value="Englisch") English
+                      option(value="Deutsch") Deutsch
+                  //-div(class="form__group")
+                    label(class="form__label", for="name") Name
+                    input#name(class="form__input", type="text", value=data.userToUpdate.name, readonly, style="background-color: lightgrey;")
+                  div(class="form__group")
+                    label(class="form__label", for="email") E-Mail
+                    input#email(class="form__input", type="email", value=data.userToUpdate.email)
+                    //if (data.userToUpdate.role === 'admin' && !data.currentUser.role === 'admin')
+                  div(class="form__group ma-bt-md")
+                      label(class="form__label", for="password") Password
+                      input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
+                  div(class="form__group ma-bt-md")
+                      label(class="form__label", for="passwordEncripted") decryptedPassword
 
+                      input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
 
+                      script.
+                        console.log("test")
+                        let encryptedPassword = "#{data.userToUpdate.password}";
+                        let key = CryptoJS.SHA256('mySecretKey1');
+                        let iv = CryptoJS.enc.Base64.parse('');
+                        let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
+                        document.getElementById("passwordEncripted").value = decryptedPassword;
+                  div(class="form__group")
+                    label(class="form__label", for="language") Language
+                    input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
+                  //div(class="form__group")
+                    label(class="form__label", for="role") Role
+                    select#role(class="form__input")
+                      option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
+                      option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
+                      option(value="user", selected=data.userToUpdate.role === 'user') User
+                  div(class="form__group")
+                    label(class="form__label", for="role") Role
+                    select#role(class="form__input")
+                      option(value=data.userToUpdate.role, selected, style="background-color: #98B7E1; color: white;") #{data.userToUpdate.role}
+                      option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
+                      option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
+                      option(value="user", selected=data.userToUpdate.role === 'user') User
+                      option(value="Unterhalt", selected=data.userToUpdate.role === 'Unterhalt') Unterhalt
 
+                  //div(class="form__group")
+                    label(class="form__label", for="role") Role
+                    select#role(class="form__input")
+                      option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
+                      option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
+                      option(value="user", selected=data.userToUpdate.role === 'user') User
+                      //-option(value="admin", selected=data.userToUpdate.role === 'admin') Admin
+                  div(class="form__group")
+                    label(class="form__label", for="departments") Departments
+                    //-input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
 
-              //-script.
-                const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
-                let atLeastOneChecked = false;
-                departmentCheckboxes.forEach(function(departmentCheckbox) {
-                  if (departmentCheckbox.checked) {
-                    atLeastOneChecked = true;
-                  }
-                });
+                    each department in data.departments
+                      - var checked = data.userToUpdate.department && data.userToUpdate.department.includes(department.name)
 
-                if (!atLeastOneChecked) {
-                  alert("Please select at least one department.");
-                  return false;
-                }
+                      label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;border: none;")
+                        |
+                        input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
+                        span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
 
+                  br
+                  button.btn.btn--small.btn--green.btn--saveUpdateUserByAdmin Save
+                  a.btn-space
+                  button.btn.btn--small.btn--red.btn--deleteUpdateUserByAdmin Delete
+                  a.btn-space
+                  a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
 
+                  script.
+                    console.log("bin Skript")
+                    function getSelectedDepartments () {
+                      const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
+                      let selectedDepartments = [];
+                      departmentCheckboxes.forEach((checkbox) => {
+                        if (checkbox.checked) {
+                          selectedDepartments.push(checkbox.value);
+                        }
+                      });
+                      if (selectedDepartments.length > 0) {
+                        console.log(selectedDepartments + " sind angewählt");
+                        //#department === selectedDepartments
+                        //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
+                        document.querySelector('#department').value = selectedDepartments;
+                        //-document.querySelector('#department').value = selectedDepartmentsString
+                      } else {
+                        console.log(selectedDepartments.length + " Departments!!!");
+                        alert('Bitte wählen Sie mindestens eine Abteilung aus.');
+                      }
+                    }
 
+                    // Rufen Sie die Funktion auf, wenn der "Speichern"-Button geklickt wird
+                    document.querySelector('.btn--saveUpdateUserByAdmin').addEventListener('click', () => {
+                      getSelectedDepartments();
+                    });
 
-          button.btn.btn--small.btn--green.btn--saveUpdateUserByAdmin Save
-          button.btn.btn--small.btn--red.btn--deleteUpdateUserByAdmin Delete
-          a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
-
-          script.
-            console.log("bin Skript")
-            function getSelectedDepartments() {
-              const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
-              let selectedDepartments = [];
-              departmentCheckboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                  selectedDepartments.push(checkbox.value);
-                }
-              });
-              if (selectedDepartments.length > 0) {
-                console.log(selectedDepartments + " sind angewählt");
-                //#department === selectedDepartments
-                //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
-                document.querySelector('#department').value = selectedDepartments;
-                //-document.querySelector('#department').value = selectedDepartmentsString
-              } else {
-                console.log(selectedDepartments.length + " Departments!!!");
-                alert('Bitte wählen Sie mindestens eine Abteilung aus.');
-              }
-            }
-
-            // Rufen Sie die Funktion auf, wenn der "Speichern"-Button geklickt wird
-            document.querySelector('.btn--saveUpdateUserByAdmin').addEventListener('click', () => {
-              getSelectedDepartments();
-            });

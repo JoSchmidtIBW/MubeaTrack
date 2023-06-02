@@ -17,13 +17,13 @@ block content
                     +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
-                .admin-nav
-                  h5.admin-nav__heading= `${user.role}`
-                  ul.side-nav
-                      +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
-                      +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
-                      +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
-                      +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
+                    .admin-nav
+                        h5.admin-nav__heading= `${user.role}`
+                        ul.side-nav
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
@@ -69,13 +69,13 @@ block content
                             input#role(class="form__input", type="text", value=user.role, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
                             label(class="form__label", for="role") Abteilung
-                            input#department(class="form__input", type="text", value=user.department, readonly, style="background-color: lightgrey;")
+                            input#department(class="form__input", type="text", value=user.department.join(', '), readonly, style="background-color: lightgrey;")
                         //-.form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${user.name}`,autocomplete="user-name", required, name='name')
                         .form__group.ma-bt-md
                             label.form__label(for='email') Email address
-                            input#email.form__input(type='email', value=`${user.email}`, required, name='email')
+                            input#email.form__input(type='email', value=`${user.email}`, name='email')
                         .form__group.form__photo-upload
                             img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
 

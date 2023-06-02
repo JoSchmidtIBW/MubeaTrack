@@ -69,7 +69,7 @@ router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe); // single
 router.delete('/deleteMe', deleteMe);
 
 //All routes are only for admin after this middleware
-router.use(restrictTo('admin'));
+router.use(restrictTo('admin', 'Chef'));
 
 //http: //127.0.0.1:4301/api/v1/users
 //router.route('/').get(getAllUsers).post(createUser);
