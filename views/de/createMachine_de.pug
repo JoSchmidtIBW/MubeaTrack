@@ -11,7 +11,7 @@ block content
 
     main.main
         .user-view
-            nav.createMachine-view__menu
+            nav.user-view__menu
 
                 ul.side-nav
                     +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
@@ -96,4 +96,5 @@ block content
                                 option(value="Geschäfts-Führung") Geschäfts-Führung
                         div(class="form__group")
                             button.btn.btn--green speichern
+                            a.btn-space
                             a.btn.btn--small.btn--gray(href=`/api/v1/manage_machinery`) zurück

@@ -267,7 +267,7 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
     //console.log(malReports);
     //console.log(JSON.stringify(malReports, null, 2));
     malReports.forEach((malReport) => {
-      console.log(malReport);
+      //console.log(malReport);
     });
 
     res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
@@ -312,13 +312,13 @@ export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
 
     //ausgabe LogFal in closedMalReports
     closedMalReports.forEach((closedMalReport) => {
-      console.log('Log Fal Repair:');
+      //console.log('Log Fal Repair:');
 
       closedMalReport.logFal_Repair.forEach((log) => {
-        console.log(`Create Date: ${log.createAt_Repair}`);
-        console.log(`estimatedTime_Repair: ${log.estimatedTime_Repair}`);
+        // console.log(`Create Date: ${log.createAt_Repair}`);
+        //console.log(`estimatedTime_Repair: ${log.estimatedTime_Repair}`);
       });
-      console.log('------------------------');
+      //console.log('------------------------');
     });
 
     res.status(200).render('ASMAUnterhaltMachineClosedMalreports', {

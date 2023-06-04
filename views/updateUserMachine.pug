@@ -75,12 +75,15 @@ block content
                                   - if (checkedMachine)
                                   - hasSelectedMachine = true
 
-                            if hasSelectedMachine
+                            //if hasSelectedMachine
                                 div(class="form__group")
                                     br
                                     button.btn.btn--green Save
                                     a.btn-space
-                                    a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
+                                    a.btn.btn--small.btn--gray(href=`/api/v1/manage_user-machine`) Cancel
+                        if hasSelectedMachine
+                            button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Speichern
+                        a.btn.btn--small.btn--gray(href="/api/v1/manage_user-machine") Abrechen
 
                             script.
                               const machineryInput = document.querySelector('#machineryInDepartment');
