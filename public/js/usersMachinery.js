@@ -62,7 +62,7 @@ export const showUsersMachinery = async () => {
         columns: [
           {
             data: '_id', //'users._id',
-            visible: true,
+            visible: false,
             // visible: true,
             // render: function (data) {
             //   return data;
@@ -72,8 +72,8 @@ export const showUsersMachinery = async () => {
             // },
           },
           { data: 'employeeNumber' },
-          { data: 'firstName' },
           { data: 'lastName' },
+          { data: 'firstName' },
           { data: 'professional' },
           { data: 'department' },
           {

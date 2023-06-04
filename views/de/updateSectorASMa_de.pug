@@ -13,17 +13,17 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('/api/v1/me', 'My Settings', 'settings')
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
                         h5.admin-nav__heading= `${user.role}`
                         ul.side-nav
-                            +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                            +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                            +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                            +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma', true)
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma', true)
 
             .user-view__content
                 .user-view__form-container
@@ -37,9 +37,9 @@ block content
 
                     form.form.form-updateSectorASMA-data
                         //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
-                        //- input#machineID(type="text", value=data.machine._id)
+                        input#machineID(type="hidden", value=data.machine._id)
                         br
-                        //- input#sectorASMAID(type="text", value=data.sectorASMA._id)
+                        input#sectorASMAID(type="hidden", value=data.sectorASMA._id)
                         br
 
                         div(class="form__group ma-bt-md")
@@ -53,19 +53,19 @@ block content
                             input#sectorASMAdescription_en(class="form__input" type="text" value=data.sectorASMA.description_en)
                         br
                         span
-                            button.btn.btn--small.btn--green.btn--saveUpdateSectorASMA speichern
+                            button.btn.btn--small.btn--green.btn--saveUpdateSectorASMA Speichern
                             a.btn-space
-                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}`) zurück
+                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}`) Abrechen
                         br
                         br
                         br
                         div(class="form__group ma-bt-md")
                             label(class="form__label", for="sectorASMAname" style="color: red") SektorASMA Name
-                            h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren)
+                            h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren!)
                             input(class="form__input", type="text", value=data.sectorASMA.name, readonly, style="background-color: #EFDDDC")
                             br
                             input(class="form__input", type="text", value=data.sectorASMA.description_de, readonly, style="background-color: #EFDDDC")
                             br
                             input(class="form__input", type="text", value=data.sectorASMA.description_en, readonly, style="background-color: #EFDDDC")
                         //-h4(style="color:red") Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren
-                        button.btn.btn--small.btn--red.btn--deleteSectorASMA löschen
+                        button.btn.btn--small.btn--red.btn--deleteSectorASMA Löschen

@@ -1,9 +1,33 @@
 extends base
 
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
 block content
-    main.main
-      div(class="user-view__content")
-        div(class="user-view__form-container")
+
+  main.main
+    .user-view
+      nav.user-view__menu
+
+        ul.side-nav
+            +navItem('/api/v1/me', 'My Settings', 'settings', true)
+            +navItem('#', 'My ASMA-error reports', 'user-error-report')
+
+        - if(user.role === 'admin' || user.role === 'Chef')
+            .admin-nav
+                h5.admin-nav__heading= `${user.role}`
+                ul.side-nav
+                    +navItem('/api/v1/manage_users', 'Manage users', 'users')
+                    +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
+                    +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
+                    +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+
+      .user-view__content
+        .user-view__form-container
           h2.heading-secondary.ma-bt-md Create new User
           form.form.form-new-user-data
             div(class="form__group")
@@ -13,29 +37,29 @@ block content
 
               //-input#employeeNumber1(class="form__input", type="number", placeholder="70220", required="required", pattern="^[0-9]{5,}$")
             div(class="form__group")
-              label(class="form__label", for="firstname") firstname
+              label(class="form__label", for="firstname") Firstname
               input#firstname(class="form__input", type="text", placeholder="Max", required="required")
             div(class="form__group")
-              label(class="form__label", for="lastname") lastname
+              label(class="form__label", for="lastname") Lastname
               input#lastname(class="form__input", type="text", placeholder="Mustermann", required="required")
             div(class="form__group")
               label(class="form__label", for="birthDate") Birth date
               input#birthDate(class="form__input", type="text", placeholder="01.01.2002", required="required", pattern="^(0[1-9]|[1-2][0-9]|3[0-1])[.](0[1-9]|1[0-2])[.][0-9]{4}$")
             div(class="form__group")
-              label(class="form__label", for="gender") gender
+              label(class="form__label", for="gender") Gender
               select#gender(class="form__input")
-                option(value="male") Male
-                option(value="Female") Female
+                option(value="male") male
+                option(value="Female") female
             div(class="form__group")
-              label(class="form__label", for="language") language
+              label(class="form__label", for="language") Language
               select#language(class="form__input")
                 option(value="en") English
-                option(value="de") Deutsch
+                option(value="de") German
             //-div(class="form__group")
               label(class="form__label", for="name") Name
               input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
             div(class="form__group")
-              label(class="form__label", for="professional") professional
+              label(class="form__label", for="professional") Professional
               input#professional(class="form__input", type="text", placeholder="professional")
             div(class="form__group")
               label(class="form__label", for="email") Email address
@@ -49,48 +73,25 @@ block content
             div(class="form__group")
               label(class="form__label", for="role") Role
               select#role(class="form__input")
-                option(value="Chef") Chef
-                option(value="Schichtleiter") Schichtleiter
                 option(value="user") User
-                option(value="admin") Admin
-            //-div(class="form__group")
-              label(class="form__label", for="department") Department
-              select#department(class="form__input")
-                option(value="Schweisserei") Schweisserei
-                option(value="Zieherei") Zieherei
-                option(value="Anarbeit") Anarbeit
                 option(value="Unterhalt") Unterhalt
-                option(value="IT") IT
-                option(value="Engineering") Engineering
-                option(value="Konstruktion") Konstruktion
-                option(value="Geschäfts-Führung") Geschäfts-Führung
+                option(value="Schichtleiter") Schichtleiter
+                option(value="Chef") Chef
+
+
             div(class="form__group")
               label(class="form__label", for="department") Departments
               each department in data.departments
-                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                  //-input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
-                  //-input#department-checkbox(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
-                  //-input#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
-                label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                  |
-                  input(type="checkbox", name="departments", value=department.name, checked=checked, id=`department-${department.name}`, style="width: 20px; height: 20px;")
-                  span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
 
-              //-each department in data.departments
-                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                  input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
-                  span.form__checkbox-name(style="font-size: 1.5rem;") #{department.name}
-
-              //-each department in data.departments
-                //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                label(class="form__checkbox-label" style="display: block; margin-bottom: 10px; border: none")
                   |
-                  //-input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
-                  input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=department.checked,  style="width: 20px; height: 20px;")
+                  input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                   span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
 
 
             div(class="form__group")
               button.btn.btn--green Save
+              a.btn-spaces
               a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
 
             script.
@@ -109,26 +110,9 @@ block content
                   document.querySelector('#department').value = selectedDepartments;
                   //-document.querySelector('#department').value = selectedDepartmentsString
                 } else {
-                  console.log(selectedDepartments.length + " Departments!!!");
-                  alert('Bitte wählen Sie mindestens eine Abteilung aus.');
+                  //console.log(selectedDepartments.length + " Departments!!!");
+                  alert('Please select at least one department.');
                 }
               }
-            //-script.
-              function getSelectedDepartments() {
-                const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
-                consoloe.log("departmentCheckboxes: "+departmentCheckboxes)
-                let selectedDepartments = [];
-                departmentCheckboxes.forEach((checkbox) => {
-                  if (checkbox.checked) {
-                  console.log("checkbox.checked"+checkbox.checked)
-                    selectedDepartments.push(checkbox.value);
-                  }
-                });
-                if (selectedDepartments.length > 0) {
-                  console.log(selectedDepartments + " sind angewählt");
-                  document.querySelector('#departments').value = selectedDepartments.join(', ');
-                } else {
-                  console.log(selectedDepartments.length + " Departments!!!");
-                  alert('Bitte wählen Sie mindestens eine Abteilung aus.');
-                }
-              }
+
+

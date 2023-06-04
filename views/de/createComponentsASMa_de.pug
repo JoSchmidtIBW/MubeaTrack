@@ -12,51 +12,54 @@ block content
         .user-view
             nav.user-view__menu
 
-              ul.side-nav
-                    +navItem('/api/v1/me', 'My Settings', 'settings')
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                ul.side-nav
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
-              - if(user.role === 'admin' || user.role === 'Chef')
-                .admin-nav
-                  h5.admin-nav__heading= `${user.role}`
-                  ul.side-nav
-                      +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                      +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                      +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                      +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma', true)
+                - if(user.role === 'admin' || user.role === 'Chef')
+                    .admin-nav
+                        h5.admin-nav__heading= `${user.role}`
+                        ul.side-nav
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma', true)
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md erstellen neue Komponente
+                    h2.heading-secondary.ma-bt-md Erstelle neue Komponente
                     br
                     h1 Hier fügt man einem Sektor eine Komponente hinzu
                     br
                     if(data.sectorASMA.components.length === 0)
                         h2(style="color: red" ) Die Anlage hat noch keine Komponenten
+                        br
                         form.form.form-new-componentsASMA-data
                             div(class="form__group")
-                                //-input#machineID(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
-                                //-input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
-                                label(class="form__label", for="name_de") Name_de ComponentASMA
+                                input#machineID(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
+                                input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
+                                label(class="form__label", for="name_de") Name_de Komponente
                                 input#input_name_de(class="form__input" type="text" placeholder="Bundlader" required="required")
                                 br
-                                label(class="form__label", for="name_en") Name_en ComponentASMA
+                                label(class="form__label", for="name_en") Name_en Komponente
                                 input#input_name_en(class="form__input" type="text" placeholder="Bundlader" required="required")
                                 br
                                 label(class="form__label", for="description_de") Beschreibung_de
-                                input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")
+                                input#input_description_de(class="form__input" type="text" placeholder="Beschreibung_de" required="required")
                                 br
-                                label(class="form__label", for="description_en") Description_en
-                                input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
+                                label(class="form__label", for="description_en") Beschreibung_en
+                                input#input_description_en(class="form__input" type="text" placeholder="Beschreibung_en" required="required")
                             div(class="form__group")
                                 //-button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`/api/v1/machinery/createSectorASMAMachine`) Save
-                                button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Save
+                                button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Speichern
+                                a.btn-space
+                                a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abrechen
                     else
                         //-h2= data.machine.sectorASMA.length
                     each component in data.sectorASMA.components
                       div(class="form__group")
-                          //-input#sectorASMAID(class="form__input", type="text", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
-                          //-input#machineID(class="form__input", type="text", value=data.machine._id, readonly, style="background-color: lightgrey;")
+                          input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
+                          input#machineID(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
                           label(class="form__label", for="name_de") Name_de
                           input#name_de(class="form__input", type="text", value=component.name_de, readonly, style="background-color: lightgrey;")
                           label(class="form__label", for="name_en") Name_en
@@ -70,30 +73,36 @@ block content
                           br
                           br
                           span
-                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/updateComponentASMA/${component._id}`, style="background-color:orange;") edit
+                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/updateComponentASMA/${component._id}`, style="background-color:orange;") Bearbeiten
                               a.btn-space
-                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${component._id}`, style="background-color:lightblue;") ComponentDetails
+                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${component._id}`, style="background-color:lightblue;") KomponentDetails
+                              a.btn-space
+                              a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abrechen
                               br
                               br
+                    br
                     button.btn.btn--green1 + Komponente
 
                     form.form.form-new-componentsASMA-data
                         div(class="form__group" id="nameDiv" style="display: none;")
+                            br
                             input#id(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
-                            label(class="form__label", for="name_de") Name_de componentASMA
+                            label(class="form__label", for="name_de") Name_de Komponente
                             input#input_name_de(class="form__input" type="text" placeholder="Bundlader" required="required")
                             br
-                            label(class="form__label", for="name_en") Name_en componentASMA
+                            label(class="form__label", for="name_en") Name_en Komponente
                             input#input_name_en(class="form__input" type="text" placeholder="Bundlader" required="required")
                         div(class="form__group" id="description_deDiv" style="display: none;")
-                            label(class="form__label", for="description_de") Description_de
-                            input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")
+                            label(class="form__label", for="description_de") Beschreibung_de
+                            input#input_description_de(class="form__input" type="text" placeholder="Beschreibung_de" required="required")
                             br
-                            label(class="form__label", for="description_en") Description_en
-                            input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
+                            label(class="form__label", for="description_en") Beschreibung_en
+                            input#input_description_en(class="form__input" type="text" placeholder="Beschreibung_en" required="required")
                         div(class="form__group" id="saveBtnDiv" style="display: none;")
                             //-button.btn.btn--green.btn.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createASMAMachine`) Save
-                            button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Save
+                            button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Speichern
+                            a.btn-space
+                            a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abrechen
                     script.
                       const btnPlus = document.querySelector('.btn--green1');
                       const nameDiv = document.querySelector('#nameDiv');
@@ -114,9 +123,7 @@ block content
                     br
                     br
                     br
-                    br
-                    br
                     div(class="form__group")
                         //-button.btn.btn--green Save
                         //-a.btn.btn--green(href=`/api/v1/machiner/createASMAMachine`) Save
-                        a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Cancel
+                        //a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abrechen

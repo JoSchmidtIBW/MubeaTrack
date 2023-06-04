@@ -2,91 +2,19 @@ extends base
 
 block content
     main.main2
-        h1 ASMAUnterhaltMachineObepMalReports
-        br
-        table(border="5", bordercolor="red")
-            tr
-                td ID
-                td
-                    table(border="5", bordercolor="green")
-                        tr
-                            td
-                                | First row of Inner Table
-                        tr
-                            td
-                                | Second row of Inner Table
-        br
-        table(border="2", bordercolor="green")
-            tr
-                td Table 1
-                td
-                    | logFal_Repair ID
-                    table(border="2", bordercolor="blue")
-                        tr
-                            td Table 2
-                            td Table 2
-                        tr
-                            td  Table 2
-                            td Table 2
-            tr
-                td  Table 1
-                td  Table 1.
-        //-h1= data.malReports
+        h1= `Open MalReports from the machine ${data.machineName}`
         br
         a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`)= `zu den geschlossenen Punkten von ${data.machineName}`
         br
-        //-table(border="2", bordercolor="green")
-            tr
-                td Table 1
-                td ID
-                td logFal_Repair ID
-
-            each malReport in data.malReports
-                tr
-                    td  Table 1
-                    td(style="color:red;")= malReport._id
-                    td  Table 1.
-                    | Table 1
-                    each logFal_Repair in malReport.logFal_Repair
-                        table(border="2", bordercolor="blue")
-                            tr
-                                td Table 2
-                                td Table 2
-                            tr
-                                td  Table 2
-                                td Table 2
         br
-        //table.table
-            thead
-                tr
-                    th(colspan="2") Haupttabelle Spalte 1
-                    th(colspan="2") Haupttabelle Spalte 2
-                tr
-                    th Untertabelle Spalte 1
-                    th ID
-                    th Untertabelle Spalte 2
-                    th logFal_Repair._id
-                    th Untertabelle Spalte 4
-            tbody
-              each malReport in data.malReports
-                tr
-                    td(rowspan="2") Haupttabelle Zeile 1
-                    td(rowspan="2")= malReport._id
-                    //td(style="color:red;")= malReport._id
-
-
-                each logFal_Repair in malReport.logFal_Repair
-                  tr
-                    td Untertabelle Zeile 3
-                    td(style="color:blue;")= logFal_Repair._id
         br
         table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
             //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
-            input#machineID(type="text", value=data.machineID)
-            input#machineName(type="text", value=data.machineName)
-            input#currentUser(type="text", value=data.currentUser)
+            input#machineID(type="hidden", value=data.machineID)
+            input#machineName(type="hidden", value=data.machineName)
+            input#currentUser(type="hidden", value=data.currentUser)
             //input#urlText(type="text", value=window.location.href)
-            <input id="urlText" type="text" value="">
+            <input id="urlText" type="hidden" value="">
             thead
                 tr
                     th ID

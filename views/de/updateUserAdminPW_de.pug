@@ -33,7 +33,7 @@ block content
                             br
                             h2.heading-secondary.ma-bt-md= `Bearbeite Benutzer ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
                             form.form.form-workerAdmin-data
-                                //-input#userId(type="hidden", value=data.userToUpdate._id)
+                                //input#userId(type="hidden", value=data.userToUpdate._id)
                                 div(class="form__group ma-bt-md")
                                     //-label(class="form__label", for="userId") UserId
                                     input#userId(class="form__input", type="hidden", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")

@@ -55,10 +55,10 @@ block content
 
                                 .overview-box__detail
                                         span.overview-box__label= `currentUser ${machineID}`
-                                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
                                         span status:
                                         span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                        if(department.name === 'Unterhalt')
+                        //if(department.name === 'Unterhalt')
                             h1 Bin UnterhaltASMAAAAA
                             a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
         .description-box
@@ -106,6 +106,9 @@ block content
             div
             br
             h1 hallo
+            if(department.name === 'Unterhalt')
+                h1 Bin UnterhaltASMAAAAA
+                a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`, style="background-color:lightblue;") ASMA Unterhalt
             br
             br
             br

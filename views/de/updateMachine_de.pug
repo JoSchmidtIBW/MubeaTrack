@@ -13,18 +13,18 @@ block content
         .user-view
             nav.user-view__menu
 
-              ul.side-nav
-                    +navItem('/api/v1/me', 'My Settings', 'settings')
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                ul.side-nav
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
-              - if(user.role === 'admin' || user.role === 'Chef')
-                .admin-nav
-                  h5.admin-nav__heading= `${user.role}`
-                  ul.side-nav
-                      +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                      +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine', true)
-                      +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                      +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+                - if(user.role === 'admin' || user.role === 'Chef')
+                    .admin-nav
+                        h5.admin-nav__heading= `${user.role}`
+                        ul.side-nav
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine', true)
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container

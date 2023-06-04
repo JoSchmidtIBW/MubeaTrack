@@ -387,6 +387,45 @@ body {
     display: inline-block;
 }
 
+.btn-status
+{
+    padding: 1.25rem 1.6rem !important;
+    font-size: 1.4rem !important;
+    border-radius: 10rem;
+    text-transform: uppercase;
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    font-weight: 400;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /*Add later when we use this for the button in form*/
+    border: none;
+    width: 160px;
+    height: 45px;
+}
+
+.btn1
+{
+    font-size: 12px;
+    padding: 1.4rem 3rem;
+    border-radius: 10rem;
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    font-weight: 300;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /*Add later when we use this for the button in form*/
+    border: none;
+    cursor: pointer;
+}
+
 .header {
     background-color: #444;
     padding: 0 5rem;
@@ -546,7 +585,7 @@ body {
 }
 
 .overview-box {
-    background-color: #f7f7f7;
+    /*background-color: #f7f7f7;*/
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -877,7 +916,7 @@ body {
 }
 
 .user-view__form-container {
-    max-width: 68rem;
+    max-width: 75rem;
     margin: 0 auto;
     padding: 0 8rem;
 }
@@ -1873,6 +1912,10 @@ input#employeeNumber.form__input[type=number] {
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
 
+#manageASMAUnterhaltMachineOpenMalReportsTable{
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
 
 
 
@@ -2014,4 +2057,25 @@ input#employeeNumber.form__input[type=number] {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+}
+
+.estimatedStatus{
+    background-color: moccasin !important;
+    font-weight: bold;
+}
+
+
+.cta__img1 {
+    height: 28rem;
+    width: 28rem;
+    left: 10;
+    margin-top: 70px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+}
+
+.img1 {
+    margin-top: 120px;
+    margin-left: 100px;
 }

@@ -14,21 +14,21 @@ block content
             nav.user-view__menu
 
               ul.side-nav
-                    +navItem('/api/v1/me', 'My Settings', 'settings')
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
               - if(user.role === 'admin' || user.role === 'Chef')
-                .admin-nav
-                  h5.admin-nav__heading= `${user.role}`
-                  ul.side-nav
-                      +navItem('/api/v1/manage_users', 'Manage users', 'users', true)
-                      +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                      +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                      +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+                    .admin-nav
+                          h5.admin-nav__heading= `${user.role}`
+                          ul.side-nav
+                                +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users', true)
+                                +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                                +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                                +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md erstellen neuer User
+                    h2.heading-secondary.ma-bt-md Erstelle neuen Benutzer
                     form.form.form-new-user-data
                         div(class="form__group")
                             label(class="form__label", for="employeeNumber") Mitarbeiter-Nummer
@@ -48,8 +48,8 @@ block content
                         div(class="form__group")
                             label(class="form__label", for="gender") Geschlecht
                             select#gender(class="form__input")
-                                option(value="male") männlich
-                                option(value="Female") weiblich
+                                option(value="male") Mann
+                                option(value="Female") Frau
                         div(class="form__group")
                             label(class="form__label", for="language") Sprache
                             select#language(class="form__input")
@@ -73,10 +73,11 @@ block content
                         div(class="form__group")
                             label(class="form__label", for="role") Rolle
                             select#role(class="form__input")
-                                option(value="Chef") Chef
-                                option(value="Schichtleiter") Schichtleiter
                                 option(value="user") User
-                                option(value="admin") Admin
+                                option(value="Unterhalt") Unterhalt
+                                option(value="Schichtleiter") Schichtleiter
+                                option(value="Chef") Chef
+                                //-option(value="admin") Admin
                         //-div(class="form__group")
                           label(class="form__label", for="department") Department
                           select#department(class="form__input")
@@ -96,7 +97,7 @@ block content
                                 //-input#department-checkbox(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                                 //-input#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
 
-                              label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                              label(class="form__checkbox-label" style="display: block; margin-bottom: 10px; border: none")
                                   |
                                   input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                                   span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
@@ -117,7 +118,7 @@ block content
                         div(class="form__group")
                             button.btn.btn--green Speichern
                             a.btn-spaces
-                            a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Zurück
+                            a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Abrechen
 
                         script.
                           function getSelectedDepartments() {

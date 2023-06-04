@@ -12,99 +12,109 @@ block content
         .user-viewMachine
             nav.user-view__menu
 
-              ul.side-nav
-                  +navItem('#', `${data.machine.name}`, 'machine', true)
-                  +navItem('#', 'Sonstige', 'settings')
+                ul.side-nav
+                    +navItem('#', `${data.machine.name}`, 'machine', true)
+                    +navItem('#', 'Sonstige', 'settings')
 
-              //- if(user.role === 'admin' || user.role === 'Chef')
-              .admin-navs
-                  h5.admin-nav__heading= `${user.role}`
-                  ul.side-nav
-                      +navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
-                      +navItem('#', 'Verbrauchs- Material', 'user-error-report')
-                      +navItem('#', 'Prüfmittel', 'user-error-report')
-                      +navItem('#', 'sonstige', 'user-error-report')
-                      if(data.machine.sectorASMA.length > 0)
-                          +navItem('#', 'ASMA', 'machine-asma')
+                //- if(user.role === 'admin' || user.role === 'Chef')
+                .admin-navs
+                    h5.admin-nav__heading= `${user.role}`
+                    ul.side-nav
+                        +navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
+                        +navItem('#', 'Verbrauchs- Material', 'user-error-report')
+                        +navItem('#', 'Prüfmittel', 'user-error-report')
+                        +navItem('#', 'sonstige', 'user-error-report')
+                        if(data.machine.sectorASMA.length > 0)
+                            +navItem('#', 'ASMA', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md= `technical data from ${data.machine.name}`
+                    h2.heading-secondary.ma-bt-md= `technische Spezifikation von ${data.machine.name}`
                     .technical-data
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Description:
+                            span(class="technical-data__label") Beschreibung:
                             span(class="technical-data__value")= data.machine.description
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Machine number:
+                            span(class="technical-data__label") Machinen Nummer:
                             span(class="technical-data__value")= data.machine.machineNumber
                         div(class="technical-data__field")
                             span(class="technical-data__label") Type:
                             span(class="technical-data__value")= data.machine.type
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Construction year:
+                            span(class="technical-data__label") Konstruktionsjahr:
                             span(class="technical-data__value")= data.machine.constructionYear
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Company machine:
+                            span(class="technical-data__label") Hersteller:
                             span(class="technical-data__value")= data.machine.companyMachine
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Voltage:
+                            span(class="technical-data__label") Spannung:
                             span(class="technical-data__value")= data.machine.voltage
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Control voltage:
+                            span(class="technical-data__label") Kontrollspannung:
                             span(class="technical-data__value")= data.machine.controlVoltage
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Rated current:
+                            span(class="technical-data__label") Umdrehungszahl:
                             span(class="technical-data__value")= data.machine.ratedCurrent
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Electrical fuse:
+                            span(class="technical-data__label") Elektrische Absicherung:
                             span(class="technical-data__value")= data.machine.electricalFuse
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Compressed air:
+                            span(class="technical-data__label") Pressluft:
                             span(class="technical-data__value")= data.machine.compressedAir
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Weight mass:
+                            span(class="technical-data__label") Gewichtsmass:
                             span(class="technical-data__value")= data.machine.weightMass
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Dimensions:
+                            span(class="technical-data__label") Dimension:
                             span(class="technical-data__value")= data.machine.dimensions
                         div(class="technical-data__field")
-                            span(class="technical-data__label") Drawing number:
+                            span(class="technical-data__label") Zeichnungs-Nummer:
                             span(class="technical-data__value")= data.machine.drawingNumber
+                    br
 
+                    //section
+                    section
+                        br
+                        br
+                        br
+                        if(data.machine.sectorASMA.length > 0)
+                            //- h1= data.department._id
+                            //-h1= data.machine.name
+                            //-h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
+                            a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
+                            //-a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA machine
+                        else
+                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
+                            h1(style= "color: red") Diese Maschine hat kein ASMA
+                        //-.header__hero
+                            .header__hero-overlay &nbsp;
+                            img.header__hero-img(src='#', alt=`${machine.name}`)
                     br
                     br
                     br
                     div.overview-box__group
-                      h2.heading-secondary.ma-bt-lg=`the employees from ${data.machine.name}`
+                      br
+                      h2.heading-secondary.ma-bt-lg=`die Mitarbeiter von ${data.machine.name}`
                       each employee in data.machine.employees
                           .overview-box__detail
                             img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
-                            - if(employee.role === 'lead-guide')
-                            span.overview-box__label Lead guide
-                            - if(employee.role === 'guide')
-                            span.overview-box__label Tour guide
+                            - if(employee.role === 'admin')
+                                span.overview-box__label_big Admin
+                                span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'Chef')
+                                span.overview-box__label_big Chef
+                                span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'Unterhalt')
+                                span.overview-box__label_little=employee.professional
+                                span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'Schichtleiter')
-                            span.overview-box__label Schichtleiter
-                            - if(employee.role === 'Bediener')
-                            span.overview-box__label Bediener
-                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                                span.overview-box__label Schichtleiter
+                                span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'user')
+                                span.overview-box__label_little=employee.professional
+                                //span.overview-box__label= guide.role
+                                span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                     br
 
-                    //section
-                    section.section-header
-                        if(data.machine.sectorASMA.length > 0)
-                            //- h1= data.department._id
-                            //-h1= data.machine.name
-                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
-                            h1(style="color: green") this machine has asma
-                            br
-                            a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
-                        else
-                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
-                            h1(style= "color: red") diese maschine hat kein ASMA
-                        //-.header__hero
-                            .header__hero-overlay &nbsp;
-                            img.header__hero-img(src='#', alt=`${machine.name}`)
-
-                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.department.name.toLowerCase()}`) Retour
+                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.department.name.toLowerCase()}`) zurück
