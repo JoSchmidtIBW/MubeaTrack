@@ -24,6 +24,9 @@ export const updateSettings = async (data, type) => {
     if (res.data.status === 'success') {
       // status bei API request
       showAlert('success', `${type.toUpperCase()} updated successfully!`);
+      window.setTimeout(() => {
+        location.assign('/api/v1/me');
+      }, 500);
     }
   } catch (err) {
     console.log(err);

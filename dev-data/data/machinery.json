@@ -585,7 +585,7 @@
     "zone": "Sägen",
     "description": "Säge- Anlage",
     "department": "Anarbeit",
-    "statusRun": false,
+    "statusRun": true,
     "sectorASMA": [
       {
         "name": "Rattunde2",
@@ -1099,5 +1099,275 @@
         ]
       }
     ]
+  },
+  {
+    "_id": "64445692830afd3adeba5002",
+    "imageCover": "machine-cover-RS30.jpg",
+    "images": [
+      "machine-RS30-1.jpg",
+      "machine-RS30-2.jpg",
+      "machine-RS30-3.jpg"
+    ],
+    "employees": [],
+    "name": "RS30",
+    "zone": "Schweissen",
+    "description": "Rohr- Schweissanlage",
+    "department": "Schweisserei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba5001",
+    "imageCover": "machine-cover-RS25.jpg",
+    "images": [
+      "machine-RS25-1.jpg",
+      "machine-RS25-2.jpg",
+      "machine-RS25-3.jpg"
+    ],
+    "employees": [],
+    "name": "RS25",
+    "zone": "Schweissen",
+    "description": "Rohr- Schweissanlage",
+    "department": "Schweisserei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba5003",
+    "imageCover": "machine-cover-RS50.jpg",
+    "images": [
+      "machine-RS50-1.jpg",
+      "machine-RS50-2.jpg",
+      "machine-RS50-3.jpg"
+    ],
+    "employees": [],
+    "name": "RS50",
+    "zone": "Schweissen",
+    "description": "Rohr- Schweissanlage",
+    "department": "Schweisserei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba5004",
+    "imageCover": "machine-cover-RS60.jpg",
+    "images": [
+      "machine-RS60-1.jpg",
+      "machine-RS60-2.jpg",
+      "machine-RS60-3.jpg"
+    ],
+    "employees": [],
+    "name": "RS60",
+    "zone": "Schweissen",
+    "description": "Rohr- Schweissanlage",
+    "department": "Schweisserei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba5005",
+    "imageCover": "machine-cover-RS65.jpg",
+    "images": [
+      "machine-RS65-1.jpg",
+      "machine-RS65-2.jpg",
+      "machine-RS65-3.jpg"
+    ],
+    "employees": [],
+    "name": "RS65",
+    "zone": "Schweissen",
+    "description": "Rohr- Schweissanlage",
+    "department": "Schweisserei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6001",
+    "imageCover": "machine-cover-AVS65.jpg",
+    "images": [
+      "machine-AVS65-1.jpg",
+      "machine-AVS65-2.jpg",
+      "machine-AVS65-3.jpg"
+    ],
+    "employees": [],
+    "name": "AVS65",
+    "zone": "Spitzen",
+    "description": "Rohr- Spitzanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6002",
+    "imageCover": "machine-cover-AVS100.jpg",
+    "images": [
+      "machine-AVS100-1.jpg",
+      "machine-AVS100-2.jpg",
+      "machine-AVS100-3.jpg"
+    ],
+    "employees": [],
+    "name": "AVS100",
+    "zone": "Spitzen",
+    "description": "Rohr- Spitzanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6003",
+    "imageCover": "machine-cover-APM100.jpg",
+    "images": [
+      "machine-APM100-1.jpg",
+      "machine-APM100-2.jpg",
+      "machine-APM100-3.jpg"
+    ],
+    "employees": [],
+    "name": "APM100",
+    "zone": "Spitzen",
+    "description": "Rohr- Spitzanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6004",
+    "imageCover": "machine-cover-ASMAG.jpg",
+    "images": [
+      "machine-ASMAG-1.jpg",
+      "machine-ASMAG-2.jpg",
+      "machine-ASMAG-3.jpg"
+    ],
+    "employees": [],
+    "name": "ASMAG",
+    "zone": "Ziehen",
+    "description": "60t 3-Fach Ziehanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6005",
+    "imageCover": "machine-cover-INDER.jpg",
+    "images": [
+      "machine-INDER-1.jpg",
+      "machine-INDER-2.jpg",
+      "machine-INDER-3.jpg"
+    ],
+    "employees": [],
+    "name": "INDER",
+    "zone": "Ziehen",
+    "description": "50t 3-Fach Ziehanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6006",
+    "imageCover": "machine-cover-Bültmann.jpg",
+    "images": [
+      "machine-Bültmann-1.jpg",
+      "machine-Bültmann-2.jpg",
+      "machine-Bültmann-3.jpg"
+    ],
+    "employees": [],
+    "name": "Bültmann",
+    "zone": "Ziehen",
+    "description": "50t 3-Fach Ziehanlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6007",
+    "imageCover": "machine-cover-GrosseZiehbank.jpg",
+    "images": [
+      "machine-GrosseZiehbank-1.jpg",
+      "machine-GrosseZiehbank-2.jpg",
+      "machine-GrosseZiehbank-3.jpg"
+    ],
+    "employees": [],
+    "name": "GrosseZiehbank",
+    "zone": "Ziehen",
+    "description": "Nord-Süd",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6008",
+    "imageCover": "machine-cover-SEMA1.jpg",
+    "images": [
+      "machine-SEMA1-1.jpg",
+      "machine-SEMA1-2.jpg",
+      "machine-SEMA1-3.jpg"
+    ],
+    "employees": [],
+    "name": "SEMA1",
+    "zone": "Richten",
+    "description": "Richt- Anlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6009",
+    "imageCover": "machine-cover-SEMA2.jpg",
+    "images": [
+      "machine-SEMA2-1.jpg",
+      "machine-SEMA2-2.jpg",
+      "machine-SEMA2-3.jpg"
+    ],
+    "employees": [],
+    "name": "SEMA2",
+    "zone": "Richten",
+    "description": "Richt- Anlage",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6011",
+    "imageCover": "machine-cover-Ofen2.jpg",
+    "images": [
+      "machine-Ofen2-1.jpg",
+      "machine-Ofen2-2.jpg",
+      "machine-Ofen2-3.jpg"
+    ],
+    "employees": [],
+    "name": "Ofen2",
+    "zone": "Glühen",
+    "description": "Glüh- Ofen",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6012",
+    "imageCover": "machine-cover-Ofen3.jpg",
+    "images": [
+      "machine-Ofen3-1.jpg",
+      "machine-Ofen3-2.jpg",
+      "machine-Ofen3-3.jpg"
+    ],
+    "employees": [],
+    "name": "Ofen3",
+    "zone": "Glühen",
+    "description": "Glüh- Ofen",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6013",
+    "imageCover": "machine-cover-Ofen4.jpg",
+    "images": [
+      "machine-Ofen4-1.jpg",
+      "machine-Ofen4-2.jpg",
+      "machine-Ofen4-3.jpg"
+    ],
+    "employees": [],
+    "name": "Ofen4",
+    "zone": "Glühen",
+    "description": "Glüh- Ofen",
+    "department": "Zieherei",
+    "statusRun": true
+  },
+  {
+    "_id": "64445692830afd3adeba6015",
+    "imageCover": "machine-cover-Beizerei.jpg",
+    "images": [
+      "machine-Beizerei-1.jpg",
+      "machine-Beizerei-2.jpg",
+      "machine-Beizerei-3.jpg"
+    ],
+    "employees": [],
+    "name": "Beizerei",
+    "zone": "Beizen",
+    "description": "Beizerei",
+    "department": "Zieherei",
+    "statusRun": true
   }
 ]

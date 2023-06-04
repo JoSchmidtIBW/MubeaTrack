@@ -12,14 +12,18 @@ block content
             table(style="margin: 0 auto;")
                 tr
                     td(style="text-align: center; padding-right: 20px;")
-                        h1 Total:
-                    td
-                        h1=`${users.length} Mitarbeiter`
+                        h2 Total:
+                    td(style="text-align: right; font-weight: bold;")
+                        h1=`${users.length}`
+                    td(style="padding-left: 10px;")
+                        h2 Mitarbeiter
                 tr
-                    td(-style="text-align: center; padding-right: 20px;")
-                        h1 Total:
-                    td
-                        h1=`${machinery.length} Maschinen`
+                    td(style="text-align: center; padding-right: 20px;")
+                        h2 Total:
+                    td(style="text-align: right; font-weight: bold;")
+                        h1=`${machinery.length}`
+                    td(style="padding-left: 10px;")
+                        h2 Maschinen
         .card-container
             //h1 Übersicht aller Abteilungen
             //h2= `Total: ${users.length} Mitarbeiter`

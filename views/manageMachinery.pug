@@ -2,28 +2,28 @@ extends base
 
 block content
    main.main
-      h1 Bin Machinery.pug Liste
-      h2= machinery.length
+      //h1 Bin Machinery.pug Liste
+      //h2= machinery.length
       table#manageMachineryTable.manageMachineryTable.table
         thead
           tr
             th ID
-            th createdAt
+            th CreatedAt
             th Name
-            th description
-            th type
-            th construction<br>Year
-            th company<br>Machine
-            th department
-            th voltage
-            th control<br>Voltage
-            th rated<br>Current
-            th electrical<br>Fuse
-            th compressed<br>Air
-            th weight<br>Mass
-            th dimensions
-            th drawing<br>Number
-            th employees<br>Count
+            th Description
+            th Type
+            th Construction<br>Year
+            th Company<br>Machine
+            th Department
+            th Voltage
+            th Control<br>Voltage
+            th Rated<br>Current
+            th Electrical<br>Fuse
+            th Compressed<br>Air
+            th Weight<br>Mass
+            th Dimensions
+            th Drawing<br>Number
+            th Employees<br>Count
             th Edit
         tbody
           each machine in machinery
@@ -51,7 +51,4 @@ block content
 
       br
       br
-      h1 hallo
-      br
-
       a.btn.btn--small.btn--green(href="/api/v1/createMachine") Create new Machine

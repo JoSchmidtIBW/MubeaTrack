@@ -38,29 +38,47 @@ block content
                 .overview-box__group
                         h1 Machinery
                         if(currentUser.role === 'admin')
-                          each machine in department.machinery
+                          table
+                            //tr
+                                td hallo
+                                td hhh
+                            each machine in department.machinery
                               //script.
                               //-console.log(department.machinery)
-                              .overview-box__detail
+                              tr
+                               td
+                                  //.overview-box__detail
                                   span.overview-box__label= machine.name
+                               td
                                   a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
+                               td
                                   span status:
                                   span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
                         else
-                          each machineID in currentUser.machinery
-                            - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
-                            if machine
-                                p Machine ID: #{machine._id}
-                                p Machine Name: #{machine.name}
+                            br
+                            //h1 rzxetcvuzbinomp,
+                            table
+                                each machineID in currentUser.machinery
+                                 - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
+                                 if machine
+                                    tr
+                                      td
+                                        //h1 xderftgzhujiko
+                                        //p Machine ID: #{machine._id}
+                                        //p Machine Name: #{machine.name}
 
-                                .overview-box__detail
-                                        span.overview-box__label= `currentUser ${machineID}`
-                                        a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
-                                        span status:
-                                        span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                        //if(department.name === 'Unterhalt')
-                            h1 Bin UnterhaltASMAAAAA
-                            a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
+                                        //.overview-box__detail
+                                        //span.overview-box__label= `currentUser ${machineID}`
+                                        span.overview-box__label= machine.name
+                                      td
+                                                a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
+                                      td
+                                                span status:
+                                      td
+                                                span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                                //if(department.name === 'Unterhalt')
+                                    h1 Bin UnterhaltASMAAAAA
+                                    a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`) ASMA Unterhalt
         .description-box
               h2.heading-secondary.ma-bt-lg= `About ${department.name} department`
               // mache neue linie bei einem punkt im text
@@ -77,7 +95,7 @@ block content
                      h2.heading-secondary.ma-bt-lg The department employees
 
               //.overview-box__group
-              each employee in department.employees
+              //each employee in department.employees
                   .overview-box__detail
                       img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
@@ -98,6 +116,34 @@ block content
                           span.overview-box__label_little=employee.professional
                           //span.overview-box__label= guide.role
                           span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+
+              table
+                  each employee in department.employees
+                      tr
+                          td
+                              img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
+
+                          //td(style="margin-left: 30px")
+                              //span.overview-box__text= employee.lastName
+                          td
+                            - if(employee.role === 'admin')
+                              span.overview-box__label_big Admin
+                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'Chef')
+                              span.overview-box__label_big Chef
+                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'Unterhalt')
+                              span.overview-box__label_little=employee.professional
+                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'Schichtleiter')
+                              span.overview-box__label Schichtleiter
+                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                            - if(employee.role === 'user')
+                              span.overview-box__label_little=employee.professional
+                              //span.overview-box__label= guide.role
+                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
+                          td(style="margin-left: 20px")
+                              span.overview-box__text= `${employee.firstName} ${employee.lastName}`
 
     section.section-description
         .description-box
