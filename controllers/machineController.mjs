@@ -195,13 +195,46 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
       );
       //---------------------------------------------
       const machine = await Machine.findById({ _id: machineID });
+      // const malReport = new MalReport({
+      //   user_Mal: currentUserID,
+      //   nameMachine_Mal: machine.name,
+      //   idMachine_Mal: machineID,
+      //   nameSector_Mal: componentInfo.sectorASMAName,
+      //   idSector_Mal: componentInfo.sectorASMAID,
+      //   nameComponent_de_Mal: componentInfo.componentNameDE,
+      //   nameComponent_en_Mal: componentInfo.componentNameEN,
+      //   idComponent_Mal: componentInfo.componentID,
+      //   nameComponentDetail_de_Mal: componentInfo.componentDetailNameDE,
+      //   nameComponentDetail_en_Mal: componentInfo.componentDetailNameEN,
+      //   idComponentDetail_Mal: componentInfo.componentDetailID,
+      //   statusRun_Mal: true,
+      //   statusOpenClose_Mal: 'open',
+      //   estimatedStatus: 0,
+      //   logFal_Repair: [
+      //     {
+      //       //user_Repair: currentUserID,
+      //       Status_Repair: 0,
+      //       messageProblem_de_Repair: '-',
+      //       messageProblem_en_Repair: '-',
+      //       messageMission_de_Repair: '-',
+      //       messageMission_en_Repair: '-',
+      //       estimatedTime_Repair: '-',
+      //       isElectroMechanical_Repair: 'elekt.-mech',
+      //     },
+      //   ],
+      // });
       const malReport = new MalReport({
         user_Mal: currentUserID,
         nameMachine_Mal: machine.name,
         idMachine_Mal: machineID,
         nameSector_Mal: '-',
-        nameComponent_Mal: '-',
-        nameComponentDetail_Mal: '-',
+        idSector_Mal: '-',
+        nameComponent_de_Mal: '-',
+        nameComponent_en_Mal: '-',
+        idComponent_Mal: '-',
+        nameComponentDetail_de_Mal: '-',
+        nameComponentDetail_en_Mal: '-',
+        idComponentDetail_Mal: '-',
         statusRun_Mal: false,
         statusOpenClose_Mal: 'open',
         estimatedStatus: 0,
