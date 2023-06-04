@@ -13,57 +13,72 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('/api/v1/me', 'My Settings', 'settings')
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
                         h5.admin-nav__heading= `${user.role}`
                         ul.side-nav
-                            +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                            +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                            +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                            +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma', true)
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma', true)
 
             .user-view__content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Machine reporter
 
-                    h2.heading-secondary.ma-bt-md1= `Edit machine: ${data.machine.name}`
-                    h3.heading-secondary.ma-bt-md1= `Sector: ${data.sectorASMA.name}`
-                    h3.heading-secondary.ma-bt-md= `Component: ${data.componentASMA.name_en}`
+                    h2.heading-secondary.ma-bt-md= `Bearbeitende Maschine: ${data.machine.name}: / Sektor: ${data.sectorASMA.name}`
+                    h3.heading-secondary.ma-bt-md= `Sektor: ${data.sectorASMA.name}`
+                    h3.heading-secondary.ma-bt-md= `Komponent_de: ${data.componentASMA.name_de}`
 
                     form.form.form-updateComponentASMA-data
                         //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
-                        //- input#machineID(type="text", value=data.machine._id)
-                        //- br
-                        //- input#sectorASMAID(type="text", value=data.sectorASMA._id)
-                        //- br
-                        //- input#componentASMAID(type="text", value=data.componentASMA._id)
-                        //- br
+                        input#machineID(type="hidden", value=data.machine._id)
+                        br
+                        input#sectorASMAID(type="hidden", value=data.sectorASMA._id)
+                        br
+                        input#componentASMAID(type="hidden", value=data.componentASMA._id)
+                        br
 
                         div(class="form__group ma-bt-md")
-                            label(class="form__label", for="componentASMAName_de") ComponentASMA name_de
+                            label(class="form__label", for="componentASMAName_de") Komponent name_de
                             input#componentASMAName_de(class="form__input", type="text", value=data.componentASMA.name_de)
                             br
-                            label(class="form__label", for="componentASMAName_en") ComponentASMA name_en
+                            label(class="form__label", for="componentASMAName_en") Komponent name_en
                             input#componentASMAName_en(class="form__input", type="text", value=data.componentASMA.name_en)
                         div(class="form__group")
-                            label(class="form__label", for="componentASMAdescription_de") Description_de
+                            label(class="form__label", for="componentASMAdescription_de") Beschreibung_de
                             input#componentASMAdescription_de(class="form__input" type="text" value=data.componentASMA.description_de)
                         div(class="form__group")
-                            label(class="form__label", for="componentASMAdescription_en") Description_en
+                            label(class="form__label", for="componentASMAdescription_en") Beschreibung_en
                             input#componentASMAdescription_en(class="form__input" type="text" value=data.componentASMA.description_en)
                         br
                         br
                         span
-                            button.btn.btn--small.btn--green.btn--saveUpdateComponentASMA Save
+                            button.btn.btn--small.btn--green.btn--saveUpdateComponentASMA Speichern
                             a.btn-space
-                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${data.sectorASMA._id}`) Cancel
-                            a.btn-space
-                            button.btn.btn--small.btn--red.btn--deleteComponentASMA Delete Component
+                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${data.sectorASMA._id}`) Abrechen
+                            //a.btn-space
+                            //button.btn.btn--small.btn--red.btn--deleteComponentASMA Delete Component
                         br
 
+                        div(class="form__group ma-bt-md")
+                            br
+                            br
+                            label(class="form__label", for="componentASMAName" style="color: red") Komponent Name_de
+                            h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten- Details verloren)
+                            br
+                            input(class="form__input", type="text", value=data.componentASMA.name_de, readonly, style="background-color: #EFDDDC")
+                            br
+                            input(class="form__input", type="text", value=data.componentASMA.name_en, readonly, style="background-color: #EFDDDC")
+                            br
+                            input(class="form__input", type="text", value=data.componentASMA.description_de, readonly, style="background-color: #EFDDDC")
+                            br
+                            input(class="form__input", type="text", value=data.componentASMA.description_en, readonly, style="background-color: #EFDDDC")
+                        //-h4(style="color:red") Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren
+                        button.btn.btn--small.btn--red.btn--deleteComponentASMA Delete
                         //- div(class="form__group ma-bt-md")
                         //-     label(class="form__label", for="componentASMAName" style="color: red") componentASMA name
                         //-     h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten- Details verloren)
@@ -85,15 +100,15 @@ block content
                     //-input#machineID(type="text", value=data.machine._id)
                     //-br
                     //-input#sectorASMAID(type="text", value=data.sectorASMA._id)
-                    br
-                    br
-                    div(class="form__group ma-bt-md")
-                        label(class="form__label", for="sectorASMAname") Sector
-                        input(class="form__input", type="text", value=data.sectorASMA.name, readonly, style="background-color: lightgrey;")
-                        br
-                        input(class="form__input", type="text", value=data.sectorASMA.description_de, readonly, style="background-color: lightgrey;")
-                        br
-                        input(class="form__input", type="text", value=data.sectorASMA.description_en, readonly, style="background-color: lightgrey;")
-                    h4(style="color:red") Achtung, wird der Sektor gelöscht, dann auch alle Komponenten und Komponenten- Details vom Sektor verloren
-                    button.btn.btn--small.btn--red.btn--deleteSectorASMA Delete Sektor
-                    //- button.btn.btn--small.btn--red.btn--deleteSectorASMA Delete
+                    //br
+                    //br
+                    //div(class="form__group ma-bt-md")
+                    //    label(class="form__label", for="sectorASMAname") Sektor
+                    //    input(class="form__input", type="text", value=data.sectorASMA.name, readonly, style="background-color: #EFDDDC;")
+                    //    br
+                    //    input(class="form__input", type="text", value=data.sectorASMA.description_de, readonly, style="background-color: #EFDDDC;")
+                    //    br
+                    //    input(class="form__input", type="text", value=data.sectorASMA.description_en, readonly, style="background-color: #EFDDDC;")
+                    //h4(style="color:red") Achtung, wird der Sektor gelöscht, dann auch alle Komponenten und Komponenten- Details vom Sektor verloren
+                    //br
+                    //button.btn.btn--small.btn--red.btn--deleteComponentASMA Lösche Komponente

@@ -100,8 +100,13 @@ export const showOpenMalReports = async () => {
             { data: 'nameComponentDetail_de_Mal' },
             {
               data: 'estimatedStatus',
-              render: function (data) {
-                return data + '%';
+
+              render: function (data, type, row) {
+                if (type === 'display') {
+                  var status = data + '%';
+                  return '<span class="estimatedStatus">' + status + '</span>';
+                }
+                return data;
               },
             },
             //{ data: null },
@@ -274,9 +279,21 @@ export const showOpenMalReports = async () => {
             { data: 'nameComponentDetail_en_Mal' },
             {
               data: 'estimatedStatus',
-              render: function (data) {
-                return data + '%';
+
+              render: function (data, type, row) {
+                if (type === 'display') {
+                  var status = data + '%';
+                  return '<span class="estimatedStatus">' + status + '</span>';
+                }
+                return data;
               },
+
+              // render: function (data) {
+              //   return data + '%';
+              //   //return '<span class="green">' + status + '%''</span>';
+              //   //var status = data + '%';
+              //   //return '<span class="estimatedStatus">' + status + '</span>';
+              // },
             },
             //{ data: null },
             {

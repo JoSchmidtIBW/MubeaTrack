@@ -866,14 +866,25 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
   // Machine.find({_id: })
   // console.log()
 
-  res.status(200).render('manageUserMachine', {
-    title: 'Manage user/machine',
-    data: {
-      departments: departments,
-      machinery: machinery,
-      users: users,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('manageUserMachine_de', {
+      title: 'Verwaltung Benutzer/Maschine',
+      data: {
+        departments: departments,
+        machinery: machinery,
+        users: users,
+      },
+    });
+  } else {
+    res.status(200).render('manageUserMachine', {
+      title: 'Manage user/machine',
+      data: {
+        departments: departments,
+        machinery: machinery,
+        users: users,
+      },
+    });
+  }
 });
 
 export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
@@ -890,14 +901,25 @@ export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
   );
   const machinery = await Machine.find();
 
-  res.status(200).render('updateUserMachine', {
-    title: 'Update user/machine',
-    data: {
-      user: user,
-      departments: departments,
-      machine: machinery,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('updateUserMachine_de', {
+      title: 'Aktualisiere Benutzer/Maschine',
+      data: {
+        user: user,
+        departments: departments,
+        machine: machinery,
+      },
+    });
+  } else {
+    res.status(200).render('updateUserMachine', {
+      title: 'Update user/machine',
+      data: {
+        user: user,
+        departments: departments,
+        machine: machinery,
+      },
+    });
+  }
 });
 
 export const getCreateUserForm = catchAsync(async (req, res, next) => {

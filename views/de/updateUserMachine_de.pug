@@ -12,41 +12,41 @@ block content
         .user-viewAccount
             nav.user-view__menu
 
-              ul.side-nav
-                    +navItem('#', 'My Settings', 'settings', true)
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                ul.side-nav
+                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
 
-              - if(user.role === 'admin' || user.role === 'Chef')
-                  .admin-nav
-                      h5.admin-nav__heading= `${user.role}`
-                      ul.side-nav
-                          +navItem('/api/v1/manage_users', 'Manage users', 'users')
-                          +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine')
-                          +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
-                          +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+                - if(user.role === 'admin' || user.role === 'Chef')
+                    .admin-nav
+                        h5.admin-nav__heading= `${user.role}`
+                        ul.side-nav
+                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m', true)
+                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
                     br
                     br
-                    h2.heading-secondary.ma-bt-md= `Edit machine for: ${data.user.firstName} ${data.user.lastName}`
+                    h2.heading-secondary.ma-bt-md= `Bearbeiten Maschine für: ${data.user.firstName} ${data.user.lastName}`
                     form.form.form-userMachine-data
                         //todo hidden userID und nicht löschen
                         input#userID(type="hidden", value=data.user._id)
                         div(class="form__group")
-                            label(class="form__label", for="firstName") First name
+                            label(class="form__label", for="firstName") Vorname
                             input#firstName(class="form__input", type="text", readonly= true, value=data.user.firstName, style="background-color: lightgray")
                         div(class="form__group")
-                            label(class="form__label", for="lastName") Last name
+                            label(class="form__label", for="lastName") Nachname
                             input#lastName(class="form__input", type="text", readonly= true, value=data.user.lastName, style="background-color: lightgray")
                         div(class="form__group")
-                            label(class="form__label", for="userDepartments") User- Departments
+                            label(class="form__label", for="userDepartments") Abteilung Mitarbeiter
                             //-input#userDepartments(class="form__input", type="text",readonly= true, value=data.user.department, style="background-color: lightgray")
                             input#department(class="form__input", type="text", value=data.user.department.join(', '), readonly, style="background-color: lightgrey;")
 
                         div(class="form__group")
                             br
-                            h2.heading-secondary Departments / machinery
+                            h2.heading-secondary Abteilung / Maschinen
                             //- label(class="form__label", for="departments") Departments / machinery
                             //-input(class="form__input", type="text", value=data.user.department, readonly, style="background-color: lightcoral;")
                             script.
@@ -78,9 +78,9 @@ block content
                             if hasSelectedMachine
                                 div(class="form__group")
                                     br
-                                    button.btn.btn--green Save
+                                    button.btn.btn--green speichern
                                     a.btn-space
-                                    a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) Cancel
+                                    a.btn.btn--small.btn--gray(href=`/api/v1/manage_users`) zurück
 
                             script.
                               const machineryInput = document.querySelector('#machineryInDepartment');

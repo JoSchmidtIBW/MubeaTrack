@@ -3,6 +3,7 @@ extends base
 block content
     main.main
         h1 bin ASMAUnterhalt.pug
+        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Retour
         h1
         table
           each machine, index in data.machinery

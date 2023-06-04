@@ -1,0 +1,177 @@
+extends base
+
+block content
+    main.main
+        //-h1= user.department
+        div(class="user-view__content")
+            div(class="user-view__form-container")
+              h2.heading-secondary.ma-bt-md= `Edit machine / ${data.user.firstName} ${data.user.lastName}`
+              form.form.form-userMachine-data
+                //todo hidden userID und nicht löschen
+                input#userID(type="text", value=data.user._id)
+                div(class="form__group")
+                    label(class="form__label", for="firstName") FirstName
+                    input#firstName(class="form__input", type="text", readonly= true, value=data.user.firstName, style="background-color: lightgray")
+                div(class="form__group")
+                    label(class="form__label", for="userDepartments") User- Departments
+                    input#userDepartments(class="form__input", type="text",readonly= true, value=data.user.department, style="background-color: lightgray")
+
+                div(class="form__group")
+                    label(class="form__label", for="departments") Departments / machinery
+                    //-input(class="form__input", type="text", value=data.user.department, readonly, style="background-color: lightcoral;")
+                    script.
+                      console.log("test2222")
+                    //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
+
+                - let hasSelectedMachine = false
+
+                each department in data.user.department
+                  - var isChecked = data.user.department && data.user.department.includes(department)
+                  - const departmentData = data.departments.find(dep => dep.name === department)
+
+                  if departmentData
+                      label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
+                          input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department, checked=isChecked, disabled=true, style="width: 20px; height: 20px;")
+                          span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department}
+
+                      each machine in departmentData.machinery
+                        - var checkedMachine = data.user.machinery && data.user.machinery.includes(machine._id)
+
+                        label(class="form__checkbox-label" style="display: block; margin-bottom: 10px; margin-left: 20px;")
+                            input#machineryInDepartment(class="form__checkbox-box", type="checkbox", name="machineryInDepartment", value=machine._id, checked=checkedMachine, disabled=false, style="width: 20px; height: 20px;")
+                            span(class="form__checkbox-name", style="font-size: 1.5rem;")
+                                | #{machine.name}
+
+                        - if (checkedMachine)
+                        - hasSelectedMachine = true
+
+
+
+                if hasSelectedMachine
+                  button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Save
+                a.btn.btn--small.btn--gray(href="/api/v1/manage_user-machine") Cancel
+
+                script.
+                  const machineryInput = document.querySelector('#machineryInDepartment');
+                  if (machineryInput) {
+                    // Der Code wird nur ausgeführt, wenn das Element existiert
+                    const machineryInputs = document.querySelectorAll('input[name="machineryInDepartment"]');
+                    const selectedMachinery = [];
+
+                    machineryInputs.forEach(input => {
+                      const machineId = input.value;
+                      const isChecked = input.checked;
+
+                      input.addEventListener('change', (event) => {
+                        const isChecked = event.target.checked;
+
+                        if (isChecked) {
+                          selectedMachinery.push(machineId);
+                        } else {
+                          const index = selectedMachinery.indexOf(machineId);
+                          if (index > -1) {
+                            selectedMachinery.splice(index, 1);
+                          }
+                        }
+
+                        console.log(selectedMachinery);
+                        if (machineryInput) {
+                          machineryInput.value = selectedMachinery;
+                        }
+                      });
+
+                      if (isChecked) {
+                        selectedMachinery.push(machineId);
+                      }
+                    });
+
+                    console.log(selectedMachinery);
+                    if (machineryInput) {
+                      machineryInput.value = selectedMachinery;
+                    }
+                  } else {
+                    console.log("Element with ID 'machineryInDepartment' not found.");
+                  }
+                  // const machineryInputs = document.querySelectorAll('input[name="machineryInDepartment"]');
+                  // const selectedMachinery = [];
+                  //
+                  // machineryInputs.forEach(input => {
+                  //   const machineId = input.value;
+                  //   const isChecked = input.checked;
+                  //
+                  //   input.addEventListener('change', (event) => {
+                  //     const isChecked = event.target.checked;
+                  //
+                  //     if (isChecked) {
+                  //       selectedMachinery.push(machineId);
+                  //     } else {
+                  //       const index = selectedMachinery.indexOf(machineId);
+                  //       if (index > -1) {
+                  //         selectedMachinery.splice(index, 1);
+                  //       }
+                  //     }
+                  //
+                  //     console.log(selectedMachinery);
+                  //     document.querySelector('#machineryInDepartment').value = selectedMachinery;
+                  //   });
+                  //
+                  //   if (isChecked) {
+                  //     selectedMachinery.push(machineId);
+                  //   }
+                  // });
+                  //
+                  // console.log(selectedMachinery);
+                  // document.querySelector('#machineryInDepartment').value = selectedMachinery;
+
+
+
+                      // const machineryInputs = document.querySelectorAll('input[name="machineryInDepartment"]');
+                      // //-console.log("machineryInputs: "+machineryInputs)
+                      // console.log("machineryInputs length: " + machineryInputs.length);
+                      // const selectedMachinery = [];
+                      // machineryInputs.forEach(input => {
+                      //   input.addEventListener('change', (event) => {
+                      //     const machineId = event.target.value;
+                      //     if (event.target.checked) {
+                      //       selectedMachinery.push(machineId);
+                      //     } else {
+                      //       const index = selectedMachinery.indexOf(machineId);
+                      //       if (index > -1) {
+                      //         selectedMachinery.splice(index, 1);
+                      //       }
+                      //     }
+                      //     console.log(selectedMachinery);
+                      //     document.querySelector('#machineryInDepartment').value = selectedMachinery;
+                      //   });
+                      // });
+
+                      // machineryInputs.forEach(input => {
+                      //   const machineId = input.value;
+                      //   const isChecked = input.checked;
+                      //
+                      //   if (isChecked && !selectedMachinery.includes(machineId)) {
+                      //     selectedMachinery.push(machineId);
+                      //   } else if (!isChecked && selectedMachinery.includes(machineId)) {
+                      //     const index = selectedMachinery.indexOf(machineId);
+                      //     selectedMachinery.splice(index, 1);
+                      //   }
+                      // });
+                      // console.log(selectedMachinery);
+                      //
+                      // function toggleMachinery (event) {
+                      //   const machineryId = event.target.value;
+                      //
+                      //   if (event.target.checked) {
+                      //     selectedMachinery.push(machineryId);
+                      //   } else {
+                      //     const index = selectedMachinery.indexOf(machineryId);
+                      //     if (index > -1) {
+                      //       selectedMachinery.splice(index, 1);
+                      //     }
+                      //   }
+                      // }
+                      // machineryInputs.forEach((input) => {
+                      //   input.addEventListener('click', toggleMachinery);
+                      //   console.log(selectedMachinery);
+                      // });
+

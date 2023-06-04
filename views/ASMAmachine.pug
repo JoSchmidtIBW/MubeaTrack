@@ -1,4 +1,4 @@
-extend base
+extends base
 
 mixin navItem(link, text, icon, active)
     li(class=`${active ? 'side-nav--active' : ''}`)
@@ -13,17 +13,10 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('#', `${data.machine.name}`, 'machine', true)
-                    +navItem('#', 'Sonstige', 'settings')
-                .admin-navs
-                    h5.admin-nav__heading XXXXX
-                    ul.side-nav
-                        +navItem('#', 'Störmeldung', 'settings', true)
-                        +navItem('#', 'Verbrauchsmaterial', 'user-error-report')
-                        +navItem('#', 'Prüfmittel', 'user-error-report')
-                        +navItem('#', 'Planung', 'user-error-report')
-
-
+                    +navItem('#', 'Fault message', 'settings', true)
+                    +navItem('#', 'Consumable material', 'user-error-report')
+                    +navItem('#', 'Testing equipment', 'user-error-report')
+                    +navItem('#', 'Planning', 'user-error-report')
 
             .user-view__content
                 .user-view__ASMAform-container
@@ -31,63 +24,65 @@ block content
                         //-form.form.form-ASMAbtn-data
                         //-main.mainMine
                         br
-                        h1 MaschinenID:
-                        h1= data.machine._id
+                        //-h1 MaschinenID:
+                        //-h1= data.machine._id
                         h1= data.machine.name
-                        br
-                        button.btn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: red')
-                            data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
-                        br
+                            span &nbsp  &nbsp
+                            a.btn-status(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: orange' : 'background-color: red')
+                                data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage läuft !!!
+
                         table
                           each sector in data.machine.sectorASMA
                               tr
                                 td(colspan="2")
-                                      h1(style="color:red")= sector.name
-                                      h2= sector.description_de
                                       br
+                                      h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
+                                      br
+                                      h1(style="color:red")= "Sektor:" + " " + sector.name + " " + sector.description_en
+
                                 each component in sector.components
                                     tr
                                         td
-                                            h2= component.name_de
-                                            h4= component.description_de
-                                            br
+                                            h2= component.name_en
+                                            h4= component.description_en
                                         td
                                             table
                                               each detail, index in component.componentDetails
-                                                  if index % 4 === 0
+                                                  if index % 5 === 0
                                                       tr
-                                                  td(style="border: 1px solid pink; padding: 10px; margin: 5px;")
-                                                      button.btn(
+                                                  td(style="border: 1px solid pink; padding: 5px; margin: 5px;")
+                                                      button.btn1(
                                                           class=`stoerBtn stoerBtn-${index}`,
                                                           id=`stoerBtn-${index}`,
-                                                          style=(detail.status ? 'background-color: green' : 'background-color: red'),
-                                                          data-status=(detail.status ? 'true' : 'false'),data-detail-id=detail._id
-                                                      )= detail.name_de
+                                                          style=(detail.status ? 'background-color: lightgreen' : 'background-color: red'),
+                                                          data-status=(detail.status ? 'true' : 'false'), data-detail-id=detail._id,
+                                                      )= detail.name_en
                                                       //-`${detail.name_de},${detail._id}`
-                                                  br
+                                            br
+
                     form.form.form-ASMAbtn-data
                         //todo diese felder verstecken, nicht löschen! es braucht die ID's
                         br
-                        label machineID
-                        input#machineID(type="text", name="machineID", value=data.machine._id, style="width: 300px;")
+                        //-label machineID
+                        input#machineID(type="hidden", name="machineID", value=data.machine._id,readonly=true, style="width: 300px;")
                         br
-                        label CurrentUserID
-                        input#currentUserID(type="text",  name="currentUserID", value=data.currentUser._id, style="width: 300px;")
+                        //-label CurrentUserID
+                        input#currentUserID(type="hidden",  name="currentUserID", value=data.currentUser._id,readonly=true, style="width: 300px;")
                         br
-                        label departmentName
-                        input(type="text", id="departmentName", name="departmentName",value=data.departmentName, style="width: 600px;")
+                        //-label departmentName
+                        input(type="hidden", id="departmentName", name="departmentName",value=data.departmentName, readonly=true, style="width: 600px;")
                         br
-                        label machineName
-                        input(type="text", id="machineName", name="machineName",value=data.machineName, style="width: 600px;")
+                        //-label machineName
+                        input(type="hidden", id="machineName", name="machineName",value=data.machineName, readonly=true, style="width: 600px;")
                         br
-                        label ASMABTNid's
-                        input(type="text", id="selectedIdsInput", name="selectedIds",  style="width: 600px;")
+                        //-label ASMABTNid's
+                        input(type="hidden", id="selectedIdsInput", name="selectedIds", readonly=true  style="width: 600px;")
                         br
-                        label AMSA Run-ID
-                        input(type="text", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
+                        //-label AMSA Run-ID
+                        input(type="hidden", id="selectedRunIdInput", name="selectedRunId",readonly=true, style="width: 600px;")
                         br
                         br
-                        button.btn.btn--small.btn--gray(id="abszBtn") Störung-Meldung absetzen
+                        button.btn.btn--small.btn--green(id="abszBtn") send fault message
                         br
                         br
                         //-a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machineName}`) Return
