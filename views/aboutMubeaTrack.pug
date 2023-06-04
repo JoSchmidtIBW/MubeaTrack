@@ -4,10 +4,10 @@ block content
   main.main
     h1 About MubeaTrack
     br
-    h1(style="color:red;") pug muss noch rein in beschreibung!!!
-    br
     h2
       | MubeaTrack is a web application developed as a client-server program using a MongoDB database.
+      br
+      | It uses the Pug template engine to manage and interact with data.
       br
       | It serves as a basic framework (for a first web application) for managing users, machines and already existing departments.
       br
@@ -23,13 +23,14 @@ block content
       | → Implemented ASMA is
       br
       section.section-cta
-        .cta
-          .cta__img
+          //.cta
+          //.cta__img
             //.cta__img--logo
-          img(src='/img/logo-color.png', alt='MubeaTrack logo')
-          img.cta__img.cta__img--2(src=`/img/aboutMubeaTrack/mongoDB.jpg`, alt='Department picture')
+
+          img.imgAboutMubeaTrack1(src=`/img/aboutMubeaTrack/mongoDB.jpg`, alt='Department picture')
           //.cta__img.cta__img--2
           //.cta__img.cta__img--1
-          img.cta__img.cta__img--1(src=`/img/aboutMubeaTrack/express-js.jpg`, alt='Department picture')
-          img.cta__img.cta__img--2(src=`/img/aboutMubeaTrack/node-js.jpg`, alt='Department picture')
-          img.cta__img.cta__img--2(src=`/img/aboutMubeaTrack/pug.jpg`, alt='Department picture')
+          img.imgAboutMubeaTrack2(src=`/img/aboutMubeaTrack/express-js.jpg`, alt='Department picture')
+          img.imgAboutMubeaTrack3(src=`/img/aboutMubeaTrack/node-js.jpg`, alt='Department picture')
+          img.imgAboutMubeaTrack4(src=`/img/aboutMubeaTrack/pug.jpg`, alt='Department picture')
+          img.imgAboutMubeaTrack(src='/img/logo-color.png', alt='MubeaTrack logo')

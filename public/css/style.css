@@ -1917,7 +1917,10 @@ input#employeeNumber.form__input[type=number] {
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
 
-
+#manageASMAMachineTable{
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
 
 
 .mainASMAmachine {
@@ -2065,6 +2068,17 @@ input#employeeNumber.form__input[type=number] {
 }
 
 
+/*.cta__img1 {
+    height: 28rem;
+    width: 28rem;
+    left: 10;
+    margin-top: 70px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+}*/
+
+
 .cta__img1 {
     height: 28rem;
     width: 28rem;
@@ -2075,7 +2089,107 @@ input#employeeNumber.form__input[type=number] {
     box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
 }
 
+/*
+
+.cta__img1 {
+    height: 28rem;
+    width: 28rem;
+    position: relative;
+    z-index: 1;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+}
+*/
+/*
+.cta__img2 {
+    height: 28rem;
+    width: 28rem;
+    position: relative;
+    z-index: 2;
+    top: 0px;
+    right: 60px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+}
+*/
+.cta__img2 {
+    height: 28rem;
+    width: 28rem;
+    position: relative;
+    z-index: 2;
+    top: 0px;
+    right: 60px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    /*object-fit: cover;*/
+    object-fit: contain;
+}
+
+.imgAboutMubeaTrack1 {
+    height: 24rem;
+    width: 24rem;
+    left: 10;
+    margin-top: 70px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    object-fit: contain;
+}
+
+.imgAboutMubeaTrack2 {
+    height: 24rem;
+    width: 24rem;
+    position: relative;
+    z-index: 2;
+    top: 0px;
+    right: 60px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    object-fit: contain;
+}
+
+
+.imgAboutMubeaTrack3 {
+    height: 24rem;
+    width: 24rem;
+    position: relative;
+    z-index: 2;
+    top: 0px;
+    right: 60px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    object-fit: contain;
+}
+
+.imgAboutMubeaTrack4 {
+    height: 24rem;
+    width: 24rem;
+    position: relative;
+    z-index: 2;
+    top: 0px;
+    right: 60px;
+    border-radius: 50%;
+    -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
+    object-fit: contain;
+}
+
+.imgAboutMubeaTrack {
+    margin-bottom: 60px;
+    margin-left: 100px;
+}
+
+img.imgAboutMubeaTrack {
+    height: 120px; /* Passen Sie den Wert nach Bedarf an */
+    width: 175px; /* Passen Sie den Wert nach Bedarf an */
+}
+
 .img1 {
     margin-top: 120px;
     margin-left: 100px;
 }
+

@@ -1,9 +1,33 @@
 extends base
 
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
 block content
-    main.main
-      div(class="user-view__content")
-        div(class="user-view__form-container")
+
+  main.main
+    .user-view
+      nav.user-view__menu
+
+        ul.side-nav
+            +navItem('/api/v1/me', 'My Settings', 'settings', true)
+            +navItem('#', 'My ASMA-error reports', 'user-error-report')
+
+        - if(user.role === 'admin' || user.role === 'Chef')
+            .admin-nav
+                h5.admin-nav__heading= `${user.role}`
+                ul.side-nav
+                  +navItem('/api/v1/manage_users', 'Manage users', 'users')
+                  +navItem('/api/v1/manage_machinery', 'Manage machinery', 'machine', true)
+                  +navItem('/api/v1/manage_user-machine', 'Manage user/machine', 'user-m')
+                  +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma')
+
+      .user-view__content
+        .user-view__form-container
           h2.heading-secondary.ma-bt-md= `Edit machine ${data.machineToUpdate.name}`
           form.form.form-machine-data
             input#machineId(type="hidden", value=data.machineToUpdate._id)
@@ -46,12 +70,13 @@ block content
             div(class="form__group")
               label(class="form__label", for="drawingNumber") Drawing number
               input#drawingNumber(class="form__input", type="text", value=data.machineToUpdate.drawingNumber)
-            div(class="form__group")
+            //-div(class="form__group")
               label(class="form__label", for="XXXXX") departmentXXXX
               input#XXXXX(class="form__input", type="text", value=data.machineToUpdate.department)
             div(class="form__group")
               label(class="form__label", for="department") Department
               select#department(class="form__input")
+                option(value=data.machineToUpdate.department, selected, style="background-color: #98B7E1; color: white;") #{data.machineToUpdate.department}
                 option(value="Schweisserei", selected=data.machineToUpdate.department.includes("Schweisserei")) Schweisserei
                 option(value="Zieherei", selected=data.machineToUpdate.department.includes("Zieherei")) Zieherei
                 option(value="Anarbeit", selected=data.machineToUpdate.department.includes("Anarbeit")) Anarbeit
@@ -62,5 +87,8 @@ block content
                 option(value="Geschäfts-Führung", selected=data.machineToUpdate.department.includes("Geschäfts-Führung")) Geschäfts-Führung
 
             button.btn.btn--small.btn--green.btn--saveUpdateMachine Save
+            a.btn-space
             button.btn.btn--small.btn--red.btn--deleteUpdateMachine Delete
+            a.btn-space
             a.btn.btn--small.btn--gray(href=`/api/v1/manage_machinery`) Cancel
+
