@@ -52,8 +52,10 @@ block content
                                td
                                   a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
                                td
-                                  span status:
-                                  span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                                  //span status:
+                                  //span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
+                                  .status Status
+                                  .punkt(style=(machine.statusRun ? 'background-color: green' : 'background-color: red'))
                         else
                             br
                             //h1 rzxetcvuzbinomp,
@@ -142,7 +144,7 @@ block content
                               span.overview-box__label_little=employee.professional
                               //span.overview-box__label= guide.role
                               //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                          td(style="margin-left: 20px")
+                          td(style="margin-left: 20px; font-size: 14px;")
                               span.overview-box__text= `${employee.firstName} ${employee.lastName}`
 
     section.section-description

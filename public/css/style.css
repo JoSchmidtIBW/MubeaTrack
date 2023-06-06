@@ -1922,6 +1922,11 @@ input#employeeNumber.form__input[type=number] {
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
 
+#myMalReportsTable{
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
+
 
 .mainASMAmachine {
     background-color: #f7f7f7;
@@ -2128,8 +2133,8 @@ input#employeeNumber.form__input[type=number] {
 }
 
 .imgAboutMubeaTrack1 {
-    height: 24rem;
-    width: 24rem;
+    height: 21rem;
+    width: 21rem;
     left: 10;
     margin-top: 70px;
     border-radius: 50%;
@@ -2139,8 +2144,8 @@ input#employeeNumber.form__input[type=number] {
 }
 
 .imgAboutMubeaTrack2 {
-    height: 24rem;
-    width: 24rem;
+    height: 21rem;
+    width: 21rem;
     position: relative;
     z-index: 2;
     top: 0px;
@@ -2153,12 +2158,12 @@ input#employeeNumber.form__input[type=number] {
 
 
 .imgAboutMubeaTrack3 {
-    height: 24rem;
-    width: 24rem;
+    height: 21rem;
+    width: 21rem;
     position: relative;
     z-index: 2;
     top: 0px;
-    right: 60px;
+    right: 80px;
     border-radius: 50%;
     -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
     box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
@@ -2166,12 +2171,12 @@ input#employeeNumber.form__input[type=number] {
 }
 
 .imgAboutMubeaTrack4 {
-    height: 24rem;
-    width: 24rem;
+    height: 21rem;
+    width: 21rem;
     position: relative;
     z-index: 2;
+    right: 100px;
     top: 0px;
-    right: 60px;
     border-radius: 50%;
     -webkit-box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
     box-shadow: 1rem 0.5rem 3rem rgba(0, 0, 0, 0.15);
@@ -2193,3 +2198,21 @@ img.imgAboutMubeaTrack {
     margin-left: 100px;
 }
 
+.status{
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.punkt {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}

@@ -5,7 +5,7 @@ block content
         h1 bin ASMAUnterhalt.pug
         a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Retour
         h1
-        table
+        //table
           each machine, index in data.machinery
               if index % 1 === 0
                   tr
@@ -19,3 +19,34 @@ block content
                   td
                       span= machine.name
                       span(style=(machine.statusRun ? "color:green" : "color:red"))= machine.statusRun
+        br
+        table
+          each zone in data.machineryZones
+              tr
+                  td(colspan=(data.machinery.length + 1))
+                      h1(style="color:red")= zone
+              tr
+                  td
+                    each machine in data.machinery
+                        if machine.zone.includes(zone)
+                            span= machine.name
+                            span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                            a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`)= machine.name
+
+        br
+        //table
+          each zone in data.machineryZones
+              tr
+                  td(colspan="2")
+                      h1(style="color:red")= zone
+              each machine in data.machinery
+                  if machine.zone.includes(zone)
+                      tr
+                          td
+                              span= machine.name
+                              span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                              a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`)= machine.name
+                  else
+                      tr
+                          td
+                              //span= "Hallo, es gibt keine Maschine in der Zone " + zone

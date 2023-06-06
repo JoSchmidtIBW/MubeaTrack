@@ -41,6 +41,7 @@ import {
   updateLogFal,
   closeMalReport,
   createLogFal,
+  showMyMalReports,
 } from './malReport';
 
 import { updateData } from './updateSettings';
@@ -112,6 +113,8 @@ const updateLogFalForm = document.querySelector('.form-updateLogFal-data');
 const updateMalReportForm = document.querySelector(
   '.form-updateMalReport-data'
 );
+
+const myMalReportsTable = document.querySelector('.myMalReportsTable');
 
 //const createUserBtn = document.querySelector('.createUserBtn')
 
@@ -1012,6 +1015,11 @@ if (manageASMAMachineTable) {
 if (manageASMAUnterhaltMachineOpenMalReportsTable) {
   console.log('bin if manageASMAUnterhaltMachineOpenMalReportsTable');
   showOpenMalReports();
+}
+
+if (myMalReportsTable) {
+  console.log('bin if myMalReportsTable');
+  showMyMalReports();
 }
 
 if (updateLogFalForm) {

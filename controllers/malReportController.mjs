@@ -106,6 +106,40 @@ export const resizeMachineImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+export const getMyMalReports = catchAsync(async (req, res, next) => {
+  console.log('Bin getMyMalReports');
+  const userID = req.params.userID;
+  console.log(userID);
+
+  const currentUser = await User.findOne({ _id: userID });
+
+  const myMalReports = await MalReport.find({
+    user_Mal: userID,
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    }); //.select('createAt_Mal');
+
+  //console.log(myMalReports);
+  console.log(currentUser);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      myMalReports: myMalReports,
+      currentUser: currentUser,
+    },
+  });
+});
+
 export const getMalReportsMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMalReportsMachine');
 
