@@ -13,8 +13,8 @@ block content
             nav.user-view__menu
 
                 ul.side-nav
-                    +navItem('#', 'My Settings', 'settings', true)
-                    +navItem('#', 'My ASMA-error reports', 'user-error-report')
+                    +navItem('/api/v1/me', 'My Settings', 'settings', true)
+                    +navItem('/api/v1/myMalReports', 'My ASMA-error reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav

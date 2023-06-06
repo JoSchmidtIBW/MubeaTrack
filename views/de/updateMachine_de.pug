@@ -13,68 +13,68 @@ block content
         .user-view
             nav.user-view__menu
 
-                ul.side-nav
-                    +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
-                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
+                  ul.side-nav
+                        +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
+                        +navItem('/api/v1/myMalReports', 'Meine ASMA-Error Reports', 'user-error-report')
 
-                - if(user.role === 'admin' || user.role === 'Chef')
-                    .admin-nav
-                        h5.admin-nav__heading= `${user.role}`
-                        ul.side-nav
-                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
-                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine', true)
-                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
-                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
+                  - if(user.role === 'admin' || user.role === 'Chef')
+                      .admin-nav
+                          h5.admin-nav__heading= `${user.role}`
+                          ul.side-nav
+                              +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                              +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine', true)
+                              +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m')
+                              +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md= `Edit machine ${data.machineToUpdate.name}`
+                    h2.heading-secondary.ma-bt-md= `bearbeiten Maschine ${data.machineToUpdate.name}`
                     form.form.form-machine-data
                         input#machineId(type="hidden", value=data.machineToUpdate._id)
                         div(class="form__group")
                             label(class="form__label", for="name") Name
                             input#name(class="form__input", type="text", value=data.machineToUpdate.name,)
                         div(class="form__group")
-                            label(class="form__label", for="description") Description
+                            label(class="form__label", for="description") Beschreibung
                             input#description(class="form__input", type="text", value=data.machineToUpdate.description)
                         div(class="form__group")
-                            label(class="form__label", for="type") Type
+                            label(class="form__label", for="type") Typ
                             input#type(class="form__input", type="text", value=data.machineToUpdate.type)
                         div(class="form__group")
-                            label(class="form__label", for="constructionYear") Construction year
+                            label(class="form__label", for="constructionYear") Konstruktionsjahr
                             input#constructionYear(class="form__input", type="text", value=data.machineToUpdate.constructionYear)
                         div(class="form__group")
-                            label(class="form__label", for="companyMachine") Company machine
+                            label(class="form__label", for="companyMachine") Hersteller
                             input#companyMachine(class="form__input", type="text", value=data.machineToUpdate.companyMachine)
                         div(class="form__group")
-                            label(class="form__label", for="voltage") Voltage
+                            label(class="form__label", for="voltage") Spannung
                             input#voltage(class="form__input", type="text", value=data.machineToUpdate.voltage)
                         div(class="form__group")
-                            label(class="form__label", for="controlVoltage") Control voltage
+                            label(class="form__label", for="controlVoltage") Kontrollspannung
                             input#controlVoltage(class="form__input", type="text", value=data.machineToUpdate.controlVoltage)
                         div(class="form__group")
-                            label(class="form__label", for="ratedCurrent") Rated current
+                            label(class="form__label", for="ratedCurrent") Drehzahl
                             input#ratedCurrent(class="form__input", type="text", value=data.machineToUpdate.ratedCurrent)
                         div(class="form__group")
-                            label(class="form__label", for="electricalFuse") Electrical fuse
+                            label(class="form__label", for="electricalFuse") Elektrische Absicherung
                             input#electricalFuse(class="form__input", type="text", value=data.machineToUpdate.electricalFuse)
                         div(class="form__group")
-                            label(class="form__label", for="compressedAir") Compressed air
+                            label(class="form__label", for="compressedAir") Druckluft
                             input#compressedAir(class="form__input", type="text", value=data.machineToUpdate.compressedAir)
                         div(class="form__group")
-                            label(class="form__label", for="weightMass") Weight mass
+                            label(class="form__label", for="weightMass") Gewichtsmass
                             input#weightMass(class="form__input", type="text", value=data.machineToUpdate.weightMass)
                         div(class="form__group")
-                            label(class="form__label", for="dimensions") Dimensions
+                            label(class="form__label", for="dimensions") Dimension
                             input#dimensions(class="form__input", type="text", value=data.machineToUpdate.dimensions)
                         div(class="form__group")
-                            label(class="form__label", for="drawingNumber") Drawing number
+                            label(class="form__label", for="drawingNumber") Zeichnungs-Nummer
                             input#drawingNumber(class="form__input", type="text", value=data.machineToUpdate.drawingNumber)
                         //-div(class="form__group")
-                          label(class="form__label", for="XXXXX") departmentXXXX
-                          input#XXXXX(class="form__input", type="text", value=data.machineToUpdate.department)
+                            label(class="form__label", for="XXXXX") departmentXXXX
+                            input#XXXXX(class="form__input", type="text", value=data.machineToUpdate.department)
                         div(class="form__group")
-                            label(class="form__label", for="department") Department
+                            label(class="form__label", for="department") Abteilung
                             select#department(class="form__input")
                                 option(value=data.machineToUpdate.department, selected, style="background-color: #98B7E1; color: white;") #{data.machineToUpdate.department}
                                 option(value="Schweisserei", selected=data.machineToUpdate.department.includes("Schweisserei")) Schweisserei
@@ -86,8 +86,8 @@ block content
                                 option(value="Konstruktion", selected=data.machineToUpdate.department.includes("Konstruktion")) Konstruktion
                                 option(value="Geschäfts-Führung", selected=data.machineToUpdate.department.includes("Geschäfts-Führung")) Geschäfts-Führung
 
-                        button.btn.btn--small.btn--green.btn--saveUpdateMachine Save
+                        button.btn.btn--small.btn--green.btn--saveUpdateMachine Speichern
                         a.btn-space
-                        button.btn.btn--small.btn--red.btn--deleteUpdateMachine Delete
+                        button.btn.btn--small.btn--red.btn--deleteUpdateMachine Löschen
                         a.btn-space
-                        a.btn.btn--small.btn--gray(href=`/api/v1/manage_machinery`) Cancel
+                        a.btn.btn--small.btn--gray(href=`/api/v1/manage_machinery`) Abbrechen

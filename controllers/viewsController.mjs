@@ -119,6 +119,47 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   }
 });
 
+export const getMyMalReports = catchAsync(async (req, res, next) => {
+  console.log('bin getMyMalReports');
+  const currentUser = req.user;
+  //console.log(currentUser);
+
+  const myMalReports = await MalReport.find({
+    user_Mal: currentUser._id,
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    }); //.select('createAt_Mal');
+
+  console.log(myMalReports);
+
+  if (req.user.language === 'de') {
+    res.status(200).render('myMalReports_de', {
+      title: 'Meine Error- Logs',
+      data: {
+        currentUser: currentUser,
+        myMalReports: myMalReports,
+      },
+    });
+  } else {
+    res.status(200).render('myMalReports', {
+      title: 'My ErrorLogs',
+      data: {
+        currentUser: currentUser,
+        myMalReports: myMalReports,
+      },
+    });
+  }
+});
+
 export const getMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMachine: ');
   console.log('---------------------');
@@ -217,12 +258,26 @@ export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
   const departmentName = req.params.departmentName;
   console.log('departmentName: ' + departmentName);
 
+  const machineryZones = [
+    'Sägen',
+    'Schweissen',
+    'Spalten',
+    'Spitzen',
+    'Ziehen',
+    'Richten',
+    'Glühen',
+    'Recken',
+    'Beizen',
+    'Sonstige',
+  ];
+
   res.status(200).render('ASMAUnterhalt', {
     title: 'ASMAUnterhalt',
     data: {
       malReports: malReports,
       machinery: machinery,
       departmentName: departmentName,
+      machineryZones: machineryZones,
     },
   });
 });

@@ -14,7 +14,7 @@ block content
 
                 ul.side-nav
                     +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
-                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
+                    +navItem('/api/v1/myMalReports', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
@@ -29,7 +29,7 @@ block content
                 .user-view__form-container1
                     div(class="user-view__content")
                         div(class="user-view__form-container")
-                            h1(style="background-color: red;") BY ADMIN
+                            h1(style="color: red;") BY ADMIN
                             br
                             h2.heading-secondary.ma-bt-md= `Bearbeite Benutzer ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
                             form.form.form-workerAdmin-data

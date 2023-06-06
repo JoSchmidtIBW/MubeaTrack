@@ -60,7 +60,7 @@ export const showASMAmachinery = async () => {
         columns: [
           {
             data: '_id',
-            visible: true,
+            visible: false,
           },
           { data: 'name' },
           { data: 'description' },

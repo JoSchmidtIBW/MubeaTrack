@@ -15,7 +15,7 @@ block content
 
                 ul.side-nav
                     +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
-                    +navItem('#', 'Meine ASMA-Error Reports', 'user-error-report')
+                    +navItem('/api/v1/myMalReports', 'Meine ASMA-Error Reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
