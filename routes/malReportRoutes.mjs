@@ -6,6 +6,7 @@ import {
   getCloseMalReport,
   getCreateLogFal,
   getMyMalReports,
+  getClosedMalReportsMachine,
 } from '../controllers/malReportController.mjs';
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.patch('/closeMalReport/:malReportID', getCloseMalReport);
 router.patch('/:malReportID/updateLogFal/:malReportLogFalID', getUpdateLogFal);
 router.patch('/:malReportID/createLogFal', getCreateLogFal);
 router.get('/myMalReports/:userID', getMyMalReports);
+router.get('/closedMalReports/:machineName', getClosedMalReportsMachine);
 
 export default router;

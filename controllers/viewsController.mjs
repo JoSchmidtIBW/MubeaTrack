@@ -197,6 +197,8 @@ export const getMachine = catchAsync(async (req, res, next) => {
   //console.log('machine: ' + machine);
   console.log('-------------------------');
 
+  //const currentUser = req.user;
+
   if (!machine) {
     // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
     return next(new AppError('There is no machine with that name.', 404)); //404= not found
@@ -208,6 +210,7 @@ export const getMachine = catchAsync(async (req, res, next) => {
       data: {
         machine,
         department,
+        //currentUser,
       },
     });
   } else {
@@ -216,6 +219,7 @@ export const getMachine = catchAsync(async (req, res, next) => {
       data: {
         machine,
         department,
+        //currentUser,
       },
     });
   }
@@ -325,16 +329,29 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
       //console.log(malReport);
     });
 
-    res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
-      title: 'MachineOpenMalReports',
-      data: {
-        malReports: malReports,
-        departmentName: departmentName,
-        machineName: machineName,
-        machineID: machine._id,
-        currentUser: req.user,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('ASMAUnterhaltMachineOpenMalReports_de', {
+        title: 'Offene Error- Reports',
+        data: {
+          malReports: malReports,
+          departmentName: departmentName,
+          machineName: machineName,
+          machineID: machine._id,
+          currentUser: req.user,
+        },
+      });
+    } else {
+      res.status(200).render('ASMAUnterhaltMachineOpenMalReports', {
+        title: 'Open error- reports',
+        data: {
+          malReports: malReports,
+          departmentName: departmentName,
+          machineName: machineName,
+          machineID: machine._id,
+          currentUser: req.user,
+        },
+      });
+    }
   }
 );
 
@@ -343,6 +360,7 @@ export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
     console.log('Bin getASMAUnterhaltMachineClosedMalReports');
     const machineName = req.params.machineName;
     const departmentName = req.params.departmentName;
+    const currentUser = req.user;
 
     const closedMalReports = await MalReport.find({
       nameMachine_Mal: machineName,
@@ -376,14 +394,27 @@ export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
       //console.log('------------------------');
     });
 
-    res.status(200).render('ASMAUnterhaltMachineClosedMalreports', {
-      title: 'Closed MalReports',
-      data: {
-        machineName: machineName,
-        departmentName: departmentName,
-        closedMalReports: closedMalReports,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('ASMAUnterhaltMachineClosedMalreports_de', {
+        title: 'Geschlossene Error- Report',
+        data: {
+          machineName: machineName,
+          departmentName: departmentName,
+          closedMalReports: closedMalReports,
+          currentUser: currentUser,
+        },
+      });
+    } else {
+      res.status(200).render('ASMAUnterhaltMachineClosedMalreports', {
+        title: 'Closed error- reports',
+        data: {
+          machineName: machineName,
+          departmentName: departmentName,
+          closedMalReports: closedMalReports,
+          currentUser: currentUser,
+        },
+      });
+    }
   }
 );
 
@@ -488,6 +519,19 @@ export const getDepartment = catchAsync(async (req, res, next) => {
   //const currentDepartmentName =
   const currentUser = req.user;
 
+  const machineryZones = [
+    'Sägen',
+    'Schweissen',
+    'Spalten',
+    'Spitzen',
+    'Ziehen',
+    'Richten',
+    'Glühen',
+    'Recken',
+    'Beizen',
+    'Sonstige',
+  ];
+
   if (
     departmentsArray.includes(department.name) ||
     currentUser.role === 'admin'
@@ -505,6 +549,7 @@ export const getDepartment = catchAsync(async (req, res, next) => {
         title: `${department.name} department`, //'The Forrest Hiker Tour',
         department,
         currentUser,
+        machineryZones,
       });
     }
   } else {
@@ -528,10 +573,25 @@ export const getLoginForm = (req, res) => {
 export const getManageMachinery = catchAsync(async (req, res) => {
   const machinery = await Machine.find().select('+createdAt');
 
-  res.status(200).render('manageMachinery', {
-    title: 'Manage Machinery',
-    machinery,
-  });
+  const currentUser = req.user;
+
+  if (req.user.language === 'de') {
+    res.status(200).render('manageMachinery_de', {
+      title: 'Verwalte Maschinen',
+      data: {
+        machinery,
+        currentUser,
+      },
+    });
+  } else {
+    res.status(200).render('manageMachinery', {
+      title: 'Manage Machinery',
+      data: {
+        machinery,
+        currentUser,
+      },
+    });
+  }
 });
 
 export const getManageUsers = catchAsync(async (req, res) => {

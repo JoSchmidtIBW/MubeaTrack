@@ -42,6 +42,7 @@ import {
   closeMalReport,
   createLogFal,
   showMyMalReports,
+  showClosedMalReports,
 } from './malReport';
 
 import { updateData } from './updateSettings';
@@ -114,6 +115,9 @@ const updateMalReportForm = document.querySelector(
   '.form-updateMalReport-data'
 );
 
+const manageASMAUnterhaltMachineClosedMalReportsTable = document.querySelector(
+  '.manageASMAUnterhaltMachineClosedMalReportsTable'
+);
 const myMalReportsTable = document.querySelector('.myMalReportsTable');
 
 //const createUserBtn = document.querySelector('.createUserBtn')
@@ -561,6 +565,7 @@ if (updateMachineForm) {
     const id = document.getElementById('machineId').value;
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
+    const zone = document.getElementById('zone').value;
     const type = document.getElementById('type').value;
     const constructionYear = document.getElementById('constructionYear').value;
     const companyMachine = document.getElementById('companyMachine').value;
@@ -577,6 +582,7 @@ if (updateMachineForm) {
     console.log(id);
     console.log(name);
     console.log(description);
+    console.log(zone);
     console.log(type);
     console.log(constructionYear);
     console.log(companyMachine);
@@ -595,6 +601,7 @@ if (updateMachineForm) {
         {
           name,
           description,
+          zone,
           type,
           constructionYear,
           companyMachine,
@@ -1020,6 +1027,11 @@ if (manageASMAUnterhaltMachineOpenMalReportsTable) {
 if (myMalReportsTable) {
   console.log('bin if myMalReportsTable');
   showMyMalReports();
+}
+
+if (manageASMAUnterhaltMachineClosedMalReportsTable) {
+  console.log('bin if manageASMAUnterhaltMachineClosedMalReportsTable');
+  showClosedMalReports();
 }
 
 if (updateLogFalForm) {

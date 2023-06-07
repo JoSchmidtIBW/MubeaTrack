@@ -2,10 +2,10 @@ extends base
 
 block content
     main.main2
-        h1 Closed Error- Reports
+        h1 Geschlossenen Error- Reports
         br
         br
-        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`)= `To the open points of ${data.machineName}`
+        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`)= `Zu den offenen Punkten von ${data.machineName}`
         br
         br
         br
@@ -20,14 +20,14 @@ block content
             thead
                 tr
                     th ID
-                    th Create
-                    th Firstname
-                    th Lastname
-                    th Machine
-                    th Sector
-                    th Component
-                    th Component-Detail
-                    th Estimated<br>status
+                    th Erstellt
+                    th Vorname
+                    th Nachname
+                    th Maschine
+                    th Sektor
+                    th Komponente
+                    th Komponent-Detail
+                    th Geschätzter-Status
                     th Log's
                     //th(colspan="10")
 
@@ -46,7 +46,7 @@ block content
                                     th createAt_<br>Repair
                                     th Edit<br>_Repair
                     //th statusRun<br>_Mal
-                    th Closed
+                    th Geschlossen
                     th Status
                     //th Edit<br>Mal
             tbody

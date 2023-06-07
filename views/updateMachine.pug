@@ -38,6 +38,20 @@ block content
               label(class="form__label", for="description") Description
               input#description(class="form__input", type="text", value=data.machineToUpdate.description)
             div(class="form__group")
+              label(class="form__label", for="zone") Zone
+              select#zone(class="form__input")
+                option(value=data.machineToUpdate.zone, selected, style="background-color: #98B7E1; color: white;") #{data.machineToUpdate.zone}
+                option(value="Schweissen", selected=data.machineToUpdate.zone.includes("Schweissen")) Welding
+                option(value="Ziehen", selected=data.machineToUpdate.department.includes("Ziehen")) Drawing
+                option(value="Sägen", selected=data.machineToUpdate.department.includes("Sägen")) Sawing
+                option(value="Richten", selected=data.machineToUpdate.department.includes("Richten")) Straightening
+                option(value="Glühen", selected=data.machineToUpdate.department.includes("Glühen")) Glowing
+                option(value="Recken", selected=data.machineToUpdate.department.includes("Recken")) Stretching
+                option(value="Spitzen", selected=data.machineToUpdate.department.includes("Spitzen")) Topping
+                option(value="Spalten", selected=data.machineToUpdate.department.includes("Spalten")) Splitting
+                option(value="Beizen", selected=data.machineToUpdate.department.includes("Beizen")) Pickling
+                option(value="Sonstige", selected=data.machineToUpdate.department.includes("Sonstige")) Others
+            div(class="form__group")
               label(class="form__label", for="type") Type
               input#type(class="form__input", type="text", value=data.machineToUpdate.type)
             div(class="form__group")

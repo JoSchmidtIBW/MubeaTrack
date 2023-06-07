@@ -2,9 +2,9 @@ extends base
 
 block content
     main.main2
-        h1= `Open MalReports from the machine ${data.machineName}`
+        h1= `Open error- reports from the machine ${data.machineName}`
         br
-        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`)= `zu den geschlossenen Punkten von ${data.machineName}`
+        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`)= `To the closed points of ${data.machineName}`
         br
         br
         br
@@ -18,15 +18,15 @@ block content
             thead
                 tr
                     th ID
-                    th createAt<br>_Mal
-                    th user<br>_Mal fN
-                    th user_Mal lN
-                    th Machine<br>_Mal
-                    th Sector<br>_Mal
-                    th Component<br>_Mal
-                    th Component<br>Detail_Mal
-                    th estimated<br>Status
-                    th leer
+                    th Create
+                    th Firstname
+                    th Lastname
+                    th Machine
+                    th Sector
+                    th Component
+                    th Component-Detail
+                    th Estimated<br>status
+                    th Log's
                     //th(colspan="10")
 
                         table.table1
@@ -43,9 +43,9 @@ block content
                                     th user<br>_Repair.<br>lastName
                                     th createAt_<br>Repair
                                     th Edit<br>_Repair
-                    th statusRun<br>_Mal
-                    th status<br>OpenClose<br>_Mal
-                    th Edit<br>Mal
+                    th StatusRun<br>_Mal
+                    th Status
+                    th Edit
             tbody
               each malReport in data.malReports
                   tr

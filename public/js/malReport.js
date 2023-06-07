@@ -8,6 +8,284 @@ const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
 const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
 
+export const showClosedMalReports = async () => {
+  console.log('bin showClosedMalReports');
+  const machineName = document.getElementById('machineName').value;
+  console.log('machineName: ' + machineName);
+  const currentUser = JSON.parse(document.getElementById('currentUser').value);
+  console.log(currentUser.language);
+
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: `${apiUrl}/malReports/closedMalReports/${machineName}`,
+    });
+
+    if (res.data.status === 'success') {
+      console.log('success in showClosedMalReports');
+      console.log(res.data.status);
+      //console.log(res.data.data);
+      //console.log(res.data.data.data);
+      // console.log(res.data.data.malReportsMachine);
+      const closedMalReports = res.data.data.closedMalReports;
+      //const currentUser = res.data.data.currentUser;
+      console.log(closedMalReports);
+      console.log($('#manageASMAUnterhaltMachineClosedMalReportsTable'));
+      //console.log(currentUser);
+      console.log(currentUser.language);
+
+      if (currentUser.language === 'de') {
+        console.log('currentUser.language = de');
+        $('#manageASMAUnterhaltMachineClosedMalReportsTable')
+          .DataTable()
+          .destroy();
+
+        $('#manageASMAUnterhaltMachineClosedMalReportsTable').DataTable({
+          data: closedMalReports, //res.data.data.data,
+          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          dom: 'l<"toolbar">frtip',
+          pagingType: 'full_numbers',
+          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
+          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          language: {
+            lengthMenu: 'Display _MENU_ records per page',
+            zeroRecords: 'Nothing found - sorry',
+            info: 'Showing page _PAGE_ of _PAGES_',
+            infoEmpty: 'No records available',
+            infoFiltered: '(filtered from _MAX_ total records)',
+            paginate: {
+              first: 'First',
+              last: 'Last',
+              next: 'Next',
+              previous: 'Previous',
+            },
+          },
+          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthMenu: [
+            [2, 5, 10, -1],
+            [2, 5, 10, 'All'],
+          ],
+          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          columns: [
+            { data: '_id', visible: false },
+            {
+              data: 'createAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
+            { data: 'user_Mal.firstName' },
+            { data: 'user_Mal.lastName' },
+            { data: 'nameMachine_Mal' },
+            { data: 'nameSector_Mal' },
+            { data: 'nameComponent_de_Mal' },
+            { data: 'nameComponentDetail_de_Mal' },
+            {
+              data: 'estimatedStatus',
+
+              render: function (data, type, row) {
+                if (type === 'display') {
+                  var status = data + '%';
+                  return '<span class="estimatedStatus">' + status + '</span>';
+                }
+                return data;
+              },
+            },
+            //{ data: null },
+            {
+              data: 'logFal_Repair',
+              render: function (data) {
+                let html = `
+          <table class="table1">
+      
+            </thead>
+            <tbody>
+        `;
+
+                data.forEach((logFal_Repair) => {
+                  html += `
+            <tr>
+              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
+              <td>${logFal_Repair.messageProblem_de_Repair}</td>
+              <td>${logFal_Repair.messageMission_de_Repair}</td>
+              <td>${logFal_Repair.isElectroMechanical_Repair}</td>
+              <td>${logFal_Repair.estimatedTime_Repair}</td>
+              <td>${logFal_Repair.Status_Repair}%</td>
+              <td>${
+                logFal_Repair.user_Repair
+                  ? logFal_Repair.user_Repair.firstName
+                  : 'No user'
+              }</td>
+              <td>${
+                logFal_Repair.user_Repair
+                  ? logFal_Repair.user_Repair.lastName
+                  : 'No user'
+              }</td>
+              <td>${new Date(logFal_Repair.createAt_Repair).toLocaleDateString(
+                'de-DE',
+                {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }
+              )}</td>
+             
+            </tr>
+          `;
+                });
+                html += `
+            </tbody>
+          </table>
+        `;
+
+                return html;
+              },
+            },
+            // { data: 'statusRun_Mal', visible: false },
+            { data: 'finishAt_Mal', visible: true },
+            { data: 'statusOpenClose_Mal', visible: true },
+          ],
+        });
+      } else if (currentUser.language === 'en') {
+        console.log('currentUser.language = en');
+        $('#manageASMAUnterhaltMachineClosedMalReportsTable')
+          .DataTable()
+          .destroy();
+
+        $('#manageASMAUnterhaltMachineClosedMalReportsTable').DataTable({
+          data: closedMalReports, //res.data.data.data,
+          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          dom: 'l<"toolbar">frtip',
+          pagingType: 'full_numbers',
+          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
+          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          language: {
+            lengthMenu: 'Display _MENU_ records per page',
+            zeroRecords: 'Nothing found - sorry',
+            info: 'Showing page _PAGE_ of _PAGES_',
+            infoEmpty: 'No records available',
+            infoFiltered: '(filtered from _MAX_ total records)',
+            paginate: {
+              first: 'First',
+              last: 'Last',
+              next: 'Next',
+              previous: 'Previous',
+            },
+          },
+          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthMenu: [
+            [2, 5, 10, -1],
+            [2, 5, 10, 'All'],
+          ],
+          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          columns: [
+            { data: '_id', visible: false },
+            {
+              data: 'createAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
+            { data: 'user_Mal.firstName' },
+            { data: 'user_Mal.lastName' },
+            { data: 'nameMachine_Mal' },
+            { data: 'nameSector_Mal' },
+            { data: 'nameComponent_en_Mal' },
+            { data: 'nameComponentDetail_en_Mal' },
+            {
+              data: 'estimatedStatus',
+
+              render: function (data, type, row) {
+                if (type === 'display') {
+                  var status = data + '%';
+                  return '<span class="estimatedStatus">' + status + '</span>';
+                }
+                return data;
+              },
+            },
+            //{ data: null },
+            {
+              data: 'logFal_Repair',
+              render: function (data) {
+                let html = `
+          <table class="table1">
+      
+            </thead>
+            <tbody>
+        `;
+
+                data.forEach((logFal_Repair) => {
+                  html += `
+            <tr>
+              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
+              <td>${logFal_Repair.messageProblem_en_Repair}</td>
+              <td>${logFal_Repair.messageMission_en_Repair}</td>
+              <td>${logFal_Repair.isElectroMechanical_Repair}</td>
+              <td>${logFal_Repair.estimatedTime_Repair}</td>
+              <td>${logFal_Repair.Status_Repair}%</td>
+              <td>${
+                logFal_Repair.user_Repair
+                  ? logFal_Repair.user_Repair.firstName
+                  : 'No user'
+              }</td>
+              <td>${
+                logFal_Repair.user_Repair
+                  ? logFal_Repair.user_Repair.lastName
+                  : 'No user'
+              }</td>
+              <td>${new Date(logFal_Repair.createAt_Repair).toLocaleDateString(
+                'de-DE',
+                {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }
+              )}</td>
+             
+            </tr>
+          `;
+                });
+                html += `
+            </tbody>
+          </table>
+        `;
+
+                return html;
+              },
+            },
+            //{ data: 'statusRun_Mal', visible: false },
+            { data: 'finishAt_Mal', visible: true },
+            { data: 'statusOpenClose_Mal', visible: true },
+          ],
+        });
+      }
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+    console.log('error', err.response.data.message);
+  }
+};
+
 export const showMyMalReports = async () => {
   console.log('bin showMyMalReports');
   const currentUserID = document.getElementById('currentUserID').value;

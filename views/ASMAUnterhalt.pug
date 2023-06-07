@@ -3,7 +3,7 @@ extends base
 block content
     main.main
         h1 bin ASMAUnterhalt.pug
-        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Retour
+        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Back
         h1
         //table
           each machine, index in data.machinery
@@ -21,6 +21,70 @@ block content
                       span(style=(machine.statusRun ? "color:green" : "color:red"))= machine.statusRun
         br
         table
+          each zone in data.machineryZones
+            - const machinesInZone = data.machinery.filter(machine => machine.zone.includes(zone))
+            if (machinesInZone.length > 0)
+                tr
+                    //td(colspan=(data.machinery.length + 1))
+                        h1(style="color:red")= zone
+                tr(style="line-height: 20px;")
+                    td
+                        //if (zone === 'Schweissen')//(style="padding-top: 15px;margin-top: 15px;")
+                        //  div(style="display: inline-block; margin-right: 20px;")
+                        //      h2= zone//(colspan=data.machinery.length + 2)
+                        //else
+                        div(style="display: inline-block; width: 200px; margin-right: 20px;")
+                            //h1= zone
+                            h1= zone === 'Schweissen' ? 'Welding' : zone === 'Sägen' ? 'Sawing' : zone === 'Ziehen' ? 'Drawing' : zone === 'Spitzen' ? 'Topping' : zone === 'Richten' ? 'Straightening' : zone === 'Glühen' ? 'Glowing' : zone === 'Beizen' ? 'Pickling' : zone === 'Sonstige' ? 'Others' : zone === 'Spalten' ? 'Splitting' : zone === 'Richten' ? 'Stretching' : zone
+                    td
+                        div(style="display: inline-block;padding-top: 15px;")
+                          //white-space: nowrap; overflow-x: auto;
+                          each machine in machinesInZone
+                              //span= machine.name
+                              //span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                              //.status Status
+                              .punkt(style=(machine.statusRun ? 'background-color: green' : 'background-color: red'))
+                              //a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports` style=(machine.statusRun ? 'background-color: green' : 'background-color: red' , "display: flex; align-items: center; justify-content: center; height: 50px;")= machine.name
+                              //a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`, style = (machine.statusRun ? 'background-color: green' : 'background-color: red') + ';  align-items: center; justify-content: center; height: 45px;')= machine.name
+                              a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`, style = '  align-items: center; justify-content: center; height: 45px;')= machine.name
+                              span(style="margin-left:15px;")
+            else
+            //- Hier wenn keine Maschine vorhanden...
+        br
+        //table
+          each zone in data.machineryZones
+            - const machinesInZone = data.machinery.filter(machine => machine.zone.includes(zone))
+            if (machinesInZone.length > 0)
+                tr
+                    td(colspan=(data.machinery.length + 1))
+                        h1(style="color:red")= zone
+                tr
+                    td
+                      each machine in machinesInZone
+                          span= machine.name
+                          span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                          a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`)= machine.name
+                          span(style="margin-right:100px;")
+            else
+            //- Hier wenn keine Maschine vorhanden...
+        br
+        //table
+          each zone in data.machineryZones
+            - const machinesInZone = data.machinery.filter(machine => machine.zone.includes(zone))
+            if (machinesInZone.length > 0)
+                tr
+                    td(colspan=(data.machinery.length + 1))
+                        h1(style="color:red")= zone
+                each machine in machinesInZone
+                    tr
+                        td
+                            span= machine.name
+                            span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                            a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`)= machine.name
+            else
+            //- Wenn keine Maschine in der Zone vorhanden ist, überspringe die Zeile
+        br
+        //table
           each zone in data.machineryZones
               tr
                   td(colspan=(data.machinery.length + 1))
