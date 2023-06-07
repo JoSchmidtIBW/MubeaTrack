@@ -1,0 +1,58 @@
+extends base
+
+block content
+    main.main
+        //h1 Bin Machinery.pug Liste
+        //h2= machinery.length
+        table#manageMachineryTable.manageMachineryTable.table
+            input#currentUser(type="hidden", value=data.currentUser)
+            thead
+                tr
+                    th ID
+                    th Name
+                    th Beschreibung
+                    th Zone
+                    th Typ
+                    th Baujahr
+                    th Company<br>Machine
+                    th Abteilung
+                    th Spannung
+                    th Steuerung<br>Spannung
+                    th Nenn<br>Strom
+                    th Sicherung
+                    th Druckluft
+                    th Gewicht
+                    th Dimension
+                    th Zeichnungs-<br>Nummer
+                    th Mitarbeiter<br>Anzahl
+                    th Erstellt am
+                    th Bearbeiten
+            tbody
+              each machine in data.machinery
+                  tr
+                      td= machine._id
+
+                      td= machine.name
+                      td= machine.description
+                      td= machine.zone
+                      td= machine.type
+                      td= machine.constructionYear
+                      td= machine.companyMachine
+                      td= machine.department
+                      td= machine.voltage
+                      td= machine.controlVoltage
+                      td= machine.ratedCurrent
+                      td= machine.electricalFuse
+                      td= machine.compressedAir
+                      td= machine.weightMass
+                      td= machine.dimensions
+                      td= machine.drawingNumber
+                      td= machine.employeesCount
+                      td= machine.createdAt
+                      td
+                          a.edit-button(href=`/manage_machinery/${machine._id}`) Edit
+                          //-a.delete-button(data-id=machine._id) Delete
+
+        br
+        br
+        a.btn.btn--small.btn--green(href="/api/v1/createMachine") Create new Machine

@@ -106,6 +106,57 @@ export const resizeMachineImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+export const getClosedMalReportsMachine = catchAsync(async (req, res, next) => {
+  console.log('Bin getClosedMalReportsMachine');
+
+  const machineName = req.params.machineName;
+  console.log('machineName: ' + machineName);
+  //const departmentName = req.params.departmentName;
+  //const currentUser = req.user;
+  // console.log(currentUser);
+
+  const closedMalReports = await MalReport.find({
+    nameMachine_Mal: machineName,
+    statusOpenClose_Mal: 'close',
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    });
+
+  if (!closedMalReports) {
+    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
+    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+  }
+
+  //ausgabe LogFal in closedMalReports
+  closedMalReports.forEach((closedMalReport) => {
+    //console.log('Log Fal Repair:');
+
+    closedMalReport.logFal_Repair.forEach((log) => {
+      // console.log(`Create Date: ${log.createAt_Repair}`);
+      //console.log(`estimatedTime_Repair: ${log.estimatedTime_Repair}`);
+    });
+    //console.log('------------------------');
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      closedMalReports: closedMalReports,
+      //currentUser: currentUser,
+      machineName: machineName,
+    },
+  });
+});
+
 export const getMyMalReports = catchAsync(async (req, res, next) => {
   console.log('Bin getMyMalReports');
   const userID = req.params.userID;

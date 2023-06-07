@@ -152,7 +152,7 @@ John Schmidt, 2023
 
 
 ## Lizenz
-&copy; © by John Schmidt. All rights reserved. Feel free to use this project for your own purposes, EXPECT producing your own course or tutorials!
+&copy; by John Schmidt. All rights reserved.
 
 
 ## Quellen

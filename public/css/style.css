@@ -1917,6 +1917,11 @@ input#employeeNumber.form__input[type=number] {
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
 }
 
+#manageASMAUnterhaltMachineClosedMalReportsTable{
+    margin-top: 20px;
+    margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
+}
+
 #manageASMAMachineTable{
     margin-top: 20px;
     margin-bottom: 20px; /* Abstand von 20 Pixeln nach unten */
