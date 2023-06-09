@@ -27,11 +27,11 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Machine reporter
+                    //-h2.heading-secondary.ma-bt-md Machine reporter
 
-                    h2.heading-secondary.ma-bt-md= `Edit machine: ${data.machine.name}: / Sector: ${data.sectorASMA.name}`
+                    h2.heading-secondary.ma-bt-md= `Edit machine: ${data.machine.name}`
                     h3.heading-secondary.ma-bt-md= `Sector: ${data.sectorASMA.name}`
-                    h3.heading-secondary.ma-bt-md= `Component_de: ${data.componentASMA.name_de}`
+                    h3.heading-secondary.ma-bt-md= `Component: ${data.componentASMA.name_en}`
 
                     form.form.form-updateComponentASMA-data
                         //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!

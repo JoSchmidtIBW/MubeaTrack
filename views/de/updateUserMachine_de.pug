@@ -34,6 +34,9 @@ block content
                         //todo hidden userID und nicht löschen
                         input#userID(type="hidden", value=data.user._id)
                         div(class="form__group")
+                            label(class="form__label", for="employeeNumber") Mitarbeiter- Nummer
+                            input#employeeNumber(class="form__input", type="text", readonly= true, value=data.user.employeeNumber, style="background-color: lightgray")
+                        div(class="form__group")
                             label(class="form__label", for="firstName") Vorname
                             input#firstName(class="form__input", type="text", readonly= true, value=data.user.firstName, style="background-color: lightgray")
                         div(class="form__group")
@@ -84,7 +87,10 @@ block content
                                 ///api/v1/manage_user-machine
 
                         if hasSelectedMachine
+                                br
                                 button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Speichern
+                        br
+                        br
                         a.btn.btn--small.btn--gray(href="/api/v1/manage_user-machine") Abrechen
 
                             script.

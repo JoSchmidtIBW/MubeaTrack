@@ -1,11 +1,11 @@
 extends base
 
 block content
-    main.main2
-        h1 Closed Error- Reports
+    main.main
+        h1 Closed Error- Report
         br
         br
-        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`)= `To the open points of ${data.machineName}`
+        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`, style="background-color: lightblue;")= `Open points of ${data.machineName}`
         br
         br
         br

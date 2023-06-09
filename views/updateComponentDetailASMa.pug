@@ -27,9 +27,13 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Machine reporter
+                    //h2.heading-secondary.ma-bt-md Machine reporter
                     h2.heading-secondary.ma-bt-md1= `Edit machine: ${data.machine.name}`
+                    br
+                    br
                     h3.heading-secondary.ma-bt-md1= `Sector: ${data.sectorASMA.name}`
+                    br
+                    br
                     h3.heading-secondary.ma-bt-md= `Component: ${data.componentASMA.name_en}`
 
                     form.form.form-updateComponentDetailASMA-data
@@ -37,11 +41,11 @@ block content
                         input#machineID(type="hidden", value=data.machine._id)
                         br
                         input#sectorASMAID(type="hidden", value=data.sectorASMA._id)
-                        br
+                        //br
                         input#componentASMAID(type="hidden", value=data.componentASMA._id)
-                        br
+                        //br
                         input#componentDetailASMAID(type="hidden", value=data.componentDetailASMA._id)
-                        br
+                        //br
 
                         div(class="form__group ma-bt-md")
                             label(class="form__label", for="componentDetailASMAName_de") ComponentDetailASMA name_de
@@ -50,7 +54,7 @@ block content
                             label(class="form__label", for="componentDetailASMAName_en") ComponentDetailASMA name_en
                             input#componentDetailASMAName_en(class="form__input", type="text", value=data.componentDetailASMA.name_en)
                             label(class="form__label", for="componentDetailASMAStatus") ComponentDetailASMA Status
-                            input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status.toString(), readonly=true, style="background-color: lightgreen;")
+                            input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status, readonly=true, style=`background-color: ${data.componentDetailASMA.status ? '#50BE5F' : '#E93A48'}`)
                         span
                             button.btn.btn--small.btn--green.btn--saveUpdateComponentDetailASMA Save
                             a.btn-space
@@ -69,7 +73,7 @@ block content
                             br
                             input(class="form__input", type="text", value=data.componentDetailASMA.name_en, readonly, style="background-color: #EFDDDC")
                             br
-                            input(class="form__input", type="text", value=data.componentDetailASMA.status.toString(), readonly, style="background-color: #EE9596")
+                            input(class="form__input", type="text", value=data.componentDetailASMA.status, readonly, style="background-color: #EE9596")
 
                         //-h4(style="color:red") Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren
                         button.btn.btn--small.btn--red.btn--deleteComponentDetailASMA Delete

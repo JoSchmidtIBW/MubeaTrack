@@ -163,14 +163,25 @@ export const getMyMalReports = catchAsync(async (req, res, next) => {
 export const getMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMachine: ');
   console.log('---------------------');
-  console.log(req.params);
+  //console.log(req.params);
   //console.log(req);
   const referer = req.headers.referer; //'http://127.0.0.1:7566/api/v1/departments/anarbeit';
   //const departmentName = referer.split('/').pop(); // 'anarbeit'
+  console.log('********vvv*****');
+  console.log(req.params);
+  console.log(req.query);
+  console.log(req.url);
+  const url = '/departments/Anarbeit/machinery/6444566c830afd3adeba2d38';
+  const regex = /\/departments\/([^/]+)/;
+  const match = url.match(regex);
+  const departmentName2 = match[1];
+  console.log(departmentName2);
+  console.log(referer); //http://127.0.0.1:7566/api/v1/departments/anarbeit
+  console.log('*****vvv********');
 
-  const departmentName =
-    referer.split('/').pop().charAt(0).toUpperCase() +
-    referer.split('/').pop().slice(1);
+  const departmentName = departmentName2;
+  // referer.split('/').pop().charAt(0).toUpperCase() +
+  //   referer.split('/').pop().slice(1) || departmentName2;
   console.log('departmentName: ' + typeof departmentName);
   console.log('departmentName: ' + departmentName);
 
@@ -235,6 +246,37 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log(machineName);
 
   const machine = await Machine.findOne({ name: req.params.machineName });
+
+  const strIDmachine = machine._id.toString();
+  console.log('strIDmachine: ' + strIDmachine);
+
+  const malReports = await MalReport.find({
+    idMachine_Mal: strIDmachine,
+  })
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    });
+  // const malReports = await MalReport.find({
+  //   idMachine_Mal: strIDmachine,
+  // })
+  //   .select(
+  //     'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
+  //   )
+  //   .populate('user_Mal')
+  //   .populate({
+  //     path: 'logFal_Repair',
+  //     populate: {
+  //       path: 'user_Repair',
+  //       model: 'User',
+  //     },
+  //   });
+  console.log(malReports);
+
   //console.log(machine);
 
   //console.log(req.user); //currentUser
@@ -251,6 +293,7 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
       currentUser: req.user,
       departmentName: departmentName,
       machineName: machineName,
+      malReports: malReports,
     },
   });
 });
@@ -275,15 +318,27 @@ export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
     'Sonstige',
   ];
 
-  res.status(200).render('ASMAUnterhalt', {
-    title: 'ASMAUnterhalt',
-    data: {
-      malReports: malReports,
-      machinery: machinery,
-      departmentName: departmentName,
-      machineryZones: machineryZones,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('ASMAUnterhalt_de', {
+      title: 'ASMA-Unterhalt',
+      data: {
+        malReports: malReports,
+        machinery: machinery,
+        departmentName: departmentName,
+        machineryZones: machineryZones,
+      },
+    });
+  } else {
+    res.status(200).render('ASMAUnterhalt', {
+      title: 'ASMA-Unterhalt',
+      data: {
+        malReports: malReports,
+        machinery: machinery,
+        departmentName: departmentName,
+        machineryZones: machineryZones,
+      },
+    });
+  }
 });
 
 export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
@@ -543,6 +598,7 @@ export const getDepartment = catchAsync(async (req, res, next) => {
         title: `${department.name} Abteilung`, //'The Forrest Hiker Tour',
         department,
         currentUser,
+        machineryZones,
       });
     } else {
       res.status(200).render('department', {
@@ -1092,9 +1148,12 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
   // console.log('----------');
   // console.log(req.params.id);
 
-  const userToUpdate = await User.findById({ _id: req.params.id }).select(
-    '+password'
-  );
+  //const userToUpdate = await User.findById({ _id: req.params.id })
+  //  .select('+password')
+  //  .populate('machinery');
+  const userToUpdate = await User.findById(req.params.id)
+    .select('+password')
+    .populate('machinery');
 
   const allDepartments = await Department.find()
     .sort('_id')
@@ -1191,10 +1250,12 @@ export const getAccount = (req, res) => {
   if (req.user.language === 'de') {
     res.status(200).render('account_de', {
       title: 'Dein Konto',
+      user: req.user,
     });
   } else {
     res.status(200).render('account', {
       title: 'Your account',
+      user: req.user,
     });
   }
 };

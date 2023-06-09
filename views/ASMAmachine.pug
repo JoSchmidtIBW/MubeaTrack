@@ -14,40 +14,48 @@ block content
 
                 ul.side-nav
                     +navItem('#', `${data.machine.name}`, 'machine', true)
+                    +navItem('#', 'Aufträge', 'list')
                     +navItem('#', 'Sonstige', 'settings')
                 .admin-navs
-                    h5.admin-nav__heading XXXXX
+                    h5.admin-nav__heading ASMA
                     ul.side-nav
-                        +navItem('#', 'Störmeldung', 'settings', true)
-                        +navItem('#', 'Verbrauchsmaterial', 'user-error-report')
-                        +navItem('#', 'Prüfmittel', 'user-error-report')
-                        +navItem('#', 'Planung', 'user-error-report')
+                        +navItem('#', 'Störmeldungen', 'user-error-report', true)
+                        +navItem('#', 'Verbrauchsmaterial', 'alert-circle')
+                        +navItem('#', 'Prüfmittel', 'alert-octagon')
+
 
 
 
             .user-view__content
                 .user-view__ASMAform-container
                     h2.heading-secondary.ma-bt-md Machine reporter
-                        //-form.form.form-ASMAbtn-data
-                        //-main.mainMine
-                        br
-                        h1 MaschinenID:
-                        h1= data.machine._id
-                        h1= data.machine.name
-                        br
-                        button.btn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: red')
+                    br
+                    //h1 haaaaaaaaaaaaaaaaaaa   /api/v1/departments/Anarbeit/machinery/Rattunde1
+                    //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
+                    //br
+                    //br
+                    //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}`) back
+
+                    br
+                    button.btn.stoerBtn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: #E93A48')
                             data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
+                    //button(id="machineStatusRunBtn" class="btn stoerBtn" style="background-color: lightgreen" data-statusRun="true" data-machineIDRun="{{data.machine._id}}")
 
+                    br
 
-                        br
-                        table
+                    table
+                          br
                           each sector in data.machine.sectorASMA
                               tr
                                   td(colspan="2")
                                       br
                                       h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
-                                      h1(style="color:red")= sector.name
-                                      h2= sector.description_de
+                                      br
+                                      br
+                                      h1= sector.name
+                                      h4= sector.description_de
+                                      br
+                                      br
                                       br
                               each component in sector.components
                                   tr
@@ -61,59 +69,106 @@ block content
                                                 each detail, index in component.componentDetails
                                                     if index % 4 === 0
                                                         tr
-                                                    td(style="border: 1px solid pink; padding: 10px; margin: 5px;")
-                                                        button.btn.popup-trigger(
-                                                            class=`stoerBtn stoerBtn-${index}`,
+                                                    td(style="border: 1px solid white; padding: 10px; margin: 5px;")
+                                                        - const popupID = `${index}-${Date.now()}`;
+                                                        button.btn.btn--small.stoerBtn.popup-trigger(
+                                                            class=`stoerBtn-${index}`,
                                                             id=`stoerBtn-${index}`,
-                                                            style=(detail.status ? 'background-color: green' : 'background-color: red'),
+                                                            style=(detail.status ? 'background-color: #50BE5F; color: white' : 'background-color: red; color: white'),
                                                             data-status=(detail.status ? 'true' : 'false'),
                                                             data-detail-id=detail._id
                                                         )= detail.name_de
-                                          //table
-                                            each detail, index in component.componentDetails
-                                                if index % 4 === 0
-                                                    tr
-                                                td(style="border: 1px solid pink; padding: 10px; margin: 5px;")
-                                                    button.btn(
-                                                        class=`stoerBtn stoerBtn-${index}`,
-                                                        id=`stoerBtn-${index}`,
-                                                        style=(detail.status ? 'background-color: green' : 'background-color: red'),
-                                                        data-status=(detail.status ? 'true' : 'false'),data-detail-id=detail._id
-                                                    )= detail.name_de
-                                                    //-`${detail.name_de},${detail._id}`
-                                                br
+
+                                                        div(id=`popup-${index}-popup`, style="display: none; font-size:30px") Popup-Inhalt
+                                                        if !detail.status
+                                                            //div=detail._id
+                                                            //div= data.malReports
+                                                            each malReport in data.malReports
+                                                                if(detail._id.toString() === malReport.idComponentDetail_Mal)
+
+                                                                    div(id=`popupStatus-${index}`)
+
+                                                                        -const createAt = malReport.createAt_Mal;
+                                                                        -const formattedDate = createAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                                                        -const formattedTime = createAt.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                                                                        //span=`Status: ${malReport.estimatedStatus}%`
+                                                                        //span(style="margin-left:5px;")=`${malReport.user_Mal.firstName}`
+                                                                        //span(style="margin-left:5px;")= `${formattedDate} ${formattedTime}`
+                                                                        span=`Status: ${malReport.estimatedStatus}%\n${malReport.user_Mal.firstName}\n${formattedDate} ${formattedTime}`
+                                                                        //span(style="margin-left:5px;")=`${malReport.createAt_Mal}`
+                                                                else
+                                                                    //div(id=`popupStatus-${index}`) Hallo
+
+                                                    br
+                                                    //td(style="border: 1px solid white; padding: 10px; margin: 5px;")
+                                                        - const eventListeners = detail.status ? `button.addEventListener('mouseover', function() { showPopup(${index}); }); button.addEventListener('mouseout', function() { hidePopup(${index}); });` : ''
+                                                        button.btn.btn--small.stoerBtn.popup-trigger(
+                                                            class=`stoerBtn-${index}`,
+                                                            id=`stoerBtn-${index}`,
+                                                            style=(detail.status ? 'background-color: #50BE5F; color: white' : 'background-color: red; color: white'),
+                                                            data-status=(detail.status ? 'true' : 'false'),
+                                                            data-detail-id=detail._id,
+
+
+                                                            )= detail.name_de
+                                                        //#E93A48
+                                                        //onmouseover=`${detail.status ? `showPopup(${index})` : ''}`,
+                                                        //    onmouseout=`${detail.status ? `hidePopup(${index})` : ''}`,
+
+                                                        if !detail.status
+                                                            div(id=`popupStatus-${index}`) Hallo
+                                                            //div(id=`popup-${index}-popup`, style="display: none; position: absolute; top: 100%; left: 0; background-color: #fff; padding: 10px; border: 1px solid #ccc;")
+                                                                | Popup-Inhalt
+                                                            div(id=`popup-${index}-popup`, style="display: none; ") Popup-Inhalt
+                                                        br
+                    br
+
                     form.form.form-ASMAbtn-data
                         //todo diese felder verstecken, nicht löschen! es braucht die ID's
                         br
-                        label machineID
-                        input#machineID(type="text", name="machineID", value=data.machine._id, style="width: 300px;")
+                        //label machineID
+                        input#machineID(type="hidden", name="machineID", value=data.machine._id, style="width: 300px;")
                         br
-                        label CurrentUserID
-                        input#currentUserID(type="text",  name="currentUserID", value=data.currentUser._id, style="width: 300px;")
-                        br
-                        label departmentName
-                        input(type="text", id="departmentName", name="departmentName",value=data.departmentName, style="width: 600px;")
-                        br
-                        label machineName
-                        input(type="text", id="machineName", name="machineName",value=data.machineName, style="width: 600px;")
-                        br
-                        label ASMABTNid's
-                        input(type="text", id="selectedIdsInput", name="selectedIds",  style="width: 600px;")
-                        br
-                        label AMSA Run-ID
-                        input(type="text", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
-                        br
-                        br
-                        button.btn.btn--small.btn--gray(id="abszBtn") Störung-Meldung absetzen
+                        //label CurrentUserID
+                        input#currentUserID(type="hidden",  name="currentUserID", value=data.currentUser._id, style="width: 300px;")
+                        //br
+                        //label departmentName
+                        input(type="hidden", id="departmentName", name="departmentName",value=data.departmentName, style="width: 600px;")
+                        //br
+                        //label machineName
+                        input(type="hidden", id="machineName", name="machineName",value=data.machineName, style="width: 600px;")
+                        //br
+                        //label ASMABTNid's
+                        input(type="hidden", id="selectedIdsInput", name="selectedIds",  style="width: 600px;")
+                        //br
+                        //label AMSA Run-ID
+                        input(type="hidden", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
+                        //br
+                        //br
+                        button.btn.btn--small.btn--gray(id="abszBtn") Stör- Meldung absetzen
                         br
                         br
                         //-a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machineName}`) Return
+                        br
+                        br
+                        br
+                        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
+
 
     script.
+
+
       let pathValue = 'xx';
 
       console.log("pathValue: " + pathValue);
       const machineStatusRunBtn = document.getElementById('machineStatusRunBtn')
+
+
+      if (machineStatusRunBtn.style.backgroundColor === 'lightgreen') {
+        machineStatusRunBtn.textContent = 'Anlage läuft';
+      } else {
+        machineStatusRunBtn.textContent = 'Anlage läuft nicht';
+      }
       const statusRun = machineStatusRunBtn.getAttribute('data-statusRun');
       const machineIDRun = machineStatusRunBtn.getAttribute('data-machineIDRun')
       let isOrange = true;
@@ -199,47 +254,56 @@ block content
         // dieses array zu inputFeld(versteckt) beim button Absetzen Form senden
       });
 
-      // Finde alle Elemente mit der Klasse "popup-trigger"
-      const popupTriggers = document.querySelectorAll('.popup-trigger');
 
-      // Iteriere über die gefundenen Elemente und füge Event Listener hinzu
-      popupTriggers.forEach((trigger) => {
-        trigger.addEventListener('mouseover', showPopup);
-        trigger.addEventListener('mouseout', hidePopup);
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.popup-trigger');
+        buttons.forEach(function(button) {
+          const index = button.id.split('-')[1];
+          const detailStatus = button.dataset.status === 'true';
+
+          if (!detailStatus) {
+            button.addEventListener('mouseover', function() {
+              showPopup(button);
+            });
+
+            button.addEventListener('mouseout', function() {
+              hidePopup(button);
+            });
+          }
+        });
       });
 
-      // Funktion zum Anzeigen des Popups
-      function showPopup (event) {
-        const button = event.target;
+      function setupPopup () {
+        var popupTriggers = document.querySelectorAll('.stoerBtn.popup-trigger');
+        popupTriggers.forEach(function(trigger) {
+          const index = trigger.id.split('-')[1];
+          const detailStatus = trigger.dataset.status === 'true';
 
-        // Überprüfe, ob der Button rot ist
-        if (button.style.backgroundColor === 'red') {
-          // Zeige das Popup an (z.B. durch das Hinzufügen einer CSS-Klasse)
-          // Hier kannst du die gewünschte Methode verwenden, um das Popup anzuzeigen
-          // z.B. Bootstrap Modals, jQuery UI Dialog oder eigene benutzerdefinierte Lösung
-          // Du könntest auch die ID oder andere Attribute des Buttons verwenden, um den Inhalt des Popups zu dynamisieren
-          // Beispiel:
-          const detailId = button.getAttribute('data-detail-id');
-          const popupContent = `Hier ist das Popup für Detail-ID: ${detailId}`;
-          console.log(popupContent);
-          // Zeige das Popup an, indem du die CSS-Klasse oder den Stil änderst
-          const popup = document.getElementById('popup');
-          popup.style.display = 'block';
-        }
+          if (!detailStatus) { // Nur wenn der Button rot ist, wird das Popup-Setup durchgeführt
+            trigger.addEventListener('mouseover', function() {
+              showPopup(trigger);
+            });
+            trigger.addEventListener('mouseout', function() {
+              hidePopup(trigger);
+            });
+          }
+        });
       }
 
-      const buttons = document.querySelectorAll('.stoerBtn');
+      function showPopup (button) {
+        const popup = button.nextElementSibling;
+        popup.style.display = 'block';
+      }
 
-      buttons.forEach(button => {
-        button.addEventListener('mouseover', showPopup);
-      });
-      // Funktion zum Ausblenden des Popups
-      function hidePopup (event) {
-        // Verstecke das Popup, indem du die CSS-Klasse oder den Stil änderst
-        const popup = document.getElementById('popup');
+      function hidePopup (button) {
+        const popup = button.nextElementSibling;
         popup.style.display = 'none';
       }
 
-      buttons.forEach(button => {
-        button.addEventListener('mouseout', hidePopup);
-      });
+
+
+      setupPopup();
+
+
+

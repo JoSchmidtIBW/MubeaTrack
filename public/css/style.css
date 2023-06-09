@@ -319,11 +319,11 @@ body {
 }
 
 .btn--little {
-    padding: 1.0rem 2rem !important;
+    padding: 1.0rem 1rem !important;
     font-size: 1.0rem !important;
     height: 25px;
     line-height: 5px;
-    background-color:  #9edfa7;
+    //background-color:  #9edfa7;
     color: white;
 }
 
@@ -902,7 +902,7 @@ body {
 .user-view__menu {
     -webkit-box-flex: 32rem;
     -ms-flex: 32rem 0 0px;
-    flex: 28rem 0 0;
+    flex: 31rem 0 0;
     background-image: -webkit-gradient( linear, left top, right bottom, from(#7dd56f), to(#28b487));
     background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
     padding: 4rem 0;
@@ -931,6 +931,12 @@ body {
     max-width: 120rem;
     margin: 0 auto;
     padding: 0 16rem;
+}
+
+.user-view__form-container2 {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 10rem;
 }
 
 .footer {
@@ -1482,6 +1488,14 @@ body {
     font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
+}
+
+.form__label1 {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #635E5E;
 }
 
 .form__photo-upload {
@@ -2220,4 +2234,12 @@ img.imgAboutMubeaTrack {
     margin-right: 10px;
     display: inline-block;
     vertical-align: middle;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
+.stoerBtn{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+
+
