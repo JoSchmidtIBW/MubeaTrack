@@ -29,6 +29,24 @@ block content
                     const employeeNumberInput = document.querySelector('#employeeNumber');
                     const helpButton = document.querySelector('#helpButton');
 
+                    // helpButton.addEventListener('click', function() {
+                    //   console.log("help click");
+                    //   if (helpButton.style.color === 'white') {
+                    //     alert('Button wurde geklickt!');
+                    //     helpButton.setAttribute('onclick', "alert('Forgot Password? Please call this number: 9272')");
+                    //   }
+                    // });
+
+                    helpButton.addEventListener('click', function() {
+                      console.log("help click");
+                      var computedStyle = window.getComputedStyle(helpButton);
+                      var buttonColor = computedStyle.getPropertyValue('color');
+                      if (buttonColor === 'rgb(255, 255, 255)') {
+                        alert('Please log in with your employee- number and your password.\n(The password can be requested from your direct superior.)');
+                        //helpButton.setAttribute('onclick', "alert('Forgot Password? Please call this number: 9272')");
+                      }
+                    });
+
                     employeeNumberInput.addEventListener('input', () => {
                       if (employeeNumberInput.value === '70220') {
                         helpButton.style.color = 'red';
@@ -36,7 +54,7 @@ block content
                         helpButton.removeAttribute('onclick');
                       } else {
                         helpButton.style.color = 'blue';
-                        helpButton.setAttribute('onclick', "alert('Forgot Password? please call this number: 9272')");
+                        helpButton.setAttribute('onclick', "alert('Forgot Password? Please call this number: 9272')");
                         helpButton.removeAttribute('href');
                       }
                     });

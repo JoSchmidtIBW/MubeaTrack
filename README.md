@@ -20,132 +20,140 @@ Git Repository zu meiner Diplomarbeit "MubeaTrack" als NDS HF Applikationsentwic
 
 
 ## Einleitung
-MubeaTrack:  
+**MubeaTrack**    
 MubeaTrack ist eine Web-Applikation, mit einem node.js- Server und dem Framework Express.  
 Ein Client-Server-Programm mit einer MVC (Model-View-Controller) Architektur. Und einer Datenbank namens MongoDB.  
 MubeaTrack dient als Grundgerüst (für eine erste Webapplication) zur Verwaltung von Benutzern, Maschinen und schon vorhandenen Abteilungen.
-Durch dieses Grundgerüst ist es möglich, zukünftig spezifische Fähigkeiten und Funktionen für jede einzelne Abteilung zu implementieren.  
-Ein Beispiel hierfür wäre die Implementierung  von einer elektronische Übermittlung der aktuellen Auftragsliste von der Abteilung Planung an die Benutzer der Maschinen.
 
-Durch die Nutzung von MubeaTrack würde dann der Informationsaustausch zwischen der Planungsabteilung und den Anlagenbedienern vereinfacht und effizienter gestaltet, wodurch auch Zeit und Papier eingespart werden könnte.
-Diese Web-Applikation legt den Grundstein für eine erfolgreiche Digitalisierung und Prozessoptimierung in der Firma Mubea. Ermöglicht die Optimierung von Arbeitsabläufen und verbessert den Einsatz von Ressourcen, und würde somit auch die Produktivität steigern und die Firma dabei unterstützen, ihre betrieblichen Abläufe zu modernisieren und den Weg in eine zukunftsorientierte, digitalisierte Arbeitsumgebung zu ebnen.  
-→ Implementiert in MubeaTrack ist "ASMA"
+**→ Implementiert in MubeaTrack ist "ASMA"**
+
+&nbsp;
 
 
-ASMA:  
+
+**ASMA**    
 ASMA steht für "Anlagespezifischer Stör-Meldungs-Absetzer" und ist ein Bestandteil von MubeaTrack.  
 Mit ASMA besteht die Möglichkeit, anlagespezifische Störmeldungen abzusetzen. Diese Meldungen sind ausschließlich für das Unterhaltspersonal bestimmt und können auch nur von ihnen quittiert oder aufgehoben werden.
-Durch die Integration von ASMA in MubeaTrack wird der Prozess der Störmeldung verbessert und eine effiziente Kommunikation zwischen den Anlagenbedienern und dem Unterhaltspersonal ermöglicht.
-Durch die klare Zuweisung und Auflistung der Störmeldungen wird der Informationsaustausch beschleunigt und die Daten können für Auswertungen und Statistiken benutzt werden.
-Die Implementierung von ASMA erweitert die Funktionalität von MubeaTrack und trägt dazu bei, die Effizienz, Produktivität und Qualität in der Firma Mubea weiter zu verbessern."
 
 
 
-## Vorbereitung
-Node.js muss installiert sein…
-MongoDB sollte installiert sein…
 
+## Vorbereitung  
 ### Voraussetzungen
-Die Applikation wurde mit folgenden Versionen getestet:
+Bevor Sie dieses Projekt verwenden können, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind:
 
-- [MariaDB 10.10.2](https://mariadb.org/)
-- MongoDB...
-- [NodeJS 18.13.0](https://nodejs.org/en/)
-- [NPM 8.19.3](https://www.npmjs.com/)
-  mongoDB
-  node
-  Windows 11
+- Betriebssystem: Windows 11 (oder eine kompatible Version)
+- Webbrowser: Unterstützt werden die neuesten Versionen von Google Chrome und Microsoft Edge.
+- Node.js: Version 10.0.0 oder höher. (https://nodejs.org/en/)
+- NPM: NPM wird zusammen mit Node.js installiert und sollte automatisch verfügbar sein. (https://www.npmjs.com/)
+- MongoDB: Version 10.10.2. (https://www.mongodb.com/)
 
 
 ## Installation
-To set up the server for this project, follow these steps:
-1.	Run npm install in the server directory to install the required dependencies. (in Terminal vielleicht cd mubea TAP....)
-2.	Create a file named config.env in the server directory.
-3.	In the config.env file, add the following lines:
-
-
-### NodeJS und NPM
-installation...
-### Datenbank
-installation...
-
-
-
+Um das Projekt einzurichten, gehen Sie folgendermaßen vor:
+1. Führen Sie npm install im hauptverzeichnis aus, um die erforderlichen Abhängigkeiten zu installieren.
+Mit folgendem Befehl werden alle Abhängigkeiten installiert:
+```bash
+npm install
+```
 
 ## Konfiguration
-1.	In the config.env file, add the following lines:
+1. Erstellen Sie eine Datei namens config.env im Hauptverzeichnis.
+2. Fügen Sie in der Datei config.env die folgenden Zeilen hinzu:
 
-Mache config.env - datei
 
-####----------------------------copy to config.env-------------DOWN--------------------------------- NODE_ENV=development
+
+####----------------------------copy to config.env--------------------------------------------------
+####Development Environment Configuration
 NODE_ENV=development
 
-####Development port
-DEV_PORT=7566
-####Production port
+####Application Port Configuration  Development Port/Production Port
+DEV_PORT=7566  
 PROD_PORT=7577
 
-####DB CONFIG
-DB_HOST_db=localhost
-DB_USER_db=root
-DB_PASSWORD_db=Mubea2020!
-DB_DATABASE_db=mubeaVerkaufDataBase
-
+####DB Configuration
 DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority
-####DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vn3fp56.mongodb.net/MubeaTrack?retryWrites=true&w=majority
-####   funktioniert    DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vn3fp56.mongodb.net/MubeaTrack?retryWrites=true&w=majority
-####//flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/Mubea?retryWrites=true&w=majority
-####for Database_MONGODB_Local, mongoDBserver need to run in CMD!
-DATABASE_MONGODB_LOCAL=mongodb://localhost:27017/natours
 DATABASE_MONGODB_PASSWORD=r9v5lGxvQ27M06xZ
-####Mubea2022!
-####ixR6bfBeBo88Ngdj
-####r9v5lGxvQ27M06xZ
 
-
-####secret-str sollte 32 zeichen lang sein
+####JWT Configuration
 JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREnCT32
-####ablaufdatum 90d 10h, 5m , 3s   , 5milisecond oder 5000 for 5s
-JWT_EXPIRES_IN=90d
+JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s
 JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen
 
-
-
-
-####email
+####Email Configuration
 EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail
 EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password
 EMAIL_HOST=sandbox.smtp.mailtrap.io#von MailTrap
 EMAIL_PORT=2525#Swisscom25#von MailTrap
-####----------------------------copy to config.env-------------UP---------------------------------
+####----------------------------copy to config.env------------------------------------------------
 
 
 ## Benutzung
-Run in dev: npm run watch:js (bundler) npm run dev nicht url mit localhost nehmen, sonder http://127.0.0.1:7566
+Bundler und Server müssen für die Web-Anwendung laufen. 
+für Tests, muss der Server beendet sein.
 
-Login: employeeNumber: 70220 (admin) password: test1234
+### Bundler starten
+Mit folgendem Befehl wird der Bundler gestartet:
+```bash
+npm run watch:js
+```
 
-MongoDB dev-data, sofern online keine Datenbank existiert: --> in userModel müssen dafür zuerst eventuell die Pre- Save- Middleware auskommentiert werden... im moment muss nichts gemacht werden
+### Server starten im Development Mode
+Mit folgendem Befehl wird der Server (im Development Mode) gestartet:
+```bash
+npm run dev
+```
 
-DB erzeugen:
-neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --import
+### Server beenden
+Mit folgendem Befehl kann der Server beendet werden:
+```bash
+crtl+c
+```
 
-DB löschen:
-neues Terminal und eingeben: node .\dev-data\data\import-dev-data.mjs --delete
+### Server starten im Produktions Mode
+Mit folgendem Befehl wird der Server (im Produktions Mode) gestartet:
+```bash
+npm run start:prod
+```
 
+### Debugger starten
+Mit folgendem Befehl wird der Debugger gestartet:
+```bash
+npm run debug
+```
 
+### Unit- Test's starten
+Mit folgendem Befehl werden die Unit- Tests gestartet:
+```bash
+npm run test
+```
 
-Test:
-Unit-test:
-Npm run test…. (ev npr run dev schliessen falls lauft)
-Npm run seleneium…. (ev npr run dev schliessen falls lauft)
+### Selenium- Test's starten
+Mit folgendem Befehl werden die Selenium- Tests gestartet:
+```bash
+npm run test:Selenium
+```
 
+### Datenbank erzeugen:
+Mit folgendem Befehl wird die Datenbank erzeugt:
+```bash
+node .\dev-data\data\import-dev-data.mjs --import
+```
 
-Debug:
-Npm run debug….
+### Datenbank löschen:
+Mit folgendem Befehl wird die Datenbank gelöscht:
+```bash
+node .\dev-data\data\import-dev-data.mjs --delete
+```
 
-Npm run prod (optional ob das geht)
+### Login als Admin
 
+Um sich als Admin anzumelden, verwenden Sie bitte die folgenden Anmeldeinformationen:
+
+- employeenumber:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**70220**
+- password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**test1234**
+
+Geben Sie diese Informationen im Browser ein, um sich als Admin anzumelden.
 
 ## Entwickler
 John Schmidt, 2023
