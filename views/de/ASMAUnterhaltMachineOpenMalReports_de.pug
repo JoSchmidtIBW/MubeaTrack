@@ -9,6 +9,7 @@ block content
         br
         br
         table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
+            //table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
             //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
             input#machineID(type="hidden", value=data.machineID)
             input#machineName(type="hidden", value=data.machineName)
@@ -89,6 +90,7 @@ block content
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
                                             //span
+                                        td(style="color:blue;")= logFal_Repair._id
                                         td
                                             a(href='#') YY
 
@@ -97,4 +99,8 @@ block content
                       td
                           a(href='#', style="color:red;") xx
 
+        br
+        br
+        br
+        a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA`) Zurück
         br

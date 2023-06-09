@@ -252,6 +252,7 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
 
   const malReports = await MalReport.find({
     idMachine_Mal: strIDmachine,
+    statusOpenClose_Mal: 'open',
   })
     .populate('user_Mal')
     .populate({
@@ -261,6 +262,13 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
         model: 'User',
       },
     });
+
+  malReports.forEach((malReport) => {
+    malReport.logFal_Repair.forEach((logFal) => {
+      //console.log(logFal);
+    });
+  });
+
   // const malReports = await MalReport.find({
   //   idMachine_Mal: strIDmachine,
   // })
@@ -286,16 +294,29 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
     return next(new AppError('There is no machine with that name.', 404)); //404= not found
   }
 
-  res.status(200).render('ASMAmachine', {
-    title: 'ASMAmachine',
-    data: {
-      machine: machine,
-      currentUser: req.user,
-      departmentName: departmentName,
-      machineName: machineName,
-      malReports: malReports,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('ASMAmachine_de', {
+      title: 'ASMA- Maschine',
+      data: {
+        machine: machine,
+        currentUser: req.user,
+        departmentName: departmentName,
+        machineName: machineName,
+        malReports: malReports,
+      },
+    });
+  } else {
+    res.status(200).render('ASMAmachine', {
+      title: 'ASMA- machine',
+      data: {
+        machine: machine,
+        currentUser: req.user,
+        departmentName: departmentName,
+        machineName: machineName,
+        malReports: malReports,
+      },
+    });
+  }
 });
 
 export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
@@ -479,27 +500,88 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
     const machineName = req.params.machineName;
     const departmentName = req.params.departmentName;
     const logFalID = req.params.logFalID;
+    console.log('logFalID: ' + logFalID);
 
     console.log('machineName: ' + machineName);
     console.log('departmentName: ' + departmentName);
     console.log('logFalID: ' + logFalID);
 
-    const malReportLogFal = await MalReport.findOne({
-      nameMachine_Mal: machineName,
-      'logFal_Repair._id': logFalID,
-    });
+    // const malReportLogFal = await MalReport.find({
+    //   nameMachine_Mal: machineName,
+    //   'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
+    // }).populate('logFal_Repair');
 
-    console.log(malReportLogFal);
-
-    res.status(200).render('updateLogFal', {
-      title: 'Update LogFal',
-      data: {
-        machineName: machineName,
-        departmentName: departmentName,
-        malReportLogFal: malReportLogFal,
-        currentUser: req.user,
+    // const logFal = await MalReport.aggregate([
+    //   {
+    //     $match: {
+    //       'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
+    //     },
+    //   },
+    //   {
+    //     $unwind: '$logFal_Repair',
+    //   },
+    //   {
+    //     $match: {
+    //       'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       _id: 1,
+    //       user_Mal: 1,
+    //       logFal_Repair: 1,
+    //     },
+    //   },
+    // ]);
+    const logFal = await MalReport.aggregate([
+      {
+        $match: {
+          'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
+        },
       },
-    });
+      {
+        $unwind: '$logFal_Repair',
+      },
+      {
+        $match: {
+          'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
+        },
+      },
+    ]);
+
+    console.log(logFal);
+
+    const malReportLogFal = logFal[0];
+    console.log(malReportLogFal);
+    // console.log(malReportLogFal);
+    //
+    // // ...
+    //
+    // console.log(malReportLogFal);
+
+    if (req.user.language === 'de') {
+      res.status(200).render('updateLogFal_de', {
+        title: 'Aktualisiere LogFal',
+        data: {
+          machineName: machineName,
+          departmentName: departmentName,
+          malReportLogFal: malReportLogFal, //JSON.stringify(malReportLogFal),
+          currentUser: req.user,
+          logFal: JSON.stringify(logFal),
+        },
+      });
+    } else {
+      res.status(200).render('updateLogFal', {
+        title: 'Update LogFal',
+        data: {
+          machineName: machineName,
+          departmentName: departmentName,
+          malReportLogFal: malReportLogFal,
+          currentUser: req.user,
+          logFal: JSON.stringify(logFal),
+        },
+      });
+    }
   }
 );
 
@@ -525,15 +607,27 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
   //   'logFal_Repair._id': logFalID,
   // });
 
-  res.status(200).render('updateMalReport', {
-    title: 'Update MalReport',
-    data: {
-      malReport: malReport,
-      machineName: machineName,
-      departmentName: departmentName,
-      currentUser: req.user,
-    },
-  });
+  if (req.user.language === 'de') {
+    res.status(200).render('updateMalReport_de', {
+      title: 'Aktualisiere Error- Report',
+      data: {
+        malReport: malReport,
+        machineName: machineName,
+        departmentName: departmentName,
+        currentUser: req.user,
+      },
+    });
+  } else {
+    res.status(200).render('updateMalReport', {
+      title: 'Update MalReport',
+      data: {
+        malReport: malReport,
+        machineName: machineName,
+        departmentName: departmentName,
+        currentUser: req.user,
+      },
+    });
+  }
 });
 
 export const getDepartment = catchAsync(async (req, res, next) => {
