@@ -14,16 +14,17 @@ block content
 
                 ul.side-nav
                     +navItem('#', `${data.machine.name}`, 'machine', true)
+                    +navItem('#', 'Aufträge', 'list')
                     +navItem('#', 'Sonstige', 'settings')
 
                 //- if(user.role === 'admin' || user.role === 'Chef')
                 .admin-navs
-                    h5.admin-nav__heading= `${user.role}`
+                    h5.admin-nav__heading= `ASMA`
                     ul.side-nav
-                        +navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
-                        +navItem('#', 'Verbrauchs- Material', 'user-error-report')
-                        +navItem('#', 'Prüfmittel', 'user-error-report')
-                        +navItem('#', 'sonstige', 'user-error-report')
+                        //+navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
+                        //+navItem('#', 'Verbrauchs- Material', 'user-error-report')
+                        //+navItem('#', 'Prüfmittel', 'user-error-report')
+                        //+navItem('#', 'sonstige', 'user-error-report')
                         if(data.machine.sectorASMA.length > 0)
                             +navItem('#', 'ASMA', 'machine-asma')
 

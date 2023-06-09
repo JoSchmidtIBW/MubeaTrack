@@ -34,13 +34,16 @@ block content
                         //todo hidden userID und nicht löschen
                         input#userID(type="hidden", value=data.user._id)
                         div(class="form__group")
+                            label(class="form__label", for="employeeNumber") Employee Number
+                            input#employeeNumber(class="form__input", type="text", readonly= true, value=data.user.employeeNumber, style="background-color: lightgray")
+                        div(class="form__group")
                             label(class="form__label", for="firstName") Firstname
                             input#firstName(class="form__input", type="text", readonly= true, value=data.user.firstName, style="background-color: lightgray")
                         div(class="form__group")
                             label(class="form__label", for="lastName") Lastname
                             input#lastName(class="form__input", type="text", readonly= true, value=data.user.lastName, style="background-color: lightgray")
                         div(class="form__group")
-                            label(class="form__label", for="userDepartments") User- Departments
+                            label(class="form__label", for="department") User- Departments
                             //-input#userDepartments(class="form__input", type="text",readonly= true, value=data.user.department, style="background-color: lightgray")
                             input#department(class="form__input", type="text", value=data.user.department.join(', '), readonly, style="background-color: lightgrey;")
 
@@ -82,7 +85,10 @@ block content
                                     a.btn-space
                                     a.btn.btn--small.btn--gray(href=`/api/v1/manage_user-machine`) Cancel
                         if hasSelectedMachine
+                            br
                             button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Save
+                        br
+                        br
                         a.btn.btn--small.btn--gray(href="/api/v1/manage_user-machine") Cancel
 
                             script.

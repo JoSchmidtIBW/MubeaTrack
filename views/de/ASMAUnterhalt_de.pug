@@ -20,20 +20,20 @@ block content
                     //.admin-nav
                     h5.admin-nav__heading= `Unterhalt`
                     ul.side-nav
-                    +navItem('#', 'Electrical documents', 'file-text')
-                    +navItem('#', 'Mechanical Unterlagen', 'file-text')
-                    +navItem('#', 'Orders', 'shopping-cart')
-                    +navItem('#', 'Revisions', 'settings')
-                    +navItem('#', 'Maintenance plans', 'sidebar')
+                    +navItem('#', 'Elektrische Unterlagen', 'file-text')
+                    +navItem('#', 'Mechanische Unterlagen', 'file-text')
+                    +navItem('#', 'Bestellungen', 'shopping-cart')
+                    +navItem('#', 'Revisionen', 'settings')
+                    +navItem('#', 'Wartungspläne', 'sidebar')
+                        //if(data.machine.sectorASMA.length > 0)
                     +navItem('#', 'ASMA', 'machine-asma', true)
-
 
 
             .user-view__content
                 .user-view__form-container2
                     h2.heading-secondary.ma-bt-md ASMA support
                     br
-                    //*a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Back
+                    //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Zurück
                     br
                     //table
                       each zone in data.machineryZones
@@ -78,21 +78,19 @@ block content
                             tr(style="line-height: 20px;")
                                 td
                                     div(style="display: inline-block; width: 200px; margin-right: 20px;")
-                                        h1= zone === 'Schweissen' ? 'Welding' : zone === 'Sägen' ? 'Sawing' : zone === 'Ziehen' ? 'Drawing' : zone === 'Spitzen' ? 'Topping' : zone === 'Richten' ? 'Straightening' : zone === 'Glühen' ? 'Glowing' : zone === 'Beizen' ? 'Pickling' : zone === 'Sonstige' ? 'Others' : zone === 'Spalten' ? 'Splitting' : zone === 'Richten' ? 'Stretching' : zone
+                                        h1= zone
+                                        //h1= zone === 'Schweissen' ? 'Welding' : zone === 'Sägen' ? 'Sawing' : zone === 'Ziehen' ? 'Drawing' : zone === 'Spitzen' ? 'Topping' : zone === 'Richten' ? 'Straightening' : zone === 'Glühen' ? 'Glowing' : zone === 'Beizen' ? 'Pickling' : zone === 'Sonstige' ? 'Others' : zone === 'Spalten' ? 'Splitting' : zone === 'Richten' ? 'Stretching' : zone
                                 td
                                   each machine, index in machinesInZone
                                       div(style="display: inline-block;padding-top: 15px;")
                                           br
                                           a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`, style=(machine.statusRun ? 'background-color: #50BE5F' : 'background-color: #E93A48') + ';  align-items: center; justify-content: center; height: 45px;')= machine.name
                                           span(style="margin-left:15px;")
-                                          //h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
                                       if (index % 4 === 3)
                                           br
-                                      //h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
                                   br
                                   br
                                   h1(style='color: lightgrey;') _____________________________________________________________________________________
-
 
                     //table
                       each zone in data.machineryZones
@@ -118,9 +116,8 @@ block content
                                           span(style="margin-left:15px;")
                         else
                         //- Hier wenn keine Maschine vorhanden...
-                    //h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
                     br
                     br
-                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Back
+                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName.toLowerCase()}`) Zurück
 
 

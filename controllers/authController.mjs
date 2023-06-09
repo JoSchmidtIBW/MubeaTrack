@@ -249,7 +249,7 @@ export const protect = catchAsync(async (req, res, next) => {
   // try catch zum fehler behandeln, oder im errorController dort dies machen zu lassen
 
   //3.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await User.findById(decoded.id).populate('machinery');
   //console.log('-------');
   //console.log(currentUser);
 
@@ -293,7 +293,7 @@ export const isLoggedIn = async (req, res, next) => {
       );
 
       //2.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
-      const currentUser = await User.findById(decoded.id);
+      const currentUser = await User.findById(decoded.id).populate('machinery');
 
       if (!currentUser) {
         return next();

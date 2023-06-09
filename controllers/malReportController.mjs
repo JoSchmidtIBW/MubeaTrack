@@ -726,17 +726,20 @@ export const getCreateLogFal = catchAsync(async (req, res, next) => {
   const isElectroMechanical_Repair = req.body.elektroMech;
   const estimatedTime_Repair = req.body.estimatedTime_Repair;
   const Status_Repair = req.body.Status_Repair;
-  const messageProblem_de_Repair = req.body.messageProblem_de
-    ? req.body.messageProblem_de
+  console.log('--------------' + req.body);
+  //console.log(JSON.parse(req.body));
+  console.log(JSON.stringify(req.body));
+  const messageProblem_de_Repair = req.body.messageProblem_de_Repair
+    ? req.body.messageProblem_de_Repair
     : '-';
-  const messageMission_de_Repair = req.body.messageMission_de
-    ? req.body.messageMission_de
+  const messageMission_de_Repair = req.body.messageMission_de_Repair
+    ? req.body.messageMission_de_Repair
     : '-';
-  const messageProblem_en_Repair = req.body.messageProblem_en
-    ? req.body.messageProblem_en
+  const messageProblem_en_Repair = req.body.messageProblem_en_Repair
+    ? req.body.messageProblem_en_Repair
     : '-';
-  const messageMission_en_Repair = req.body.messageMission_en
-    ? req.body.messageMission_en
+  const messageMission_en_Repair = req.body.messageMission_en_Repair
+    ? req.body.messageMission_en_Repair
     : '-';
   const createAt_Repair = req.body.createAt_Repair;
 

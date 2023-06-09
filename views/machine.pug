@@ -14,17 +14,18 @@ block content
 
                 ul.side-nav
                     +navItem('#', `${data.machine.name}`, 'machine', true)
-                    +navItem('#', 'other', 'settings')
+                    +navItem('#', 'Order', 'list')
+                    +navItem('#', 'Others', 'settings')
 
                 //- if(user.role === 'admin' || user.role === 'Chef')
                 .admin-navs
-                    h5.admin-nav__heading= `${user.role}`
+                    h5.admin-nav__heading= `ASMA`
                     ul.side-nav
-                        +navItem('#', 'Fault message', 'settings', true)
-                        +navItem('#', 'Consumable material', 'user-error-report')
-                        +navItem('#', 'Testing equipment', 'user-error-report')
-                        +navItem('#', 'Planning', 'user-error-report')
-                            if(data.machine.sectorASMA.length > 0)
+                        //+navItem('#', 'Fault message', 'settings', true)
+                        //+navItem('#', 'Consumable material', 'user-error-report')
+                        //+navItem('#', 'Testing equipment', 'user-error-report')
+                        //+navItem('#', 'Planning', 'user-error-report')
+                        if(data.machine.sectorASMA.length > 0)
                                 +navItem('#', 'ASMA', 'machine-asma')
 
             .user-view__content
@@ -85,7 +86,7 @@ block content
                             //-h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
                             //- h1(style="color: green") this machine has ASMA
                             //- br
-                            a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
+                            a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;color:white;") ASMA machine
                         else
                             h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
                             h1(style= "color: red") This machine has no ASMA

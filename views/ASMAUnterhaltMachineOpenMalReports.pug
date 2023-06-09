@@ -1,10 +1,10 @@
 extends base
 
 block content
-    main.main2
+    main.main
         h1= `Open error- reports from the machine ${data.machineName}`
         br
-        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`)= `To the closed points of ${data.machineName}`
+        a.btn.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports`, style="background-color: lightblue;")= `Closed points of ${data.machineName}`
         br
         br
         br
@@ -97,6 +97,10 @@ block content
                       td
                           a(href='#', style="color:red;") xx
 
+        br
+        br
+        br
+        a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA`) Back
         br
         //table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
             //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!

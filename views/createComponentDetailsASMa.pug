@@ -26,8 +26,8 @@ block content
                             +navItem('/api/v1/manage_ASMAmachine', 'Manage ASMA/machine', 'machine-asma', true)
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Machine reporter
-                    br
+                    //-h2.heading-secondary.ma-bt-md Machine reporter
+                    //-br
                     h2.heading-secondary.ma-bt-md CREATE COMPONENT- DETAIL
 
                     //-h1= data.machine.sectorASMA.length
@@ -46,7 +46,7 @@ block content
                                 label(class="form__label", for="name_en") Name_en ComponentDetail
                                 input#input_name_en(class="form__input" type="text" placeholder="light barrier" required="required")
                                 label(class="form__label", for="status") Status
-                                input(class="form__input", type="text", placeholder="true, wird aber nur so gezeigt, geschrieben nicht hier", readonly, style=`background-color:lightgreen`)
+                                input(class="form__input", type="text", readonly, style=`background-color:#50BE5F`)
                                 br
                             div(class="form__group")
                                 //-button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`/api/v1/machinery/createSectorASMAMachine`) Save
@@ -67,11 +67,12 @@ block content
                               label(class="form__label", for="name_en") Name_en
                               input#name_en(class="form__input", type="text", value=componentDetail.name_en, readonly, style="background-color: lightgrey;")
                               label(class="form__label", for="status") Status
-                              input#status(class="form__input", type="text", value=componentDetail.status.toString(), readonly, style=`background-color: ${componentDetail.status ? 'lightgreen' : 'red'}`)
+                              input#status(class="form__input", type="text", value=componentDetail.status, readonly, style=`background-color: ${componentDetail.status ? '#50BE5F' : '#E93A48'}`)
                               br
                               //a.btn(style="color:blue") Bearbeiten ComponentDetail
                               //-a(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${sector.id}`) Components
-                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/${data.componentASMA._id}/updateComponentDetail/${componentDetail._id}`, style="background-color:orange;") Edit component- detail
+                              br
+                              a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/${data.componentASMA._id}/updateComponentDetail/${componentDetail._id}`, style="background-color:orange;") Edit
                               a.btn-space
                               a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Cancel
                         br
@@ -91,7 +92,7 @@ block content
                                 label(class="form__label", for="name_en") Name_en KomponentDetail
                                 input#input_name_en(class="form__input" type="text" placeholder="MFL loader" required="required")
                                 label(class="form__label", for="status") Status
-                                input(class="form__input", type="text", placeholder="true, wird aber nur so gezeigt, geschrieben nicht hier", readonly, style=`background-color:lightgreen`)
+                                input(class="form__input", type="text", readonly, style=`background-color:#50BE5F`)
                             div(class="form__group" id="saveBtnDiv" style="display: none;")
                                 //-button.btn.btn--green.btn.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateComponentDetailsASMAMachine(href=`#`) Speichern

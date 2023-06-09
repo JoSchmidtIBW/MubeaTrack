@@ -62,14 +62,17 @@ block content
                                 option(value="de", selected=user.language === 'de') Deutsch
 
                         div(class="form__group")
-                            label(class="form__label", for="role") Beruf
+                            label(class="form__label", for="professional") Beruf
                             input#professional(class="form__input", type="text", value=user.professional, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
                             label(class="form__label", for="role") Rolle
                             input#role(class="form__input", type="text", value=user.role, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
-                            label(class="form__label", for="role") Abteilung
+                            label(class="form__label", for="department") Abteilung
                             input#department(class="form__input", type="text", value=user.department.join(', '), readonly, style="background-color: lightgrey;")
+                        div(class="form__group")
+                            label(class="form__label", for="machinery") Maschinen
+                            input#machinery(class="form__input", type="text", value=user.machinery.length > 0 ? user.machinery.map(machine => machine.name).join(', ') : "Keine Maschine", readonly, style="background-color: lightgrey;")
                         //-.form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${user.name}`,autocomplete="user-name", required, name='name')

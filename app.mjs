@@ -20,7 +20,7 @@ import userRoute from './routes/userRoutes.mjs';
 import machineRoute from './routes/machineRoutes.mjs';
 import viewRoute from './routes/viewRoutes.mjs';
 import departmentRoute from './routes/departmentRoutes.mjs';
-import malReportRoute from './routes/malReportRoutes.mjs'
+import malReportRoute from './routes/malReportRoutes.mjs';
 import startRoute from './routes/startRoute.mjs';
 
 import globalErrorHandler from './controllers/errorController.mjs'; //globalError..., kann nennen wie man möchte
@@ -232,7 +232,7 @@ app.use('/api', limiter);
 // Body parser, reading data from body into req.body
 //app.use(express.json()) //für post (daten von client zu bekommen), muss json sein
 // parst data from body
-app.use(express.json({ limit: '10kb' })); // um daten
+app.use(express.json({ limit: '100kb' })); // um daten
 //parse data coming in a urlencoded form
 app.use(express.urlencoded({ extended: true, limit: '10kb' })); // wenn form send data to server, zb ejs method=post input, it also called urlencoded , extendet true, um komplexe daten zu senden, wird aber nicht gebraucht eigentlich
 //parse data from cookies
@@ -403,7 +403,7 @@ app.use('/api/v1', viewRoute); // sollte der erste sein
 app.use('/api/v1/departments', departmentRoute);
 app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);
-app.use('/api/v1/malReports',malReportRoute)
+app.use('/api/v1/malReports', malReportRoute);
 
 //---------------------------unit-test-test----Down--------------------------------
 // für UNIT-TEST- Versuch

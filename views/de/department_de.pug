@@ -36,50 +36,68 @@ block content
 
 
         .description-box
-
-            div
             .overview-box__group
-                h1 Machinery
-                if(currentUser.role === 'admin')
-                    table
-                        //tr
-                            td hallo
-                            td hhh
-                    each machine in department.machinery
-                        //script.
-                        //-console.log(department.machinery)
-                        tr
-                            td
-                                //.overview-box__detail
-                                span.overview-box__label= machine.name
-                            td
-                                a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`) Details
-                            td
-                                span status:
-                                span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                else
-                    br
-                    //h1 rzxetcvuzbinomp,
-                    table
-                      each machineID in currentUser.machinery
-                        - const machine = department.machinery.find(m => m._id.toString() === machineID.toString())
-                        if machine
-                            tr
-                                td
-                                    //h1 xderftgzhujiko
-                                    //p Machine ID: #{machine._id}
-                                    //p Machine Name: #{machine.name}
+                if(department.machinery.length > 0)
+                    h1.heading-secondary.ma-bt-lg Maschinen
+                    if(currentUser.role === 'admin')
+                        br
+                        table
+                          each zone in machineryZones
+                            - const machinesInZone = department.machinery.filter(machine => machine.zone.includes(zone))
+                            if (machinesInZone.length > 0)
+                                tr
+                                    td
+                                        span(style="font-size: 14px;")= zone
+                                each machine in machinesInZone
+                                    tr
+                                        td
+                                            h1(style="padding-top: 8px;")= machine.name
+                                            //span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
+                                        //td(style="padding-left:20px;padding-top: 8px;")
+                                            h4 Status
+                                        td(style="padding-left:20px;padding-top: 8px;")
+                                            .punkt(style=(machine.statusRun ? 'background-color: #50BE5F' : 'background-color: #E93A48'))
+                                        td(style="padding-left:10px;padding-top: 8px;")
+                                            a.btn.btn--small.btn--green(href=`/api/v1/departments/${department.name}/machinery/${machine.name}` style="background-color:lightblue;") Details
+                                        //td(style="width: 100px;")
+                    else
+                        //h1 nicht admin
+                        br
+                        table
+                          each machineID in currentUser.machinery
+                              //h1= machineID._id
+                              - const machine = department.machinery.find(m => m._id.toString() === machineID._id.toString())
+                              if machine
+                                  tr
+                                      td
+                                          if department.machinery.filter(m => m.zone === machine.zone).indexOf(machine) === 0
+                                              //h1= machine.zone
+                                              tr
+                                                  td
+                                                      span(style="font-size: 14px;")= machine.zone
+                                      td(style="padding-top: 8px;")
+                                          span.overview-box__label= machine.name
+                                      //td(style="padding-left:20px;padding-top: 8px;")
+                                          h4 Status
+                                      td(style="padding-left:20px;padding-top: 8px;")
+                                          //span.status
+                                          .punkt(style=(machine.statusRun ? 'background-color: #50BE5F' : 'background-color: #E93A48'))
+                                      td(style="padding-left:10px;padding-top: 8px;")
+                                          a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
+                                      //td(style="width: 100px;")
+                                      //td
+                                          span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
 
-                                    //.overview-box__detail
-                                    //span.overview-box__label= `currentUser ${machineID}`
-                                    span.overview-box__label= machine.name
-                                td
-                                    a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
-                                td
-                                    span status:
-                                td
-                                    span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
-                        
+                else
+                    h1.heading-secondary.ma-bt-lg Maschinen
+                    h1 Keine Maschine
+                br
+                br
+                br
+                if(department.name === 'Unterhalt')
+                    //h1 Bin UnterhaltASMAAAAA
+                    a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`, style="background-color:lightblue;") ASMA Unterhalt
+
 
       .description-box
                 h2.heading-secondary.ma-bt-lg= `Über die ${department.name} Abteilung`
@@ -149,8 +167,8 @@ block content
         div
         div
         br
-        h1 hallo
-        if(department.name === 'Unterhalt')
+        //h1 hallo
+        //if(department.name === 'Unterhalt')
             h1 Bin UnterhaltASMAAAAA
             a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`, style="background-color:lightblue;") ASMA Unterhalt
         br

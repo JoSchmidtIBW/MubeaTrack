@@ -27,9 +27,13 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Machine reporter
+                    //h2.heading-secondary.ma-bt-md Machine reporter
                     h2.heading-secondary.ma-bt-md1= `Edit machine: ${data.machine.name}`
+                    br
+                    br
                     h3.heading-secondary.ma-bt-md1= `Sector: ${data.sectorASMA.name}`
+                    br
+                    br
                     h3.heading-secondary.ma-bt-md= `Component: ${data.componentASMA.name_en}`
 
                     form.form.form-updateComponentDetailASMA-data
@@ -44,17 +48,17 @@ block content
                         br
 
                         div(class="form__group ma-bt-md")
-                            label(class="form__label", for="componentDetailASMAName_de") ComponentDetailASMA name_de
+                            label(class="form__label", for="componentDetailASMAName_de") Komponent-Detail name_de
                             input#componentDetailASMAName_de(class="form__input", type="text", value=data.componentDetailASMA.name_de)
                             br
-                            label(class="form__label", for="componentDetailASMAName_en") ComponentDetailASMA name_en
+                            label(class="form__label", for="componentDetailASMAName_en") Komponent-Detail name_en
                             input#componentDetailASMAName_en(class="form__input", type="text", value=data.componentDetailASMA.name_en)
-                            label(class="form__label", for="componentDetailASMAStatus") ComponentDetailASMA Status
-                            input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status.toString(), readonly=true, style="background-color: lightgreen;")
+                            label(class="form__label", for="componentDetailASMAStatus") Komponent-Detail Status
+                            input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status, readonly=true, style=`background-color: ${data.componentDetailASMA.status ? '#50BE5F' : '#E93A48'}`)
                         span
                             button.btn.btn--small.btn--green.btn--saveUpdateComponentDetailASMA Speichern
                             a.btn-space
-                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${data.componentASMA._id}`) Abrechen
+                            a.btn.btn--small.btn--gray(href=`/api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${data.componentASMA._id}`) Abbrechen
                         br
                         br
                         br

@@ -1,193 +1,229 @@
 extends base
 
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`/img/icons.svg#icon-${icon}`)
+            | #{text}
+
 block content
-    main.main
-        div(class="user-view__content")
-            div(class="user-view__form-container")
-                h2.heading-secondary.ma-bt-md= `Edit MalReport ${data.malReport.nameComponentDetail_de_Mal}`
-                form.form.form-updateMalReport-data
-                    //todo make hidden, not delete!
-                    input#malReportID(type="text", value=data.malReport._id)
-                    input#machineName(type="text", value=data.machineName)
-                    input#departmentName(type="text", value=data.departmentName)
-                    input#currentUser(type="text", value=data.currentUser)
+    main.mainASMAmachine
+        .user-viewASMAmachine
+            nav.user-view__menu
 
-                    div(class="form__group")
-                        label(class="form__label", for="nameMachineMal") Name Machine
-                        input#nameMachineMal(class="form__input", type="text", value=data.malReport.nameMachine_Mal,readonly, style="background-color: lightgrey;")
-                    div(class="form__group")
-                        label(class="form__label", for="nameSector_Mal") Name SectorASMA
-                        input#nameSector_Mal(class="form__input", type="text", value=data.malReport.nameSector_Mal,readonly, style="background-color: lightgrey;")
-                    div(class="form__group")
-                        label(class="form__label", for="nameComponent_de_Mal") Name Componente_de
-                        input#nameComponent_de_Mal(class="form__input", type="text", value=data.malReport.nameComponent_de_Mal,readonly, style="background-color: lightgrey;")
-                    div(class="form__group")
-                        label(class="form__label", for="nameComponentDetail_de_Mal") Name Component-Detail_de
-                        input#nameComponentDetail_de_Mal(class="form__input", type="text", value=data.malReport.nameComponentDetail_de_Mal,readonly, style="background-color: lightgrey;")
-                    //div(class="form__group")
-                        label(class="form__label", for="Status_Repair") Status_Repair
-                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
-                        select#Status_Repair(class="form__input")
-                            option(value=0, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===0,class="Status_Repair0") 0%
-                            option(value=10, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===10) 10%
-                            option(value=25, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===25) 25%
-                            option(value=50, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===50) 50%
-                            option(value=75, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===75) 75%
-                            option(value=100, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===100, class="Status_Repair100") 100%
-                    //div(class="form__group")
-                        label(class="form__label", for="messageProblem_Repair") messageProblem_Repair
-                        input#messageProblem_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_Repair)
-                    //div(class="form__group")
-                        label(class="form__label", for="messageMission_Repair") messageMission_Repair
-                        input#messageMission_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_Repair)
-                    //div(class="form__group")
-                        label(class="form__label", for="createAt_Repair") createAt_Repair
-                        //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
-                        input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
-                        //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                          }),readonly, style="background-color: lightgrey;")
-                    //div(class="form__group")
-                        label(class="form__label", for="estimatedStatus") Status_Gesamt
-                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
-                        select#estimatedStatus(class="form__input")
-                            option(value=0, selected=data.malReportLogFal.estimatedStatus === 0,class="Status_Repair0") 0%
-                            option(value=10, selected=data.malReportLogFal.estimatedStatus === 10) 10%
-                            option(value=25, selected=data.malReportLogFal.estimatedStatus === 25) 25%
-                            option(value=50, selected=data.malReportLogFal.estimatedStatus === 50) 50%
-                            option(value=75, selected=data.malReportLogFal.estimatedStatus === 75) 75%
+                ul.side-nav
+                    //+navItem('/api/v1/me',  'My Settings', 'settings', true)
+                    //+navItem('/api/v1/myMalReports', 'My ASMA-error reports', 'user-error-report')
 
-                    //-button.btn.btn--small.btn--green.btn--saveUpdateMalReport Save
-                    button.btn.btn--closeMalReport 100% Abschliessen????
-                    a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
-                    br
-                    //button.btn neuer Punkt erstellen? ++++
-                    br
-                    //button.btn.btn--saveNewLogfal save new Logfal speichern
-
-                    button#btn-plus +
-                    span neuer Punkt erstellen? ++++
+                    //if(user.role === 'admin' || user.role === 'Chef')
+                    //.admin-nav
+                    h5.admin-nav__heading= `Unterhalt`
+                    ul.side-nav
+                    +navItem('#', 'Electrical documents', 'file-text')
+                    +navItem('#', 'Mechanical documents', 'file-text')
+                    +navItem('#', 'Orders', 'shopping-cart')
+                    +navItem('#', 'Revisions', 'settings')
+                    +navItem('#', 'Maintenance plans', 'sidebar')
+                        //if(data.machine.sectorASMA.length > 0)
+                    +navItem('#', 'ASMA', 'machine-asma', true)
 
 
-                    //form.form.form-new-sectorASMA-data
-                    //div(class="form__group" id="nameDiv" style="display: none;")
-                        br
-                        br
-                        br
-                    div(class="form__group" id="elektroMechDiv" style="display: none;")
-                        br
-                        br
-                        br
-                        label(class="form__label", for="elektroMech") ElektroMech
-                        //input#elektroMech(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].isElectroMechanical_Repair)
-                        select#elektroMech(class="form__input")
-                            option(value="elekt.-mech", class="isElectroMechanical_ElektroMech") elekt.-mech
-                            option(value="mechanisch", class="isElectroMechanical_Mechanisch") Mechanisch
-                            option(value="elektrisch", class="isElectroMechanical_Elektrisch") Elektrisch
-                            option(value="Einkauf", class="isElectroMechanical_Einkauf") Einkauf
-                    div(class="form__group" id="estimatedTime_RepairDiv" style="display: none;")
-                        label(class="form__label", for="estimatedTime_Repair") estimatedTime_Repair
-                        //input#estimatedTime_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].estimatedTime_Repair)
-                        select#estimatedTime_Repair(class="form__input")
-                            option(value="<2h", class="estimatedTime_Repair2h") <2h
-                            option(value="<4h", class="estimatedTime_Repair4h") <4h
-                            option(value="<8h", class="estimatedTime_Repairk8h") <8h
-                            option(value=">8h", class="estimatedTime_Repairg8h") >8h
-                    div(class="form__group" id="Status_RepairDiv" style="display: none;")
-                        label(class="form__label", for="Status_Repair") Status_Repair
-                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
-                        select#Status_Repair(class="form__input")
-                            option(value=0, class="Status_Repair0") 0%
-                            option(value=10, ) 10%
-                            option(value=25, ) 25%
-                            option(value=50, ) 50%
-                            option(value=75, ) 75%
-                            option(value=100, class="Status_Repair100") 100%
-                        br
-                    div(class="form__group" id="messageProblem_de_RepairDiv" style="display: none;")
-                        label(class="form__label", for="messageProblem_de_Repair") messageProblem_de_Repair
-                        input#messageProblem_de_Repair(class="form__input", type="text",  name="messageProblem_de_Repair")
-                        label(class="form__label", for="messageMission_de_Repair") messageMission_de_Repair
-                        input#messageMission_de_Repair(class="form__input", type="text",  name="messageMission_de_Repair")
-                        br
-                    div(class="form__group" id="messageProblem_en_RepairDiv" style="display: none;")
-                        label(class="form__label", for="messageProblem_en_Repair") messageProblem_en_Repair
-                        input#messageProblem_en_Repair(class="form__input", type="text",  name="messageProblem_en_Repair")
-                        label(class="form__label", for="messageMission_en_Repair") messageMission_en_Repair
-                        input#messageMission_en_Repair(class="form__input", type="text", name="messageMission_en_Repair")
-                        br
-                    div(class="form__group" id="createAt_RepairDiv" style="display: none;")
-                        //todo input hidden machen
-                        label(class="form__label", for="createAt_Repair") createAt_Repair
-                        //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
-                        input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
-                        //<input id="createAt_Repair" class="form__input" type="text" value="<%= new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) %>" readonly style="background-color: lightgrey;">
-                        //input#createAt_Repair(class="form__input", type="text", value=`${ new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) }`, readonly, style="background-color: lightgrey;")
+            .user-view__content
+                .user-view__form-container
 
-                        //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                          }),readonly, style="background-color: lightgrey;")
-                    div(class="form__group" id="estimatedStatusDiv" style="display: none;")
-                        label(class="form__label", for="estimatedStatus") Status_Gesamt
-                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
-                        select#estimatedStatus(class="form__input")
-                            option(value=0, selected=data.malReport.estimatedStatus === 0,class="Status_Repair0") 0%
-                            option(value=10, selected=data.malReport.estimatedStatus === 10) 10%
-                            option(value=25, selected=data.malReport.estimatedStatus === 25) 25%
-                            option(value=50, selected=data.malReport.estimatedStatus === 50) 50%
-                            option(value=75, selected=data.malReport.estimatedStatus === 75) 75%
-                        //input#id(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
-                        //label(class="form__label", for="name") Name sectorASMA
-                        //input#input_name(class="form__input" type="text" placeholder="Rattunde 1 oder Addafer" required="required")
-                    //div(class="form__group" id="description_deDiv" style="display: none;")
-                        label(class="form__label", for="description_de") Description_de
-                        //input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")
-                        br
-                        label(class="form__label", for="description_en") Description_en
-                        //input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
-                    div(class="form__group" id="saveBtnDiv" style="display: none;")
-                        button.btn.btn--green.saveBtnDiv.btn--saveNewLogfal save new Logfal speichern
-                        a.btn.btn--small.cancelBtnDiv.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
+                            //div(class="user-view__content")
+                            //    //h2.heading-secondary.ma-bt-md ASMA support
+                            //div(class="user-view__form-container")
 
-                    script.
-                        const btnPlus = document.querySelector('#btn-plus');
-                        const elektroMechDiv = document.querySelector('#elektroMechDiv');
-                        const estimatedTime_RepairDiv = document.querySelector('#estimatedTime_RepairDiv');
-                        const Status_RepairDiv = document.querySelector('#Status_RepairDiv');
-                        const messageProblem_de_RepairDiv = document.querySelector('#messageProblem_de_RepairDiv');
-                        const messageProblem_en_RepairDiv = document.querySelector('#messageProblem_en_RepairDiv');
-                        const createAt_RepairDiv = document.querySelector('#createAt_RepairDiv');//estimatedStatusDiv
-                        const estimatedStatusDiv = document.querySelector('#estimatedStatusDiv');
-                        const saveBtnDiv = document.querySelector('#saveBtnDiv')
-                        //const cancelBtnDiv = document.querySelector('#cancelBtnDiv')
-                        btnPlus.addEventListener('click', function() {
-                            if (elektroMechDiv.style.display === "none") {
-                              elektroMechDiv.style.display = "block";
-                              estimatedTime_RepairDiv.style.display = "block";
-                              Status_RepairDiv.style.display = "block";
-                              messageProblem_de_RepairDiv.style.display = "block";
-                              messageProblem_en_RepairDiv.style.display = "block";
-                              createAt_RepairDiv.style.display = "block";
-                              estimatedStatusDiv.style.display = "block";
-                              saveBtnDiv.style.display = "block";
-                              //cancelBtnDiv.style.display = "block";
-                            } else {
-                              elektroMechDiv.style.display = "none";
-                              estimatedTime_RepairDiv.style.display = "none";
-                              Status_RepairDiv.style.display = "none";
-                              messageProblem_de_RepairDiv.style.display = "none";
-                              messageProblem_en_RepairDiv.style.display = "none";
-                              createAt_RepairDiv.style.display = "none";
-                              estimatedStatusDiv.style.display = "none";
-                              saveBtnDiv.style.display = "none";
-                              //cancelBtnDiv.style.display = "none";
-                            }
-                        });
+                            h2.heading-secondary.ma-bt-md= `Edit Error- Report: ${data.malReport.nameComponentDetail_de_Mal}`
+                            form.form.form-updateMalReport-data
+                                //todo make hidden, not delete!
+                                input#malReportID(type="hidden", value=data.malReport._id)
+                                input#machineName(type="hidden", value=data.machineName)
+                                input#departmentName(type="hidden", value=data.departmentName)
+                                input#currentUser(type="hidden", value=data.currentUser)
+
+                                div(class="form__group")
+                                    label(class="form__label", for="nameMachineMal") Machine
+                                    input#nameMachineMal(class="form__input", type="text", value=data.malReport.nameMachine_Mal,readonly, style="background-color: lightgrey;")
+                                div(class="form__group")
+                                    label(class="form__label", for="nameSector_Mal") Sector
+                                    input#nameSector_Mal(class="form__input", type="text", value=data.malReport.nameSector_Mal,readonly, style="background-color: lightgrey;")
+                                div(class="form__group")
+                                    label(class="form__label", for="nameComponent_de_Mal") Component
+                                    input#nameComponent_de_Mal(class="form__input", type="text", value=data.malReport.nameComponent_en_Mal,readonly, style="background-color: lightgrey;")
+                                div(class="form__group")
+                                    label(class="form__label", for="nameComponentDetail_de_Mal") Component- detail
+                                    input#nameComponentDetail_de_Mal(class="form__input", type="text", value=data.malReport.nameComponentDetail_en_Mal,readonly, style="background-color: lightgrey;")
+                                //div(class="form__group")
+                                    label(class="form__label", for="Status_Repair") Status_Repair
+                                    //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                                    select#Status_Repair(class="form__input")
+                                        option(value=0, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===0,class="Status_Repair0") 0%
+                                        option(value=10, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===10) 10%
+                                        option(value=25, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===25) 25%
+                                        option(value=50, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===50) 50%
+                                        option(value=75, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===75) 75%
+                                        option(value=100, selected=data.malReportLogFal.logFal_Repair[0].Status_Repair===100, class="Status_Repair100") 100%
+                                //div(class="form__group")
+                                    label(class="form__label", for="messageProblem_Repair") messageProblem_Repair
+                                    input#messageProblem_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageProblem_Repair)
+                                //div(class="form__group")
+                                    label(class="form__label", for="messageMission_Repair") messageMission_Repair
+                                    input#messageMission_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].messageMission_Repair)
+                                //div(class="form__group")
+                                    label(class="form__label", for="createAt_Repair") createAt_Repair
+                                    //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
+                                    input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
+                                    //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
+                                      day: '2-digit',
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                      hour: '2-digit',
+                                      minute: '2-digit'
+                                      }),readonly, style="background-color: lightgrey;")
+                                //div(class="form__group")
+                                    label(class="form__label", for="estimatedStatus") Status_Gesamt
+                                    //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                                    select#estimatedStatus(class="form__input")
+                                        option(value=0, selected=data.malReportLogFal.estimatedStatus === 0,class="Status_Repair0") 0%
+                                        option(value=10, selected=data.malReportLogFal.estimatedStatus === 10) 10%
+                                        option(value=25, selected=data.malReportLogFal.estimatedStatus === 25) 25%
+                                        option(value=50, selected=data.malReportLogFal.estimatedStatus === 50) 50%
+                                        option(value=75, selected=data.malReportLogFal.estimatedStatus === 75) 75%
+
+                                //-button.btn.btn--small.btn--green.btn--saveUpdateMalReport Save
+                                button.btn.btn--small.btn--green.btn--closeMalReport Complete point 100%
+                                a.btn-space
+                                a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
+                                br
+                                //button.btn neuer Punkt erstellen? ++++
+                                br
+                                //button.btn.btn--saveNewLogfal save new Logfal speichern
+
+                                //button#btn-plus +
+                                button.btn.btn--green1#btn-plus + Create new point
+                                //span neuer Punkt erstellen? ++++
+
+
+                                //form.form.form-new-sectorASMA-data
+                                //div(class="form__group" id="nameDiv" style="display: none;")
+                                    br
+                                    br
+                                    br
+                                div(class="form__group" id="elektroMechDiv" style="display: none;")
+                                    br
+                                    br
+                                    br
+                                    label(class="form__label", for="elektroMech") Electro.-Mech.
+                                    //input#elektroMech(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].isElectroMechanical_Repair)
+                                    select#elektroMech(class="form__input")
+                                        option(value="elekt.-mech", class="isElectroMechanical_ElektroMech") Electro.-Mech.
+                                        option(value="mechanisch", class="isElectroMechanical_Mechanisch") Mechanical
+                                        option(value="elektrisch", class="isElectroMechanical_Elektrisch") Electrical
+                                        option(value="Einkauf", class="isElectroMechanical_Einkauf") Purchasing
+                                div(class="form__group" id="estimatedTime_RepairDiv" style="display: none;")
+                                    label(class="form__label", for="estimatedTime_Repair") Estimated time
+                                    //input#estimatedTime_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].estimatedTime_Repair)
+                                    select#estimatedTime_Repair(class="form__input")
+                                        option(value="<2h", class="estimatedTime_Repair2h") <2h
+                                        option(value="<4h", class="estimatedTime_Repair4h") <4h
+                                        option(value="<8h", class="estimatedTime_Repairk8h") <8h
+                                        option(value=">8h", class="estimatedTime_Repairg8h") >8h
+                                div(class="form__group" id="Status_RepairDiv" style="display: none;")
+                                    label(class="form__label", for="Status_Repair") Open point status
+                                    //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                                    select#Status_Repair(class="form__input")
+                                        option(value=0, class="Status_Repair0") 0%
+                                        option(value=10, ) 10%
+                                        option(value=25, ) 25%
+                                        option(value=50, ) 50%
+                                        option(value=75, ) 75%
+                                        option(value=100, class="Status_Repair100") 100%
+                                    br
+                                div(class="form__group" id="messageProblem_de_RepairDiv" style="display: none;")
+                                    label(class="form__label", for="messageProblem_de_Repair") Problem- Description_de
+                                    input#messageProblem_de_Repair(class="form__input", type="text",  name="messageProblem_de_Repair")
+                                    label(class="form__label", for="messageMission_de_Repair") Solution Description_de
+                                    input#messageMission_de_Repair(class="form__input", type="text",  name="messageMission_de_Repair")
+                                    br
+                                div(class="form__group" id="messageProblem_en_RepairDiv" style="display: none;")
+                                    label(class="form__label", for="messageProblem_en_Repair") Problem- Description_en
+                                    input#messageProblem_en_Repair(class="form__input", type="text",  name="messageProblem_en_Repair")
+                                    label(class="form__label", for="messageMission_en_Repair") Solution Description_en
+                                    input#messageMission_en_Repair(class="form__input", type="text", name="messageMission_en_Repair")
+                                    br
+                                div(class="form__group" id="createAt_RepairDiv" style="display: none;")
+                                    //todo input hidden machen
+                                    label(class="form__label", for="createAt_Repair") Created at
+                                    //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
+                                    input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
+                                    //<input id="createAt_Repair" class="form__input" type="text" value="<%= new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) %>" readonly style="background-color: lightgrey;">
+                                    //input#createAt_Repair(class="form__input", type="text", value=`${ new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) }`, readonly, style="background-color: lightgrey;")
+
+                                    //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
+                                      day: '2-digit',
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                      hour: '2-digit',
+                                      minute: '2-digit'
+                                      }),readonly, style="background-color: lightgrey;")
+                                div(class="form__group" id="estimatedStatusDiv" style="display: none;")
+                                    label(class="form__label", for="estimatedStatus") Total status (estimated)
+                                    //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
+                                    select#estimatedStatus(class="form__input")
+                                        option(value=data.malReport.estimatedStatus, selected, style="background-color: #98B7E1; color: white;") #{data.malReport.estimatedStatus}%
+                                        option(value=0, selected=data.malReport.estimatedStatus === 0,class="Status_Repair0") 0%
+                                        option(value=10, selected=data.malReport.estimatedStatus === 10) 10%
+                                        option(value=25, selected=data.malReport.estimatedStatus === 25) 25%
+                                        option(value=50, selected=data.malReport.estimatedStatus === 50) 50%
+                                        option(value=75, selected=data.malReport.estimatedStatus === 75) 75%
+                                    //input#id(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
+                                    //label(class="form__label", for="name") Name sectorASMA
+                                    //input#input_name(class="form__input" type="text" placeholder="Rattunde 1 oder Addafer" required="required")
+                                //div(class="form__group" id="description_deDiv" style="display: none;")
+                                    label(class="form__label", for="description_de") Description_de
+                                    //input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")
+                                    br
+                                    label(class="form__label", for="description_en") Description_en
+                                    //input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
+                                div(class="form__group" id="saveBtnDiv" style="display: none;")
+                                    button.btn.btn--green.saveBtnDiv.btn--saveNewLogfal Save
+                                    a.btn-space
+                                    a.btn.btn--small.cancelBtnDiv.btn--gray(href=`/api/v1/${data.departmentName}/ASMA/${data.machineName}/MalReports`) Cancel
+
+                                script.
+                                  const btnPlus = document.querySelector('#btn-plus');
+                                  const elektroMechDiv = document.querySelector('#elektroMechDiv');
+                                  const estimatedTime_RepairDiv = document.querySelector('#estimatedTime_RepairDiv');
+                                  const Status_RepairDiv = document.querySelector('#Status_RepairDiv');
+                                  const messageProblem_de_RepairDiv = document.querySelector('#messageProblem_de_RepairDiv');
+                                  const messageProblem_en_RepairDiv = document.querySelector('#messageProblem_en_RepairDiv');
+                                  const createAt_RepairDiv = document.querySelector('#createAt_RepairDiv');//estimatedStatusDiv
+                                  const estimatedStatusDiv = document.querySelector('#estimatedStatusDiv');
+                                  const saveBtnDiv = document.querySelector('#saveBtnDiv')
+                                  //const cancelBtnDiv = document.querySelector('#cancelBtnDiv')
+                                  btnPlus.addEventListener('click', function() {
+                                    if (elektroMechDiv.style.display === "none") {
+                                      elektroMechDiv.style.display = "block";
+                                      estimatedTime_RepairDiv.style.display = "block";
+                                      Status_RepairDiv.style.display = "block";
+                                      messageProblem_de_RepairDiv.style.display = "block";
+                                      messageProblem_en_RepairDiv.style.display = "block";
+                                      createAt_RepairDiv.style.display = "block";
+                                      estimatedStatusDiv.style.display = "block";
+                                      saveBtnDiv.style.display = "block";
+                                      //cancelBtnDiv.style.display = "block";
+                                    } else {
+                                      elektroMechDiv.style.display = "none";
+                                      estimatedTime_RepairDiv.style.display = "none";
+                                      Status_RepairDiv.style.display = "none";
+                                      messageProblem_de_RepairDiv.style.display = "none";
+                                      messageProblem_en_RepairDiv.style.display = "none";
+                                      createAt_RepairDiv.style.display = "none";
+                                      estimatedStatusDiv.style.display = "none";
+                                      saveBtnDiv.style.display = "none";
+                                      //cancelBtnDiv.style.display = "none";
+                                    }
+                                  });

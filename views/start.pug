@@ -1,4 +1,11 @@
 style.
+
+    @import url('https://fonts.googleapis.com/css2?family=Khand:wght@500&family=Poppins:ital,wght@1,200&display=swap');
+    body{
+        font-family: 'Khand', sans-serif;
+    }
+
+
     button:hover {
     transform: translateY(-3px);
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
@@ -22,6 +29,141 @@ style.
         cursor: pointer;
     }
 
+    div{
+        height: 30px;
+    }
+
+    footer {
+        width: 100vw;
+        position: fixed;
+        bottom: 0px;
+        /*height: 300px;*/
+    }
+
+    footer div {
+        background-color: #4478e3;
+        /* #6390ec  #6390ec */
+
+        margin: -5px 0px 0px 0px;
+        padding: 0px;
+        color: #fff;
+        text-align: center;
+    }
+
+    svg {
+        width: 100%;
+    }
+
+    .arrow {
+        stroke-width: .3px;
+        stroke: yellow;
+    }
+
+    .topball {
+        animation: ball 1.5s ease-in-out;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-delay: 0.3s;
+        cursor: pointer;
+    }
+
+    .wave {
+        animation: wave 3s linear;
+        animation-iteration-count: infinite;
+        fill: #4478e3;
+        /* #4478e3   #6390ec */
+    }
+
+    .drop {
+        fill: transparent;
+        animation: drop 6s ease infinite normal;
+        stroke: #4478e3;
+        stroke-width: 0.5;
+        opacity: 0.6;
+        transform: translateY(80%);
+    }
+
+    .drop1 {
+        transform-origin: 20px 3px;
+    }
+
+    .drop2 {
+        animation-delay: 4s;
+        animation-duration: 5s;
+        transform-origin: 25px 3px;
+    }
+
+    .drop3 {
+        animation-delay: 5s;
+        animation-duration: 4s;
+        transform-origin: 16px 3px;
+    }
+
+    .drop4{
+        animation-delay: 6s;
+        animation-duration: 4s;
+        transform-origin: 20px 3px;
+    }
+
+    .gooeff {
+        filter: url(#goo);
+    }
+
+    #wave2 {
+        animation-duration: 5s;
+        animation-direction: reverse;
+        opacity: .6
+    }
+
+    #wave3 {
+        animation-duration: 7s;
+        opacity: .3;
+    }
+
+    #wave4 {
+        animation-duration: 5s;
+        opacity: .5;
+    }
+
+    @keyframes drop {
+        0% {
+            transform: translateY(50%);
+            opacity: .6;
+        }
+        70% {
+            transform: translateY(20%);
+            opacity: 0.6;
+        }
+        80% {
+            transform: translateY(20%);
+            opacity: .6;
+        }
+
+        90% {
+            transform: translateY(10%) scale(1.5);
+            stroke-width: 0.2;
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(10%) scale(1.5);
+            stroke-width: 0.2;
+            opacity: 0;
+        }
+    }
+
+    @keyframes wave {
+        to {
+            transform: translateX(-100%);
+        }
+    }
+
+    @keyframes ball {
+        to {
+            transform: translateY(20%);
+        }
+    }
+
+
 body(style="position: relative;")
     img(src="/img/start/leererRaum.jpg", alt="Leerer Raum", style="width: 100%;height: 100%;object-fit: cover;")
     div(style="position: absolute; top: 10%; left: 10%;")
@@ -38,6 +180,72 @@ body(style="position: relative;")
             //-button(style="color: #7c7875;border: none;cursor: pointer;font-size: 1.6rem;padding: 1.4rem 3rem;border-radius: 10rem;text-transform: uppercase;display: inline-block;text-decoration: none;position: relative;-webkit - transition: all 0.4s;transition: all 0.4s;font-weight: 400;-webkit - backface - visibility: hidden;backface-visibility: hidden;") Show next joke
             button(style="background-color: #ffd899; color: white; font-size: 1.2rem;padding: 1.2rem 2rem;") Show next joke
         h2#joke(style="color: #7c7875;")
+
+    footer
+        svg(viewBox="0 0 120 19")
+            defs
+                mask#xxx
+                    circle(cx="7", cy="12", r="40", fill="#fff")
+                filter#goo
+                    fegaussianblur(in="SourceGraphic", stdDeviation="2", result="blur")
+                    fecolormatrix(in="blur", mode="matrix", values=`
+                               1 0 0 0 0
+                               0 1 0 0 0
+                               0 0 1 0 0
+                               0 0 0 13 -9`, result="goo")
+                    feblend(in="SourceGraphic", in2="goo")
+                path#wave(d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 28 h -240 z")
+            use#wave3.wave(xlink:href="#wave", x="0", y="-2")
+            use#wave2.wave(xlink:href="#wave", x="0", y="0")
+            use#wave4.wave(xlink:href="#wave", x="0", y="0")
+            g.topball
+
+
+                circle.ball(cx="110", cy="10", r="5", stroke="none", stroke-width="0", fill="#F8EA9B")
+                //text(text-anchor="middle", x="110", y="10", fill="white", font-size="5px") MubeaTrack
+                //image(xlink:href="/img/logo-color.png", x="105", y="5", width="10", height="10", alt="Mubea logo")
+                //svg(x="100", y="0", width="20", height="20", viewBox="0 0 20 20")
+                svg.heading-box__icon
+                    use(xlink:href='/img/icons.svg#icon-map-pin', x="109", y="6", width="2", height="2",)
+                image(xlink:href="/img/logo-color.png", x="105.5", y="5.5", width="9", height="9", alt="Mubea logo")
+
+                //svg
+                    defs
+                        <clipPath id="half-circle">
+                        <path d="M0,10 Q10,0 20,10 H0 Z" />
+                        </clipPath>
+                    image(xlink:href="/img/logo-color.png", x="98", y="0", width="10", height="10", alt="Mubea logo")
+
+                    //<image xlink:href="/img/logo-color.png" x="0" y="0" width="100" height="50" clip-path="url(#half-circle)" />
+
+
+                //g.arrow
+
+                     polyline(class="", points="108,8 110,6 112,8", fill="none")
+                     polyline(class="", points="110,6 110,10.5", fill="none")
+            g.gooeff
+                     circle.drop.drop1(cx="10", cy="2", r="1.8")
+
+                     <text class="drop drop1" x="15" y="5"  font-size="5px" text-anchor="middle">M</text>
+                     <text class="drop drop4" x="18" y="5"  font-size="5px" text-anchor="middle">u</text>
+                     <text class="drop drop2" x="21" y="5"  font-size="5px" text-anchor="middle">b</text>
+                     <text class="drop drop1" x="24" y="5"  font-size="5px" text-anchor="middle">e</text>
+                     <text class="drop drop3" x="27" y="5"  font-size="5px" text-anchor="middle">a</text>
+                     circle.drop.drop2(cx="30", cy="2.5", r="1.5")
+                     circle.drop.drop3(cx="16", cy="2.8", r="1.2")
+                     circle.drop.drop4(cx="26", cy="2.8", r="1.2")
+                     use.drop.drop1( xlink:href="/img/icons.svg#icon-machine-asma" x="30" y="3" width="6" height="6")
+                     use#wave1.wave(xlink:href="#wave", x="0", y="1")
+                     //svg.heading-box__icon
+                        use( xlink:href="/img/icons.svg#icon-map-pin" x="30" y="5" width="2" height="2")
+
+                                                                                    //
+                                                                                      g mask="url(#xxx)">
+                                                                                      <path   id="wave1"  class="wave" d="M 0,10 C 30,10 30,15 60,15 90,15 90,10 120,10 150,10 150,15 180,15 210,15 210,10 240,10 v 28 h -240 z" />
+                                                                                      </g>
+                                                                                      </g
+            div(style="padding-top: 5px") have fun - by John Schmidt
+
 
     script.
       async function loadJoke () {

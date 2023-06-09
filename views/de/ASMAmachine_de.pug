@@ -14,21 +14,21 @@ block content
 
                 ul.side-nav
                     +navItem('#', `${data.machine.name}`, 'machine', true)
-                    +navItem('#', 'Orders', 'list')
-                    +navItem('#', 'Others', 'settings')
+                    +navItem('#', 'Aufträge', 'list')
+                    +navItem('#', 'Sonstige', 'settings')
                 .admin-navs
                     h5.admin-nav__heading ASMA
                     ul.side-nav
-                        +navItem('#', 'Error-reports', 'user-error-report', true)
-                        +navItem('#', 'Consumable material', 'alert-circle')
-                        +navItem('#', 'Testing equipment', 'alert-octagon')
+                        +navItem('#', 'Störmeldungen', 'user-error-report', true)
+                        +navItem('#', 'Verbrauchsmaterial', 'alert-circle')
+                        +navItem('#', 'Prüfmittel', 'alert-octagon')
 
 
 
 
             .user-view__content
                 .user-view__ASMAform-container
-                    h2.heading-secondary.ma-bt-md Machine reporter
+                    h2.heading-secondary.ma-bt-md Maschinen- Reporter
                     br
                     //h1 haaaaaaaaaaaaaaaaaaa   /api/v1/departments/Anarbeit/machinery/Rattunde1
                     //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
@@ -38,79 +38,74 @@ block content
 
                     br
                     button.btn.stoerBtn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: #E93A48')
-                            data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Machine run!!
+                        data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
                     //button(id="machineStatusRunBtn" class="btn stoerBtn" style="background-color: lightgreen" data-statusRun="true" data-machineIDRun="{{data.machine._id}}")
 
                     br
 
                     table
-                          br
-                          each sector in data.machine.sectorASMA
+                      br
+                      each sector in data.machine.sectorASMA
+                          tr
+                              td(colspan="2")
+                                  br
+                                  h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
+                                  br
+                                  br
+                                  h1= sector.name
+                                  h4= sector.description_de
+                                  br
+                                  br
+                                  br
+                          each component in sector.components
                               tr
-                                  td(colspan="2")
+                                  td
+                                      h2= component.name_de
+                                      h4= component.description_de
                                       br
-                                      h1(style='color: lightgrey;') _______________________________________________________________________________________________________________________________________
-                                      br
-                                      br
-                                      h1= sector.name
-                                      h4= sector.description_en
-                                      br
-                                      br
-                                      br
-                              each component in sector.components
-                                  tr
-                                      td
-                                          h2= component.name_en
-                                          h4= component.description_en
-                                          br
-                                      td
+                                  td
 
-                                          table
-                                                each detail, index in component.componentDetails
-                                                    if index % 4 === 0
-                                                        tr
-                                                    td(style="border: 1px solid white; padding: 10px; margin: 5px;")
-                                                        - const popupID = `${index}-${Date.now()}`;
-                                                        button.btn.btn--small.stoerBtn.popup-trigger(
-                                                            class=`stoerBtn-${index}`,
-                                                            id=`stoerBtn-${index}`,
-                                                            style=(detail.status ? 'background-color: #50BE5F; color: white' : 'background-color: red; color: white'),
-                                                            data-status=(detail.status ? 'true' : 'false'),
-                                                            data-detail-id=detail._id
-                                                        )
-                                                         div(id=`popup-${index}` class="popup")= detail.name_en
-                                                           each malReport in data.malReports
-                                                               if(detail._id.toString() === malReport.idComponentDetail_Mal)
-                                                                   //each logfal in malReport.logfal_Repair
-                                                                   span( class="popuptext" id="myPopup-${popupID}" style="font-size:8px")
-                                                                     p= malReport.logFal_Repair[0].messageProblem_en_Repair
-                                                                     p= malReport.logFal_Repair[0].messageMission_en_Repair
-                                                                   //p( class="popuptext" id="myPopup-${popupID}" style="font-size:8px")= malReport.logFal_Repair[0].messageMission_de_Repair
-                                                                   // `${malReport.logFal_Repair.messageProblem_de_Repair}`
-                                                                   //if (malReport.logfal_Repair && malReport.logfal_Repair.length > 0)
-                                                                   //  each logfal in malReport.logfal_Repair
-                                                                   //
-                                                                   //          span( class="popuptext" id="myPopup-${popupID}")= `${logfal.messageProblem_de_Repair}`
-                                                                   //          //span( class="popuptext" id="myPopup-${popupID}")= `${malReport.user_Mal.lastName}`
-                                                                   //              //</div>
-                                                                   //else
-                                                                   //    //span( class="popuptext" id="myPopup-${popupID}")= `${malReport.user_Mal.lastName}`
-                                                                   //    span( class="popuptext" id="myPopup-${popupID}")= `kein Logfal`
-                                                        each malReport in data.malReports
-                                                         if(detail._id.toString() === malReport.idComponentDetail_Mal)
-                                                          div(id=`popup-${index}-popup`, style="display: none; font-size:14px")= `${malReport.user_Mal.firstName} ${malReport.user_Mal.lastName}`
-                                                        if !detail.status
+                                      table
+                                        each detail, index in component.componentDetails
+                                            if index % 4 === 0
+                                                tr
+                                            td(style="border: 1px solid white; padding: 10px; margin: 5px;")
+                                                - const popupID = `${index}-${Date.now()}`;
+                                                button.btn.btn--small.stoerBtn.popup-trigger(
+                                                    class=`stoerBtn-${index}`,
+                                                    id=`stoerBtn-${index}`,
+                                                    style=(detail.status ? 'background-color: #50BE5F; color: white' : 'background-color: red; color: white'),
+                                                    data-status=(detail.status ? 'true' : 'false'),
+                                                    data-detail-id=detail._id
+                                                )
+                                                   div(id=`popup-${index}` class="popup")= detail.name_de
+                                                      each malReport in data.malReports
+                                                          if(detail._id.toString() === malReport.idComponentDetail_Mal)
+                                                              //each logfal in malReport.logfal_Repair
+                                                              span( class="popuptext" id="myPopup-${popupID}" style="font-size:8px")
+                                                                  p= malReport.logFal_Repair[0].messageProblem_de_Repair
+                                                                  p= malReport.logFal_Repair[0].messageMission_de_Repair
+
+                                                each malReport in data.malReports
+                                                    if(detail._id.toString() === malReport.idComponentDetail_Mal)
+                                                        div(id=`popup-${index}-popup`, style="display: none; font-size:14px")= `${malReport.user_Mal.firstName} ${malReport.user_Mal.lastName}`
+
+
+                                                if !detail.status
                                                             each malReport in data.malReports
                                                                 if(detail._id.toString() === malReport.idComponentDetail_Mal)
+
                                                                     div(id=`popupStatus-${index}`)
-                                                                        -const createAt = malReport.createAt_Mal;
-                                                                        -const formattedDate = createAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                                                                        -const formattedTime = createAt.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-                                                                        span(style="font-weight: bold;margin-left: 12px;")=`${malReport.estimatedStatus}%`
-                                                                        span(style="margin-left: 5px;")=`${formattedDate} / ${formattedTime}`
+
+                                                                      -const createAt = malReport.createAt_Mal;
+                                                                      -const formattedDate = createAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                                                      -const formattedTime = createAt.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                                                                      span(style="font-weight: bold;margin-left: 12px;")=`${malReport.estimatedStatus}%`
+                                                                      span(style="margin-left: 5px;")=`${formattedDate} / ${formattedTime}`
+
                                                                 else
 
-                                                    br
+                                            br
 
                     br
 
@@ -136,14 +131,14 @@ block content
                         input(type="hidden", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
                         //br
                         //br
-                        button.btn.btn--small.btn--gray(id="abszBtn") Send error message
+                        button.btn.btn--small.btn--gray(id="abszBtn") Stör- Meldung absetzen
                         br
                         br
                         //-a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machineName}`) Return
                         br
                         br
                         br
-                        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Back
+                        a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
 
 
     script.
@@ -156,9 +151,9 @@ block content
 
 
       if (machineStatusRunBtn.style.backgroundColor === 'lightgreen') {
-        machineStatusRunBtn.textContent = 'Machine running';
+        machineStatusRunBtn.textContent = 'Anlage läuft';
       } else {
-        machineStatusRunBtn.textContent = 'Machine not running';
+        machineStatusRunBtn.textContent = 'Anlage läuft nicht';
       }
       const statusRun = machineStatusRunBtn.getAttribute('data-statusRun');
       const machineIDRun = machineStatusRunBtn.getAttribute('data-machineIDRun')

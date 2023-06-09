@@ -9,7 +9,7 @@ const malReportSchema = new mongoose.Schema({
   createAt_Mal: {
     type: Date,
     default: Date.now,
-    select: false,
+    //select: false,
   },
   nameMachine_Mal: {
     type: String,
