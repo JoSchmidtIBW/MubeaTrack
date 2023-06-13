@@ -18,8 +18,11 @@ import {
   getManageUserMachine,
   getManageASMAMachine,
   getAboutMubeaTrack,
+  getAboutMubeaTrackInlogt,
   getAboutASMA,
+  getAboutASMAInlogt,
   getContact,
+  getContactInlogt,
   getCreateASMAMachine,
   getUpdateSectorASMA,
   getCreateComponents,
@@ -245,9 +248,9 @@ router.get('/aboutMubeaTrack', getAboutMubeaTrack);
 router.get('/aboutASMA', getAboutASMA);
 router.get('/contact', getContact);
 
-router.get('/aboutMubeaTrackInlogt', isLoggedIn, getAboutMubeaTrack);
-router.get('/aboutASMAInlogt', isLoggedIn, getAboutASMA);
-router.get('/contactInlogt', isLoggedIn, getContact);
+router.get('/aboutMubeaTrackInlogt', isLoggedIn, getAboutMubeaTrackInlogt);
+router.get('/aboutASMAInlogt', isLoggedIn, getAboutASMAInlogt);
+router.get('/contactInlogt', isLoggedIn, getContactInlogt);
 
 export default router;
 
