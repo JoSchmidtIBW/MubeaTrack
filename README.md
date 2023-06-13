@@ -63,30 +63,29 @@ npm install
 
 
 
-####----------------------------copy to config.env--------------------------------------------------
-####Development Environment Configuration
+--------------------------------------------------  
+####Development Environment Configuration  
 NODE_ENV=development
 
-####Application Port Configuration  Development Port/Production Port
-DEV_PORT=7566  
-PROD_PORT=7577
+####Application Port Configuration  Development Port/Production Port  
+DEV_PORT=7566    
+PROD_PORT=7577  
 
-####DB Configuration
-DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority
-DATABASE_MONGODB_PASSWORD=r9v5lGxvQ27M06xZ
+####DB Configuration  
+DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority  
+DATABASE_MONGODB_PASSWORD=r9v5lGxvQ27M06xZ  
 
-####JWT Configuration
-JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREnCT32
-JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s
-JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen
+####JWT Configuration  
+JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREnCT32  
+JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s  
+JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen  
 
-####Email Configuration
-EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail
-EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password
-EMAIL_HOST=sandbox.smtp.mailtrap.io#von MailTrap
-EMAIL_PORT=2525#Swisscom25#von MailTrap
-####----------------------------copy to config.env------------------------------------------------
-
+####Email Configuration  
+EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail  
+EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password  
+EMAIL_HOST=sandbox.smtp.mailtrap.io#von MailTrap  
+EMAIL_PORT=2525#Swisscom25#von MailTrap  
+-------------------------------------------------- 
 
 ## Benutzung
 Bundler und Server müssen für die Web-Anwendung laufen. 
@@ -150,7 +149,7 @@ node .\dev-data\data\import-dev-data.mjs --delete
 
 Um sich als Admin anzumelden, verwenden Sie bitte die folgenden Anmeldeinformationen:
 
-- employeenumber:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**70220**
+- employeenumber:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**70220**
 - password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**test1234**
 
 Geben Sie diese Informationen im Browser ein, um sich als Admin anzumelden.

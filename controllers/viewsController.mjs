@@ -238,6 +238,7 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
 export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log('Bin getASMAMachine');
+  console.log(req);
   //console.log(req.params.machineName);
   console.log(req.params);
   const departmentName = req.params.departmentName;
@@ -294,6 +295,7 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
     return next(new AppError('There is no machine with that name.', 404)); //404= not found
   }
 
+  //const statusCode = 200;
   if (req.user.language === 'de') {
     res.status(200).render('ASMAmachine_de', {
       title: 'ASMA- Maschine',
@@ -1084,8 +1086,13 @@ export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
     });
   }
 });
-
 export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutMubeaTrack', {
+    title: 'About MubeaTrack',
+  });
+});
+
+export const getAboutMubeaTrackInlogt = catchAsync(async (req, res, next) => {
   if (req.user.language === 'de') {
     res.status(200).render('aboutMubeaTrack_de', {
       title: 'Über MubeaTrack',
@@ -1097,7 +1104,7 @@ export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
   }
 });
 
-export const getAboutASMA = catchAsync(async (req, res, next) => {
+export const getAboutASMAInlogt = catchAsync(async (req, res, next) => {
   if (req.user.language === 'de') {
     res.status(200).render('aboutASMA_de', {
       title: 'Über ASMA',
@@ -1109,7 +1116,21 @@ export const getAboutASMA = catchAsync(async (req, res, next) => {
   }
 });
 
+//
+export const getAboutASMA = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutASMA', {
+    title: 'About ASMA',
+  });
+});
+
 export const getContact = catchAsync(async (req, res, next) => {
+  res.status(200).render('contact', {
+    title: 'Contact',
+  });
+});
+
+export const getContactInlogt = catchAsync(async (req, res, next) => {
+  console.log(req.user);
   if (req.user.language === 'de') {
     res.status(200).render('contact_de', {
       title: 'Kontakt',
@@ -1119,6 +1140,12 @@ export const getContact = catchAsync(async (req, res, next) => {
       title: 'Contact',
     });
   }
+
+  // if (req.user.language === undefined) {
+  //   res.status(200).render('contact', {
+  //     title: 'Contact',
+  //   });
+  // }
 });
 
 export const getManageUserMachine = catchAsync(async (req, res, next) => {
