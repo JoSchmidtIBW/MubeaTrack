@@ -7,8 +7,7 @@
     }
   ],
   "env": {
-    "MONGO_URI": "mongodb+srv://flnc85:r9v5lGxvQ27M06xZ@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority",
-    "PORT": "process.env.DEV_PORT"
+    "MONGO_URI": "mongodb+srv://flnc85:r9v5lGxvQ27M06xZ@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority"
   },
 
   "routes": [
@@ -16,5 +15,8 @@
       "src": "/(.*)",
       "dest": "server.mjs"
     }
-  ]
+  ],
+  "env": {
+    "PORT": "3666"
+  }
 }
