@@ -1,4 +1,6 @@
-import * as assert from 'assert';
+import dotenv from 'dotenv';
+dotenv.config({ path: './config.env' });
+//import * as assert from 'assert';
 //const { expect } = require('chai');
 import { expect } from 'chai';
 //const chaiHttp = require('chai-http');
@@ -110,7 +112,7 @@ describe('getContactInlogt', () => {
 describe('AboutMubeaTrack- Page Rendering Tests', () => {
   it('Should render the aboutMubeaTrack- page with the correct title: MT | About MubeaTrack', async () => {
     const res = await chai //req.user.language === 'de'
-      .request('http://127.0.0.1:7566') //http://127.0.0.1:7566/api/v1/contactInlogt
+      .request('http://127.0.0.1:' + process.env.DEV_PORT) //http://127.0.0.1:7566/api/v1/contactInlogt
       .get('/api/v1/aboutMubeaTrack')
       .send();
 
@@ -174,7 +176,7 @@ describe('getAboutMubeaTrackInlogt', () => {
 describe('AboutASMA- Page Rendering Tests', () => {
   it('Should render the aboutASMA- page with the correct title: MT | About ASMA', async () => {
     const res = await chai
-      .request('http://127.0.0.1:7566')
+      .request('http://127.0.0.1:' + process.env.DEV_PORT)
       .get('/api/v1/aboutASMA')
       .send();
 
@@ -279,7 +281,10 @@ describe('getAccount', () => {
 
 describe('Start- Page Rendering Button Show next Joke', () => {
   it('Should render the button: Show next Joke', async () => {
-    const res = await chai.request('http://127.0.0.1:7566').get('/').send();
+    const res = await chai
+      .request('http://127.0.0.1:' + process.env.DEV_PORT)
+      .get('/')
+      .send();
 
     // console.log(req);
 
@@ -347,7 +352,7 @@ describe('getLoginForm', () => {
 describe('Login- Page Rendering Tests', () => {
   it('Should render the login- page with the correct title: MT | Log into your account', async () => {
     const res = await chai
-      .request('http://127.0.0.1:7566')
+      .request('http://127.0.0.1:' + process.env.DEV_PORT)
       .get('/api/v1/login')
       .send();
 

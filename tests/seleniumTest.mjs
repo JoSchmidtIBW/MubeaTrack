@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: './config.env' });
 import assert from 'assert';
 import { Builder, By, until } from 'selenium-webdriver';
 import 'chromedriver';
@@ -19,7 +21,9 @@ describe('Test load next site after login', function () {
       await sleep(2000);
 
       await driver.wait(
-        until.urlIs('http://127.0.0.1:7566/api/v1/overview'),
+        until.urlIs(
+          'http://127.0.0.1:' + process.env.DEV_PORT + '/api/v1/overview'
+        ),
         5000
       );
 
@@ -29,7 +33,7 @@ describe('Test load next site after login', function () {
 
       assert.strictEqual(
         currentUrl,
-        'http://127.0.0.1:7566/api/v1/overview',
+        'http://127.0.0.1:' + process.env.DEV_PORT + '/api/v1/overview',
         'URL after login should be: ' + currentUrl
       );
     } finally {
@@ -47,7 +51,9 @@ describe('Test, when admin logs in and clicks on his avatar', function () {
     this.timeout(15000);
     let driver = await new Builder().forBrowser('chrome').build();
     try {
-      await driver.get('http://127.0.0.1:7566/api/v1/login');
+      await driver.get(
+        'http://127.0.0.1:' + process.env.DEV_PORT + '/api/v1/login'
+      );
 
       await driver.findElement(By.id('employeeNumber')).sendKeys('70220');
       //await sleep(1000);
@@ -57,7 +63,9 @@ describe('Test, when admin logs in and clicks on his avatar', function () {
       await sleep(2000);
 
       await driver.wait(
-        until.urlIs('http://127.0.0.1:7566/api/v1/overview'),
+        until.urlIs(
+          'http://127.0.0.1:' + process.env.DEV_PORT + '/api/v1/overview'
+        ),
         5000
       );
 
