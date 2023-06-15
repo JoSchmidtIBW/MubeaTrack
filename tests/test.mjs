@@ -42,7 +42,7 @@ chai.should();
 describe('Contact- Page Rendering Tests', () => {
   it('Should render the contact- page with the correct title: MT | Contact', async () => {
     const res = await chai //req.user.language === 'de'
-      .request('http://127.0.0.1:7566') //http://127.0.0.1:7566/api/v1/contactInlogt
+      .request('http://127.0.0.1:' + process.env.DEV_PORT) //http://127.0.0.1:7566/api/v1/contactInlogt
       .get('/api/v1/contact')
       .send();
 
