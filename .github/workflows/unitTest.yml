@@ -49,5 +49,4 @@ jobs:
       - name: Run Mocha Unit-Testing
         run: |
           npm i
-          npm run dev
           npm run test
