@@ -64,27 +64,29 @@ npm install
 
 
 --------------------------------------------------  
-####Development Environment Configuration  
+```bash
+#Development Environment Configuration  
 NODE_ENV=development
 
-####Application Port Configuration  Development Port/Production Port  
+#Application Port Configuration  Development Port/Production Port  
 DEV_PORT=7566    
 PROD_PORT=7577  
 
-####DB Configuration  
+#DB Configuration  
 DATABASE_MONGODB=mongodb+srv://flnc85:<PASSWORD>@cluster0.vjw8xwh.mongodb.net/MubeaTrack?retryWrites=true&w=majority  
 DATABASE_MONGODB_PASSWORD=r9v5lGxvQ27M06xZ  
 
-####JWT Configuration  
+#JWT Configuration  
 JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREnCT32  
 JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s  
 JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen  
 
-####Email Configuration  
+#Email Configuration  
 EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail  
 EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password  
 EMAIL_HOST=sandbox.smtp.mailtrap.io#von MailTrap  
 EMAIL_PORT=2525#Swisscom25#von MailTrap  
+```
 -------------------------------------------------- 
 
 ## Benutzung
