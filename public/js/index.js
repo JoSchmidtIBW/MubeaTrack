@@ -4,7 +4,13 @@ import '@babel/polyfill'; // first line of imports, für ältere Browser
 import { login, logout } from './login';
 import { createUser } from './user';
 
-import { showUsers, createNewUser, updateUser, deleteUser } from './user';
+import {
+  showUsers,
+  createNewUser,
+  updateUser,
+  deleteUser,
+  forgotPassword,
+} from './user';
 
 import {
   showMachinery,
@@ -120,6 +126,8 @@ const manageASMAUnterhaltMachineClosedMalReportsTable = document.querySelector(
 );
 const myMalReportsTable = document.querySelector('.myMalReportsTable');
 
+const forgotPasswordForm = document.querySelector('.form--forgotPassword');
+
 //const createUserBtn = document.querySelector('.createUserBtn')
 
 //if (createUserBtn) createUserBtn.addEventListener('click', createUser);
@@ -230,6 +238,16 @@ if (userPasswordForm)
 // }
 
 //const usersTable = document.querySelector('.usersTable');
+
+if (forgotPasswordForm) {
+  forgotPasswordForm.addEventListener('submit', (e) => {
+    console.log('bin forgotPasswordForm');
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    console.log('email: ' + email);
+    forgotPassword(email);
+  });
+}
 
 if (manageUsersTable) {
   //muss unterhalb showUsers sein

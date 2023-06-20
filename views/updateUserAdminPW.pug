@@ -77,11 +77,11 @@ block content
                       label(class="form__label", for="password") Password
                       input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
                   div(class="form__group ma-bt-md")
-                      label(class="form__label", for="passwordEncripted") decryptedPassword
+                      label(class="form__label", for="passwordEncripted") Decrypted password
 
-                      input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
+                      input#passwordEncripted(class="form__input", type="text", value=data.userDecryptedPassword, readonly, style="background-color: lightgrey;")
 
-                      script.
+                      //script.
                         console.log("test")
                         let encryptedPassword = "#{data.userToUpdate.password}";
                         let key = CryptoJS.SHA256('mySecretKey1');

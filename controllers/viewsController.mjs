@@ -7,6 +7,8 @@ import catchAsync from '../utils/catchAsync.mjs';
 import APIFeatures from '../utils/apiFeatures.mjs';
 import mongoose from 'mongoose';
 import * as url from 'url';
+import CryptoJS from 'crypto-js';
+import { decryptData } from '../utils/crypto.mjs';
 
 // http://127.0.0.1:7566/
 export const getStart = catchAsync(async (req, res, next) => {
@@ -722,6 +724,12 @@ export const getLoginForm = (req, res) => {
   });
 };
 
+export const getForgotPassword = catchAsync(async (req, res, next) => {
+  res.status(200).render('forgotPassword', {
+    title: 'Forgot password', //
+  });
+});
+
 export const getManageMachinery = catchAsync(async (req, res) => {
   const machinery = await Machine.find().select('+createdAt');
 
@@ -1276,6 +1284,21 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
     .select('+password')
     .populate('machinery');
 
+  //   var encryptedStringPasswortLClient;
+  // // // passwort wird hier gehascht und schreibt es in den: encryptedStringPasswortLClient
+  // // //**************************************************************************
+  // let data = this.password; //passwortLClient;//Message to Encrypt
+  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
+  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  // // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
+  // encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
+  // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
+  // //--------------------------------------------------------------------------
+  // //das ist zum wieder das normale pw anzeigen, möchte das später einbauen
+  let userDecryptedPassword = decryptData(userToUpdate.password, iv, key);
+  console.log('userDecryptedPassword: ' + userDecryptedPassword);
+  // //**************************************************************************
+
   const allDepartments = await Department.find()
     .sort('_id')
     .populate('machinery');
@@ -1322,6 +1345,7 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
           userToUpdate: userToUpdate,
           departments: allDepartments,
           currentUser: currentUser,
+          userDecryptedPassword: userDecryptedPassword,
           //currentUserLoggedIn,
         },
       });
@@ -1333,6 +1357,7 @@ export const getUpdateUser = catchAsync(async (req, res, next) => {
           userToUpdate: userToUpdate,
           departments: allDepartments,
           currentUser: currentUser,
+          userDecryptedPassword: userDecryptedPassword,
           //currentUserLoggedIn,
         },
       });

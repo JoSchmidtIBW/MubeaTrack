@@ -248,6 +248,28 @@ export const deleteUser = async (id) => {
     showAlert('error', err.response.data.message);
   }
 };
+export const forgotPassword = async (email) => {
+  console.log('bin forgotPassword in user.js');
+  console.log('email: ' + email);
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: `${apiUrl}/users/forgotPasswordAdmin`,
+      data: {
+        email,
+      },
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Password send to E-Mail');
+      window.setTimeout(() => {
+        location.assign('/api/v1/login');
+      }, 1200);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
 
 // export const createUser = async (email, password) => {
 //   //alert(email)

@@ -273,7 +273,7 @@ export const protect = catchAsync(async (req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser; // hier wird gebunden,,,,,,,,,,  // hier wird der user, mit all seinen angaben restored
-  console.log(req.user);
+  //console.log(req.user);
   res.locals.user = currentUser; // hier wird gebunden,,,,, aber für renderet site// hier wird der user, mit all seinen angaben restored
   next(); // diese prodect middleware läuft immer zuerst
 });

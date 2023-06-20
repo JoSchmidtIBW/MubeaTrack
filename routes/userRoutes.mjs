@@ -9,6 +9,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  getForgotPasswordAdmin,
   getUsersMachinery,
   getUpdateUserMachinery,
   uploadUserPhoto,
@@ -32,6 +33,9 @@ const router = express.Router();
 //http: //127.0.0.1:4301/api/v1/users/
 router.get('/', getAllUsers);
 
+router.post('/forgotPasswordAdmin', getForgotPasswordAdmin);
+router.post('/forgotPassword', forgotPassword); //für jederman // inaktiv
+
 router
   .route('/usersMachinery')
   .get(protect, restrictTo('admin', 'Chef'), getUsersMachinery);
@@ -48,7 +52,7 @@ router.post('/login', login); // nur post, sendet passwort und employeeNumber, k
 
 router.get('/logout', logout); // muss nur get sein, schicken keine daten oder ändern welche
 //{{URL}}api/v1/users/forgotPassword
-router.post('/forgotPassword', forgotPassword); //für jederman
+
 //{{URL}}api/v1/users/resetPassword/:token   PATCH
 router.patch('/resetPassword/:token', resetPassword); //für jederman
 
