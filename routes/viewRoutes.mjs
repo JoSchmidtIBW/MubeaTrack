@@ -36,6 +36,7 @@ import {
   getUpdateMalReport,
   getASMAUnterhaltMachineClosedMalReports,
   getMyMalReports,
+  getForgotPassword,
 } from '../controllers/viewsController.mjs';
 
 import {
@@ -128,6 +129,7 @@ router.get(
 
 // /login
 router.get('/login', isLoggedIn, getLoginForm);
+router.get('/forgotPassword', getForgotPassword);
 
 router.get('/me', protect, getAccount); // diese sollte protect sein
 

@@ -81,6 +81,9 @@ JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREn
 JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s  
 JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen  
 
+#CRYPTOJS Configuration  
+CRYPTOJS_SECRET_KEY=mySecretKey1  
+
 #Email Configuration  
 EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail  
 EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password  

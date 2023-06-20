@@ -4,6 +4,9 @@ import User from '../models/userModel.mjs';
 import AppError from '../utils/appError.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 import mongoose from 'mongoose';
+import CryptoJS from 'crypto-js';
+import { encryptData, decryptData } from '../utils/crypto.mjs';
+import sendEmail from '../utils/email.mjs';
 //import factory from '../controllers/handlerFactory.mjs';
 import {
   getAll,
@@ -570,6 +573,62 @@ export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
       .json({ status: 'fail', message: 'Ein Fehler ist aufgetreten' });
   }
 });
+
+export const getForgotPasswordAdmin = catchAsync(async (req, res, next) => {
+  console.log('bin getForgotPasswordAdmin');
+  console.log(req.body.email);
+
+  const userWithEmail = await User.findOne({ email: req.body.email }).select(
+    'password email'
+  );
+  console.log('userWithEmail: ' + userWithEmail);
+
+  if (!userWithEmail) {
+    return next(new AppError('No users found with that email', 404));
+  }
+
+  //   var encryptedStringPasswortLClient;
+  // // // passwort wird hier gehascht und schreibt es in den: encryptedStringPasswortLClient
+  // // //**************************************************************************
+  // let data = this.password; //passwortLClient;//Message to Encrypt
+  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
+  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  // // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
+  // encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
+  // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
+  // //--------------------------------------------------------------------------
+  // //das ist zum wieder das normale pw anzeigen, möchte das später einbauen
+  let decrypteddata = decryptData(userWithEmail.password, iv, key);
+  console.log('decrypteddata: ' + decrypteddata);
+  // //**************************************************************************
+
+  const message = `Forgot your password?\n\nYour password is: \n\n${decrypteddata}\n
+  \nIf you didn't forget your password, please ignore this email!`;
+
+  try {
+    await sendEmail({
+      email: userWithEmail.email,
+      subject: 'Your password reset token (valid for 10min)',
+      message,
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email!',
+    });
+  } catch (err) {
+    //   user.passwordResetToken = undefined;
+    //   user.passwordResetExpires = undefined;
+    //   await user.save({ validateBeforeSave: false });
+    //
+    return next(
+      new AppError(
+        'There was an error sending the email. Try again later!',
+        500
+      )
+    );
+  }
+});
+
 // export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
 //   console.log('Bin getUpdateUserMachinery');
 //

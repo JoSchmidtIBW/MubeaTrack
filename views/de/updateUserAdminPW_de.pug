@@ -82,14 +82,16 @@ block content
                                         label(class="form__label", for="password") Passwort
                                         input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
                                 div(class="form__group ma-bt-md")
-                                        label(class="form__label", for="passwordEncripted") decryptedPassword
+                                        label(class="form__label", for="passwordEncripted") Entschlüsseltes Passwort
 
-                                        input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
+                                        input#passwordEncripted(class="form__input", type="text", value=data.userDecryptedPassword, readonly, style="background-color: lightgrey;")
 
-                                        script.
+                                        //script.
+                                          import dotenv from 'dotenv';
+                                          dotenv.config({ path: './config.env' });
                                           console.log("test")
                                           let encryptedPassword = "#{data.userToUpdate.password}";
-                                          let key = CryptoJS.SHA256('mySecretKey1');
+                                          let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY);
                                           let iv = CryptoJS.enc.Base64.parse('');
                                           let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
                                           document.getElementById("passwordEncripted").value = decryptedPassword;

@@ -48,10 +48,6 @@ jobs:
       # Runs a set of commands using the runners shell ####
       - name: Run Mocha Selenium-Testing
         run: |
-          npm i
+          npm install
           npm run test_selenium
-          sudo apt purge google-chrome-stable
-          sudo apt purge chromium-browser
-          sudo apt install -y chromium-browser
-          pip install requests beautifulsoup4 pandas webdriver-manager selenium
-          npm run test_selenium
+          google-chrome-stable --version

@@ -436,7 +436,7 @@ userSchema.pre('save', async function (next) {
   // //**************************************************************************
   let data = this.password; //passwortLClient;//Message to Encrypt
   let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
-  let key = CryptoJS.SHA256('mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //'mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
   // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
   encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
   // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
@@ -516,7 +516,7 @@ userSchema.methods.correctPassword = async function (
   // //**************************************************************************
   // let data = this.password; //passwortLClient;//Message to Encrypt
   let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
-  let key = CryptoJS.SHA256('mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
+  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //'mySecretKey1'); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
   // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
   // encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
   // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
