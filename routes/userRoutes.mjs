@@ -9,7 +9,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  getForgotPasswordAdmin,
+  //getForgotPasswordAdmin,
   getUsersMachinery,
   getUpdateUserMachinery,
   uploadUserPhoto,
@@ -33,7 +33,7 @@ const router = express.Router();
 //http: //127.0.0.1:4301/api/v1/users/
 router.get('/', getAllUsers);
 
-router.post('/forgotPasswordAdmin', getForgotPasswordAdmin);
+//router.post('/forgotPasswordAdmin', getForgotPasswordAdmin);
 router.post('/forgotPassword', forgotPassword); //f체r jederman // inaktiv
 
 router
@@ -46,7 +46,7 @@ router
 
 //authentication
 //http: //127.0.0.1:4301/api/v1/users/signup
-router.post('/signup', signup); //hat kein get, und kein update,     post in postman!// f체r jederman
+router.post('/signup', signup); // Inaktiv //hat kein get, und kein update,     post in postman!// f체r jederman
 //http: //127.0.0.1:4301/api/v1/users/login
 router.post('/login', login); // nur post, sendet passwort und employeeNumber, kein get, kein update  //f체r jederman
 
@@ -54,7 +54,7 @@ router.get('/logout', logout); // muss nur get sein, schicken keine daten oder �
 //{{URL}}api/v1/users/forgotPassword
 
 //{{URL}}api/v1/users/resetPassword/:token   PATCH
-router.patch('/resetPassword/:token', resetPassword); //f체r jederman
+router.patch('/resetPassword/:token', resetPassword); //Inaktiv  //f체r jederman
 
 //Protect all routes after this middleware
 router.use(protect); // ab hier, alle middleware sind protected
@@ -70,7 +70,7 @@ router.get('/me', getMe, getUser);
 router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe); // single, weil ein single File //upload.single('photo'),
 //{{URL}}api/v1/users/deleteMe
 //router.delete('/deleteMe', authController.protect, userController.deleteMe)
-router.delete('/deleteMe', deleteMe);
+router.delete('/deleteMe', deleteMe); // Inaktiv
 
 //All routes are only for admin after this middleware
 router.use(restrictTo('admin', 'Chef'));

@@ -1,8 +1,7 @@
 /* eslint-disable */
 
-import '@babel/polyfill'; // first line of imports, für ältere Browser
+import '@babel/polyfill'; // first line of imports, for older browsers
 import { login, logout } from './login';
-import { createUser } from './user';
 
 import {
   showUsers,
@@ -51,17 +50,42 @@ import {
   showClosedMalReports,
 } from './malReport';
 
-import { updateData } from './updateSettings';
 import { updateSettings } from './updateSettings';
 import axios from 'axios';
 import { showAlert } from './alerts.js';
+import { createUser } from './user';
+import { updateData } from './updateSettings';
 
-// const process = require("process");
-const port = 7566;
-// const port = process.env.PORT_NUMBER || 3000;
-const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+// npm run start:prod --> nicht fertig implementiert--------------------
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../config.env' });
+import * as process from 'process';
+//import fs from 'fs';
+//import app from '../../app.mjs';
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+
+//const port2 = process.env.NODE_ENV === 'development' ? 7566 : 7577;
+//const apiUrl = `http://127.0.0.1:${port}/api/v1`;
+
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+const apiUrl = host + port + strPathApiV1;
 
 console.log('Hello from parcel! bin index.js'); //npm run watch:js
+console.log('port in index.js: ' + port);
+console.log('process: ' + JSON.stringify(process));
+console.log('process: ' + JSON.stringify(process.env));
+console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV);
+console.log('process.env.DEV_PORT: ' + process.env.DEV_PORT);
+//console.log('port2: ' + port2);
+//console.log('app.get("env"): ' + app.get('env'));
 
 // DOM Element
 const loginForm = document.querySelector('.form--login');
@@ -583,7 +607,7 @@ if (updateMachineForm) {
     const id = document.getElementById('machineId').value;
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
-    const zone = document.getElementById('zone').value;
+    let zone = document.getElementById('zone').value;
     const type = document.getElementById('type').value;
     const constructionYear = document.getElementById('constructionYear').value;
     const companyMachine = document.getElementById('companyMachine').value;
@@ -600,6 +624,13 @@ if (updateMachineForm) {
     console.log(id);
     console.log(name);
     console.log(description);
+
+    console.log('---------------');
+    console.log(zone);
+    if (zone.startsWith('["')) {
+      zone = zone.replace(/[\[\]"]/g, '');
+    }
+
     console.log(zone);
     console.log(type);
     console.log(constructionYear);

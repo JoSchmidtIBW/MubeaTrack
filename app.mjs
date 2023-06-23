@@ -311,7 +311,7 @@ app.get('/delete-cookie', (req, res) => {
   res.clearCookie('jwtnameCookie5');
   res.clearCookie('jwttester33');
   res.clearCookie('jwtuserCookie5');
-  // REDIRECT OT HOME
+  // REDIRECT TO HOME
   res.redirect('/');
 });
 

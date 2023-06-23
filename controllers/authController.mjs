@@ -1,34 +1,15 @@
-//neue User erstellen, log in, update password ist im Authentifizierungscontroller
-
-//const { promisify } = require('util');
-
 import { promisify } from 'util';
 import crypto from 'crypto';
-
 import jwt from 'jsonwebtoken';
 
 import AppError from '../utils/appError.mjs';
 import sendEmail from '../utils/email.mjs';
-
-import User from '../models/userModel.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
+import User from '../models/userModel.mjs';
 
-// exports.signup = catchAsync(async (req, res, next) => {
-//   // wie createUser aber in authentifizierungsController
-//   const newUser = await User.create(req.body); // daten sind im body, und returnt ein promis, darum await
-//
-//   res.status(201).json({
-//     // 201 für created
-//     status: 'success',
-//     data: {
-//       user: newUser,
-//     },
-//   });
-// });
-
+// Sign function by jwt
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
-    //sign funtktion von jwt
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
@@ -36,63 +17,48 @@ const signToken = (id) => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  //video 142 send coockie, jwt sollte im coockie sein und nicht in browser- localstorage!
-  // um coockie zu erstellen: geht aber nur mit https, und wird ausgelagert, um nur in production zu sein htttps
-  // res.cookie('jwt', token, {
-  //     //expires: new Date(Date.now() + 1000 * 60 * 2) //delete coockie afgter expired
-  //     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-  //     secure: true, // coockie onli send by e verschlüsselten verbindung, also zb HTTPS, das nur in production, desshalb wird das ausgelagert
-  //     httpOnly: true, //provent xros site srippting attaks
-  // })
-
   const cookieOptions = {
-    //expires: new Date(Date.now() + 1000 * 60 * 2) //delete coockie afgter expired
+    // Here the time for the cookie is set, DELETE cookie after expired
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ), // hier wird die zeit vom cookie gesetzt
-    //secure: true, // coockie onli send by e verschlüsselten verbindung, also zb HTTPS, das nur in production, desshalb wird das ausgelagert
-    httpOnly: true, //provent xros site srippting attaks, kann nicht zerstört werden, um es zu löschen oder log out, in dieser art und weise, kann nur das cookie überschrieben werden, jedoch ohne token + neues cookie hat ganz kurze überlebenszeit
+    ),
+    //secure: true, // Cookie only send by e encrypted connection, for example HTTPS
+    httpOnly: true, //Prevent Cross-Site Scripting (XSS) attacks, can not be destroyed, to delete it or log out, in this way, only the cookie can be overwritten, but without token + new cookie has very short survival time
   };
 
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
   }
 
-  // testen mit postman, create new user, und sehen coockie in postman
-  //res.cookie('jwt ' + user.name, token, cookieOptions) //ev mit name
   res.cookie('jwt', token, cookieOptions);
 
-  // Remove the password from the output
-  user.password = undefined; // wenn user erstellt wird, sieht man eben noch das pw drin
+  // Remove the password from the output, because when user is created, you still see the pw in it
+  user.password = undefined;
 
   res.status(statusCode).json({
-    // 201 für created       testen postman mit post http://127.0.0.1:4301/api/v1/users/signup
+    // 201 for created
     status: 'success',
-    token, // token bevor user-data
+    token, // (token bevor user-data)
     data: {
       user: user,
     },
   });
 };
 
-//exports.signup = catchAsync(async (req, res, next) => {
 export const signup = catchAsync(async (req, res, next) => {
-  // wie createUser aber in authentifizierungsController
-  // const newUser = await User.create(req.body); // daten sind im body, und returnt ein promis, darum await
-  //User.save()                       // problem oben, so wird alles akzeptiert, zum ein user machen
+  // Like createUser, but in authentication- controller, 201 for created
 
   console.log('bin signup: ');
   console.log(req.body);
 
+  // To create a user, only this will be accepted
   const newUser = await User.create({
-    // nur das wird aktzepiert zum ein user machen
     employeeNumber: req.body.employeeNumber,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     age: req.body.age,
     gender: req.body.gender,
     language: req.body.language,
-    //name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
@@ -102,156 +68,80 @@ export const signup = catchAsync(async (req, res, next) => {
     department: req.body.department,
   });
 
-  //jwt token generieren      sign(payload, secret, Ablaufzeit)     payload, welche Daten sollen dort rein, zb die ID von user        'secret'
-  // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-  //     expiresIn: process.env.JWT_EXPIRES_IN,
-  // }) ausgelagert
-
+  // JWT- token generate, sign(payload, secret, expiration time)
   createSendToken(newUser, 201, res);
-  //ausgelagert
-  // const token = signToken(newUser._id)
-
-  // res.status(201).json({ // 201 für created       testen postman mit post http://127.0.0.1:4301/api/v1/users/signup
-  //     status: 'success',
-  //     token, // token bevor user-data
-  //     data: {
-  //         user: newUser,
-  //     }
-  // });
 });
 
-//authentifizierung und authentification, Authorisation
-//authentification jwtwebtoken
-
-//exports.login = catchAsync(async (req, res, next) => {
+// Authentication and Authorisation (authentication with JWT- webtoken)
 export const login = catchAsync(async (req, res, next) => {
-  // const email = req.body.email;
-  //const password = req.body.password;                      //const MA_Nummer = ...
-  // das gibt fehler von linter, weil email und email...
-  //desshalb:
-  const { employeeNumber, password } = req.body; // das ist das, was user sendet bei login
-  console.log('--*-: ' + employeeNumber, password);
-
-  console.log(typeof employeeNumber);
+  const { employeeNumber, password } = req.body;
   const employeeNumberAsNumber = Number(employeeNumber);
-  console.log(typeof employeeNumberAsNumber);
 
-  //1. check if email and password exist wenn gar nix steht!
+  //1. check if employee- number and password exist
   if (!employeeNumber || !password) {
-    // wenn nicht existiert, sende zu client
     return next(
-      new AppError('Pleace provide employee-number and password!', 400)
-    ); //400 = bad request         wenn nicht return, in console. error
+      new AppError('Please provide employee-number and password!', 400) // 400 = bad request
+    );
   }
 
-  // if (!email) {
-  //   // wenn nicht existiert, sende zu client
-  //   return next(new AppError('No user with this email!', 400)); //400 = bad request         wenn nicht return, in console. error
-  // }
-  //
-  // if (!password) {
-  //   // wenn nicht existiert, sende zu client
-  //   return next(new AppError('No User with this password!', 400)); //400 = bad request         wenn nicht return, in console. error
-  // }
-
   //2. check if user exists && password is correct
-  //    user --> ist ein user-dokument
   const user = await User.findOne({
     employeeNumber: employeeNumberAsNumber,
-  }).select('+password'); //geht auch const user = User.findOne({ email })        Achtung: passwort ist bei usermodel secret = false! also ist nur die email da, nicht das passwort, okay.. mit .selcte('+password') sieht man wieder
+  }).select('+password');
   console.log('user in db  gefunden: ' + user);
   console.log('user.password: ' + user.password);
   console.log('password: ' + password);
 
-  // frage, ob passwort gleich, userPasswort in db, in db is hash,
-  //const correct = await user.correctPassword(password, user.password); // correct ist entweder true oder false    muss auch wait sein, wenn oberer user nicht ist
-
-  // if(!user || !correct){//wenn separat, dann hacker hat weiss, ob email nicht korrekt oder passwort usw
-  //     return next(new AppError('Incorrect email or password', 401)); // 401 unauthorize
-  // }
-
-  console.log(
-    'was ist das? ' + (await user.correctPassword(password, user.password))
-  );
-
+  // When separate, if(!user) and if(!!(await user.correctPassword(password, user.password))) a hacker have the information, if employee- number or password is incorrect, correctPassword is true or false
   if (!user || !(await user.correctPassword(password, user.password))) {
-    //wenn separat, dann hacker hat weiss, ob email nicht korrekt oder passwort usw
-    return next(new AppError('Incorrect email or password', 401)); // 401 unauthorize
+    return next(new AppError('Incorrect email or password', 401)); // 401 unauthorized
   }
 
-  // if (!user) {
-  //   //wenn separat, dann hacker hat weiss, ob email nicht korrekt oder passwort usw
-  //   return next(new AppError('User not found', 401)); // 401 unauthorize
-  // }
-
-  //3. If everything is ok, send token to client
-  //// const token = '' //fakeTokken
-  //const token = signToken(user._id)// kann an oder aus, kein unterschied
-
-  // res.status(200).json({
-  //     status: 'success',
-  //     token
-  // })
   createSendToken(user, 200, res);
 });
 
-//video 192
-//exports.logout = (req, res) => {
 export const logout = (req, res) => {
+  // Must have exactly the same name because the old cookie will be overwritten, and the new one has only short lifetime
   res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 1 * 1000), //+ 10 sekunden = 10*1000//Date.now() + 10 * 1000
+    expires: new Date(Date.now() + 1 * 1000), // 1*1000 = 1 second
     httpOnly: true,
-  }); // muss genau so heissen, da das alte cookie überschrieben wird, und neues nur kurze lebenszeit hat
+  });
 
   res.status(200).json({
     status: 'success',
   });
 };
 
-//Middlewarefunction    für protectet route, also die, die eingeloggt sind
-//exports.protect = catchAsync(async (req, res, next) => {
+// Middleware- function for protected route, (for these routes you have to be logged in)
 export const protect = catchAsync(async (req, res, next) => {
   console.log('bin protect in authController');
-  //1.) Getting token and checking if exist
 
+  // 1.) Getting token and checking if exist
   let token;
-  // let cookieWithName = "";
+
+  // In Header.authorization, check if there is a hashed token (Bearer)
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    //kommt von postman in headers, Authorization, Baerer hashIrgendwasToken
-    //const token = req.headers.authorization.split(' ')[1]; das geht bei neuem es6 nicht, muss token outside von ifblock deklariert sein
     token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
-    // (req.cookie.startsWith('jwt')) { //req.cookies.jwt)//(req.cookies.jwt) {
-    //cookieWithName = req.cookie.startsWith('jwt')
-    // token = req.cookie.cookieWithName // token = req.cookie.jwt  jwt wie name in coockie
     token = req.cookies.jwt;
-  } // else if (!req.cookie.startsWith('jwt' || req.cookie === undefined)) {
-  //     cookieWithName === ""
-  // }
-
-  //console.log("token: " + token)
+  }
 
   // check if token exist
   if (!token) {
-    //|| cookieWithName === ""
     return next(
       new AppError('You are not logged in! Please log in to get access.', 401)
-    ); // 401 unauthorizied
+    ); // 401 unauthorized
   }
 
   //2.) Verification token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET); //callback // decoded payload von jwt, id von user
-  //console.log("decoded Payload jwt: " + JSON.stringify(decoded)) // testen mit postman, getAllTours und header ein
-  //JSONwebTokenError heisst, der webtoken wurde verändert, zb bei www.jwt.io     fehler kommt, zb anstatt von mongodb, kommt von jwt libary
-  // try catch zum fehler behandeln, oder im errorController dort dies machen zu lassen
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET); //callback, decoded payload von jwt, id by user
+  //console.log("decoded Payload jwt: " + JSON.stringify(decoded)) // JSONwebTokenError means, the webtoken was changed, e.g. at www.jwt.io error comes, e.g. instead of mongodb, comes from jwt libary
 
   //3.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
   const currentUser = await User.findById(decoded.id).populate('machinery');
-  //console.log('-------');
-  //console.log(currentUser);
 
   if (!currentUser) {
     return next(
@@ -262,8 +152,7 @@ export const protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  //das braucht es meiner meinung nach nicht. das ist schon zu professionell
-  //4.) Check if user change password after the token was issued
+  //4.) Check if user change password after the token was issued // Inaktiv
   if (currentUser.changesPasswordAfter(decoded.iat)) {
     //iat = issuesAt
     return next(
@@ -272,145 +161,126 @@ export const protect = catchAsync(async (req, res, next) => {
   }
 
   // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = currentUser; // hier wird gebunden,,,,,,,,,,  // hier wird der user, mit all seinen angaben restored
-  //console.log(req.user);
-  res.locals.user = currentUser; // hier wird gebunden,,,,, aber für renderet site// hier wird der user, mit all seinen angaben restored
-  next(); // diese prodect middleware läuft immer zuerst
+  req.user = currentUser; // Here the user, with all his details restored / bounded
+  res.locals.user = currentUser; // Here the user, with all his details restored / bounded, but for rendering sites
+  next();
 });
 
-//video 190 für weis das logt in, ähnlich wie protect(entpoints api) aber für ??? rederet website für pug, nicht um route protecten
-// Only for rendered pages, no creating errors!
-//exports.isLoggedIn = async (req, res, next) => {
+// Same like protect- middleware, but only for rendered pages, no creating errors!
+// here it has no catchasync, because an error on logout is sent to the apperror by another cookie, although there is no apperror in here, because not catch async errors
 export const isLoggedIn = async (req, res, next) => {
   console.log('bin isLoggedIn in authController');
-  // hier catchasync weg, weil ein fehler beim logout durch anderes cookie an den apperror gesendet wird, obwohl hier drin kein apperror sit, weil wir nicht catch async errors
+
   if (req.cookies.jwt) {
     try {
-      //1.) Verifytoken
+      //1.) Verifytoken, looks if the cookie have a token
       const decoded = await promisify(jwt.verify)(
-        // schaut ob cookie einen token hat
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
 
-      //2.) Check if user still exist     wenn zb token gestohlen und user pw wechselt//
+      //2.) Check if user still exist, for example the token is stolen or the user changes his password
       const currentUser = await User.findById(decoded.id).populate('machinery');
 
       if (!currentUser) {
         return next();
       }
 
-      //3.) Check if user change password after the token was issued
+      //3.) Check if user change password after the token was issued // Inactive
       if (currentUser.changesPasswordAfter(decoded.iat)) {
         //iat = issuesAt
         return next();
       }
 
       // THERE IS A LOGGED IN USER
-      req.user = currentUser;
-      res.locals.user = currentUser; // hier wird gebunden,,,,, aber für renderet site// hier wird der user, mit all seinen angaben restored
-      return next(); //hier hat cookie    muss return haben, sonst, next, und next wäre nest ohne cookie
+      req.user = currentUser; // Here the user is restored / bounded
+      res.locals.user = currentUser; // Here the user is restored / bounded, but for rendering sites
+      return next(); // Here it has a cookie, must have a return, because without return, then it will be next, and this next has no cookie
     } catch (err) {
-      return next(); // THERE IS A LOGGED IN USER, cookie has not token
+      return next(); // THERE IS A LOGGED IN USER, cookie has NO token
     }
   }
-  next(); // hier, wäre kein logged in user, weil kein cookie
+  next(); // Here, there is no logged in user, because has no cookie
 };
 
-//video 133 --> Postman TEST, DEV, PROD
-
-//autorisierung --> Wenn User rechte hat, sobalt er eingeloggt ist, um zb etwas in der db zu löschen
-//video 134
-//restrictTo        middleware, gleich nach protect-middleware,
-
-//exports.restrictTo = (...roles) => {
+// Authorization, for example, so that a user has rights, as soon as he is logged in, e.g. to delete something in the db
+// RestrictTo, this middleware run after the protect- middleware (--> req.user)
 export const restrictTo = (...roles) => {
-  console.log('bin restrictTo in authController');
-  // wegen req.user, muss zuerst die middleware prodect laufen
   return (req, res, next) => {
-    // roles ['admin', 'lead-guide ]. role = 'user'
     if (!roles.includes(req.user.role)) {
       return next(
-        new AppError('You do not have permission to perform this action!', 403)
-      ); //403 = forbidden
+        new AppError('You do not have permission to perform this action!', 403) // 403 = forbidden
+      );
     }
-
     next();
   };
 };
 
-//video 135
-//exports.forgotPassword = catchAsync(async (req, res, next) => {
+// Inactivate
 export const forgotPassword = catchAsync(async (req, res, next) => {
   console.log('bin forgotPassword in authController');
   // 1.) Get user based on POSTed email
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new AppError('There is no user with email adress', 404)); //404 not found
+    return next(new AppError('There is no user with email adress', 404)); // 404 = not found
   }
 
-  // 2.) Generate the random reset token (kein JWT- Token)
-  const resetToken = user.createPasswordResetToken(); // createPasswordResetToken ist in userModel (not saved, onli modified)
-  await user.save({ validateBeforeSave: false }); // save in db    // aber save geht nur, was wir in userModel haben, braucht ein namen, braucht...
-  //deaktiviert alle validators in schema mongodb
+  // 2.) Generate the random reset token (NO JWT- Token)
+  const resetToken = user.createPasswordResetToken(); // createPasswordResetToken is in userModel (not saved, only modified)
+  await user.save({ validateBeforeSave: false }); // save in db, deactivate all validators in schema mongodb
 
-  // 3.) sended back as an email      protokoll htttp oder https
+  // 3.) sended back as an email      protokol http or https
   const resetURL = `${req.protokol}://${req.get(
-    // ev protocol
+    // protocol...
     'host'
-  )}/api/v1/users/resetPassword/${resetToken}}`; // stored in res.protokoll
+  )}/api/v1/users/resetPassword/${resetToken}}`; // stored in res.protokol
 
-  const message = `Forgot your Password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf 
+  const message = `Forgot your Password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf
     you didn' t forget your password, please ignore this email!`;
 
   //send email
   try {
     await sendEmail({
-      email: user.email, // oder req.body.email ist das gleiche
+      email: user.email, // or req.body.email is the same
       subject: 'Your password reset token (valid for 10 min)',
       message,
     });
 
     res.status(200).json({
       status: 'success',
-      message: 'Token send to email!', // resettoken kann nicht über eine mail verschickt werden, aber email ist ein sicherer ort, wo nurt user zugriff hat
+      message: 'Token send to email!', // Reset-token can not be send by a email, but a email is a save place, wehre only the user has access
     });
   } catch (err) {
-    //token reseten und die usreigenschaften zurücksetzen
+    //reset token and reset user properties
     user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined; // das modified the data, but not save!
-    await user.save({ validateBeforeSave: false }); // save in db    // aber save geht nur, was wir in userModel haben, braucht ein namen, braucht...
-    //deaktiviert alle validators in schema mongodb
+    user.passwordResetExpires = undefined; // this modified the data, but not save!
+    await user.save({ validateBeforeSave: false }); // save in db, deactivate all validators in schema mongoDB
 
     return next(
       new AppError(
-        'There was an error sending the emaily. Try again later!',
+        'There was an error sending the email. Try again later!',
         500
       )
-    ); //500= error happen on server
+    ); // 500 = error happen on server
   }
 });
 
-//video 137
-//exports.resetPassword = catchAsync(async (req, res, next) => {
+// Inactivate
 export const resetPassword = catchAsync(async (req, res, next) => {
   console.log('bin resetPassword in AuthController');
   // 1.) Get user based on the token
-  // token send in url is not encryptet token
-  // the one we have in the db is the encryptet one
+  // Token send in url is not encrypted token, the one we have in the db is the encrypted one
   const hashedToken = crypto
     .createHash('sha256')
-    .update(req.params.token)
-    .digest('hex'); // weil in url bei userRoute ist resetToken/:token
-  // weil heisst /:token, desshalb req.param.token
+    .update(req.params.token) // Because in url by userRoute is resetToken/:token -> req.param.token
+    .digest('hex');
 
-  //token is in this moment the onli thing, you know about user, so token comes from db
+  // Token is in this moment the only thing, you know about user, so token comes from db
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
+    passwordResetExpires: { $gt: Date.now() }, // Consider expiration date
   });
-  // nun aber das ablaufdatum berücksichtigen
 
   // 2.) If token has not expired, and there is user, set the new password
   if (!user) {
@@ -421,53 +291,43 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
 
   user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined; // not save, is onli modifined dokument
+  user.passwordResetExpires = undefined; // not save, is only a modified document
 
-  await user.save(); // save in db  Hier wollen wir aber validaten
+  await user.save(); // save in db  (with validations)
 
   // 3.) Update changedPasswordAT property for the user
-  // ging nicht weiter darauf ein
 
   // 4.) Log the user in, send JWT
-  // If everything is ok, send token to client
-  // const token = signToken(user._id)
 
-  // res.status(200).json({
-  //     status: 'success',
-  //     token
-  // })
   createSendToken(user, 200, res);
 });
 
-// ist nur für loged in Users
-//exports.updatePassword = catchAsync(async (req, res, next) => {
+// Only for logged in Users
 export const updatePassword = catchAsync(async (req, res, next) => {
   console.log('bin updatePassword in authController');
   // 1.) Get user from the collection
-  const user = await User.findById(req.user.id).select('+password'); // der user kommt von der protect middleware, und passwort not includet
+  const user = await User.findById(req.user.id).select('+password');
 
   console.log('user: ' + user);
-  console.log('user.password' + user.password);
-  console.log('req.body.passwordCurrent:' + req.body.passwordCurrent);
+  console.log('user.password: ' + user.password);
+  console.log('req.body.passwordCurrent: ' + req.body.passwordCurrent);
 
   // 2.) Check if POSTed current password is correct
+  const isCorrectPassword = await user.correctPassword(
+    req.body.passwordCurrent,
+    user.password
+  );
+  console.log('isCorrectPassword: ' + isCorrectPassword);
+
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    //dass ist middleware in usermodel
-    return next(new AppError('Your current password is wrong', 401)); //unauthorized
+    return next(new AppError('Your current password is wrong', 401)); // 401 = unauthorized
   }
 
   // 3.) if so, update the password
-  user.password = req.body.password; // wird erst modified, nicht gespeichert
+  user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  await user.save(); //muss validiert werden
-  // nicht await user.findByIdAndUpdate()!!   weil in usermodel validator nur work with save und pre-save middleware also not work
+  await user.save(); // Have to be validated (not with await user.findByIdAndUpdate()! because in the usermodel validator only work with save, pre- save middleware also not work)
 
-  // 4.) logt user in, send JWT
-  // const token = signToken(user._id)
-
-  // res.status(200).json({
-  //     status: 'success',
-  //     token
-  // })
+  // 4.) log user in, send JWT
   createSendToken(user, 200, res);
 });

@@ -216,6 +216,7 @@ const userSchema = new mongoose.Schema({
 // Checks that there can only be one admin,
 // also that this pre-save-middleware does not have to be commented out, when the first user- data is loaded into mongodb
 userSchema.pre('save', async function (next) {
+  console.log('Bin pre-save ');
   const adminCount = await this.constructor.countDocuments({ role: 'admin' });
   // console.log('adminCount: ' + adminCount);
   // console.log('this.isNew: ' + this.isNew);
@@ -225,10 +226,24 @@ userSchema.pre('save', async function (next) {
   // console.log(saveFields);
   // console.log(saveFields.role);
 
-  if (adminCount > 0 && saveFields.role === 'admin') {
-    return next(new AppError('Only one admin- user is allowed!', 400));
-  }
+  // if (adminCount > 0 && saveFields.role === 'admin') {
+  //   return next(new AppError('Only one admin- user is allowed!', 400));
+  // }
 
+  if (adminCount > 0 && saveFields.role === 'admin' && !saveFields.isNew) {
+    // Das Dokument ist bereits in der Datenbank vorhanden und es handelt sich um einen Admin-Benutzer
+    next();
+  } else if (
+    adminCount > 0 &&
+    saveFields.role === 'admin' &&
+    saveFields.isNew
+  ) {
+    // Das Dokument ist neu und es handelt sich um einen neuen Admin-Benutzer
+    return next(new AppError('Only one admin user is allowed!', 400));
+  } else {
+    // Alle anderen Fälle erlauben das Speichern
+    next();
+  }
   next();
 });
 
@@ -499,6 +514,7 @@ userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
+  console.log('bin methods.correctPassword');
   console.log('userPassword: ' + userPassword);
   console.log('candidatePassword: ' + candidatePassword);
 
@@ -527,7 +543,8 @@ userSchema.methods.correctPassword = async function (
   // //**************************************************************************
   // this.password = encryptedStringPasswortLClient;
 
-  if (decrypteddata === candidatePassword || isBcrypt === true) {
+  if (decrypteddata === candidatePassword) {
+    //} || isBcrypt === true) {
     return true;
   } else {
     return false;

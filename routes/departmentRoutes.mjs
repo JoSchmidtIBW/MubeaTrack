@@ -5,7 +5,6 @@ import {
   deleteDepartment,
   getDepartment,
   getAllDepartments,
-  getDepartmentStats,
   updateDepartment,
   uploadDepartmentImages,
   resizeDepartmentImages,
@@ -27,23 +26,18 @@ import machineRouter from '../routes/machineRoutes.mjs';
 
 const router = express.Router();
 
-console.log('bin departmentRoute.mjs');
-
-router.use('/:departmentId/machinery', machineRouter); // muss oben sein
+router.use('/:departmentId/machinery', machineRouter); // have to stand on this position, in the up
 
 //router.use('/:departmentId', getDepartment); ////////////USE//////////////////
 
-//http://127.0.0.1:4301/api/v1/departments/tour-stats
-router.route('/department-stats').get(getDepartmentStats);
-
 router
   .route('/')
-  .get(getAllDepartments) // hier möchte man keine protect
-  .post(protect, restrictTo('admin'), createDepartment);
+  .get(getAllDepartments) // Here no protect
+  .post(protect, restrictTo('admin'), createDepartment); //inactive
 
 router
   .route('/:id')
-  .get(getDepartment) //Kostenlos für jederman
+  .get(getDepartment) //for everyone
   .patch(
     protect,
     restrictTo('admin'),
@@ -51,6 +45,6 @@ router
     //resizeDepartmentImages,
     updateDepartment
   )
-  .delete(protect, restrictTo('admin'), deleteDepartment);
+  .delete(protect, restrictTo('admin'), deleteDepartment); //inactive
 
 export default router;

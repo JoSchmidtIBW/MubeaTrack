@@ -2,6 +2,23 @@
 
 import axios from 'axios';
 import { showAlert } from './alerts.js';
+import process from 'process';
+
+//const port = 7566;
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const login = async (employeeNumber, password) => {
   //alert(email)
@@ -12,7 +29,7 @@ export const login = async (employeeNumber, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:7566/api/v1/users/login', //http://127.0.0.1:3000/api/v1/users/login => http://localhost:3000/api/v1/users/login
+      url: `${apiUrl}/users/login`, //`http://127.0.0.1:${port}/api/v1/users/login`, //http://127.0.0.1:3000/api/v1/users/login => http://localhost:3000/api/v1/users/login
       data: {
         employeeNumber: employeeNumber,
         password: password,
@@ -24,7 +41,7 @@ export const login = async (employeeNumber, password) => {
       //alert('Logged in successfully!');
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
-        location.assign('/api/v1/overview'); //wie redirect
+        location.assign(`${strPathApiV1}/overview`); //wie redirect //'/api/v1/overview'
       }, 1500);
     }
 
@@ -67,7 +84,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:7566/api/v1/users/logout',
+      url: `${apiUrl}/users/logout`, //`http://127.0.0.1:${port}/api/v1/users/logout`,
     });
 
     // reload the page  um cookie mit keinem token, an den server zu schicken

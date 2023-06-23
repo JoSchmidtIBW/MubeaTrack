@@ -27,10 +27,12 @@ block content
                         //+navItem('#', 'sonstige', 'user-error-report')
                         if(data.machine.sectorASMA.length > 0)
                             +navItem('#', 'ASMA', 'machine-asma')
+                        else
+                            +navItem('#', '-', '')
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md= `technische Spezifikation von ${data.machine.name}`
+                    h2.heading-secondary.ma-bt-md= `Technische Spezifikation von ${data.machine.name}`
                     .technical-data
                         div(class="technical-data__field")
                             span(class="technical-data__label") Beschreibung:
@@ -85,7 +87,7 @@ block content
                             a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
                             //-a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA machine
                         else
-                            h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
+                            h1.heading-secondary.ma-bt-md= `ASMA- Maschine von ${data.machine.name}`
                             h1(style= "color: red") Diese Maschine hat kein ASMA
                         //-.header__hero
                             .header__hero-overlay &nbsp;

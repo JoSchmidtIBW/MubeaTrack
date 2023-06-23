@@ -2,11 +2,27 @@
 
 import axios from 'axios';
 import { showAlert } from './alerts.js';
+import process from 'process';
 
 // const process = require("process");
-const port = 7566;
+//const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
-const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const showClosedMalReports = async () => {
   console.log('bin showClosedMalReports');
@@ -152,7 +168,21 @@ export const showClosedMalReports = async () => {
               },
             },
             // { data: 'statusRun_Mal', visible: false },
-            { data: 'finishAt_Mal', visible: true },
+            //{ data: 'finishAt_Mal', visible: true },
+            {
+              data: 'finishAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
             { data: 'statusOpenClose_Mal', visible: true },
           ],
         });
@@ -274,7 +304,21 @@ export const showClosedMalReports = async () => {
               },
             },
             //{ data: 'statusRun_Mal', visible: false },
-            { data: 'finishAt_Mal', visible: true },
+            //{ data: 'finishAt_Mal', visible: true },
+            {
+              data: 'finishAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
             { data: 'statusOpenClose_Mal', visible: true },
           ],
         });
@@ -427,7 +471,21 @@ export const showMyMalReports = async () => {
             },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
-            { data: 'finishAt_Mal', visible: true },
+            //{ data: 'finishAt_Mal', visible: true },
+            {
+              data: 'finishAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
           ],
         });
       } else if (currentUser.language === 'en') {
@@ -547,7 +605,21 @@ export const showMyMalReports = async () => {
             },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
-            { data: 'finishAt_Mal', visible: true },
+            //{ data: 'finishAt_Mal', visible: true },
+            {
+              data: 'finishAt_Mal',
+              render: function (data) {
+                const date = new Date(data);
+                const options = {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                };
+                return date.toLocaleDateString('de-DE', options);
+              },
+            },
           ],
         });
       }
@@ -698,7 +770,7 @@ export const showOpenMalReports = async () => {
                   minute: '2-digit',
                 }
               )}</td>
-              <td><a href="/api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/${
+              <td><a href="${strPathApiV1}/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/${
                     logFal_Repair._id
                   }"><svg class="heading-box__icon">
                       <use xlink:href="/img/icons.svg#icon-edit-3"></use>
@@ -763,7 +835,7 @@ export const showOpenMalReports = async () => {
               data: '_id',
               render: function (data) {
                 return `
-                  <a href="/api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/updateMalReport/${data}" class="edit-button">
+                  <a href="${strPathApiV1}/${urlDepartmentName}/ASMA/${urlMachineName}/updateMalReport/${data}" class="edit-button">
                     <svg class="heading-box__icon">
                       <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                     </svg>
@@ -884,7 +956,7 @@ export const showOpenMalReports = async () => {
                   minute: '2-digit',
                 }
               )}</td>
-              <td><a href="/api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/${
+              <td><a href="${strPathApiV1}/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/${
                     logFal_Repair._id
                   }"><svg class="heading-box__icon">
                       <use xlink:href="/img/icons.svg#icon-edit-3"></use>
@@ -949,7 +1021,7 @@ export const showOpenMalReports = async () => {
               data: '_id',
               render: function (data) {
                 return `
-                  <a href="/api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/updateMalReport/${data}" class="edit-button">
+                  <a href="${strPathApiV1}/${urlDepartmentName}/ASMA/${urlMachineName}/updateMalReport/${data}" class="edit-button">
                     <svg class="heading-box__icon">
                       <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                     </svg>
@@ -989,7 +1061,7 @@ export const createLogFal = async (
       showAlert('success', res.data.msg);
       window.setTimeout(() => {
         location.assign(
-          `/api/v1/${departmentName}/ASMA/${machineName}/MalReports`
+          `${strPathApiV1}/${departmentName}/ASMA/${machineName}/MalReports`
         );
       }, 500);
     }
@@ -1022,7 +1094,7 @@ export const updateLogFal = async (
       showAlert('success', res.data.msg);
       window.setTimeout(() => {
         location.assign(
-          `/api/v1/${departmentName}/ASMA/${machineName}/MalReports`
+          `${strPathApiV1}/${departmentName}/ASMA/${machineName}/MalReports`
         );
       }, 500);
     }
@@ -1048,7 +1120,7 @@ export const closeMalReport = async (
       showAlert('success', res.data.msg);
       window.setTimeout(() => {
         location.assign(
-          `/api/v1/${departmentName}/ASMA/${machineName}/MalReports`
+          `${strPathApiV1}/${departmentName}/ASMA/${machineName}/MalReports`
         ); //Unterhalt/ASMA/Rattunde1/MalReports
       }, 500);
     }

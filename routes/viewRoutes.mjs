@@ -80,7 +80,7 @@ router.get(
 router.get(
   '/:departmentName/ASMA',
   protect,
-  restrictTo('admin', 'Unterhalt'),
+  restrictTo('admin', 'Unterhalt', 'Chef'),
   getASMAUnterhalt
 );
 
@@ -88,7 +88,7 @@ router.get(
 router.get(
   '/:departmentName/ASMA/:machineName/closedMalReports',
   protect,
-  restrictTo('admin', 'Unterhalt'),
+  restrictTo('admin', 'Unterhalt', 'Chef'),
   getASMAUnterhaltMachineClosedMalReports
 );
 
@@ -97,7 +97,7 @@ router.get(
 router.get(
   '/:departmentName/ASMA/:machineName/MalReports',
   protect,
-  restrictTo('admin', 'Unterhalt'),
+  restrictTo('admin', 'Unterhalt', 'Chef'),
   getASMAUnterhaltMachineOpenMalReports
 );
 
@@ -105,7 +105,7 @@ router.get(
 router.get(
   '/:departmentName/ASMA/:machineName/MalReport_updateLogFal/:logFalID',
   protect,
-  restrictTo('admin', 'Unterhalt'),
+  restrictTo('admin', 'Unterhalt', 'Chef'),
   getASMAUnterhaltMachineUpdateLogFal
 );
 
@@ -113,7 +113,7 @@ router.get(
 router.get(
   '/:departmentName/ASMA/:machineName/updateMalReport/:malReportID',
   protect,
-  restrictTo('admin', 'Unterhalt'),
+  restrictTo('admin', 'Unterhalt', 'Chef'),
   getUpdateMalReport
 );
 

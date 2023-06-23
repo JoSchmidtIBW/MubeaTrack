@@ -5,29 +5,21 @@ import Machine from '../models/machineModel.mjs';
 import MalReport from '../models/malReportModel.mjs';
 
 import mongoose from 'mongoose';
-
-import APIFeatures from '../utils/apiFeatures.mjs';
 import catchAsync from '../utils/catchAsync.mjs';
 
 import AppError from '../utils/appError.mjs';
-//import factory from '../controllers/handlerFactory.mjs';
+
 import {
-  getAll,
   getOne,
-  createOne,
   updateOne,
   deleteOne,
 } from '../controllers/handlerFactory.mjs';
-import User from '../models/userModel.mjs';
-
-//erst daten lesen dann verwenden top level code
-//const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
 // right here on the top
-const multerStorage = multer.memoryStorage(); // stored as a buffer
+const multerStorage = multer.memoryStorage(); // Stored as a buffer
 
-// nur für bilder erlaubt zum hochladen, dafür dieser filter
-// test if uploaded file is an image, wenn true, --> cb (callBack) = filename und destination
+// This filter only allows the upload of images
+// test if uploaded file is an image, when true, --> cb (callBack) = filename and destination
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     //mimetype: 'image/jpeg',
@@ -37,65 +29,48 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
-// hier bei beginning
-//const upload = multer({ dest: 'public/img/users' }) // das ist der ort, wo alle fotos von user gespeichert werden sollen
+//const upload = multer({ dest: 'public/img/users' }) // This is the place, where all images will be save
 
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
-// in updateMe wird nun geschaut, das das hochgeladene neue bild, ins onbjekt des users geschrieben wird
 
-//video 204     upload.fiels = mix von upload.single und uploads.array
+// upload.files = mix about upload.single and uploads.array
 export const uploadMachineImages = upload.fields([
-  // in tourModel, images ist ein array, welches aus drei, anstatt einem bild wie bei usermodel besteht
   { name: 'imageCover', maxCount: 1 },
   { name: 'images', maxCount: 3 },
 ]);
-// wenn es nur eins, anstatt drei images wären, würde man das so machen:
-// upload.single('image')   // req.file
-// // wenn multiple images dann so:
-// upload.array('images', 5)// 'images' = name of the field // req.files
 
-// diese middleware macht den process von den geladenen bilder bzw macht die grösse
 export const resizeMachineImages = catchAsync(async (req, res, next) => {
-  //console.log("req.files: " + req.files) // mit S wegen multiple files  der hier darf nicht stehen, sonst gibt es ein error bei mir!!!
+  //console.log("req.files: " + req.files) // With "S" cause multiple files, this here can not be (un)-command out, it will give an error!
 
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1.) Cover image
   req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
 
-  await sharp(req.files.imageCover[0].buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+  await sharp(req.files.imageCover[0].buffer) // Image will be save in a buffer //...const multerStorage = multer.memoryStorage(); // stored as a buffer
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 }) //90=90%
     .toFile(`public/img/tours/${req.body.imageCover}`);
 
   // const imageCoverFilename = `tour-${req.params.id}-${Date.now()}-cover.jpeg`
-
-  // await sharp(req.files.imageCover[0].buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
-  // .resize(2000, 1333)
-  // .toFormat('jpeg')
-  // .jpeg({ quality: 90 }) //90=90%
-  // .toFile(`public/img/tours/${imageCoverFilename}`)
-
   // req.body.imageCover = imageCoverFilename
 
   // 2.) other images in a loop
-
   req.body.images = [];
 
-  //req.files.images.foreach(async (file, i) => {
   await Promise.all(
     req.files.images.map(async (file, i) => {
-      // map, weil async await nur in der foreach schlaufe, und nicht im gesammten, mit map geht
+      // map, because async await only work in the foreach loop, and not in the whole, with map it works --> req.files.images.foreach(async (file, i) => {...
       const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
-      await sharp(file.buffer) // bild wird in buffer gespeichert //...const multerStorage = multer.memoryStorage(); // stored as a buffer
+      await sharp(file.buffer) // Image will be save in a buffer //...const multerStorage = multer.memoryStorage(); // stored as a buffer
         .resize(2000, 1333)
         .toFormat('jpeg')
-        .jpeg({ quality: 90 }) //90=90%
+        .jpeg({ quality: 90 }) // 90 = 90%
         .toFile(`public/img/tours/${filename}`);
 
       req.body.images.push(filename);
@@ -106,49 +81,15 @@ export const resizeMachineImages = catchAsync(async (req, res, next) => {
   next();
 });
 
-// middleware get top-5-tours
-//http://127.0.0.1:4301/api/v1/tours?limit=5&sort=-ratingsAverage,price
-//http: //127.0.0.1:4301/api/v1/tours/top-5-cheap
-//exports.aliasTopTours = async (req, res, next) => {
-export const aliasTopMachinery = async (req, res, next) => {
-  // manipuliere query opject, damit nach next nur nocht top 5 kommen
-  req.query.limit = '5';
-  req.query.sort = '-ratingsAverage,price';
-  req.query.fields = 'name,price,ratingsAverage,summary,difficulty'; // was wollen wir zurück aus db
-
-  next();
-};
-
 // 2. route handlers
-//export const getAllMachinery = getAll(Machine);
 export const getMachine = getOne(Machine);
-//export const createMachine = createOne(Machine);
 export const updateMachine = updateOne(Machine);
-// export const updateMachine = catchAsync(async (req, res, next) => {
-//   console.log('bin updateMachine');
-//   console.log(req.body);
-//
-//   // const machinery = await Machine.find().select('+createdAt');
-//   // // const users = await User.find().select('+createdAt').lean().exec();
-//   // // const usersJSON = JSON.parse(JSON.stringify(users));
-//   //
-//   // res.status(200).json({
-//   //   status: 'success',
-//   //   results: machinery.length,
-//   //   data: {
-//   //     data: machinery,
-//   //   },
-//   // });
-// });
-
 export const deleteMachine = deleteOne(Machine);
 
 export const getMachinery = catchAsync(async (req, res, next) => {
   console.log('bin getMachinery');
 
   const machinery = await Machine.find().select('+createdAt');
-  // const users = await User.find().select('+createdAt').lean().exec();
-  // const usersJSON = JSON.parse(JSON.stringify(users));
 
   res.status(200).json({
     status: 'success',
@@ -177,15 +118,10 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
   console.log('selectedIdsArr: ' + selectedIdsArr);
   console.log('machineID: ' + machineID);
 
-  //const componentDetailID = mongoose.Types.ObjectId(selectedIdsArr);
-
-  // eslint-disable
+  // eslint-disable, because "" and ESlind '""'... (selectedRunID.length === '""') {  //const componentDetailID = mongoose.Types.ObjectId(selectedIdsArr);
   if (selectedRunID.length === 2) {
-    //wegen "" und ESlind '""'...
-    //(selectedRunID.length === '""') {
     console.log('es wurde keine selectedRunID angewählt: ' + selectedRunID);
   } else {
-    //const machine = Machine.findById({ _id: machineID });
     console.log('selectedRunID selectedRunID ist nicht leer: ' + selectedRunID);
 
     try {
@@ -193,36 +129,9 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
       console.log(
         `statusRun für machine mit ID ${machineID} erfolgreich auf false gesetzt.`
       );
-      //---------------------------------------------
+
       const machine = await Machine.findById({ _id: machineID });
-      // const malReport = new MalReport({
-      //   user_Mal: currentUserID,
-      //   nameMachine_Mal: machine.name,
-      //   idMachine_Mal: machineID,
-      //   nameSector_Mal: componentInfo.sectorASMAName,
-      //   idSector_Mal: componentInfo.sectorASMAID,
-      //   nameComponent_de_Mal: componentInfo.componentNameDE,
-      //   nameComponent_en_Mal: componentInfo.componentNameEN,
-      //   idComponent_Mal: componentInfo.componentID,
-      //   nameComponentDetail_de_Mal: componentInfo.componentDetailNameDE,
-      //   nameComponentDetail_en_Mal: componentInfo.componentDetailNameEN,
-      //   idComponentDetail_Mal: componentInfo.componentDetailID,
-      //   statusRun_Mal: true,
-      //   statusOpenClose_Mal: 'open',
-      //   estimatedStatus: 0,
-      //   logFal_Repair: [
-      //     {
-      //       //user_Repair: currentUserID,
-      //       Status_Repair: 0,
-      //       messageProblem_de_Repair: '-',
-      //       messageProblem_en_Repair: '-',
-      //       messageMission_de_Repair: '-',
-      //       messageMission_en_Repair: '-',
-      //       estimatedTime_Repair: '-',
-      //       isElectroMechanical_Repair: 'elekt.-mech',
-      //     },
-      //   ],
-      // });
+
       const malReport = new MalReport({
         user_Mal: currentUserID,
         nameMachine_Mal: machine.name,
@@ -256,13 +165,13 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         `Fehler beim Setzen von statusRun für machine mit ID ${machineID}:`,
         error
       );
-      //-----------------------------------------------
     }
   }
 
   if (selectedIdsArr.length === 0) {
-    console.log('es wurde keine selectedIdsArr angewählt');
+    console.log('es wurde keine selectedIdsArr angewählt!');
   } else {
+    // detail.status set to false
     console.log('es gibt eine oder mehrere componentDetailIds');
     console.log('selectedIdsArr: ' + selectedIdsArr);
     console.log('machineID: ' + machineID);
@@ -286,8 +195,8 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
     } catch (error) {
       console.error('Fehler beim Suchen der Komponenten-Detail:', error);
     }
-    //---------------------------detail.status auf false setzen UP------------------------------
-    //--------in MalReport schreiben DOWN-------------------------------------------------------
+
+    // Write in MalReport
     const machine = await Machine.findById(machineID);
     if (machine) {
       for (const selectedId of selectedIdsArr) {
@@ -298,8 +207,8 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
         );
 
         if (componentInfo) {
-          console.log('SectorASMA Name:', componentInfo.sectorASMAName); //sectorASMAID
-          console.log('SectorASMA ID:', componentInfo.sectorASMAID); //componentID//componentDetailID
+          console.log('SectorASMA Name:', componentInfo.sectorASMAName);
+          console.log('SectorASMA ID:', componentInfo.sectorASMAID);
           console.log('component ID:', componentInfo.componentID);
           console.log('componentDetail ID:', componentInfo.componentDetailID);
           console.log(
@@ -318,8 +227,7 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
             'Component Detail Name (name_en):',
             componentInfo.componentDetailNameEN
           );
-          // }
-          // if (componentInfo) {
+
           const malReport = new MalReport({
             user_Mal: currentUserID,
             nameMachine_Mal: machine.name,
@@ -337,7 +245,6 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
             estimatedStatus: 0,
             logFal_Repair: [
               {
-                //user_Repair: currentUserID,
                 Status_Repair: 0,
                 messageProblem_de_Repair: '-',
                 messageProblem_en_Repair: '-',
@@ -354,7 +261,6 @@ export const updateASMAMachine = catchAsync(async (req, res, next) => {
               componentInfo.componentDetailNameDE
           );
         }
-        //);
       }
     } else {
       console.log('Machine nicht gefunden.');
@@ -398,147 +304,8 @@ async function findComponentDetailInfo(machineID, componentDetailID) {
   }
 }
 
-//   const selectedObjectIdsArr = selectedIdsArr.map((id) =>
-//     mongoose.Types.ObjectId(id)
-//   );
-//
-//   try {
-//     await Machine.findOneAndUpdate(
-//       {
-//         _id: machineID,
-//         'sectorASMA.components.componentDetails._id': {
-//           $in: selectedObjectIdsArr,
-//         },
-//       },
-//       {
-//         $set: {
-//           'sectorASMA.$[].components.$[].componentDetails.$[detail].status': false,
-//         },
-//       },
-//       { arrayFilters: [{ 'detail._id': { $in: selectedObjectIdsArr } }] }
-//     );
-//     console.log(
-//       `Status der ausgewählten componentDetails für Machine mit ID ${machineID} erfolgreich auf false gesetzt.`
-//     );
-//   } catch (error) {
-//     console.error(
-//       `Fehler beim Setzen des status für componentDetails der Machine mit ID ${machineID}:`,
-//       error
-//     );
-//   }
-//
-//   try {
-//     const machine = await Machine.findOne({
-//       _id: machineID,
-//       'sectorASMA.components.componentDetails._id': {
-//         $in: selectedObjectIdsArr,
-//       },
-//     });
-//
-//     if (machine) {
-//       const malReport = new MalReport({
-//         user_Mal: currentUserID,
-//         nameMachine_Mal: machine.name,
-//       });
-//       await malReport.save();
-//       console.log('MalReport erfolgreich erstellt.');
-//
-//       const selectedDetails = machine.sectorASMA.flatMap((sector) => {
-//         return sector.components.flatMap((component) => {
-//           return component.componentDetails.filter((detail) =>
-//             selectedObjectIdsArr.includes(detail._id)
-//           );
-//         });
-//       });
-//
-//       const componentDetails_Mal = selectedDetails.map((detail) => {
-//         return {
-//           name_de: detail.name_de,
-//         };
-//       });
-//
-//       malReport.componentDetails_Mal = componentDetails_Mal;
-//       await malReport.save();
-//     } else {
-//       console.log('Machine nicht gefunden.');
-//     }
-//   } catch (error) {
-//     console.error('Fehler beim Erstellen des MalReport:', error);
-//   }
-// }
-
-// res.status(200).json({
-//   status: 'success',
-//   message: 'ASMAMachine succefully updated!',
-// });
-
-// try {
-//   await Machine.updateOne(
-//     { _id: machineID },
-//     {
-//       $set: {
-//         'sectorASMA.$[].components.$[].componentDetails.$[detail].status': false,
-//       },
-//     },
-//     { arrayFilters: [{ 'detail._id': { $in: selectedObjectIdsArr } }] }
-//   );
-//   console.log(
-//     `Status der ausgewählten componentDetails für machine mit ID ${machineID} erfolgreich auf false gesetzt.`
-//   );
-//   //---------------------------------------------
-//   const componentDetailID = 'ID der Komponenten-Detail';
-//
-//   try {
-//
-//     const machine = await Machine.findOne({
-//       'sectorASMA.components.componentDetails._id': componentDetailID,
-//     });
-//
-//     if (machine) {
-//       const component = machine.sectorASMA.components.find((comp) =>
-//         comp.componentDetails.some(
-//           (detail) => detail._id.toString() === componentDetailID
-//         )
-//       );
-//
-//       if (component) {
-//         const componentDetail = component.componentDetails.find(
-//           (detail) => detail._id.toString() === componentDetailID
-//         );
-//
-//         if (componentDetail) {
-//           const selectedSectorASMAName = machine.sectorASMA.name;
-//           const selectedComponentName = component.name_de;
-//           const selectedIdsArr = [componentDetailID];
-//
-//           console.log('selectedSectorASMAName:', selectedSectorASMAName);
-//           console.log('selectedComponentName:', selectedComponentName);
-//           console.log('selectedIdsArr:', selectedIdsArr);
-//
-//
-//         }
-//       }
-//     }
-//   } catch (error) {
-//     console.error('Fehler beim Suchen der Komponenten-Detail:', error);
-//   }
-//   const machine = await Machine.findById(machineID);
-//   if (machine) {
-//     console.log(machine);
-//     const malReport = new MalReport({
-//       userMal: currentUserID,
-//       machineNameMal: machine.name,
-//     });
-//     await malReport.save();
-//     console.log('MalReport erfolgreich erstellt.');
-//   } else {
-//     console.log('Maschine nicht gefunden.');
-//   }
-//todo hier muss ev noch hinzugefügt werden, die MaschinenEinheiten und deteils, für danach fehler
 export const createMachine = catchAsync(async (req, res) => {
   console.log('bin createMachine');
-
-  //console.log(req.body);
 
   const machineData = {
     name: req.body.name,
@@ -557,7 +324,6 @@ export const createMachine = catchAsync(async (req, res) => {
     weightMass: req.body.weightMass ? req.body.weightMass : '-',
     dimensions: req.body.dimensions ? req.body.dimensions : '-',
     drawingNumber: req.body.drawingNumber ? req.body.drawingNumber : '-',
-    //photo: req.body.photo,
     department: req.body.department,
     statusRun: true,
     employees: [],
@@ -569,21 +335,17 @@ export const createMachine = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'A new machine is succefully created!',
+    message: 'A new machine is successfully created!',
   });
 });
 
 export const getMachineryASMA = catchAsync(async (req, res, next) => {
-  const machinery = await Machine.find(); //.select('createdAt');
+  const machinery = await Machine.find();
   res.status(200).json({
     status: 'success',
     data: {
       data: machinery,
     },
-    //title: 'Manage ASMA/machine',
-    //data: {
-    //machinery: machinery,
-    //},
   });
 });
 
@@ -673,7 +435,7 @@ export const createComponentDetailASMA = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: `New componentDetail has been successfully added to the machine ${machine.name}, with sectorASMA ${sectorASMA.name_de} and component ${componentASMA.name_de}: ${componentDetailASMA_New}`,
+    message: `New componentDetail has been successfully added to the machine ${machine.name}, with sectorASMA ${sectorASMA.name} and component ${componentASMA.name_de}: ${componentDetailASMA_New}`,
   });
 });
 
@@ -690,8 +452,7 @@ export const createComponentASMA = catchAsync(async (req, res, next) => {
     name_en: req.body.componentName_en,
     description_de: req.body.componentDescription_de,
     description_en: req.body.componentDescription_en,
-    componentDetails: [], //komponentsDetail sind noch leer
-    //zone: req.body.zone ? req.body.zone : 'Sägen',
+    componentDetails: [], //componentDetails are empty yet
   };
 
   const machine = await Machine.findByIdAndUpdate(
@@ -708,7 +469,6 @@ export const createComponentASMA = catchAsync(async (req, res, next) => {
     }
   );
 
-  //console.log(machine);
   machine.sectorASMA.forEach((sector) => {
     sector.components.forEach((component) => {
       console.log(component);
@@ -723,7 +483,7 @@ export const createComponentASMA = catchAsync(async (req, res, next) => {
     (s) => s._id.toString() === sectorASMAID
   );
   console.log(sectorASMA.name);
-  const sectorASMAName = sectorASMA ? sectorASMA.name : 'unbekannt';
+  const sectorASMAName = sectorASMA ? sectorASMA.name : 'Unbekannt';
 
   console.log(
     `Neue Komponente wurde zur Maschine ${machine.name} und dem sectorASMA ${sectorASMAName} hinzugefügt:`,
@@ -789,19 +549,18 @@ export const updateComponentDetailASMA = catchAsync(async (req, res, next) => {
     return next(new AppError('No machine found with that ID', 404));
   }
 
-  // //console.log('Updated machine:', updatedMachine);
   console.log(
     `ComponentDetails wurde bei Maschine ${
       updatedMachine.name
     }, dem sectorASMA ${
       updatedMachine.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
         .name
-    }, \nder componente 
+    }, \nder componente
     ${
       updatedMachine.sectorASMA
         .find((s) => s._id.toString() === sectorASMAID)
         .components.find((c) => c._id.toString() === componentASMAID).name_de
-    },\n und dem componentDetail 
+    },\n und dem componentDetail
         ${
           updatedMachine.sectorASMA
             .find((s) => s._id.toString() === sectorASMAID)
@@ -915,23 +674,6 @@ export const updateComponentASMA = catchAsync(async (req, res, next) => {
     }`
   );
 
-  // console.log(
-  //   `SectorASMA wurde bei Maschine ${
-  //     updatedSectorASMA.name
-  //   } und den SectorASMA: ${
-  //     updatedSectorASMA.sectorASMA.find(
-  //       (s) => s._id.toString() === sectorASMAID
-  //     ).name
-  //   }  aktualisiert:`,
-  //   updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
-  //     .name,
-  //   updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
-  //     .description_de,
-  //   updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
-  //     .description_en
-  //   //updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID),// ganzes objekt, mit Komponente
-  // );
-
   res.status(200).json({
     status: 'success',
     message: `${updatedMachine.name}, sectorASMA ${
@@ -948,12 +690,6 @@ export const updateComponentASMA = catchAsync(async (req, res, next) => {
 
 export const deleteComponentDetailASMA = catchAsync(async (req, res, next) => {
   console.log('bin deleteComponentDetailASMA');
-  //console.log(req.params);
-  //console.log(req);
-  //console.log(path);
-
-  // const machineID = req.params.machineID;
-  // const sectorASMAID = req.params.sectorASMAID;
 
   console.log('machineID: ' + req.params.machineID);
   console.log('sectorASMAID: ' + req.params.sectorASMAID);
@@ -963,14 +699,6 @@ export const deleteComponentDetailASMA = catchAsync(async (req, res, next) => {
   const sectorASMAID = req.params.sectorASMAID;
   const componentASMAID = req.params.componentASMAID;
   const componentDetailASMAID = req.params.componentDetailASMAID;
-
-  // const referer = req.headers.referer;
-  // const ids = referer.match(/\/([\w\d]+)\/updateSectorASMA\/([\w\d]+)/);
-  // const machineID = ids[1];
-  // const sectorASMAID = ids[2];
-
-  // console.log(`MachineID: ${machineID}`);
-  // console.log(`SectorASMAID: ${sectorASMAID}`);
 
   const updatedMachine = await Machine.findByIdAndUpdate(
     machineID,
@@ -1000,23 +728,7 @@ export const deleteComponentDetailASMA = catchAsync(async (req, res, next) => {
         .components.find((s) => s._id.toString() === componentASMAID).name_de
     }erfolgreich gelöscht...`,
     'kann gelöschtes Objekt nicht mehr anzeigen...'
-    // `${
-    //   updatedMachine.sectorASMA
-    //     .find((s) => s._id.toString() === sectorASMAID)
-    //     .components.find((c) => c._id.toString() === componentASMAID).name_de
-    // }...`
   );
-
-  // const updatedMachine = await Machine.findByIdAndUpdate(
-  //   machineID,
-  //   { $pull: { sectorASMA: { _id: sectorASMAID } } },
-  //   { new: true }
-  // );
-  //
-  // console.log(
-  //   `SectorASMA wurde bei Maschine ${updatedMachine.name} und den SectorASMA: ${sectorASMAID} gelöscht:`,
-  //   updatedMachine.sectorASMA
-  // );
 
   res.status(204).json({
     status: 'success',
@@ -1026,12 +738,6 @@ export const deleteComponentDetailASMA = catchAsync(async (req, res, next) => {
 
 export const deleteComponentASMA = catchAsync(async (req, res, next) => {
   console.log('bin deleteComponentASMA');
-  //console.log(req.params);
-  //console.log(req);
-  //console.log(path);
-
-  // const machineID = req.params.machineID;
-  // const sectorASMAID = req.params.sectorASMAID;
 
   console.log('machineID: ' + req.params.machineID);
   console.log('sectorASMAID: ' + req.params.sectorASMAID);
@@ -1039,14 +745,6 @@ export const deleteComponentASMA = catchAsync(async (req, res, next) => {
   const machineID = req.params.machineID;
   const sectorASMAID = req.params.sectorASMAID;
   const componentASMAID = req.params.componentASMAID;
-
-  // const referer = req.headers.referer;
-  // const ids = referer.match(/\/([\w\d]+)\/updateSectorASMA\/([\w\d]+)/);
-  // const machineID = ids[1];
-  // const sectorASMAID = ids[2];
-
-  // console.log(`MachineID: ${machineID}`);
-  // console.log(`SectorASMAID: ${sectorASMAID}`);
 
   const updatedMachine = await Machine.findByIdAndUpdate(
     machineID,
@@ -1067,23 +765,7 @@ export const deleteComponentASMA = catchAsync(async (req, res, next) => {
         .name
     } erfolgreich gelöscht...`,
     'kann gelöschtes Objekt nicht mehr anzeigen...'
-    // `${
-    //   updatedMachine.sectorASMA
-    //     .find((s) => s._id.toString() === sectorASMAID)
-    //     .components.find((c) => c._id.toString() === componentASMAID).name_de
-    // }...`
   );
-
-  // const updatedMachine = await Machine.findByIdAndUpdate(
-  //   machineID,
-  //   { $pull: { sectorASMA: { _id: sectorASMAID } } },
-  //   { new: true }
-  // );
-  //
-  // console.log(
-  //   `SectorASMA wurde bei Maschine ${updatedMachine.name} und den SectorASMA: ${sectorASMAID} gelöscht:`,
-  //   updatedMachine.sectorASMA
-  // );
 
   res.status(204).json({
     status: 'success',
@@ -1093,34 +775,13 @@ export const deleteComponentASMA = catchAsync(async (req, res, next) => {
 
 export const createSectorASMA = catchAsync(async (req, res, next) => {
   console.log('bin createSectorASMA');
-  // console.log(req.body);
-  // console.log(req.params.id);
-  //
-  // console.log(req.body.sectionName);
-  // console.log(req.body.sectionDescription_de);
-  // console.log(req.body.sectionDescription_en);
-
-  // const machineForASMA = await Machine.findById(req.params.id);
-  // console.log(machineForASMA);
 
   const machineSectorASMAData = {
     name: req.body.sectionName,
     description_de: req.body.sectionDescription_de,
     description_en: req.body.sectionDescription_en,
-    components: [], //komponents sind noch leer
-    //zone: req.body.zone ? req.body.zone : 'Sägen',
+    components: [], // Components are empty yet
   };
-
-  // const machineForASMA = await Machine.findByIdAndUpdate(
-  //   req.params.id,
-  //   req.body,
-  //   {
-  //     //achtung mit patch und put, bei updatebyid
-  //     new: true,
-  //     runValidators: true, // falls price: 500 wäre ein string
-  //   }
-  // ); // in url /:63fb4c3baac7bf9eb4b72a76 , body: was geupdatet wird, 3, damit nur das geupdatet neue return wird
-  // //         // Tour.findOne({ _id: req.params.id})
 
   const machineForASMA = await Machine.findByIdAndUpdate(
     req.params.id,
@@ -1139,19 +800,6 @@ export const createSectorASMA = catchAsync(async (req, res, next) => {
     `Neuer sectorASMA wurde zur Maschine ${machineForASMA._id} hinzugefügt:`,
     machineSectorASMAData
   );
-  // machineForASMA.sectorASMA.push(machineSectorASMAData);
-  //
-  // machineForASMA.save((err, updatedMachine) => {
-  //   //speichere doku
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log(
-  //       `Neuer sectorASMA wurde zur Maschine ${updatedMachine._id} hinzugefügt:`,
-  //       sectorASMA
-  //     );
-  //   }
-  // });
 
   res.status(200).json({
     status: 'success',
@@ -1206,31 +854,16 @@ export const updateSectorASMA = catchAsync(async (req, res, next) => {
       .description_de,
     updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID)
       .description_en
-    //updatedSectorASMA.sectorASMA.find((s) => s._id.toString() === sectorASMAID),// ganzes objekt, mit Komponente
   );
 
   res.status(200).json({
     status: 'success',
     message: 'erfolgreich',
-    //'sectorASMA ${updatedSectorASMA.sectorASMA.id.name} has been successfully updated to the machine ${machine.name}:'
-    //   message: `sectorASMA ${
-    //     updatedSectorASMA.sectorASMA.find(
-    //       (s) => s._id.toString() === sectorASMAID
-    //     ).name
-    //   } has been successfully updated to the machine ${updatedSectorASMA.name}.`,
   });
 });
 
 export const deleteSectorASMA = catchAsync(async (req, res, next) => {
-  //console.log('bin deleteSectorASMA');
-  //console.log(req.params);
   console.log(req);
-  //console.log(path);
-
-  // const machineID = req.params.machineID;
-  // const sectorASMAID = req.params.sectorASMAID;
-  // console.log('machineID: ' + req.params.machineID);
-  // console.log('sectorASMAID: ' + req.params.sectorASMAID);
 
   const referer = req.headers.referer;
   const ids = referer.match(/\/([\w\d]+)\/updateSectorASMA\/([\w\d]+)/);
@@ -1255,116 +888,4 @@ export const deleteSectorASMA = catchAsync(async (req, res, next) => {
     status: 'success',
     data: null,
   });
-});
-
-//Video 102 Agregation Pipeline for MongoDB
-// soll statistiken zeigen von tours
-//exports.getTourStats = catchAsync(async (req, res, next) => {
-export const getMachineStats = catchAsync(async (req, res, next) => {
-  // try {
-  const stats = await Tour.aggregate([
-    // array = stages, wo die Daten manipuliert werden können
-    {
-      $match: { ratingsAverage: { $gte: 4.5 } }, // match stage
-    },
-    {
-      $group: {
-        // zb um durchschnitt zu erechnen von den 5 gefundenen
-        //_id: null,
-        //_id: '$difficulty', // _id: null, // für alle welche kommen
-        //_id: '$ratingsAverage',
-        _id: { $toUpper: '$difficulty' },
-        numTours: { $sum: 1 }, //1 pro dokument, jedesmal added 1  1++
-        numRatings: { $sum: '$ratingsQuantity' },
-        avgRating: { $avg: '$ratingsAverage' },
-        avgPrice: { $avg: '$price' },
-        minPrice: { $min: '$price' },
-        maxPrice: { $max: '$price' },
-      },
-    },
-    {
-      $sort: {
-        // müssen namen von neuen objekten (oben) sein
-        avgPrice: 1,
-      },
-    },
-    // { // beispiel, um mehrere male match zu machen
-    //     $match: { _id: { $ne: 'EASY' } } //alle welche not easy sind,  EASY weil ez neu in DB gross (difficulty)
-    // }
-  ]);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      stats: stats,
-    },
-  });
-
-  // } catch (err) {
-  //     res.status(404).json({
-  //         status: 'fail',
-  //         message: err
-  //     })
-  // }
-});
-
-// video 103    DAS GEHT NICHT WEIL DATENBANK ZUERST mit TERMINEN GELADEN WERDEN MUSS IM BEISPIEL
-////http://127.0.0.1:4301/api/v1/tours/monthly-plan/:year   2021
-//exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-export const getMonthlyPlan = catchAsync(async (req, res, next) => {
-  // try {
-  const year = req.params.year * 1; //  *1 mache nummer
-
-  const plan = await Tour.aggregate([
-    {
-      $unwind: '$startDates', // für jeden termin ein seperates Dokument
-    },
-    {
-      $match: {
-        startDates: {
-          $gte: new Date(`${year}-01-01`),
-          $lte: new Date(`${year}-12-31`),
-        }, //2021
-      },
-    },
-    {
-      $group: {
-        _id: { $month: '$startDates' },
-        numTourStarts: { $sum: 1 },
-        tours: { $push: '$name' },
-      },
-    },
-    {
-      $addFields: {
-        month: '$_id',
-      },
-    },
-    {
-      $project: {
-        _id: 0, // 0 id nicht anzeigen, 1 = anzeigen in deb
-      },
-    },
-    {
-      $sort: {
-        numTourStarts: -1,
-      },
-    },
-    {
-      $limit: 6,
-    },
-  ]);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      plan,
-    },
-  });
-
-  // } catch (err) {
-  //     res.status(404).json({
-  //         status: 'fail',
-  //         message: err
-  //     })
-  // }
 });

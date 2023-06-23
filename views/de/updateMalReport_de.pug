@@ -156,9 +156,9 @@ block content
                             br
                         div(class="form__group" id="createAt_RepairDiv" style="display: none;")
                             //todo input hidden machen
-                            label(class="form__label", for="createAt_Repair") Erstellt am
+                            //label(class="form__label", for="createAt_Repair") Erstellt am
                             //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
-                            input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
+                            input#createAt_Repair(class="form__input", type="hidden", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
                             //<input id="createAt_Repair" class="form__input" type="text" value="<%= new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) %>" readonly style="background-color: lightgrey;">
                             //input#createAt_Repair(class="form__input", type="text", value=`${ new Date().toLocaleString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) }`, readonly, style="background-color: lightgrey;")
 

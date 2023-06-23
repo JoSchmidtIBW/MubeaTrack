@@ -2,11 +2,26 @@
 
 import axios from 'axios';
 import { showAlert } from './alerts';
+import process from 'process';
 
-// const process = require("process");
-const port = 7566;
+//const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
-const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const createComponentASMA = async (
   machineId,
@@ -45,11 +60,11 @@ export const createComponentASMA = async (
       );
       window.setTimeout(() => {
         location.assign(
-          `/api/v1/createASMAmachine/${machineId}/createComponents/${sectorASMAID}`
+          `${strPathApiV1}/createASMAmachine/${machineId}/createComponents/${sectorASMAID}`
         );
       }, 5000);
     } else {
-      console.log('nichts');
+      console.log('not success');
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
@@ -88,7 +103,7 @@ export const updateComponentASMA = async (
       // console.log('machineIDddddddddd: ' + machineID);
       window.setTimeout(() => {
         location.assign(
-          `/api/v1/createASMAmachine/${machineID}/createComponents/${sectorASMAID}`
+          `${strPathApiV1}/createASMAmachine/${machineID}/createComponents/${sectorASMAID}`
         );
       }, 5000);
     }
@@ -124,7 +139,7 @@ export const deleteComponentASMA = async (
       //console.log(${machineID})
       window.setTimeout(() => {
         //location.assign(`/api/v1/createASMAmachine/${WarummachineID}`);
-        location.assign(`/api/v1/manage_ASMAmachine`);
+        location.assign(`${strPathApiV1}/manage_ASMAmachine`);
       }, 5000);
     }
   } catch (err) {
