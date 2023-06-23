@@ -48,12 +48,13 @@ block content
                         //br
 
                         div(class="form__group ma-bt-md")
-                            label(class="form__label", for="componentDetailASMAName_de") ComponentDetailASMA name_de
+                            label(class="form__label", for="componentDetailASMAName_de") Component- detail name_de
                             input#componentDetailASMAName_de(class="form__input", type="text", value=data.componentDetailASMA.name_de)
                             br
-                            label(class="form__label", for="componentDetailASMAName_en") ComponentDetailASMA name_en
+                            label(class="form__label", for="componentDetailASMAName_en") Component- detail name_en
                             input#componentDetailASMAName_en(class="form__input", type="text", value=data.componentDetailASMA.name_en)
-                            label(class="form__label", for="componentDetailASMAStatus") ComponentDetailASMA Status
+                            br
+                            label(class="form__label", for="componentDetailASMAStatus") Component- detail Status
                             input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status, readonly=true, style=`background-color: ${data.componentDetailASMA.status ? '#50BE5F' : '#E93A48'}`)
                         span
                             button.btn.btn--small.btn--green.btn--saveUpdateComponentDetailASMA Save
@@ -66,7 +67,7 @@ block content
                         div(class="form__group ma-bt-md")
                             br
                             br
-                            label(class="form__label", for="componentDetailASMAName" style="color: red") componentDetailASMA name
+                            label(class="form__label", for="componentDetailASMAName" style="color: red") Delete component- detail
                             br
                             //h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten- Details verloren)
                             input(class="form__input", type="text", value=data.componentDetailASMA.name_de, readonly, style="background-color: #EFDDDC")

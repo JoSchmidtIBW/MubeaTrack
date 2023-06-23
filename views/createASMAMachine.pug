@@ -27,16 +27,16 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    h2.heading-secondary.ma-bt-md Create new sector
+                    h2.heading-secondary.ma-bt-md= `Create new sector for ${data.machine.name}`
                     br
-                    h1 Here the machine can be made an ASMA
+                    h1 Here the machine can be made into an ASMA- machine.
                     br
                     if(data.machine.sectorASMA.length === 0)
-                        h2(style="color: red" ) The machine does not have ASMA yet, write the plant in the field
+                        h2(style="color: red" ) The machine does not have ASMA yet, write the machine in the field
                         form.form.form-new-sectorASMA-data
                             div(class="form__group")
                                 input#id(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
-                                label(class="form__label", for="name") Name SectorASMA
+                                label(class="form__label", for="name") Sector Name
                                 input#input_name(class="form__input" type="text" placeholder="Rat.1 oder Addafer" required="required")
                                 br
                                 label(class="form__label", for="description_de") Description_de
@@ -52,7 +52,7 @@ block content
                       each sector in data.machine.sectorASMA
                           div(class="form__group")
                               input#idSectionASMA(class="form__input", type="hidden", value=sector.id, readonly, style="background-color: lightgrey;")
-                              label(class="form__label", for="name") Name
+                              label(class="form__label", for="name") Sector Name
                               input#name(class="form__input", type="text", value=sector.name, readonly, style="background-color: lightgrey;")
                               //-div(class="form__group")
                               label(class="form__label", for="description_de") Description_de
@@ -73,8 +73,9 @@ block content
 
                       form.form.form-new-sectorASMA-data
                             div(class="form__group" id="nameDiv" style="display: none;")
+                                br
                                 input#id(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
-                                label(class="form__label", for="name") Name sectorASMA
+                                label(class="form__label", for="name") Sector Name
                                 input#input_name(class="form__input" type="text" placeholder="Rattunde 1 or Addafer" required="required")
                             div(class="form__group" id="description_deDiv" style="display: none;")
                                 label(class="form__label", for="description_de") Description_de

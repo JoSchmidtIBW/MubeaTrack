@@ -10,12 +10,15 @@
     "test_selenium": "mocha ./tests/seleniumTest.mjs",
     "start:prod": "SET NODE_ENV=production&&node server.mjs",
     "debug": "ndb server.mjs",
-    "watch:js": "parcel watch --no-hmr ./public/js/index.js --out-dir ./public/js --out-file bundle.js  --public-url ./",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+    "watch:js_dev": "parcel watch --no-hmr ./public/js/index.js --out-dir ./public/js --out-file bundle.js  --public-url ./",
+    "watch:js_prod": "cross-env NODE_ENV=production parcel watch --no-hmr ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url ./",
+    "build:js_dev": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+    "build:js_prod": "cross-env NODE_ENV=production parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
   },
   "author": "John Schmidt",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-node": "^11.1.0",
     "ndb": "^1.1.5",

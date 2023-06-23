@@ -101,7 +101,6 @@ block content
 
       .description-box
                 h2.heading-secondary.ma-bt-lg= `Über die ${department.name} Abteilung`
-
                 - const paragraphs = department.description_de.split('\n');
                 each p in paragraphs
                     p.description__text= p

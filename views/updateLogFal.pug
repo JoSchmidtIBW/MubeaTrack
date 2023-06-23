@@ -102,9 +102,9 @@ block content
                             input#messageMission_en_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair.messageMission_en_Repair)
                             br
                         div(class="form__group")
-                            label(class="form__label", for="createAt_Repair") Created at
+                            //label(class="form__label", for="createAt_Repair") Created at
                             //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
-                            input#createAt_Repair(class="form__input", type="text", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
+                            input#createAt_Repair(class="form__input", type="hidden", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
                             //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
                               day: '2-digit',
                               month: '2-digit',

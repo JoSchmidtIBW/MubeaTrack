@@ -2,11 +2,28 @@
 
 import axios from 'axios';
 import { showAlert } from './alerts';
+import process from 'process';
 
 // const process = require("process");
-const port = 7566;
+//const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
-const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+//const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const showMachinery = async () => {
   console.log('bin showMachinery');
@@ -103,7 +120,7 @@ export const showMachinery = async () => {
                 // <button class="delete-button" data-id="${data}">Delete</button>`;
                 //return `<a href="/user/${data}" class="edit-button">Edit</a>`;
                 return `
-              <a href="/api/v1/manage_machinery/${data}" class="edit-button">
+              <a href="${strPathApiV1}/manage_machinery/${data}" class="edit-button">
                 <svg class="heading-box__icon">
                 <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                 </svg>
@@ -252,7 +269,7 @@ export const showMachinery = async () => {
                 // <button class="delete-button" data-id="${data}">Delete</button>`;
                 //return `<a href="/user/${data}" class="edit-button">Edit</a>`;
                 return `
-              <a href="/api/v1/manage_machinery/${data}" class="edit-button">
+              <a href="${strPathApiV1}/manage_machinery/${data}" class="edit-button">
                 <svg class="heading-box__icon">
                 <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                 </svg>
@@ -678,7 +695,7 @@ export const createNewMachine = async (
     if (res.data.status === 'success') {
       showAlert('success', 'Machine created successfully');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_machinery');
+        location.assign(`${strPathApiV1}/manage_machinery`);
       }, 1200);
     } else {
       console.log('nichts beim server /machinery/createMachine angekommen');
@@ -700,7 +717,7 @@ export const createNewMachine = async (
 };
 
 export const updateMachine = async (data, id) => {
-  console.log('bin updateMachine in index.js');
+  console.log('bin updateMachine in machine.js');
   console.log(id);
   try {
     const res = await axios({
@@ -712,7 +729,7 @@ export const updateMachine = async (data, id) => {
     if (res.data.status === 'success') {
       showAlert('success', 'Machine successfully updated');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_machinery');
+        location.assign(`${strPathApiV1}/manage_machinery`);
       }, 500);
     }
   } catch (err) {
@@ -730,7 +747,7 @@ export const deleteMachine = async (id) => {
     if (res.status === 204) {
       showAlert('success', 'Machine successfully deleted');
       window.setTimeout(() => {
-        location.assign('/api/v1/manage_machinery');
+        location.assign(`${strPathApiV1}/manage_machinery`);
       }, 500);
     }
   } catch (err) {

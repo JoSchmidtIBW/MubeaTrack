@@ -2,11 +2,27 @@
 
 import axios from 'axios';
 import { showAlert } from './alerts';
+import process from 'process';
 
 // const process = require("process");
-const port = 7566;
+//const port = 7566;
 // const port = process.env.PORT_NUMBER || 3000;
-const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const showUsersMachinery = async () => {
   console.log('bin showUsersMachinery in usersMachinery.js');
@@ -147,7 +163,7 @@ export const showUsersMachinery = async () => {
             data: '_id',
             render: function (data) {
               return `
-              <a href="/api/v1/manage_usersMachinery/${data}" class="edit-button">
+              <a href="${strPathApiV1}/manage_usersMachinery/${data}" class="edit-button">
                 <svg class="heading-box__icon">
                 <use xlink:href="/img/icons.svg#icon-edit-3"></use>
                 </svg>
@@ -183,10 +199,13 @@ export const updateUserMachinery = async (data, userID) => {
       showAlert('success', `${res.data.message}`);
       // console.log('machineIDddddddddd: ' + machineID);
       window.setTimeout(() => {
-        location.assign`/api/v1/manage_user-machine`();
+        location.assign(`${strPathApiV1}/manage_user-machine`);
       }, 5000);
     }
   } catch (err) {
-    showAlert('error', err.response.data.message + 'XXXXX');
+    showAlert(
+      'error',
+      err.response.data.message + 'bin updateUserMachinery in userMachinery.js'
+    );
   }
 };

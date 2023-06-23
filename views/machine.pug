@@ -27,6 +27,8 @@ block content
                         //+navItem('#', 'Planning', 'user-error-report')
                         if(data.machine.sectorASMA.length > 0)
                                 +navItem('#', 'ASMA', 'machine-asma')
+                        else
+                                +navItem('#', '-', '')
 
             .user-view__content
                 .user-view__form-container

@@ -28,7 +28,10 @@ block content
             .user-view__content
                 .user-view__form-container
                     //-h1 Here you add a component to a sector
-                    h2 Create new Component for a sector
+                    h2.heading-secondary.ma-bt-md Create new component for a sector
+                    br
+                    h1 Here you can add a component to a sector
+                    //-h2 Create new component for a sector
                     br
                     if(data.sectorASMA.components.length === 0)
                         h2(style="color: red" ) The machine has no components yet
@@ -37,17 +40,17 @@ block content
                             div(class="form__group")
                                 input#machineID(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
                                 input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
-                                label(class="form__label", for="name_de") Name_de Komponente
+                                label(class="form__label", for="name_de") Component Name_de
                                 input#input_name_de(class="form__input" type="text" placeholder="Bundlader" required="required")
                                 br
-                                label(class="form__label", for="name_en") Name_en Komponente
-                                input#input_name_en(class="form__input" type="text" placeholder="Bundlader" required="required")
+                                label(class="form__label", for="name_en") Component Name_en
+                                input#input_name_en(class="form__input" type="text" placeholder="Bundle loader" required="required")
                                 br
-                                label(class="form__label", for="description_de") Beschreibung_de
-                                input#input_description_de(class="form__input" type="text" placeholder="Beschreibung_de" required="required")
+                                label(class="form__label", for="description_de") Description_de
+                                input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")
                                 br
-                                label(class="form__label", for="description_en") Beschreibung_en
-                                input#input_description_en(class="form__input" type="text" placeholder="Beschreibung_en" required="required")
+                                label(class="form__label", for="description_en") Description_en
+                                input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
                             div(class="form__group")
                                 //-button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`/api/v1/machinery/createSectorASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Save
@@ -59,12 +62,13 @@ block content
                           div(class="form__group")
                               input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
                               input#machineID(class="form__input", type="hidden", value=data.machine._id, readonly, style="background-color: lightgrey;")
-                              label(class="form__label", for="name_de") Name_de
+                              label(class="form__label", for="name_de") Component Name_de
                               input#name_de(class="form__input", type="text", value=component.name_de, readonly, style="background-color: lightgrey;")
-                              label(class="form__label", for="name_en") Name_en
+                              label(class="form__label", for="name_en") Component Name_en
                               input#name_en(class="form__input", type="text", value=component.name_en, readonly, style="background-color: lightgrey;")
                               //-div(class="form__group")
-                              label(class="form__label", for="description_de") Beschreibung_de
+                              br
+                              label(class="form__label", for="description_de") Description_de
                               input#description_de(class="form__input", type="text", value=component.description_de, readonly, style="background-color: lightgrey;")
                               br
                               label(class="form__label", for="description_en") Description_en
@@ -86,11 +90,11 @@ block content
                             div(class="form__group" id="nameDiv" style="display: none;")
                                 br
                                 input#id(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
-                                label(class="form__label", for="name_de") Name_de Component
+                                label(class="form__label", for="name_de") Component Name_de
                                 input#input_name_de(class="form__input" type="text" placeholder="Bundlader" required="required")
                                 br
-                                label(class="form__label", for="name_en") Name_en Component
-                                input#input_name_en(class="form__input" type="text" placeholder="Bundlader" required="required")
+                                label(class="form__label", for="name_en") Component Name_en
+                                input#input_name_en(class="form__input" type="text" placeholder="Bundle loader" required="required")
                             div(class="form__group" id="description_deDiv" style="display: none;")
                                 label(class="form__label", for="description_de") Description_de
                                 input#input_description_de(class="form__input" type="text" placeholder="Description_de" required="required")

@@ -1,6 +1,24 @@
 /* eslint-disable */
 import axios from 'axios';
 import { showAlert } from './alerts.js';
+import process from 'process';
+
+//const port = 7566;
+
+//const port = 7566;
+const dev_Port = 7566;
+const prod_Port = 7577;
+
+const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
+const host = 'http://127.0.0.1:';
+const strPathApiV1 = '/api/v1';
+const apiUrl = host + port + strPathApiV1;
+
+// const port =
+//   process.env.NODE_ENV === 'development'
+//     ? process.env.DEV_PORT
+//     : process.env.PROD_PORT;
+// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 // type is either 'password' or 'data'
 export const updateSettings = async (data, type) => {
@@ -9,8 +27,8 @@ export const updateSettings = async (data, type) => {
   try {
     const url =
       type === 'password'
-        ? 'http://127.0.0.1:7566/api/v1/users/updateMyPassword'
-        : 'http://127.0.0.1:7566/api/v1/users/updateMe';
+        ? `${apiUrl}/users/updateMyPassword`
+        : `${apiUrl}/users/updateMe`;
 
     const res = await axios({
       method: 'PATCH',
@@ -25,7 +43,7 @@ export const updateSettings = async (data, type) => {
       // status bei API request
       showAlert('success', `${type.toUpperCase()} updated successfully!`);
       window.setTimeout(() => {
-        location.assign('/api/v1/me');
+        location.assign(`${strPathApiV1}/me`);
       }, 500);
     }
   } catch (err) {

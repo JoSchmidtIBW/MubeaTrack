@@ -41,18 +41,19 @@ block content
                         input#machineID(type="hidden", value=data.machine._id)
                         br
                         input#sectorASMAID(type="hidden", value=data.sectorASMA._id)
-                        br
+                        //br
                         input#componentASMAID(type="hidden", value=data.componentASMA._id)
-                        br
+                        //br
                         input#componentDetailASMAID(type="hidden", value=data.componentDetailASMA._id)
-                        br
+                        //br
 
                         div(class="form__group ma-bt-md")
-                            label(class="form__label", for="componentDetailASMAName_de") Komponent-Detail name_de
+                            label(class="form__label", for="componentDetailASMAName_de") Komponent-Detail Name_de
                             input#componentDetailASMAName_de(class="form__input", type="text", value=data.componentDetailASMA.name_de)
                             br
-                            label(class="form__label", for="componentDetailASMAName_en") Komponent-Detail name_en
+                            label(class="form__label", for="componentDetailASMAName_en") Komponent-Detail Name_en
                             input#componentDetailASMAName_en(class="form__input", type="text", value=data.componentDetailASMA.name_en)
+                            br
                             label(class="form__label", for="componentDetailASMAStatus") Komponent-Detail Status
                             input#componentDetailASMAStatus(class="form__input", type="text", value=data.componentDetailASMA.status, readonly=true, style=`background-color: ${data.componentDetailASMA.status ? '#50BE5F' : '#E93A48'}`)
                         span
@@ -66,14 +67,14 @@ block content
                         div(class="form__group ma-bt-md")
                             br
                             br
-                            label(class="form__label", for="componentDetailASMAName" style="color: red") componentDetailASMA name
+                            label(class="form__label", for="componentDetailASMAName" style="color: red") Lösche Komponent-Detail
                             br
                             //h4(style="color:red") (Achtung, es gehen dann auch alle Komponenten- Details verloren)
                             input(class="form__input", type="text", value=data.componentDetailASMA.name_de, readonly, style="background-color: #EFDDDC")
                             br
                             input(class="form__input", type="text", value=data.componentDetailASMA.name_en, readonly, style="background-color: #EFDDDC")
                             br
-                            input(class="form__input", type="text", value=data.componentDetailASMA.status.toString(), readonly, style="background-color: #EE9596")
+                            input(class="form__input", type="text", value=data.componentDetailASMA.status, readonly, style="background-color: #EE9596")
 
                         //-h4(style="color:red") Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren
                         button.btn.btn--small.btn--red.btn--deleteComponentDetailASMA Löschen

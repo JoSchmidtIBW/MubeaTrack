@@ -17,52 +17,22 @@ export const getStart = catchAsync(async (req, res, next) => {
   });
 });
 
-// The user can only see departments, where he works
+export const getLoginForm = (req, res) => {
+  res.status(200).render('login', {
+    title: 'Log into your account',
+  });
+};
+
+export const getForgotPassword = catchAsync(async (req, res, next) => {
+  res.status(200).render('forgotPassword', {
+    title: 'Forgot password', //
+  });
+});
+
+// The user can only see departments, where he works, Admin can see all the departments
 export const getOverviewDepartment = catchAsync(async (req, res, next) => {
-  // 1.) Get tour data from collection
   console.log('bin getOverviewDepartment');
-  //console.log(req.body);
-  //console.log(req.user);
 
-  //const departments = await Department.find();
-
-  // console.log('currentUser.department: ' + currentUser.department);
-
-  const reihenfolgeDerAuflistung = [
-    'Schweisserei',
-    'Anarbeit',
-    'Zieherei',
-    'Unterhalt',
-    'IT',
-    'Engineering',
-    'Konstruktion',
-    'Geschäfts-Führung',
-  ];
-  // const departments = await Department.find({
-  //   department: currentUser.department,
-  // }).sort(
-  //   (a, b) =>
-  //     reihenfolgeDerAuflistung.indexOf(a.name) -
-  //     reihenfolgeDerAuflistung.indexOf(b.name)
-  // );
-
-  // const departments = await Department.find({
-  //   name: currentUser.department,
-  // }).sort('-createdAt');
-
-  // console.log('departments: ' + departments);
-  // console.log('user.department: ' + req.user.department);
-  // const userDepartmentObject = req.user.department;
-  //
-  // res.status(200).render('overview', {
-  //   title: 'All Departments',
-  //   departments: departments, // erstes tours ist das template, zweites tours sind die tourdata
-  //   //user: currentUser,
-  // });
-
-  // 2. Build template, but in real not in this controller
-
-  // 3.) Render that template using tour data from 1.)
   const users = await User.find();
 
   const currentUser = req.user;
@@ -78,20 +48,18 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     if (currentUserLanguage === 'de') {
       res.status(200).render('de/overview_de', {
         title: 'Alle Abteilungen',
-        departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+        departments: departmentsAllAdmin,
         machinery: machinery,
         users: users,
         currentUser: currentUser,
-        //user: currentUser,
       });
     } else {
       res.status(200).render('overview', {
         title: 'All Departments',
-        departments: departmentsAllAdmin, // erstes tours ist das template, zweites tours sind die tourdata
+        departments: departmentsAllAdmin,
         machinery: machinery,
         users: users,
         currentUser: currentUser,
-        //user: currentUser,
       });
     }
   } else {
@@ -102,71 +70,82 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
     if (currentUserLanguage === 'de') {
       res.status(200).render('overview_de', {
         title: 'Alle Abteilungen',
-        departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+        departments: departmentsUser,
         machinery: machinery,
         users: users,
         currentUser: currentUser,
-        //user: currentUser,
       });
     } else {
       res.status(200).render('overview', {
         title: 'All Departments',
-        departments: departmentsUser, // erstes tours ist das template, zweites tours sind die tourdata
+        departments: departmentsUser,
         machinery: machinery,
         users: users,
         currentUser: currentUser,
-        //user: currentUser,
       });
     }
   }
 });
 
-export const getMyMalReports = catchAsync(async (req, res, next) => {
-  console.log('bin getMyMalReports');
+export const getDepartment = catchAsync(async (req, res, next) => {
+  const department = await Department.findOne({ slug: req.params.slug });
+
+  if (!department) {
+    return next(new AppError('There is no department with that name.', 404)); // 404 = not found
+  }
+
+  const userDepartmentObject = req.user.department;
+  const userDepartmentString = JSON.stringify(userDepartmentObject);
+  const departmentsArray = JSON.parse(userDepartmentString.split(','));
+
   const currentUser = req.user;
-  //console.log(currentUser);
 
-  const myMalReports = await MalReport.find({
-    user_Mal: currentUser._id,
-  })
-    .select(
-      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
-    )
-    .populate('user_Mal')
-    .populate({
-      path: 'logFal_Repair',
-      populate: {
-        path: 'user_Repair',
-        model: 'User',
-      },
-    }); //.select('createAt_Mal');
+  const machineryZones = [
+    'Sägen',
+    'Schweissen',
+    'Spalten',
+    'Spitzen',
+    'Ziehen',
+    'Richten',
+    'Glühen',
+    'Recken',
+    'Beizen',
+    'Sonstige',
+  ];
 
-  console.log(myMalReports);
+  if (
+    departmentsArray.includes(department.name) ||
+    currentUser.role === 'admin'
+  ) {
+    console.log('Arbeitet dort');
 
-  if (req.user.language === 'de') {
-    res.status(200).render('myMalReports_de', {
-      title: 'Meine Error- Logs',
-      data: {
-        currentUser: currentUser,
-        myMalReports: myMalReports,
-      },
-    });
+    if (req.user.language === 'de') {
+      res.status(200).render('department_de', {
+        title: `${department.name} Abteilung`,
+        department,
+        currentUser,
+        machineryZones,
+      });
+    } else {
+      res.status(200).render('department', {
+        title: `${department.name} department`,
+        department,
+        currentUser,
+        machineryZones,
+      });
+    }
   } else {
-    res.status(200).render('myMalReports', {
-      title: 'My ErrorLogs',
-      data: {
-        currentUser: currentUser,
-        myMalReports: myMalReports,
-      },
-    });
+    console.log('Arbeitet Nicht dort');
+    return next(
+      new AppError('You do not have permission to perform this action!', 403) // 403 = forbidden
+    );
   }
 });
 
 export const getMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMachine: ');
   console.log('---------------------');
-  //console.log(req.params);
-  //console.log(req);
+
   const referer = req.headers.referer; //'http://127.0.0.1:7566/api/v1/departments/anarbeit';
   //const departmentName = referer.split('/').pop(); // 'anarbeit'
   console.log('********vvv*****');
@@ -182,14 +161,9 @@ export const getMachine = catchAsync(async (req, res, next) => {
   console.log('*****vvv********');
 
   const departmentName = departmentName2;
-  // referer.split('/').pop().charAt(0).toUpperCase() +
-  //   referer.split('/').pop().slice(1) || departmentName2;
+
   console.log('departmentName: ' + typeof departmentName);
   console.log('departmentName: ' + departmentName);
-
-  //const department = await Department.findOne({ name: departmentName });
-  console.log('---------****------------');
-  // console.log(department);
 
   const department = await Department.findOne({ name: departmentName });
   console.log(department);
@@ -199,22 +173,14 @@ export const getMachine = catchAsync(async (req, res, next) => {
   console.log('departmentName: ' + departmentName);
   console.log('---------------------');
   console.log(req.params.slug);
-  //console.log(req);
 
   const machine = await Machine.findOne({ name: req.params.slug }).populate(
     'employees'
   );
-  // console.log('machine in DB: ' + machine);
-  console.log(machine.name);
-  console.log('-------------------------');
-  //console.log('machine: ' + machine);
-  console.log('-------------------------');
-
-  //const currentUser = req.user;
 
   if (!machine) {
-    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+    // if this block is commented out, api error should come instead of render
+    return next(new AppError('There is no machine with that name.', 404)); // 404= not found
   }
 
   if (req.user.language === 'de') {
@@ -223,7 +189,6 @@ export const getMachine = catchAsync(async (req, res, next) => {
       data: {
         machine,
         department,
-        //currentUser,
       },
     });
   } else {
@@ -232,7 +197,6 @@ export const getMachine = catchAsync(async (req, res, next) => {
       data: {
         machine,
         department,
-        //currentUser,
       },
     });
   }
@@ -241,7 +205,6 @@ export const getMachine = catchAsync(async (req, res, next) => {
 export const getASMAMachine = catchAsync(async (req, res, next) => {
   console.log('Bin getASMAMachine');
   console.log(req);
-  //console.log(req.params.machineName);
   console.log(req.params);
   const departmentName = req.params.departmentName;
   const machineName = req.params.machineName;
@@ -266,38 +229,19 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
       },
     });
 
+  // to console.log --> logFal's
   malReports.forEach((malReport) => {
     malReport.logFal_Repair.forEach((logFal) => {
       //console.log(logFal);
     });
   });
 
-  // const malReports = await MalReport.find({
-  //   idMachine_Mal: strIDmachine,
-  // })
-  //   .select(
-  //     'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_Mal nameComponentDetail_Mal statusRun_Mal estimatedStatus'
-  //   )
-  //   .populate('user_Mal')
-  //   .populate({
-  //     path: 'logFal_Repair',
-  //     populate: {
-  //       path: 'user_Repair',
-  //       model: 'User',
-  //     },
-  //   });
   console.log(malReports);
 
-  //console.log(machine);
-
-  //console.log(req.user); //currentUser
-
   if (!machine) {
-    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-    return next(new AppError('There is no machine with that name.', 404)); //404= not found
+    return next(new AppError('There is no machine with that name.', 404)); // 404= not found
   }
 
-  //const statusCode = 200;
   if (req.user.language === 'de') {
     res.status(200).render('ASMAmachine_de', {
       title: 'ASMA- Maschine',
@@ -393,18 +337,8 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
           model: 'User',
         },
       });
-    // .populate('repairStatus')
-    // .populate('repairStatus.user_Repair');
 
-    //.select('Status_Repair');
-
-    // .populate({
-    //     path: 'repairStatus.Status_Repair',
-    //     model: 'Status_Repair',
-    //   })
-    // console.log(malReports);
-    //console.log(malReports);
-    //console.log(JSON.stringify(malReports, null, 2));
+    // to console.log --> malReports
     malReports.forEach((malReport) => {
       //console.log(malReport);
     });
@@ -459,19 +393,15 @@ export const getASMAUnterhaltMachineClosedMalReports = catchAsync(
       });
 
     if (!closedMalReports) {
-      // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-      return next(new AppError('There is no machine with that name.', 404)); //404= not found
+      return next(new AppError('There is no machine with that name.', 404)); // 404 = not found
     }
 
-    //ausgabe LogFal in closedMalReports
+    //to console.log --> LogFal in closedMalReports
     closedMalReports.forEach((closedMalReport) => {
-      //console.log('Log Fal Repair:');
-
       closedMalReport.logFal_Repair.forEach((log) => {
-        // console.log(`Create Date: ${log.createAt_Repair}`);
+        //console.log(`Create Date: ${log.createAt_Repair}`);
         //console.log(`estimatedTime_Repair: ${log.estimatedTime_Repair}`);
       });
-      //console.log('------------------------');
     });
 
     if (req.user.language === 'de') {
@@ -510,33 +440,6 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
     console.log('departmentName: ' + departmentName);
     console.log('logFalID: ' + logFalID);
 
-    // const malReportLogFal = await MalReport.find({
-    //   nameMachine_Mal: machineName,
-    //   'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
-    // }).populate('logFal_Repair');
-
-    // const logFal = await MalReport.aggregate([
-    //   {
-    //     $match: {
-    //       'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
-    //     },
-    //   },
-    //   {
-    //     $unwind: '$logFal_Repair',
-    //   },
-    //   {
-    //     $match: {
-    //       'logFal_Repair._id': mongoose.Types.ObjectId(logFalID),
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       _id: 1,
-    //       user_Mal: 1,
-    //       logFal_Repair: 1,
-    //     },
-    //   },
-    // ]);
     const logFal = await MalReport.aggregate([
       {
         $match: {
@@ -557,11 +460,6 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
 
     const malReportLogFal = logFal[0];
     console.log(malReportLogFal);
-    // console.log(malReportLogFal);
-    //
-    // // ...
-    //
-    // console.log(malReportLogFal);
 
     if (req.user.language === 'de') {
       res.status(200).render('updateLogFal_de', {
@@ -569,7 +467,7 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
         data: {
           machineName: machineName,
           departmentName: departmentName,
-          malReportLogFal: malReportLogFal, //JSON.stringify(malReportLogFal),
+          malReportLogFal: malReportLogFal,
           currentUser: req.user,
           logFal: JSON.stringify(logFal),
         },
@@ -606,11 +504,6 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
 
   console.log(malReport);
 
-  // const malReportLogFal = await MalReport.findOne({
-  //   nameMachine_Mal: machineName,
-  //   'logFal_Repair._id': logFalID,
-  // });
-
   if (req.user.language === 'de') {
     res.status(200).render('updateMalReport_de', {
       title: 'Aktualisiere Error- Report',
@@ -634,100 +527,223 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
   }
 });
 
-export const getDepartment = catchAsync(async (req, res, next) => {
-  // 1.) Get the data, from the requested tour (inclouding rewievs and guides)
-  // const tour = await Tour.findOne({ slug: req.params.slug }).populate({
-  //   path: 'reviews',
-  //   fields: 'review rating user',
-  // });
-  //console.log('bin getTour in viewController');
-  //console.log('req.params: ' + JSON.stringify(req.params));
+export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutMubeaTrack', {
+    title: 'About MubeaTrack',
+  });
+});
 
-  const department = await Department.findOne({ slug: req.params.slug });
-
-  //todo hier wenn nicht abteilung, darf dies hier nicht sehen
-
-  //console.log('-------------------------');
-  //console.log('department: ' + department);
-  //console.log('-------------------------');
-
-  if (!department) {
-    // wenn dieser block auskommentiert, müsste api-fehler anstatt render kommen
-    return next(new AppError('There is no department with that name.', 404)); //404= not found
-  }
-
-  // 2. Build template, but in real not in this controller
-
-  // 3.) Render that template using tour data from 1.)
-
-  // console.log('department: ' + department.name);
-  // console.log('user.department: ' + req.user.department);
-  const userDepartmentObject = req.user.department;
-  //  console.log('userDepartmentObject: ' + userDepartmentObject);
-  const userDepartmentString = JSON.stringify(userDepartmentObject);
-  // console.log(typeof userDepartmentString);
-  const departmentsArray = JSON.parse(userDepartmentString.split(','));
-  // console.log(departmentsArray); // ["IT", "Engineering", "Anarbeit"]
-
-  //const currentDepartmentName =
-  const currentUser = req.user;
-
-  const machineryZones = [
-    'Sägen',
-    'Schweissen',
-    'Spalten',
-    'Spitzen',
-    'Ziehen',
-    'Richten',
-    'Glühen',
-    'Recken',
-    'Beizen',
-    'Sonstige',
-  ];
-
-  if (
-    departmentsArray.includes(department.name) ||
-    currentUser.role === 'admin'
-  ) {
-    console.log('Arbeitet dort');
-
-    if (req.user.language === 'de') {
-      res.status(200).render('department_de', {
-        title: `${department.name} Abteilung`, //'The Forrest Hiker Tour',
-        department,
-        currentUser,
-        machineryZones,
-      });
-    } else {
-      res.status(200).render('department', {
-        title: `${department.name} department`, //'The Forrest Hiker Tour',
-        department,
-        currentUser,
-        machineryZones,
-      });
-    }
+export const getAboutMubeaTrackInlogt = catchAsync(async (req, res, next) => {
+  if (req.user.language === 'de') {
+    res.status(200).render('aboutMubeaTrack_de', {
+      title: 'Über MubeaTrack',
+    });
   } else {
-    console.log('Arbeitet Nicht dort');
-    // res.status(403).render('error', {
-    //   title: 'Something went wrong!',
-    //   msg: 'err.message',
-    // });
-    return next(
-      new AppError('You do not have permission to perform this action!', 403)
-    ); //403 = forbidden
+    res.status(200).render('aboutMubeaTrack', {
+      title: 'About MubeaTrack',
+    });
   }
 });
 
-export const getLoginForm = (req, res) => {
-  res.status(200).render('login', {
-    title: 'Log into your account', //
+export const getAboutASMA = catchAsync(async (req, res, next) => {
+  res.status(200).render('aboutASMA', {
+    title: 'About ASMA',
   });
+});
+
+export const getAboutASMAInlogt = catchAsync(async (req, res, next) => {
+  if (req.user.language === 'de') {
+    res.status(200).render('aboutASMA_de', {
+      title: 'Über ASMA',
+    });
+  } else {
+    res.status(200).render('aboutASMA', {
+      title: 'About ASMA',
+    });
+  }
+});
+
+export const getContact = catchAsync(async (req, res, next) => {
+  res.status(200).render('contact', {
+    title: 'Contact',
+  });
+});
+
+export const getContactInlogt = catchAsync(async (req, res, next) => {
+  console.log(req.user);
+  if (req.user.language === 'de') {
+    res.status(200).render('contact_de', {
+      title: 'Kontakt',
+    });
+  } else {
+    res.status(200).render('contact', {
+      title: 'Contact',
+    });
+  }
+});
+
+export const getAccount = (req, res) => {
+  if (req.user.language === 'de') {
+    res.status(200).render('account_de', {
+      title: 'Dein Konto',
+      user: req.user,
+    });
+  } else {
+    res.status(200).render('account', {
+      title: 'Your account',
+      user: req.user,
+    });
+  }
 };
 
-export const getForgotPassword = catchAsync(async (req, res, next) => {
-  res.status(200).render('forgotPassword', {
-    title: 'Forgot password', //
-  });
+export const getMyMalReports = catchAsync(async (req, res, next) => {
+  console.log('bin getMyMalReports');
+  const currentUser = req.user;
+
+  const myMalReports = await MalReport.find({
+    user_Mal: currentUser._id,
+  })
+    .select(
+      'createAt_Mal nameMachine_Mal statusOpenClose_Mal nameSector_Mal nameComponent_de_Mal nameComponent_en_Mal nameComponentDetail_de_Mal nameComponentDetail_en_Mal statusRun_Mal estimatedStatus finishAt_Mal'
+    )
+    .populate('user_Mal')
+    .populate({
+      path: 'logFal_Repair',
+      populate: {
+        path: 'user_Repair',
+        model: 'User',
+      },
+    });
+
+  console.log(myMalReports);
+
+  if (req.user.language === 'de') {
+    res.status(200).render('myMalReports_de', {
+      title: 'Meine Error- Logs',
+      data: {
+        currentUser: currentUser,
+        myMalReports: myMalReports,
+      },
+    });
+  } else {
+    res.status(200).render('myMalReports', {
+      title: 'My ErrorLogs',
+      data: {
+        currentUser: currentUser,
+        myMalReports: myMalReports,
+      },
+    });
+  }
+});
+
+export const getManageUsers = catchAsync(async (req, res) => {
+  const allUsers = await User.find().select('+createdAt +password');
+
+  if (req.user.language === 'de') {
+    res.status(200).render('manageUsers_de', {
+      title: 'Benutzer- Verwaltung',
+      users: allUsers,
+    });
+  } else {
+    res.status(200).render('manageUsers', {
+      title: 'Manage Users',
+      users: allUsers,
+    });
+  }
+});
+
+export const getCreateUserForm = catchAsync(async (req, res, next) => {
+  const allDepartments = await Department.find().sort({ name: 1 });
+
+  if (req.user.language === 'de') {
+    res.status(200).render('createUser_de', {
+      title: 'Erstellen neuer User',
+      data: {
+        departments: allDepartments,
+      },
+    });
+  } else {
+    res.status(200).render('createUser', {
+      title: 'Create new user',
+      data: {
+        departments: allDepartments,
+      },
+    });
+  }
+});
+
+export const getUpdateUser = catchAsync(async (req, res, next) => {
+  const currentUserLoggedIn = req.user;
+
+  console.log('bin getUpdateUser');
+
+  const userToUpdate = await User.findById(req.params.id)
+    .select('+password')
+    .populate('machinery');
+
+  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
+  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //hashing the key using SHA256
+  let userDecryptedPassword = decryptData(userToUpdate.password, iv, key);
+  console.log('userDecryptedPassword: ' + userDecryptedPassword);
+
+  const allDepartments = await Department.find()
+    .sort('_id')
+    .populate('machinery');
+
+  if (!userToUpdate) {
+    return next(new AppError('There is no User with that ID.', 404));
+  }
+
+  const currentUser = req.user;
+
+  // That no one can change the Admin
+  if (userToUpdate.role === 'admin' && req.user.role !== 'admin') {
+    res.status(401).render('error', {
+      msg: 'You do not have permission to perform this action!',
+    });
+  } else if (req.user.role === 'admin') {
+    if (req.user.language === 'de') {
+      res.status(200).render('updateUserAdminPW_de', {
+        title: 'Aktualisiere Benutzer',
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+          userDecryptedPassword: userDecryptedPassword,
+        },
+      });
+    } else {
+      res.status(200).render('updateUserAdminPW', {
+        title: 'Update user',
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+          userDecryptedPassword: userDecryptedPassword,
+        },
+      });
+    }
+  } else {
+    if (req.user.language === 'de') {
+      res.status(200).render('updateUserByChef_de', {
+        title: 'Aktualisiere Benutzer',
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+        },
+      });
+    } else {
+      res.status(200).render('updateUserByChef', {
+        title: 'Update user',
+        data: {
+          userToUpdate: userToUpdate,
+          departments: allDepartments,
+          currentUser: currentUser,
+        },
+      });
+    }
+  }
 });
 
 export const getManageMachinery = catchAsync(async (req, res) => {
@@ -754,33 +770,6 @@ export const getManageMachinery = catchAsync(async (req, res) => {
   }
 });
 
-export const getManageUsers = catchAsync(async (req, res) => {
-  const allUsers = await User.find().select(
-    '+createdAt +password' // +employeeNumber +password'
-  );
-  //const allUsers = await User.find();
-  //console.log(allUsers.length);
-
-  // const features = new APIFeatures(User.find(), req.query)
-  //   .filter()
-  //   .sort()
-  //   .limitFields()
-  //   .paginate(); // Hier wird das Limit auf 5 gesetzt
-  // const users = await features.query;
-
-  if (req.user.language === 'de') {
-    res.status(200).render('manageUsers_de', {
-      title: 'Benutzer- Verwaltung',
-      users: allUsers, //users, //allUsers,
-    });
-  } else {
-    res.status(200).render('manageUsers', {
-      title: 'Manage Users',
-      users: allUsers, //users, //allUsers,
-    });
-  }
-});
-
 export const getCreateMachineForm = (req, res) => {
   if (req.user.language === 'de') {
     res.status(200).render('createMachine_de', {
@@ -793,378 +782,37 @@ export const getCreateMachineForm = (req, res) => {
   }
 };
 
-export const getManageASMAMachine = catchAsync(async (req, res, next) => {
-  const machinery = await Machine.find(); //.select('createdAt');
+export const getUpdateMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateMachine');
+  const machineToUpdate = await Machine.findById({ _id: req.params.id });
 
-  if (req.user.language === 'de') {
-    res.status(200).render('manageASMAMachine_de', {
-      title: 'ASMA/Maschine Verwaltung',
-      //data: {
-      machinery: machinery,
-      //},
-    });
-  } else {
-    res.status(200).render('manageASMAMachine', {
-      title: 'Manage ASMA/machine',
-      //data: {
-      machinery: machinery,
-      //},
-    });
+  if (!machineToUpdate) {
+    return next(new AppError('There is no machine with that ID.', 404));
   }
-});
-
-export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
-  console.log('bin getUpdateASMAMachine');
-  const machine = await Machine.findById(req.params.id);
-  console.log(req.params.id);
 
   if (req.user.language === 'de') {
-    res.status(200).render('createASMAMachine_de', {
-      title: 'Erstelle ASMAmachine',
+    res.status(200).render('updateMachine_de', {
+      title: 'Aktualisiere machine',
       data: {
-        machine: machine,
+        machineToUpdate,
       },
     });
   } else {
-    res.status(200).render('createASMAMachine', {
-      title: 'Create ASMAmachine',
+    res.status(200).render('updateMachine', {
+      title: 'Update machine',
       data: {
-        machine: machine,
+        machineToUpdate,
       },
     });
   }
-});
-
-export const getCreateComponentDetailsASMA = catchAsync(
-  async (req, res, next) => {
-    console.log('bin getCreateComponentDetailsASMA');
-    console.log(req.params.machineID);
-    console.log(req.params.sectorASMAID);
-    console.log(req.params.componentASMAID);
-
-    const machine = await Machine.findById(req.params.machineID);
-    // console.log(machine);
-    // const sectorASMA = machine.sectorsASMA.find((sector) =>
-    //   sector._id.equals(req.params.sectorASMAID)
-    // );
-    // const sectorASMA = machine.sectorsASMA.find((sector) =>
-    //   sector._id.equals(req.params.sectorASMAID)
-    // );
-    const sectorASMA = machine.sectorASMA.find(
-      (sector) => String(sector._id) === req.params.sectorASMAID
-    );
-
-    const componentASMA = machine.sectorASMA
-      .find((s) => s._id.toString() === req.params.sectorASMAID)
-      .components.find((c) => c._id.toString() === req.params.componentASMAID);
-
-    console.log(componentASMA);
-
-    //console.log(sectorASMA);
-    //console.log(sectorASMA.name);
-
-    if (req.user.language === 'de') {
-      res.status(200).render('createComponentDetailsASMa_de', {
-        title: 'Erstelle componentDetailsASMA',
-        data: {
-          machine: machine,
-          sectorASMA: sectorASMA,
-          componentASMA: componentASMA,
-        },
-      });
-    } else {
-      res.status(200).render('createComponentDetailsASMa', {
-        title: 'Create componentDetailsASMA',
-        data: {
-          machine: machine,
-          sectorASMA: sectorASMA,
-          componentASMA: componentASMA,
-        },
-      });
-    }
-  }
-);
-
-export const getUpdateComponentDetailsASMA = catchAsync(
-  async (req, res, next) => {
-    console.log('bin getUpdateComponentDetailsASMA');
-    console.log(req.params.machineID);
-    console.log(req.params.sectorASMAID);
-    console.log(req.params.componentASMAID);
-    console.log(req.params.componentDetailASMAID);
-
-    const machine = await Machine.findById(req.params.machineID);
-    if (!machine) {
-      return next(new AppError('No machine found with that ID', 404));
-    }
-
-    let sectorASMA;
-    for (let i = 0; i < machine.sectorASMA.length; i++) {
-      if (machine.sectorASMA[i]._id.equals(req.params.sectorASMAID)) {
-        sectorASMA = machine.sectorASMA[i];
-        break;
-      }
-    }
-    //console.log(sectorASMA);
-    console.log('------------------');
-
-    let componentASMA;
-    for (let i = 0; i < sectorASMA.components.length; i++) {
-      if (sectorASMA.components[i]._id.equals(req.params.componentASMAID)) {
-        componentASMA = sectorASMA.components[i];
-        break;
-      }
-    }
-    //console.log(componentASMA);
-
-    let componentDetailASMA;
-    for (let i = 0; i < componentASMA.componentDetails.length; i++) {
-      if (
-        componentASMA.componentDetails[i]._id.equals(
-          req.params.componentDetailASMAID
-        )
-      ) {
-        componentDetailASMA = componentASMA.componentDetails[i];
-        break;
-      }
-    }
-    console.log(componentDetailASMA);
-
-    if (req.user.language === 'de') {
-      res.status(200).render('updateComponentDetailASMa_de', {
-        title: 'Aktualisiere componentASMA',
-        data: {
-          machine: machine,
-          sectorASMA: sectorASMA,
-          componentASMA: componentASMA,
-          componentDetailASMA: componentDetailASMA,
-        },
-      });
-    } else {
-      res.status(200).render('updateComponentDetailASMa', {
-        title: 'Update componentASMA',
-        data: {
-          machine: machine,
-          sectorASMA: sectorASMA,
-          componentASMA: componentASMA,
-          componentDetailASMA: componentDetailASMA,
-        },
-      });
-    }
-  }
-);
-
-export const getCreateComponents = catchAsync(async (req, res, next) => {
-  console.log('bin getCreateComponents');
-  console.log(req.params.machineID);
-  console.log(req.params.sectorASMAID);
-
-  const machine = await Machine.findById(req.params.machineID);
-  // console.log(machine);
-  // const sectorASMA = machine.sectorsASMA.find((sector) =>
-  //   sector._id.equals(req.params.sectorASMAID)
-  // );
-  // const sectorASMA = machine.sectorsASMA.find((sector) =>
-  //   sector._id.equals(req.params.sectorASMAID)
-  // );
-  const sectorASMA = machine.sectorASMA.find(
-    (sector) => String(sector._id) === req.params.sectorASMAID
-  );
-
-  //console.log(sectorASMA);
-
-  if (req.user.language === 'de') {
-    res.status(200).render('createComponentsASMa_de', {
-      title: 'Erstelle componentsASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-      },
-    });
-  } else {
-    res.status(200).render('createComponentsASMa', {
-      title: 'Create componentsASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-      },
-    });
-  }
-});
-
-export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
-  console.log('bin getUpdateComponentASMA');
-  console.log('machineID: ' + req.params.machineID);
-  console.log('sectorASMAID: ' + req.params.sectorASMAID);
-  console.log('componentASMAID: ' + req.params.componentASMAID);
-
-  const machine = await Machine.findById(req.params.machineID);
-  if (!machine) {
-    return next(new AppError('No machine found with that ID', 404));
-  }
-
-  let sectorASMA;
-  for (let i = 0; i < machine.sectorASMA.length; i++) {
-    if (machine.sectorASMA[i]._id.equals(req.params.sectorASMAID)) {
-      sectorASMA = machine.sectorASMA[i];
-      break;
-    }
-  }
-  console.log(sectorASMA);
-  console.log('------------------');
-
-  let componentASMA;
-  for (let i = 0; i < sectorASMA.components.length; i++) {
-    if (sectorASMA.components[i]._id.equals(req.params.componentASMAID)) {
-      componentASMA = sectorASMA.components[i];
-      break;
-    }
-  }
-  console.log(componentASMA);
-
-  if (req.user.language === 'de') {
-    res.status(200).render('updateComponentASMa_de', {
-      title: 'Aktualisiere componentASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-        componentASMA: componentASMA,
-      },
-    });
-  } else {
-    res.status(200).render('updateComponentASMa', {
-      title: 'Update componentASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sectorASMA,
-        componentASMA: componentASMA,
-      },
-    });
-  }
-});
-
-export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
-  console.log('bin getUpdateSectorASMA');
-  const path = req.path; //
-  console.log('path: ' + path);
-  const pathArray = path.split('/');
-  const machineID = pathArray[2]; // 6444566c830afd3adeba2d38
-  // console.log('machineID: ' + machineID);
-  //
-  // console.log(req.params); // id SectorASMA
-  // console.log('-----------');
-  // console.log(req.params.id);
-  // console.log('-----------');
-  const machine = await Machine.findById(machineID);
-  const sectorASMAID = mongoose.Types.ObjectId(req.params.id); // req.params.id; //mongoose.Types.ObjectId(req.params.id); //req.params.id;
-
-  // console.log(machine);
-
-  // const sector = machine.sectorASMA.find(
-  //   (sector) => sector._id === sectorASMAID
-  // );
-  let sector;
-  for (let i = 0; i < machine.sectorASMA.length; i++) {
-    if (machine.sectorASMA[i]._id.equals(sectorASMAID)) {
-      sector = machine.sectorASMA[i];
-      break;
-    }
-  }
-
-  //console.log(sector);
-  // console.log('------****-----');
-  // console.log(sector);
-  // console.log('------****-----');
-
-  if (req.user.language === 'de') {
-    res.status(200).render('updateSectorASMA_de', {
-      title: 'Aktualisiere sectorASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sector,
-      },
-    });
-  } else {
-    res.status(200).render('updateSectorASMA', {
-      title: 'Update sectorASMA',
-      data: {
-        machine: machine,
-        sectorASMA: sector,
-      },
-    });
-  }
-});
-export const getAboutMubeaTrack = catchAsync(async (req, res, next) => {
-  res.status(200).render('aboutMubeaTrack', {
-    title: 'About MubeaTrack',
-  });
-});
-
-export const getAboutMubeaTrackInlogt = catchAsync(async (req, res, next) => {
-  if (req.user.language === 'de') {
-    res.status(200).render('aboutMubeaTrack_de', {
-      title: 'Über MubeaTrack',
-    });
-  } else {
-    res.status(200).render('aboutMubeaTrack', {
-      title: 'About MubeaTrack',
-    });
-  }
-});
-
-export const getAboutASMAInlogt = catchAsync(async (req, res, next) => {
-  if (req.user.language === 'de') {
-    res.status(200).render('aboutASMA_de', {
-      title: 'Über ASMA',
-    });
-  } else {
-    res.status(200).render('aboutASMA', {
-      title: 'About ASMA',
-    });
-  }
-});
-
-//
-export const getAboutASMA = catchAsync(async (req, res, next) => {
-  res.status(200).render('aboutASMA', {
-    title: 'About ASMA',
-  });
-});
-
-export const getContact = catchAsync(async (req, res, next) => {
-  res.status(200).render('contact', {
-    title: 'Contact',
-  });
-});
-
-export const getContactInlogt = catchAsync(async (req, res, next) => {
-  console.log(req.user);
-  if (req.user.language === 'de') {
-    res.status(200).render('contact_de', {
-      title: 'Kontakt',
-    });
-  } else {
-    res.status(200).render('contact', {
-      title: 'Contact',
-    });
-  }
-
-  // if (req.user.language === undefined) {
-  //   res.status(200).render('contact', {
-  //     title: 'Contact',
-  //   });
-  // }
 });
 
 export const getManageUserMachine = catchAsync(async (req, res, next) => {
   const departments = await Department.find().sort('_id').populate('machinery');
   const machinery = await Machine.find().populate('employees');
-  const users = await User.find(); //.populate('machinery');
+  const users = await User.find();
 
   console.log(users.length);
-
-  // Machine.find({_id: })
-  // console.log()
 
   if (req.user.language === 'de') {
     res.status(200).render('manageUserMachine_de', {
@@ -1222,213 +870,265 @@ export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
   }
 });
 
-export const getCreateUserForm = catchAsync(async (req, res, next) => {
-  const allDepartments = await Department.find().sort({ name: 1 });
+export const getManageASMAMachine = catchAsync(async (req, res, next) => {
+  console.log('Bin getManageASMAMachine im viewController');
+  const machinery = await Machine.find();
 
   if (req.user.language === 'de') {
-    res.status(200).render('createUser_de', {
-      title: 'Erstellen neuer User',
+    res.status(200).render('manageASMAMachine_de', {
+      title: 'ASMA/Maschine Verwaltung',
+      machinery: machinery,
+    });
+  } else {
+    res.status(200).render('manageASMAMachine', {
+      title: 'Manage ASMA/machine',
+      machinery: machinery,
+    });
+  }
+});
+
+export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getCreateASMAMachine');
+  const machine = await Machine.findById(req.params.id);
+  console.log(req.params.id);
+
+  if (req.user.language === 'de') {
+    res.status(200).render('createASMAMachine_de', {
+      title: 'Erstelle ASMAmachine',
       data: {
-        departments: allDepartments,
+        machine: machine,
       },
     });
   } else {
-    res.status(200).render('createUser', {
-      title: 'Create new user',
+    res.status(200).render('createASMAMachine', {
+      title: 'Create ASMAmachine',
       data: {
-        departments: allDepartments,
+        machine: machine,
       },
     });
   }
 });
 
-export const getUpdateMachine = catchAsync(async (req, res, next) => {
-  console.log('bin getUpdateMachine');
-  const machineToUpdate = await Machine.findById({ _id: req.params.id });
-  //console.log(machineToUpdate);
+export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateSectorASMA');
+  const path = req.path; //
+  console.log('path: ' + path);
+  const pathArray = path.split('/');
+  const machineID = pathArray[2];
 
-  if (!machineToUpdate) {
-    return next(new AppError('There is no machine with that ID.', 404));
+  const machine = await Machine.findById(machineID);
+  const sectorASMAID = mongoose.Types.ObjectId(req.params.id);
+
+  let sector;
+  for (let i = 0; i < machine.sectorASMA.length; i++) {
+    if (machine.sectorASMA[i]._id.equals(sectorASMAID)) {
+      sector = machine.sectorASMA[i];
+      break;
+    }
   }
 
   if (req.user.language === 'de') {
-    res.status(200).render('updateMachine_de', {
-      title: 'Aktualisiere machine',
+    res.status(200).render('updateSectorASMA_de', {
+      title: 'Aktualisiere sectorASMA',
       data: {
-        machineToUpdate,
+        machine: machine,
+        sectorASMA: sector,
       },
     });
   } else {
-    res.status(200).render('updateMachine', {
-      title: 'Update machine',
+    res.status(200).render('updateSectorASMA', {
+      title: 'Update sectorASMA',
       data: {
-        machineToUpdate,
+        machine: machine,
+        sectorASMA: sector,
       },
     });
   }
 });
 
-export const getUpdateUser = catchAsync(async (req, res, next) => {
-  //console.log(req.body);
-  const currentUserLoggedIn = req.user;
+export const getCreateComponents = catchAsync(async (req, res, next) => {
+  console.log('bin getCreateComponents');
+  console.log(req.params.machineID);
+  console.log(req.params.sectorASMAID);
 
-  console.log('bin getUpdateUser');
-  // console.log(currentUserLoggedIn);
-  // console.log('----------');
-  // console.log(req.params.id);
+  const machine = await Machine.findById(req.params.machineID);
 
-  //const userToUpdate = await User.findById({ _id: req.params.id })
-  //  .select('+password')
-  //  .populate('machinery');
-  const userToUpdate = await User.findById(req.params.id)
-    .select('+password')
-    .populate('machinery');
+  const sectorASMA = machine.sectorASMA.find(
+    (sector) => String(sector._id) === req.params.sectorASMAID
+  );
 
-  //   var encryptedStringPasswortLClient;
-  // // // passwort wird hier gehascht und schreibt es in den: encryptedStringPasswortLClient
-  // // //**************************************************************************
-  // let data = this.password; //passwortLClient;//Message to Encrypt
-  let iv = CryptoJS.enc.Base64.parse(''); //giving empty initialization vector
-  let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); //hashing the key using SHA256  --> diesen in config oder in .env Datei auslagern!!!!
-  // // //var encryptedStringPasswortLClient=encryptData(data,iv,key);//muss var sein//
-  // encryptedStringPasswortLClient = encryptData(data, iv, key); //muss var sein//
-  // //   console.log("encryptedString: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
-  // //--------------------------------------------------------------------------
-  // //das ist zum wieder das normale pw anzeigen, möchte das später einbauen
-  let userDecryptedPassword = decryptData(userToUpdate.password, iv, key);
-  console.log('userDecryptedPassword: ' + userDecryptedPassword);
-  // //**************************************************************************
+  if (req.user.language === 'de') {
+    res.status(200).render('createComponentsASMa_de', {
+      title: 'Erstelle componentsASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+      },
+    });
+  } else {
+    res.status(200).render('createComponentsASMa', {
+      title: 'Create componentsASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+      },
+    });
+  }
+});
 
-  const allDepartments = await Department.find()
-    .sort('_id')
-    .populate('machinery');
+export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
+  console.log('bin getUpdateComponentASMA');
+  console.log('machineID: ' + req.params.machineID);
+  console.log('sectorASMAID: ' + req.params.sectorASMAID);
+  console.log('componentASMAID: ' + req.params.componentASMAID);
 
-  // console.log(userToUpdate.firstName);
-  //
-  // console.log(userToUpdate);
-  if (!userToUpdate) {
-    return next(new AppError('There is no User with that ID.', 404));
+  const machine = await Machine.findById(req.params.machineID);
+  if (!machine) {
+    return next(new AppError('No machine found with that ID', 404));
   }
 
-  const currentUser = req.user;
-  //console.log('currentUser: ' + currentUser);
+  let sectorASMA;
+  for (let i = 0; i < machine.sectorASMA.length; i++) {
+    if (machine.sectorASMA[i]._id.equals(req.params.sectorASMAID)) {
+      sectorASMA = machine.sectorASMA[i];
+      break;
+    }
+  }
+  console.log(sectorASMA);
 
-  // res.status(200).render('updateUserAdminPW', {
-  //   title: 'Update user',
-  //   //data: userToUpdate,
-  //   data: {
-  //     userToUpdate: userToUpdate,
-  //     departments: allDepartments,
-  //     currentUser: currentUser,
-  //     //currentUserLoggedIn,
-  //   },
-  // });
+  let componentASMA;
+  for (let i = 0; i < sectorASMA.components.length; i++) {
+    if (sectorASMA.components[i]._id.equals(req.params.componentASMAID)) {
+      componentASMA = sectorASMA.components[i];
+      break;
+    }
+  }
+  console.log(componentASMA);
 
-  if (userToUpdate.role === 'admin' && req.user.role !== 'admin') {
-    //damit niemand den admin verändert
-    //res.redirect('/api/v1/manage_users');
-    //return next(new AppError('There is sadfghno User with that ID.', 404));
-
-    //res.redirect('/api/v1/manage_users');
-    res.status(401).render('error', {
-      msg: 'You do not have permission to perform this action!',
+  if (req.user.language === 'de') {
+    res.status(200).render('updateComponentASMa_de', {
+      title: 'Aktualisiere componentASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+        componentASMA: componentASMA,
+      },
     });
-    // return next(
-    //   new AppError('You do not have permission to perform this action!', 403)
-    // );
-  } else if (req.user.role === 'admin') {
+  } else {
+    res.status(200).render('updateComponentASMa', {
+      title: 'Update componentASMA',
+      data: {
+        machine: machine,
+        sectorASMA: sectorASMA,
+        componentASMA: componentASMA,
+      },
+    });
+  }
+});
+
+export const getCreateComponentDetailsASMA = catchAsync(
+  async (req, res, next) => {
+    console.log('bin getCreateComponentDetailsASMA');
+    console.log(req.params.machineID);
+    console.log(req.params.sectorASMAID);
+    console.log(req.params.componentASMAID);
+
+    const machine = await Machine.findById(req.params.machineID);
+
+    const sectorASMA = machine.sectorASMA.find(
+      (sector) => String(sector._id) === req.params.sectorASMAID
+    );
+
+    const componentASMA = machine.sectorASMA
+      .find((s) => s._id.toString() === req.params.sectorASMAID)
+      .components.find((c) => c._id.toString() === req.params.componentASMAID);
+
+    console.log(componentASMA);
+
     if (req.user.language === 'de') {
-      res.status(200).render('updateUserAdminPW_de', {
-        title: 'Aktualisiere Benutzer',
-        //data: userToUpdate,
+      res.status(200).render('createComponentDetailsASMa_de', {
+        title: 'Erstelle componentDetailsASMA',
         data: {
-          userToUpdate: userToUpdate,
-          departments: allDepartments,
-          currentUser: currentUser,
-          userDecryptedPassword: userDecryptedPassword,
-          //currentUserLoggedIn,
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
         },
       });
     } else {
-      res.status(200).render('updateUserAdminPW', {
-        title: 'Update user',
-        //data: userToUpdate,
+      res.status(200).render('createComponentDetailsASMa', {
+        title: 'Create componentDetailsASMA',
         data: {
-          userToUpdate: userToUpdate,
-          departments: allDepartments,
-          currentUser: currentUser,
-          userDecryptedPassword: userDecryptedPassword,
-          //currentUserLoggedIn,
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
         },
       });
     }
-  } else {
+  }
+);
+
+export const getUpdateComponentDetailsASMA = catchAsync(
+  async (req, res, next) => {
+    console.log('bin getUpdateComponentDetailsASMA');
+    console.log(req.params.machineID);
+    console.log(req.params.sectorASMAID);
+    console.log(req.params.componentASMAID);
+    console.log(req.params.componentDetailASMAID);
+
+    const machine = await Machine.findById(req.params.machineID);
+    if (!machine) {
+      return next(new AppError('No machine found with that ID', 404));
+    }
+
+    let sectorASMA;
+    for (let i = 0; i < machine.sectorASMA.length; i++) {
+      if (machine.sectorASMA[i]._id.equals(req.params.sectorASMAID)) {
+        sectorASMA = machine.sectorASMA[i];
+        break;
+      }
+    }
+
+    let componentASMA;
+    for (let i = 0; i < sectorASMA.components.length; i++) {
+      if (sectorASMA.components[i]._id.equals(req.params.componentASMAID)) {
+        componentASMA = sectorASMA.components[i];
+        break;
+      }
+    }
+
+    let componentDetailASMA;
+    for (let i = 0; i < componentASMA.componentDetails.length; i++) {
+      if (
+        componentASMA.componentDetails[i]._id.equals(
+          req.params.componentDetailASMAID
+        )
+      ) {
+        componentDetailASMA = componentASMA.componentDetails[i];
+        break;
+      }
+    }
+    console.log(componentDetailASMA);
+
     if (req.user.language === 'de') {
-      res.status(200).render('updateUserByChef_de', {
-        title: 'Aktualisiere Benutzer',
-        //data: userToUpdate,
+      res.status(200).render('updateComponentDetailASMa_de', {
+        title: 'Aktualisiere componentASMA',
         data: {
-          userToUpdate: userToUpdate,
-          //currentUserLoggedIn,
-          departments: allDepartments,
-          currentUser: currentUser,
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+          componentDetailASMA: componentDetailASMA,
         },
       });
     } else {
-      res.status(200).render('updateUserByChef', {
-        title: 'Update user',
-        //data: userToUpdate,
+      res.status(200).render('updateComponentDetailASMa', {
+        title: 'Update componentASMA',
         data: {
-          userToUpdate: userToUpdate,
-          //currentUserLoggedIn,
-          departments: allDepartments,
-          currentUser: currentUser,
+          machine: machine,
+          sectorASMA: sectorASMA,
+          componentASMA: componentASMA,
+          componentDetailASMA: componentDetailASMA,
         },
       });
     }
   }
-});
-
-export const getAccount = (req, res) => {
-  // da protect und isLoggedin middleware bereits user wissen, muss hier nicht fragen
-  // frage, der user ist in der req.user drin, jedoch wiso wird der user nicht gesendet unterhalb des titels?
-
-  if (req.user.language === 'de') {
-    res.status(200).render('account_de', {
-      title: 'Dein Konto',
-      user: req.user,
-    });
-  } else {
-    res.status(200).render('account', {
-      title: 'Your account',
-      user: req.user,
-    });
-  }
-};
-
-//video 195 POST userData MEaccount, ohne API, mit POST wie bei ejs method=post
-//exports.updateUserData = catchAsync(async (req, res, next) => {
-// export const updateUserData = catchAsync(async (req, res, next) => {
-//   //console.log('req.User: ', req.user);
-//   //console.log('Updating User: ', req.body); //in app.js muss app.use(express.urlencoded()) sein, um die daten zu sehen
-//
-//   const updatedUser = await User.findByIdAndUpdate(
-//     req.user.id,
-//     {
-//       //req.user.id den suchen wir, um zu updaten
-//       //name: req.body.name, // req.body.name kommt von name des inputfeldes in pug or ejs
-//       email: req.body.email,
-//     },
-//     {
-//       // damit nur name und email update, aber keine anderen sachen        PW nicht mit findbyidandupdate machen!!!
-//       new: true, // die updatet dokument soll neu sein,
-//       runValidators: true,
-//     }
-//   );
-//
-//   //danach die gleiche seite, aber mit updatet sachen neu laden
-//   res.status(200).render('account', {
-//     title: 'Your account',
-//     user: updatedUser, // user(daten) auf der seite sind updateUser,
-//   });
-// });
+);

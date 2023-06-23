@@ -21,11 +21,13 @@ Git Repository zu meiner Diplomarbeit "MubeaTrack" als NDS HF Applikationsentwic
 
 ## Einleitung
 **MubeaTrack**    
-MubeaTrack ist eine Web-Applikation, mit einem node.js- Server und dem Framework Express.  
-Ein Client-Server-Programm mit einer MVC (Model-View-Controller) Architektur. Und einer Datenbank namens MongoDB.  
-MubeaTrack dient als Grundgerüst (für eine erste Webapplication) zur Verwaltung von Benutzern, Maschinen und schon vorhandenen Abteilungen.
+MubeaTrack ist eine Web-Applikation, die auf einem node.js-Server mit dem Express-Framework basiert.  
+Die Architektur folgt dem MVC (Model-View-Controller)-Muster und nutzt die Pug-Template-Engine sowie eine Datenbank namens MongoDB.
 
-**→ Implementiert in MubeaTrack ist "ASMA"**
+MubeaTrack dient als Grundgerüst für die Entwicklung einer ersten Web-Applikation. Es ermöglicht die Verwaltung von Benutzern, Maschinen und vorhandenen Abteilungen.
+
+Implementierungen in MubeaTrack:  
+**→ "ASMA"**
 
 &nbsp;
 
@@ -33,7 +35,8 @@ MubeaTrack dient als Grundgerüst (für eine erste Webapplication) zur Verwaltun
 
 **ASMA**    
 ASMA steht für "Anlagespezifischer Stör-Meldungs-Absetzer" und ist ein Bestandteil von MubeaTrack.  
-Mit ASMA besteht die Möglichkeit, anlagespezifische Störmeldungen abzusetzen. Diese Meldungen sind ausschließlich für das Unterhaltspersonal bestimmt und können auch nur von ihnen quittiert oder aufgehoben werden.
+Mit ASMA besteht die Möglichkeit, Anlagespezifische- Störmeldungen abzusetzen.  
+Diese Meldungen sind ausschließlich für das Unterhaltspersonal bestimmt und können auch nur von ihnen quittiert oder aufgehoben werden.
 
 
 
@@ -44,29 +47,32 @@ Bevor Sie dieses Projekt verwenden können, stellen Sie sicher, dass die folgend
 
 - Betriebssystem: Windows 11 (oder eine kompatible Version)
 - Webbrowser: Unterstützt werden die neuesten Versionen von Google Chrome und Microsoft Edge.
-- Node.js: Version 10.0.0 oder höher. (https://nodejs.org/en/)
-- NPM: NPM wird zusammen mit Node.js installiert und sollte automatisch verfügbar sein. (https://www.npmjs.com/)
-- MongoDB: Version 10.10.2. (https://www.mongodb.com/)
+- Node.js: Stellen Sie sicher, dass Sie Node.js in Version 10.0.0 oder höher installiert haben. Sie können Node.js von der offiziellen Website herunterladen und installieren: https://nodejs.org/en/.
+- NPM: NPM (Node Package Manager) wird zusammen mit Node.js installiert und sollte automatisch verfügbar sein. Sie können überprüfen, ob NPM installiert ist, indem Sie den Befehl npm --version in Ihrer Befehlszeile ausführen. https://www.npmjs.com/
+- MongoDB: Installieren Sie MongoDB in Version 10.10.2. Sie können MongoDB von der offiziellen Website herunterladen und entsprechend den Anweisungen installieren: https://www.mongodb.com/.
 
+Stellen Sie sicher, dass alle Voraussetzungen erfüllt sind, bevor Sie mit dem Projekt fortfahren.
 
 ## Installation
 Um das Projekt einzurichten, gehen Sie folgendermaßen vor:
-1. Führen Sie npm install im hauptverzeichnis aus, um die erforderlichen Abhängigkeiten zu installieren.
-Mit folgendem Befehl werden alle Abhängigkeiten installiert:
+1. Navigieren Sie zum Hauptverzeichnis des Projekts.
+2. Öffnen Sie die Befehlszeile (Command Prompt) oder das Terminal.
+3. Installieren Sie alle erforderlichen Abhängigkeiten mit folgendem Befehl:
 ```bash
 npm install
 ```
 
 ## Konfiguration
-1. Erstellen Sie eine Datei namens config.env im Hauptverzeichnis.
-2. Fügen Sie in der Datei config.env die folgenden Zeilen hinzu:
-
-
+Um die Konfiguration vorzunehmen, befolgen Sie bitte die folgenden Schritte:
+1. Navigieren Sie zum Hauptverzeichnis des Projekts.
+2. Erstellen Sie eine Datei mit dem Namen 'config.env' im Hauptverzeichnis.
+3. Fügen Sie die folgenden Zeilen in die config.env-Datei ein:
 
 --------------------------------------------------  
 ```bash
 #Development Environment Configuration  
 NODE_ENV=development
+#NODE_ENV=production
 
 #Application Port Configuration  Development Port/Production Port  
 DEV_PORT=7566    
@@ -92,32 +98,31 @@ EMAIL_PORT=2525#Swisscom25#von MailTrap
 ```
 -------------------------------------------------- 
 
-## Benutzung
-Bundler und Server müssen für die Web-Anwendung laufen. 
-für Tests, muss der Server beendet sein.
+Speichern Sie die 'config.env-Datei', nachdem Sie die Konfigurationseinstellungen vorgenommen haben.
 
-### Bundler starten
+## Benutzung (lokal)
+Für die Verwendung der Web-Anwendung müssen sowohl der Bundler als auch der Server ausgeführt werden. Stellen Sie sicher, dass beide Komponenten ordnungsgemäß laufen.
+
+Wenn Sie Tests durchführen möchten, muss der Server ebenfalls gestartet sein, da die Tests auf den laufenden Server zugreifen müssen.
+
+
+### Bundler im Entwicklungs- Modus starten
 Mit folgendem Befehl wird der Bundler gestartet:
 ```bash
-npm run watch:js
+npm run watch:js_dev
 ```
 
-### Server starten im Development Mode
-Mit folgendem Befehl wird der Server (im Development Mode) gestartet:
+### Server im Entwicklungsmodus starten
+Mit folgendem Befehl wird der Server im Entwicklungs- Modus gestartet:
 ```bash
 npm run dev
 ```
 
-### Server beenden
-Mit folgendem Befehl kann der Server beendet werden:
+
+### Gestarteter Prozess beenden
+Mit folgendem Befehl kann ein gestarteter Prozess beendet werden:
 ```bash
 crtl+c
-```
-
-### Server starten im Produktions Mode
-Mit folgendem Befehl wird der Server (im Produktions Mode) gestartet:
-```bash
-npm run start:prod
 ```
 
 ### Debugger starten
@@ -149,6 +154,23 @@ Mit folgendem Befehl wird die Datenbank gelöscht:
 ```bash
 node .\dev-data\data\import-dev-data.mjs --delete
 ```
+
+
+--------------------------
+
+### Bundler im Produktions- Modus starten
+Mit folgendem Befehl wird der Bundler gestartet:
+```bash
+npm run build:js_prod
+```
+
+### Server im Produktions- Modus starten
+Mit folgendem Befehl wird der Server im Produktions- Modus gestartet:
+```bash
+npm run start:prod
+```
+----------------------------
+
 
 ### Login als Admin
 
