@@ -45,7 +45,7 @@ import {
 
 const router = express.Router();
 
-router.get('/overview', protect, isLoggedIn, getOverviewDepartment); // /overview   // das ist die erstee seite
+router.get('/overview', protect, isLoggedIn, getOverviewDepartment);
 
 router.get('/departments/:slug', protect, isLoggedIn, getDepartment);
 
