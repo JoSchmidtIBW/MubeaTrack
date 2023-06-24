@@ -21,7 +21,6 @@ block content
                     th statusRun<br>_Mal
                     th status<br>OpenClose<br>_Mal
                     th Closed
-                    //th Edit<br>Mal
             tbody
               each malReport in data.myMalReports
                   tr
@@ -34,21 +33,8 @@ block content
                       td= malReport.nameComponent_de_Mal ? malReport.nameComponent_de_Mal : '-'
                       td= malReport.nameComponentDetail_de_Mal ? malReport.nameComponentDetail_de_Mal : '-'
                       td= `${malReport.estimatedStatus}%`
-                      //td leer
                       td
                           table.table1
-                              //thead
-                              //    tr
-                              //        th(rowspan="2") logFal<br>_Repair<br>._id
-                              //        th(rowspan="2") message<br>Problem<br>_Repair
-                              //        th(rowspan="2") message<br>Mission<br>_Repair
-                              //        th(rowspan="2") isElectroMechanical_Repair
-                              //        th(rowspan="2") estimatedTime_Repair
-                              //        th(rowspan="2") Status_Repair
-                              //        th(rowspan="2") user_Repair.firstName
-                              //        th(rowspan="2") user_Repair.lastName
-                              //        th(rowspan="2") createAt_Repair
-                              //        th(rowspan="2") Edit<br>_Repair
                               tbody
                                 each logFal_Repair in malReport.logFal_Repair
                                     tr
@@ -61,15 +47,10 @@ block content
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                            //span
-                                        //td
-                                            a(href='#') YY
 
                       td(style=malReport.statusRun_Mal ? '' : 'background-color: coral')= malReport.statusRun_Mal
                       td= malReport.statusOpenClose_Mal
                       td= malReport.finishAt_Mal
-                      //td
-                          a(href='#', style="color:red;") xx
 
         br
         br

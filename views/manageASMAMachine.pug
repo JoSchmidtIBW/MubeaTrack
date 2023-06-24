@@ -1,11 +1,7 @@
-extend base
+extends base
 
 block content
     main.main
-      //h1 Hallo bin manageASMAMachine.pug
-      //h2 finde Anlage, frage, ob es zusätzSektoren hat
-      //h3 frage, wie die Komponenten aussehen
-      //h4 frage wie die details aussehen
       h1 Consists of sectors, components, details
       <br>
       <br>
@@ -25,7 +21,6 @@ block content
               td= machine.name
               td= machine.description
               td= machine.department
-              //td= machine.sectorASMA
               td
                   each sector in machine.sectorASMA
                     p= sector.name
@@ -33,4 +28,3 @@ block content
                 a.edit-button(href=`/api/v1/createASMAmachine/${machine._id}`) Edit
 
       br
-      //a.btn.btn--small.btn--green(href="/api/v1/createMachine") Create new Machine

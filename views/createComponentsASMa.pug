@@ -27,11 +27,9 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    //-h1 Here you add a component to a sector
                     h2.heading-secondary.ma-bt-md Create new component for a sector
                     br
                     h1 Here you can add a component to a sector
-                    //-h2 Create new component for a sector
                     br
                     if(data.sectorASMA.components.length === 0)
                         h2(style="color: red" ) The machine has no components yet
@@ -52,12 +50,10 @@ block content
                                 label(class="form__label", for="description_en") Description_en
                                 input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
                             div(class="form__group")
-                                //-button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`/api/v1/machinery/createSectorASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Save
                                 a.btn-space
                                 a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Cancel
                     else
-                        //-h2= data.machine.sectorASMA.length
                         each component in data.sectorASMA.components
                           div(class="form__group")
                               input#sectorASMAID(class="form__input", type="hidden", value=data.sectorASMA._id, readonly, style="background-color: lightgrey;")
@@ -66,7 +62,6 @@ block content
                               input#name_de(class="form__input", type="text", value=component.name_de, readonly, style="background-color: lightgrey;")
                               label(class="form__label", for="name_en") Component Name_en
                               input#name_en(class="form__input", type="text", value=component.name_en, readonly, style="background-color: lightgrey;")
-                              //-div(class="form__group")
                               br
                               label(class="form__label", for="description_de") Description_de
                               input#description_de(class="form__input", type="text", value=component.description_de, readonly, style="background-color: lightgrey;")
@@ -102,7 +97,6 @@ block content
                                 label(class="form__label", for="description_en") Description_en
                                 input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
                             div(class="form__group" id="saveBtnDiv" style="display: none;")
-                                //-button.btn.btn--green.btn.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateComponentsASMAMachine(href=`#`) Save
                                 a.btn-space
                                 a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Cancel
@@ -111,6 +105,7 @@ block content
                           const nameDiv = document.querySelector('#nameDiv');
                           const description_deDiv = document.querySelector('#description_deDiv');
                           const saveBtnDiv = document.querySelector('#saveBtnDiv')
+
                           btnPlus.addEventListener('click', function() {
                             if (nameDiv.style.display === "none") {
                               nameDiv.style.display = "block";
@@ -127,6 +122,3 @@ block content
                         br
                         br
                         div(class="form__group")
-                            //-button.btn.btn--green Save
-                            //-a.btn.btn--green(href=`/api/v1/machiner/createASMAMachine`) Save
-                            //a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abrechen

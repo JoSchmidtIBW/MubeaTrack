@@ -144,34 +144,30 @@ export const getDepartment = catchAsync(async (req, res, next) => {
 
 export const getMachine = catchAsync(async (req, res, next) => {
   console.log('bin getMachine: ');
-  console.log('---------------------');
 
-  const referer = req.headers.referer; //'http://127.0.0.1:7566/api/v1/departments/anarbeit';
-  //const departmentName = referer.split('/').pop(); // 'anarbeit'
-  console.log('********vvv*****');
+  const referer = req.headers.referer;
+
   console.log(req.params);
   console.log(req.query);
   console.log(req.url);
-  const url = '/departments/Anarbeit/machinery/6444566c830afd3adeba2d38';
+  const url = req.url;
   const regex = /\/departments\/([^/]+)/;
   const match = url.match(regex);
   const departmentName2 = match[1];
-  console.log(departmentName2);
-  console.log(referer); //http://127.0.0.1:7566/api/v1/departments/anarbeit
-  console.log('*****vvv********');
 
-  const departmentName = departmentName2;
+  let departmentName = decodeURIComponent(departmentName2);
 
   console.log('departmentName: ' + typeof departmentName);
   console.log('departmentName: ' + departmentName);
+  console.log('departmentName: ' + decodeURIComponent(departmentName));
+
+  // if (decodeURIComponent(departmentName) === 'Geschäfts-Führung') {
+  //   departmentName = 'geschafts-fuhrung';
+  // }
 
   const department = await Department.findOne({ name: departmentName });
-  console.log(department);
+  //console.log(department);
 
-  console.log('---------****------------');
-
-  console.log('departmentName: ' + departmentName);
-  console.log('---------------------');
   console.log(req.params.slug);
 
   const machine = await Machine.findOne({ name: req.params.slug }).populate(
@@ -179,8 +175,7 @@ export const getMachine = catchAsync(async (req, res, next) => {
   );
 
   if (!machine) {
-    // if this block is commented out, api error should come instead of render
-    return next(new AppError('There is no machine with that name.', 404)); // 404= not found
+    return next(new AppError('There is no machine with that name.', 404)); // 404 = not found
   }
 
   if (req.user.language === 'de') {
@@ -808,11 +803,14 @@ export const getUpdateMachine = catchAsync(async (req, res, next) => {
 });
 
 export const getManageUserMachine = catchAsync(async (req, res, next) => {
+  console.log('bin getManageUserMachine');
   const departments = await Department.find().sort('_id').populate('machinery');
   const machinery = await Machine.find().populate('employees');
   const users = await User.find();
 
   console.log(users.length);
+  console.log('-----------');
+  console.log(users.machinery);
 
   if (req.user.language === 'de') {
     res.status(200).render('manageUserMachine_de', {
@@ -835,6 +833,40 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
   }
 });
 
+// export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
+//   console.log('bin getUpdateUsersMachinery');
+//   const userID = req.params.id;
+//   console.log('userID: ' + userID);
+//
+//   const user = await User.findById(userID).populate('departments');
+//   console.log(user.firstName);
+//
+//   const departments = await Department.find().populate(
+//     'employees',
+//     'machinery'
+//   );
+//   const machinery = await Machine.find();
+//
+//   if (req.user.language === 'de') {
+//     res.status(200).render('updateUserMachine_de', {
+//       title: 'Aktualisiere Benutzer/Maschine',
+//       data: {
+//         user: user,
+//         departments: departments,
+//         machine: machinery,
+//       },
+//     });
+//   } else {
+//     res.status(200).render('updateUserMachine', {
+//       title: 'Update user/machine',
+//       data: {
+//         user: user,
+//         departments: departments,
+//         machine: machinery,
+//       },
+//     });
+//   }
+// });
 export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateUsersMachinery');
   const userID = req.params.id;

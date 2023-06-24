@@ -31,7 +31,7 @@ block content
                     br
                     h2.heading-secondary.ma-bt-md= `Edit machine for: ${data.user.firstName} ${data.user.lastName}`
                     form.form.form-userMachine-data
-                        //todo hidden userID und nicht löschen
+                        // hide these fields, do not delete! it needs the ID's!
                         input#userID(type="hidden", value=data.user._id)
                         div(class="form__group")
                             label(class="form__label", for="employeeNumber") Employee Number
@@ -44,17 +44,13 @@ block content
                             input#lastName(class="form__input", type="text", readonly= true, value=data.user.lastName, style="background-color: lightgray")
                         div(class="form__group")
                             label(class="form__label", for="department") User- Departments
-                            //-input#userDepartments(class="form__input", type="text",readonly= true, value=data.user.department, style="background-color: lightgray")
                             input#department(class="form__input", type="text", value=data.user.department.join(', '), readonly, style="background-color: lightgrey;")
 
                         div(class="form__group")
                             br
                             h2.heading-secondary Departments / machinery
-                            //- label(class="form__label", for="departments") Departments / machinery
-                            //-input(class="form__input", type="text", value=data.user.department, readonly, style="background-color: lightcoral;")
                             script.
                               console.log("test2222")
-                            //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
 
                         - let hasSelectedMachine = false
 
@@ -78,12 +74,6 @@ block content
                                   - if (checkedMachine)
                                   - hasSelectedMachine = true
 
-                            //if hasSelectedMachine
-                                div(class="form__group")
-                                    br
-                                    button.btn.btn--green Save
-                                    a.btn-space
-                                    a.btn.btn--small.btn--gray(href=`/api/v1/manage_user-machine`) Cancel
                         if hasSelectedMachine
                             br
                             button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Save
@@ -94,7 +84,6 @@ block content
                             script.
                               const machineryInput = document.querySelector('#machineryInDepartment');
                               if (machineryInput) {
-                                // Der Code wird nur ausgeführt, wenn das Element existiert
                                 const machineryInputs = document.querySelectorAll('input[name="machineryInDepartment"]');
                                 const selectedMachinery = [];
 

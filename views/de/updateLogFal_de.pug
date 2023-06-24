@@ -21,23 +21,13 @@ block content
                     +navItem('#', 'Bestellungen', 'shopping-cart')
                     +navItem('#', 'Revisionen', 'settings')
                     +navItem('#', 'Wartungspläne', 'sidebar')
-                    //if(data.machine.sectorASMA.length > 0)
                     +navItem('#', 'ASMA', 'machine-asma', true)
-
 
             .user-view__content
                 .user-view__form-container
-                    //h2.heading-secondary.ma-bt-md= `Bearbeite Log`
-                    //h2.heading-secondary.ma-bt-md= `Bearbeite Error- Report: ${data.malReport.nameComponentDetail_de_Mal}`
-                    //form.form.form-updateMalReport-data
-                                //div(class="user-view__content")
-                                    div(class="user-view__form-container")
-                                //h1= data.malReportLogFal
-                                //h1= data.logFal
-                                //h4= data.malReportLogFal
                     h2.heading-secondary.ma-bt-md= `Bearbeite log: ${data.malReportLogFal.nameComponentDetail_de_Mal} von ${data.malReportLogFal.nameMachine_Mal}`
                     form.form.form-updateLogFal-data
-                                    //todo make hidden, not delete!
+                                    // hide these fields, do not delete! it needs the ID's!
                                     input#machineName(type="hidden", value=data.machineName)
                                     input#departmentName(type="hidden", value=data.departmentName)
                                     input#currentUser(type="hidden", value=data.currentUser)
@@ -61,7 +51,6 @@ block content
                                         input#nameComponentDetail_de_Mal(class="form__input", type="text", value=data.malReportLogFal.nameComponentDetail_de_Mal,readonly, style="background-color: lightgrey;")
                                     div(class="form__group")
                                         label(class="form__label", for="elektroMech") Elektro-Mech.
-                                        //input#elektroMech(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].isElectroMechanical_Repair)
                                         select#elektroMech(class="form__input")
                                             option(value=data.malReportLogFal.logFal_Repair.isElectroMechanical_Repair, selected, style="background-color: #98B7E1; color: white;") #{data.malReportLogFal.logFal_Repair.isElectroMechanical_Repair}
                                             option(value="elekt.-mech", selected=data.malReportLogFal.logFal_Repair.isElectroMechanical_Repair.includes("elekt.-mech"),class="isElectroMechanical_ElektroMech") Elekt.-mech.
@@ -70,7 +59,6 @@ block content
                                             option(value="Einkauf", selected=data.malReportLogFal.logFal_Repair.isElectroMechanical_Repair.includes("Einkauf"),class="isElectroMechanical_Einkauf") Einkauf
                                     div(class="form__group")
                                         label(class="form__label", for="estimatedTime_Repair") Geschätzter Zeitaufwand
-                                        //input#estimatedTime_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].estimatedTime_Repair)
                                         select#estimatedTime_Repair(class="form__input")
                                             option(value=data.malReportLogFal.logFal_Repair.estimatedTime_Repair, selected, style="background-color: #98B7E1; color: white;") #{data.malReportLogFal.logFal_Repair.estimatedTime_Repair}
                                             option(value="<2h", selected=data.malReportLogFal.logFal_Repair.estimatedTime_Repair.includes("<2h"),class="estimatedTime_Repair2h") <2h
@@ -79,7 +67,6 @@ block content
                                             option(value=">8h", selected=data.malReportLogFal.logFal_Repair.estimatedTime_Repair.includes(">8h"),class="estimatedTime_Repairg8h") >8h
                                     div(class="form__group")
                                         label(class="form__label", for="Status_Repair") Status (geschätzt)
-                                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
                                         select#Status_Repair(class="form__input")
                                             option(value=data.malReportLogFal.logFal_Repair.Status_Repair, selected, style="background-color: #98B7E1; color: white;") #{data.malReportLogFal.logFal_Repair.Status_Repair}%
                                             option(value=0, selected=data.malReportLogFal.logFal_Repair.Status_Repair===0,class="Status_Repair0") 0%
@@ -103,18 +90,9 @@ block content
                                         br
                                     div(class="form__group")
                                         //label(class="form__label", for="createAt_Repair") Erstellt am
-                                        //input#createAt_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].createAt_Repair)
                                         input#createAt_Repair(class="form__input", type="hidden", value=new Date().toISOString(),readonly, style="background-color: lightgrey;")
-                                        //input#createAt_Repair(class="form__input", type="text", value=new Date().toLocaleString('de-DE', {
-                                          day: '2-digit',
-                                          month: '2-digit',
-                                          year: 'numeric',
-                                          hour: '2-digit',
-                                          minute: '2-digit'
-                                          }),readonly, style="background-color: lightgrey;")
                                     div(class="form__group")
                                         label(class="form__label", for="estimatedStatus") Status Gesamt
-                                        //input#Status_Repair(class="form__input", type="text", value=data.malReportLogFal.logFal_Repair[0].Status_Repair+"%")
                                         select#estimatedStatus(class="form__input")
                                             option(value=data.malReportLogFal.estimatedStatus, selected, style="background-color: #98B7E1; color: white;") #{data.malReportLogFal.estimatedStatus}%
                                             option(value=0, selected=data.malReportLogFal.estimatedStatus === 0,class="Status_Repair0") 0%

@@ -8,10 +8,6 @@ block content
                 .form__group
                     label.form__label1(for='employeeNumber') Employee number
                     input#employeeNumber(class="form__input" type="number" placeholder="70220" required="required" min="10000" max="99999")
-                    //-input#employeeNumber(class="form__input" type="number" placeholder="70220" required="required" min="10000" max="99999")
-                //-.form__group
-                    //-label.form__label(for='email') Email address
-                    input#email.form__input(type='email', autocomplete='email address', placeholder='you@example.com')
                 .form__group.ma-bt-md
                     label.form__label1(for='password') Password
                     input#password.form__input(type='password', autocomplete='current-password', placeholder='••••••••', required, minlength='8')
@@ -21,21 +17,9 @@ block content
                     br
                     a.btn.btn--little#helpButton(href='#') Help
 
-
-                //.form__group
-                    //-button#helpButton(type="submit") Help
-                    a.btn.btn--green#helpButton(href='#') Hilfe
                 script.
                     const employeeNumberInput = document.querySelector('#employeeNumber');
                     const helpButton = document.querySelector('#helpButton');
-
-                    // helpButton.addEventListener('click', function() {
-                    //   console.log("help click");
-                    //   if (helpButton.style.color === 'white') {
-                    //     alert('Button wurde geklickt!');
-                    //     helpButton.setAttribute('onclick', "alert('Forgot Password? Please call this number: 9272')");
-                    //   }
-                    // });
 
                     helpButton.addEventListener('click', function() {
                       console.log("help click");
@@ -43,7 +27,6 @@ block content
                       var buttonColor = computedStyle.getPropertyValue('color');
                       if (buttonColor === 'rgb(255, 255, 255)') {
                         alert('Please log in with your employee- number and your password.\n(The password can be requested from your direct superior.)');
-                        //helpButton.setAttribute('onclick', "alert('Forgot Password? Please call this number: 9272')");
                       }
                     });
 
@@ -58,5 +41,3 @@ block content
                         helpButton.removeAttribute('href');
                       }
                     });
-                    //-a(href='#') help
-                    //-button(type='button', onclick="alert('Hilfe benötigt!')") hilfe

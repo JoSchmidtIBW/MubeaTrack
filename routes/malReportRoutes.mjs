@@ -25,25 +25,28 @@ router.patch(
   restrictTo('admin', 'Unterhalt', 'Chef'),
   getCloseMalReport
 );
-//${apiUrl}/malReports/${malReportID}/updateLogFal/${malReportLogFalID}`,
+
 router.patch(
   '/:malReportID/updateLogFal/:malReportLogFalID',
   protect,
   restrictTo('admin', 'Unterhalt', 'Chef'),
   getUpdateLogFal
 );
+
 router.patch(
   '/:malReportID/createLogFal',
   protect,
   restrictTo('admin', 'Unterhalt', 'Chef'),
   getCreateLogFal
 );
+
 router.get(
   '/myMalReports/:userID',
   protect,
   restrictTo('admin', 'Unterhalt', 'Chef', 'user', 'Schichtleiter'),
   getMyMalReports
-); //'admin', 'Unterhalt', 'Chef', 'user', 'Schichtleiter'
+);
+
 router.get(
   '/closedMalReports/:machineName',
   protect,

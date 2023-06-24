@@ -1,13 +1,8 @@
 extends base
 
-
 block content
     main.main
         if(currentUser.role === 'admin')
-            //div(style="margin: 0 auto;")
-                h3(style="text-align: center;")= `Total: ${users.length} Employees`
-                br
-                h3(style="text-align: center;")= `Total: ${machinery.length} Machinery`
             table(style="margin: 0 auto;")
                 tr
                     td(style="text-align: center; padding-right: 20px;")
@@ -24,19 +19,17 @@ block content
                     td(style="padding-left: 10px;")
                         h2 Machinery
 
-
         .card-container
             script.
                 console.log("Hello World- Overview");
 
-            //-if(user.department === 'Engineering')
-            //-h1= `About ${user.department}`
             each department in departments
-                //-h6= `${department.name}`
-                //-if(user.department === department.name)
-                //h1= `${user.department}`
-                //h1= `${department.name}`
-                a.card(href=`/api/v1/departments/${department.slug}`, style="text-decoration: none; color: #7c7875;")
+                - let slug = department.slug
+                //h1= department.slug
+                - if (department.slug === 'geschafts-fuhrung')
+                       //- department.slug = 'Geschäfts-Führung'
+                //h1= department.slug
+                a.card(href=`/api/v1/departments/${encodeURIComponent(department.slug)}`, style="text-decoration: none; color: #7c7875;")
                     .card__header
                         .card__picture
                             card__picture-overlay &nbsp;
@@ -59,16 +52,5 @@ block content
                             svg.card__icon
                                 use(xlink:href='/img/icons.svg#icon-machine')
                             span= `${department.machineryCount} machinery`
-
-                    //.card__footer
-                        p
-                            //-span.card__footer-value= `$${tour.price}`
-                            //-|
-                            //-span.card__footer-text per person
-                        //-p.card__ratings
-                            //-span.card__footer-value= tour.ratingsAverage
-                            |
-                            //-span.card__footer-text= `rating (${tour.ratingsQuantity})`
-                        //a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.slug}`) Details
 
 

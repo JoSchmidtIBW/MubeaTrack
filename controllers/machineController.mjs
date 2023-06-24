@@ -340,6 +340,7 @@ export const createMachine = catchAsync(async (req, res) => {
 });
 
 export const getMachineryASMA = catchAsync(async (req, res, next) => {
+  console.log('Bin getMachineryASMA');
   const machinery = await Machine.find();
   res.status(200).json({
     status: 'success',

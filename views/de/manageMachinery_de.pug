@@ -2,8 +2,6 @@ extends base
 
 block content
     main.main
-        //h1 Bin Machinery.pug Liste
-        //h2= machinery.length
         table#manageMachineryTable.manageMachineryTable.table
             input#currentUser(type="hidden", value=data.currentUser)
             thead
@@ -31,7 +29,6 @@ block content
               each machine in data.machinery
                   tr
                       td= machine._id
-
                       td= machine.name
                       td= machine.description
                       td= machine.zone
@@ -51,7 +48,6 @@ block content
                       td= machine.createdAt
                       td
                           a.edit-button(href=`/manage_machinery/${machine._id}`) Edit
-                          //-a.delete-button(data-id=machine._id) Delete
 
         br
         br

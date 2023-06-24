@@ -40,7 +40,6 @@ block content
                      if(department.machinery.length > 0)
                         h1.heading-secondary.ma-bt-lg Machinery
                         if(currentUser.role === 'admin')
-                          //h1 Admin
                           br
                           table
                             each zone in machineryZones
@@ -48,121 +47,40 @@ block content
                               if (machinesInZone.length > 0)
                                   tr
                                       td
-                                          //span(style="font-size: 14px;")= zone
                                           span(style="font-size: 14px;")= zone === 'Schweissen' ? 'Welding' : zone === 'Sägen' ? 'Sawing' : zone === 'Ziehen' ? 'Drawing' : zone === 'Spitzen' ? 'Topping' : zone === 'Richten' ? 'Straightening' : zone === 'Glühen' ? 'Glowing' : zone === 'Beizen' ? 'Pickling' : zone === 'Sonstige' ? 'Others' : zone === 'Spalten' ? 'Splitting' : zone === 'Richten' ? 'Stretching' : zone
                                   each machine in machinesInZone
                                       tr
                                           td
                                               h1(style="padding-top: 8px;")= machine.name
-                                              //span(style=(machine.statusRun ? "background-color:green" : "background-color:red"))= machine.statusRun
-                                          //td(style="padding-left:20px;padding-top: 8px;")
-                                              h4 Status
                                           td(style="padding-left:20px;padding-top: 8px;")
                                               .punkt(style=(machine.statusRun ? 'background-color: #50BE5F' : 'background-color: #E93A48'))
                                           td(style="padding-left:10px;padding-top: 8px;")
                                               a.btn.btn--small.btn--green(href=`/api/v1/departments/${department.name}/machinery/${machine.name}` style="background-color:lightblue;") Details
-                                          //td(style="width: 100px;")
                         else
-                            //h1 nicht admin
-
                             br
                             table
-
                               each machineID in currentUser.machinery
-                                //h1= machineID._id
 
                                 - const machine = department.machinery.find(m => m._id.toString() === machineID._id.toString())
                                 if machine
-
                                     tr
                                         td
-
                                             if department.machinery.filter(m => m.zone === machine.zone).indexOf(machine) === 0
-
-                                                //h1= machine.zone
                                                 tr
                                                     td
-                                                        //span(id="value1" type='hidden',style="font-size: 14px;")= machine.zone
-                                                        //span(style="font-size: 14px;")= machine.zone === 'Schweissen' ? 'Welding' : machine.zone === 'Sägen' ? 'Sawing' : machine.zone === 'Ziehen' ? 'Drawing' : machine.zone === 'Spitzen' ? 'Topping' : machine.zone === 'Richten' ? 'Straightening' : machine.zone === 'Glühen' ? 'Glowing' : machine.zone === 'Beizen' ? 'Pickling' : machine.zone === 'Sonstige' ? 'Others' : machine.zone === 'Spalten' ? 'Splitting' : machine.zone === 'Richten' ? 'Stretching' : machine.zone
-                                                        //span(style="font-size: 14px;")
-                                                            = machine.zone === 'Schweissen' ? 'Welding' :
-                                                            machine.zone === 'Sägen' ? 'Sawing' :
-                                                            machine.zone === 'Ziehen' ? 'Drawing' :
-                                                            machine.zone === 'Spitzen' ? 'Topping' :
-                                                            machine.zone === 'Richten' ? 'Straightening' :
-                                                            machine.zone === 'Glühen' ? 'Glowing' :
-                                                            machine.zone === 'Beizen' ? 'Pickling' :
-                                                            machine.zone === 'Sonstige' ? 'Others' :
-                                                            machine.zone === 'Spalten' ? 'Splitting' :
-                                                            machine.zone === 'Richten' ? 'Stretching' :
-                                                            machine.zone
+
                                                         - const zoneTextMap = {'Schweissen': 'Welding','Sägen': 'Sawing','Ziehen': 'Drawing','Spitzen': 'Topping','Richten': 'Straightening','Glühen': 'Glowing','Beizen': 'Pickling','Sonstige': 'Others','Spalten': 'Splitting',};
 
                                                         span(style="font-size: 14px;")= zoneTextMap[machine.zone] || machine.zone
-                                                        //span= machine.zone === 'Ziehen' ? 'Drawing' : machine.zone === 'Spitzen' ? 'Topping' : machine.zone === 'Richten' ? 'Stretching' :machine.zone
                                                         script.
                                                           console.log("#{machine.zone}");
-                                                        //span(style="font-size: 14px;")= getZoneText(machine.zone)
-                                                        //span= getZoneText(machine.zone)
-                                                        //input#value1(type="hidden" value=machine.zone)
-                                                        //span.becomeValue(id="display-zone")
-                                                        //script.
-                                                          //var value2 = document.getElementById('value1').value;
-                                                          var value1 = document.getElementById('value1').innerText;
-                                                          console.log(value1);
-                                                          //var value1 = JSON.parse(value2)[0];
-                                                          //console.log(value1);
-                                                          var displayZone = document.getElementById('display-zone');
-
-                                                          if (value1 === 'Schweissen') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Welding';
-                                                          } else if (value1 === 'Sägen') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Sawing';
-                                                          } else if (value1 === 'Ziehen') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Drawing';
-                                                          } else if (value1 === 'Spitzen') {
-                                                            console.log(value1)
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Topping';
-                                                          } else if (value1 === 'Richten') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Straightening';
-                                                          } else if (value1 === 'Glühen') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Glowing';
-                                                          } else if (value1 === 'Beizen') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Pickling';
-                                                          } else if (value1 === 'Sonstige') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Others';
-                                                          } else if (value1 === 'Spalten') {
-                                                            console.log(value1)
-                                                            displayZone.innerText = 'Splitting';
-                                                          } else {
-                                                            displayZone.innerText = value1;
-                                                          }
-                                                        //span(style="font-size: 14px;")= machine.zone === 'Schweissen' ? 'Schweißen' :machine.zone === 'Sägen' ? 'Sägen' :machine.zone === 'Ziehen' ? 'Ziehen' :machine.zone === 'Spitzen' ? 'Spitzen' :machine.zone === 'Richten' ? 'Richten' :machine.zone === 'Glühen' ? 'Glühen' : machine.zone === 'Beizen' ? 'Beizen' :machine.zone === 'Sonstige' ? 'Sonstige' :machine.zone === 'Spalten' ? 'Spalten' :machine.zone === 'Richten' ? 'Richten' :machine.zone
-                                                        //span.becomeValue(id="display-zone")
-
 
                                         td(style="padding-top: 8px;")
                                             span.overview-box__label= machine.name
-                                        //td(style="padding-left:20px;padding-top: 8px;")
-                                            h4 Status
                                         td(style="padding-left:20px;padding-top: 8px;")
-                                            //span.status
                                             .punkt(style=(machine.statusRun ? 'background-color: #50BE5F' : 'background-color: #E93A48'))
                                         td(style="padding-left:10px;padding-top: 8px;")
                                             a.btn.btn--green.btn--small(href=`/api/v1/departments/${department.name}/machinery/${machine.name}`, style="background-color:lightblue;") Details
-                                        //td(style="padding-left:10px;padding-top: 8px;")
-                                            span.becomeValue(id="display-zone")
-                                        //td(style="width: 100px;")
-                                        //td
-                                            span(style=(machine.statusRun ? 'background-color: green' : 'background-color: red')) OOOOOO
 
                      else
                          h1.heading-secondary.ma-bt-lg Machinery
@@ -171,17 +89,13 @@ block content
                      br
                      br
                      if(department.name === 'Unterhalt')
-                           //h1 Bin UnterhaltASMAAAAA
                            a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`, style="background-color:lightblue;") ASMA Unterhalt
 
         .description-box
               h2.heading-secondary.ma-bt-lg= `About ${department.name} department`
-              // mache neue linie bei einem punkt im text
               - const paragraphs = department.description_en.split('\n');
               each p in paragraphs
                   p.description__text= p
-                  //p.description__text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                  //p.description__text Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!
               br
               br
               br
@@ -189,54 +103,23 @@ block content
                   .overview-box__group
                      h2.heading-secondary.ma-bt-lg The department employees
 
-              //.overview-box__group
-              //each employee in department.employees
-                  .overview-box__detail
-                      img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
-
-
-                      - if(employee.role === 'admin')
-                          span.overview-box__label_big Admin
-                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                      - if(employee.role === 'Chef')
-                          span.overview-box__label_big Chef
-                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                      - if(employee.role === 'Unterhalt')
-                          span.overview-box__label_little=employee.professional
-                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                      - if(employee.role === 'Schichtleiter')
-                          span.overview-box__label Schichtleiter
-                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-                      - if(employee.role === 'user')
-                          span.overview-box__label_little=employee.professional
-                          //span.overview-box__label= guide.role
-                          span.overview-box__text= `${employee.firstName} ${employee.lastName}`
-
               table
                   each employee in department.employees
                       tr
                           td
                               img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
 
-                          //td(style="margin-left: 30px")
-                              //span.overview-box__text= employee.lastName
                           td
                             - if(employee.role === 'admin')
                               span.overview-box__label_big Admin
-                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'Chef')
                               span.overview-box__label_big Chef
-                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'Unterhalt')
                               span.overview-box__label_little=employee.professional
-                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'Schichtleiter')
                               span.overview-box__label Schichtleiter
-                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'user')
                               span.overview-box__label_little=employee.professional
-                              //span.overview-box__label= guide.role
-                              //span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                           td(style="margin-left: 20px; font-size: 14px;")
                               span.overview-box__text= `${employee.firstName} ${employee.lastName}`
 
@@ -246,10 +129,6 @@ block content
             div
             div
             br
-            //h1 hallo
-            //if(department.name === 'Unterhalt')
-                h1 Bin UnterhaltASMAAAAA
-                a.btn.btn--red(href=`/api/v1/${department.name}/ASMA`, style="background-color:lightblue;") ASMA Unterhalt
             br
             br
             br
@@ -260,31 +139,3 @@ block content
           .picture-box
               img.picture-box__img(src=`/img/departments/${img}`, alt=`${img} ${i + 1}`, class=`.picture-box__img--${i + 1}`)
     br
-
-    //script.
-      function getZoneText (zone) {
-        switch (zone) {
-          case 'Schweissen':
-            return 'Welding';
-          case 'Sägen':
-            return 'Sawing';
-          case 'Ziehen':
-            return 'Drawing';
-          case 'Spitzen':
-            return 'Topping';
-          case 'Richten':
-            return 'Straightening';
-          case 'Glühen':
-            return 'Glowing';
-          case 'Beizen':
-            return 'Pickling';
-          case 'Sonstige':
-            return 'Others';
-          case 'Spalten':
-            return 'Splitting';
-          case 'Richten':
-            return 'Stretching';
-          default:
-            return zone;
-        }
-      }

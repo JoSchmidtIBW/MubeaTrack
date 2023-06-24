@@ -9,11 +9,10 @@ block content
         br
         br
         table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
-            //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
+            // hide these fields, do not delete! it needs the ID's!
             input#machineID(type="hidden", value=data.machineID)
             input#machineName(type="hidden", value=data.machineName)
             input#currentUser(type="hidden", value=data.currentUser)
-            //input#urlText(type="text", value=window.location.href)
             <input id="urlText" type="hidden" value="">
             thead
                 tr
@@ -27,22 +26,6 @@ block content
                     th Component-Detail
                     th Estimated<br>status
                     th Log's
-                    //th(colspan="10")
-
-                        table.table1
-                            thead
-                                tr
-
-                                    th logFal<br>_Repair<br>._id
-                                    th message<br>Problem<br>_Repair
-                                    th message<br>Mission<br>_Repair
-                                    th isElectro<br>Mechanical<br>_Repair
-                                    th estimated<br>Time<br>_Repair
-                                    th Status<br>_Repair
-                                    th user<br>_Repair.<br>firstName
-                                    th user<br>_Repair.<br>lastName
-                                    th createAt_<br>Repair
-                                    th Edit<br>_Repair
                     th StatusRun<br>_Mal
                     th Status
                     th Edit
@@ -58,24 +41,8 @@ block content
                       td= malReport.nameComponent_de_Mal ? malReport.nameComponent_de_Mal : '-'
                       td= malReport.nameComponentDetail_de_Mal ? malReport.nameComponentDetail_de_Mal : '-'
                       td= `${malReport.estimatedStatus}%`
-                      //td ist leer
-                          //td
-                      //th dd
-                      //td leer
                       td
                           table.table1
-                              //thead
-                              //    tr
-                              //        th(rowspan="2") logFal<br>_Repair<br>._id
-                              //        th(rowspan="2") message<br>Problem<br>_Repair
-                              //        th(rowspan="2") message<br>Mission<br>_Repair
-                              //        th(rowspan="2") isElectroMechanical_Repair
-                              //        th(rowspan="2") estimatedTime_Repair
-                              //        th(rowspan="2") Status_Repair
-                              //        th(rowspan="2") user_Repair.firstName
-                              //        th(rowspan="2") user_Repair.lastName
-                              //        th(rowspan="2") createAt_Repair
-                              //        th(rowspan="2") Edit<br>_Repair
                               tbody
                                 each logFal_Repair in malReport.logFal_Repair
                                     tr
@@ -88,7 +55,6 @@ block content
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                            //span
                                         td
                                             a(href='#') YY
 
@@ -102,104 +68,3 @@ block content
         br
         a.btn.btn--small.btn--gray(href=`/api/v1/${data.departmentName}/ASMA`) Back
         br
-        //table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
-            //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
-            input#machineID(type="text", value=data.machineID)
-            input#machineName(type="text", value=data.machineName)
-            thead
-                tr
-                    th ID
-                    th createAt<br>_Mal
-                    th user<br>_Mal fN
-                    th user_Mal lN
-                    th Machine<br>_Mal
-                    th Sector<br>_Mal
-                    th Component<br>_Mal
-                    th Component<br>Detail_Mal
-                    th estimated<br>Status
-                    th(colspan="10")
-
-                     table.table1
-                       thead
-                        tr
-
-                                    th logFal<br>_Repair<br>._id
-                                    th message<br>Problem<br>_Repair
-                                    th message<br>Mission<br>_Repair
-                                    th isElectro<br>Mechanical<br>_Repair
-                                    th estimated<br>Time<br>_Repair
-                                    th Status<br>_Repair
-                                    th user<br>_Repair.<br>firstName
-                                    th user<br>_Repair.<br>lastName
-                                    th createAt_<br>Repair
-                                    th Edit<br>_Repair
-                    th statusRun<br>_Mal
-                    th status<br>OpenClose<br>_Mal
-                    th Edit<br>Mal
-            tbody
-                each malReport in data.malReports
-                    tr
-                        td(style="color:red;")= malReport._id
-                        td= malReport.createAt_Mal.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                        td= malReport.user_Mal.firstName
-                        td= malReport.user_Mal.lastName
-                        td= malReport.nameMachine_Mal
-                        td= malReport.nameSector_Mal ? malReport.nameSector_Mal : '-'
-                        td= malReport.nameComponent_Mal ? malReport.nameComponent_Mal : '-'
-                        td= malReport.nameComponentDetail_Mal ? malReport.nameComponentDetail_Mal : '-'
-                        td= `${malReport.estimatedStatus}%`
-                              //td
-                        //th dd
-                        td(colspan="10")
-                         table.table1
-                            //thead
-                            //    tr
-                            //        th(rowspan="2") logFal<br>_Repair<br>._id
-                            //        th(rowspan="2") message<br>Problem<br>_Repair
-                            //        th(rowspan="2") message<br>Mission<br>_Repair
-                            //        th(rowspan="2") isElectroMechanical_Repair
-                            //        th(rowspan="2") estimatedTime_Repair
-                            //        th(rowspan="2") Status_Repair
-                            //        th(rowspan="2") user_Repair.firstName
-                            //        th(rowspan="2") user_Repair.lastName
-                            //        th(rowspan="2") createAt_Repair
-                            //        th(rowspan="2") Edit<br>_Repair
-                            tbody
-                                each logFal_Repair in malReport.logFal_Repair
-                                     tr
-                                         td(style="color:blue;")= logFal_Repair._id
-                                         td= logFal_Repair.messageProblem_Repair
-                                         td= logFal_Repair.messageMission_Repair
-                                         td= logFal_Repair.isElectroMechanical_Repair
-                                         td= logFal_Repair.estimatedTime_Repair
-                                         td= `${logFal_Repair.Status_Repair}%`
-                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
-                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
-                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                            //span
-                                         td
-                                            a(href='#') YY
-
-                        td(style=malReport.statusRun_Mal ? '' : 'background-color: coral')= malReport.statusRun_Mal
-                        td= malReport.statusOpenClose_Mal
-                        td
-                                  a(href='#', style="color:red;") xx
-                                  //-a.edit-button(href=`/api/v1/${data.departmentName}/ASMA/${data.malReports.nameMachine_Mal}`) Edit
-
-
-
-                                    //each logFal_Repair in malReport.logFal_Repair
-                                            td
-                                              span= logFal_Repair._id
-                                              br
-                                              td(style="color:blue;")= logFal_Repair._id
-                                              //td= logFal_Repair.messageProblem_Repair
-                                              span= logFal_Repair.messageMission_Repair
-                                              span= logFal_Repair.isElectroMechanical_Repair
-                                              //span= logFal_Repair.estimatedTime_Repair
-                                              //span= `${logFal_Repair.Status_Repair}%`
-                                              //span= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
-                                              //span= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
-                                              //span= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                              //span
-                                              //a(href='#') YY

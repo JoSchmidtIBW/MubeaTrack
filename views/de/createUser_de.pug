@@ -33,9 +33,6 @@ block content
                         div(class="form__group")
                             label(class="form__label", for="employeeNumber") Mitarbeiter-Nummer
                             input#employeeNumber(class="form__input" type="number" placeholder="70220" required="required" min="10000" max="99999")
-
-
-                            //-input#employeeNumber1(class="form__input", type="number", placeholder="70220", required="required", pattern="^[0-9]{5,}$")
                         div(class="form__group")
                             label(class="form__label", for="firstname") Vorname
                             input#firstname(class="form__input", type="text", placeholder="Max", required="required")
@@ -55,9 +52,6 @@ block content
                             select#language(class="form__input")
                                 option(value="en") Englisch
                                 option(value="de") Deutsch
-                        //-div(class="form__group")
-                          label(class="form__label", for="name") Name
-                          input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
                         div(class="form__group")
                             label(class="form__label", for="professional") Beruf
                             input#professional(class="form__input", type="text", placeholder="professional")
@@ -77,43 +71,15 @@ block content
                                 option(value="Unterhalt") Unterhalt
                                 option(value="Schichtleiter") Schichtleiter
                                 option(value="Chef") Chef
-                                //-option(value="admin") Admin
-                        //-div(class="form__group")
-                          label(class="form__label", for="department") Department
-                          select#department(class="form__input")
-                            option(value="Schweisserei") Schweisserei
-                            option(value="Zieherei") Zieherei
-                            option(value="Anarbeit") Anarbeit
-                            option(value="Unterhalt") Unterhalt
-                            option(value="IT") IT
-                            option(value="Engineering") Engineering
-                            option(value="Konstruktion") Konstruktion
-                            option(value="Geschäfts-Führung") Geschäfts-Führung
+
                         div(class="form__group")
                           label(class="form__label", for="department") Abteilungen
                           each department in data.departments
-                              //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                                //-input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
-                                //-input#department-checkbox(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
-                                //-input#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
 
                               label(class="form__checkbox-label" style="display: block; margin-bottom: 10px; border: none")
                                   |
                                   input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                                   span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
-
-                                    //-each department in data.departments
-                                      //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                                        input.form__checkbox-box#department-checkbox(type="checkbox", name="departments", value=department.name, checked=department.checked, style="width: 20px; height: 20px;")
-                                        span.form__checkbox-name(style="font-size: 1.5rem;") #{department.name}
-
-                                    //-each department in data.departments
-                                      //-label(class="form__checkbox-label" style="display: block; margin-bottom: 10px;")
-                                        |
-                                        //-input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
-                                        input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=department.checked,  style="width: 20px; height: 20px;")
-                                        span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
-
 
                         div(class="form__group")
                             button.btn.btn--green Speichern
@@ -131,29 +97,7 @@ block content
                             });
                             if (selectedDepartments.length > 0) {
                               console.log(selectedDepartments + " sind angewählt");
-                              //#department === selectedDepartments
-                              //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
                               document.querySelector('#department').value = selectedDepartments;
-                              //-document.querySelector('#department').value = selectedDepartmentsString
-                            } else {
-                              console.log(selectedDepartments.length + " Departments!!!");
-                              alert('Bitte wählen Sie mindestens eine Abteilung aus.');
-                            }
-                          }
-                        //-script.
-                          function getSelectedDepartments() {
-                            const departmentCheckboxes = document.querySelectorAll('input[name="departments"]');
-                            consoloe.log("departmentCheckboxes: "+departmentCheckboxes)
-                            let selectedDepartments = [];
-                            departmentCheckboxes.forEach((checkbox) => {
-                              if (checkbox.checked) {
-                              console.log("checkbox.checked"+checkbox.checked)
-                                selectedDepartments.push(checkbox.value);
-                              }
-                            });
-                            if (selectedDepartments.length > 0) {
-                              console.log(selectedDepartments + " sind angewählt");
-                              document.querySelector('#departments').value = selectedDepartments.join(', ');
                             } else {
                               console.log(selectedDepartments.length + " Departments!!!");
                               alert('Bitte wählen Sie mindestens eine Abteilung aus.');

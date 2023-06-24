@@ -1,4 +1,4 @@
-extend base
+extends base
 
 mixin navItem(link, text, icon, active)
     li(class=`${active ? 'side-nav--active' : ''}`)
@@ -29,11 +29,6 @@ block content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Your account settings
 
-                    //- Without API
-                    //- form.form.form-user-data(action='/submit-user-data' method='POST')
-                    //- für photo hochladen ohne API --> action... POST, und zusätzlich dazu:  method='POST', enctype='multipart/form-data')
-
-                    //- WITH API    darf dann nicht stehen method=POST usw
                     form.form.form-user-data
                         input#userId(type="hidden", value=`${user._id}`)
                         div(class="form__group")
@@ -50,13 +45,11 @@ block content
                             input#birthDate(class="form__input", type="text", value=user.birthDate, readonly, style="background-color: lightgrey;")
                         div(class="form__group")
                             label(class="form__label", for="gender") Gender
-                            //input#gender(class="form__input", type="text", value=user.gender)
                             select#gender(class="form__input", value=user.gender)
                                 option(value="male", selected=user.gender === 'male') Male
                                 option(value="female", selected=user.gender === 'female') Female
                         div(class="form__group")
                             label(class="form__label", for="language") Language
-                            //input#language(class="form__input", type="text", value=user.language, readonly, style="background-color: lightgrey;")
                             select#language(class="form__input")
                                 option(value="en", selected=user.language === 'en') English
                                 option(value="de", selected=user.language === 'de') German
@@ -73,9 +66,7 @@ block content
                         div(class="form__group")
                             label(class="form__label", for="machinery") Machinery
                             input#machinery(class="form__input", type="text", value=user.machinery.length > 0 ? user.machinery.map(machine => machine.name).join(', ') : "No machine", readonly, style="background-color: lightgrey;")
-                        //-.form__group
-                            label.form__label(for='name') Name
-                            input#name.form__input(type='text', value=`${user.name}`,autocomplete="user-name", required, name='name')
+
                         .form__group.ma-bt-md
                             label.form__label(for='email') Email address
                             input#email.form__input(type='email', value=`${user.email}`, name='email')
@@ -93,9 +84,6 @@ block content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Password change
                     form.form.form-user-password
-                        //-.form__group     //- damit Fehler weg geht: Password forms should have (optionally hidden) username fields for accessibility: aber egal
-                            label.form__label(for='username') Username (optional)
-                            input#username.form__input(type='hidden', autocomplete='username', placeholder='Enter your username (optional)', aria-label='Username', hidden)
                         .form__group
                             label.form__label(for='password-current') Current password
                             input#password-current.form__input(type='password',autocomplete='current-password', placeholder='••••••••', required, minlength='8')

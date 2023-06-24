@@ -3,7 +3,7 @@ dotenv.config({ path: './config.env' });
 import assert from 'assert';
 import { Builder, By, until } from 'selenium-webdriver';
 import 'chromedriver';
-//---------------funktioniert------------------------------
+
 describe('Test load next site after login', function () {
   it('Should return the URL after admin logged in and show the next site', async function () {
     this.timeout(15000);
@@ -41,7 +41,7 @@ describe('Test load next site after login', function () {
     }
   });
 });
-//---------------funktioniert------------------------------
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -83,7 +83,7 @@ describe('Test, when admin logs in and clicks on his avatar', function () {
 
       assert.strictEqual(
         strFirstName,
-        'Admin', // Replace with the expected firstname
+        'Admin',
         'Firstname should be: ' + strFirstName
       );
     } finally {

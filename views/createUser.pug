@@ -33,9 +33,6 @@ block content
             div(class="form__group")
               label(class="form__label", for="employeeNumber") Employee Number
               input#employeeNumber(class="form__input" type="number" placeholder="70220" required="required" min="10000" max="99999")
-
-
-              //-input#employeeNumber1(class="form__input", type="number", placeholder="70220", required="required", pattern="^[0-9]{5,}$")
             div(class="form__group")
               label(class="form__label", for="firstname") Firstname
               input#firstname(class="form__input", type="text", placeholder="Max", required="required")
@@ -55,9 +52,6 @@ block content
               select#language(class="form__input")
                 option(value="en") English
                 option(value="de") German
-            //-div(class="form__group")
-              label(class="form__label", for="name") Name
-              input#name(class="form__input", type="text", placeholder="Pinco Pallino", required="required")
             div(class="form__group")
               label(class="form__label", for="professional") Professional
               input#professional(class="form__input", type="text", placeholder="professional")
@@ -78,7 +72,6 @@ block content
                 option(value="Schichtleiter") Schichtleiter
                 option(value="Chef") Chef
 
-
             div(class="form__group")
               label(class="form__label", for="department") Departments
               each department in data.departments
@@ -87,7 +80,6 @@ block content
                   |
                   input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department.name, checked=checked,  style="width: 20px; height: 20px;")
                   span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department.name}
-
 
             div(class="form__group")
               button.btn.btn--green Save
@@ -105,12 +97,8 @@ block content
                 });
                 if (selectedDepartments.length > 0) {
                   console.log(selectedDepartments + " sind angewählt");
-                  //#department === selectedDepartments
-                  //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
                   document.querySelector('#department').value = selectedDepartments;
-                  //-document.querySelector('#department').value = selectedDepartmentsString
                 } else {
-                  //console.log(selectedDepartments.length + " Departments!!!");
                   alert('Please select at least one department.');
                 }
               }

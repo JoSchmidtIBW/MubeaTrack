@@ -4,8 +4,6 @@ import axios from 'axios';
 import { showAlert } from './alerts.js';
 import process from 'process';
 
-//const port = 7566;
-//const port = 7566;
 const dev_Port = 7566;
 const prod_Port = 7577;
 
@@ -14,22 +12,13 @@ const host = 'http://127.0.0.1:';
 const strPathApiV1 = '/api/v1';
 const apiUrl = host + port + strPathApiV1;
 
-// const port =
-//   process.env.NODE_ENV === 'development'
-//     ? process.env.DEV_PORT
-//     : process.env.PROD_PORT;
-// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
-
 export const login = async (employeeNumber, password) => {
-  //alert(email)
   console.log(employeeNumber, password);
-  //alert(`${email}, ${password}`);
-  //alert(` ${password}`);
 
   try {
     const res = await axios({
       method: 'POST',
-      url: `${apiUrl}/users/login`, //`http://127.0.0.1:${port}/api/v1/users/login`, //http://127.0.0.1:3000/api/v1/users/login => http://localhost:3000/api/v1/users/login
+      url: `${apiUrl}/users/login`,
       data: {
         employeeNumber: employeeNumber,
         password: password,
@@ -37,21 +26,16 @@ export const login = async (employeeNumber, password) => {
     });
 
     if (res.data.status === 'success') {
-      // das ist der gesendete status in data
-      //alert('Logged in successfully!');
       showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
-        location.assign(`${strPathApiV1}/overview`); //wie redirect //'/api/v1/overview'
+        location.assign(`${strPathApiV1}/overview`);
       }, 1500);
     }
-
-    //console.log(res)
   } catch (err) {
-    console.log(JSON.stringify(err.response.data) + ' bin login in login.js'); // kommt von axios documentation
+    console.log(JSON.stringify(err.response.data) + ' bin login in login.js');
     console.log(
       JSON.stringify(err.response.data.message) + ' bin login in login.js'
     );
-    // alert(JSON.stringify(err.response.data.message) + " bin login in login.js") // data ist data-responce
 
     if (
       err.response.data.message ===
@@ -74,9 +58,6 @@ export const login = async (employeeNumber, password) => {
         JSON.stringify(err.response.data.message) + ' bin login in login.js'
       );
     }
-
-    //console.log(JSON.parse(err.response.data) + " bin login in login.js")
-    //console.log(err.response.data + " bin login in login.js")
   }
 };
 
@@ -84,77 +65,12 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: `${apiUrl}/users/logout`, //`http://127.0.0.1:${port}/api/v1/users/logout`,
+      url: `${apiUrl}/users/logout`,
     });
 
-    // reload the page  um cookie mit keinem token, an den server zu schicken
-    if (res.data.status === 'success') location.assign('/'); //wie redirect
-    //location.reload(true); // true macht force relaod from server, and not from browser cache
+    if (res.data.status === 'success') location.assign('/');
   } catch (err) {
     console.log(err.response);
     showAlert('error', 'Error logging out! Try agein.');
   }
 };
-
-// document.querySelector('.form').addEventListener('submit', e => {
-//     e.preventDefault(); // element prevent from loading the page
-
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-//     //login({ email, password })
-//     login(email, password)
-// })
-
-////--------------------------------------------------------
-// const login = async(email, password) => {
-//     //alert(email)
-//     console.log(email, password)
-
-//     try {
-//         const res = await axios({
-//             method: 'POST',
-//             url: 'http://127.0.0.1:4301/api/v1/users/login',
-//             data: {
-//                 email: email,
-//                 password: password,
-//             }
-//         })
-//         console.log(res)
-//     } catch (err) {
-//         console.log(err.response.data + " bin login in login.js") // kommt von axios documentation
-//     }
-
-// }
-
-// document.querySelector('.form').addEventListener('submit', e => {
-//     e.preventDefault(); // element prevent from loading the page
-
-//     const email = document.getElementById('email').value;
-//     const password = document.getElementById('password').value;
-//     //login({ email, password })
-//     login(email, password)
-// })
-
-// extends base
-
-// block content
-//     main.main
-//         .login-form
-//             h2.heading-secondary.ma-bt-lg Log into your account
-//             form.form
-//                 .form__group
-//                     label.form__label(for='email' type='form') Email address
-//                     input#email.form__input(type='email' autocomplete='email address' placeholder='you@example.com', required)
-//                 .form__group.ma-bt-md
-//                     label.form__label(for='password') Password
-//                     input#password.form__input(type='password' autocomplete='current-password' placeholder='••••••••', required, minlength='8')
-//                 .form__group
-//                     button.btn.btn--green Login
-//                 .form__group
-//                     a#misclink(href='/signup') Create new account
-
-// https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/learn/lecture/15065660#questions/17489992
-
-//script(src='/js/login.js' defer)
-
-// cors ...

@@ -6,8 +6,6 @@ header.header
         .LogoBildText
             img(src='/img/Mubea_logo.svg.png', alt='Mubea logo')
             a.logoTrack Track
-        //-div= user.name
-        //-div= user.photo
     nav.nav.nav--user
         if user
             a.nav__el.nav__el--logout Log out
@@ -15,8 +13,7 @@ header.header
                 img.nav__user-img(src=`/img/users/${user.photo}`, alt=`Photo of ${user.firstName}`)
                 span= user.firstName
                 span(style='margin-left:5px;')= user.lastName
-                //-user.name.split(' ')[0]
         else
-            //- kommt von isloggedIn- Middleware, wo res.locals.user = currentuser
+            // Comes from isloggedIn- Middleware, where res.locals.user = currentUser
             a.nav__el(href='/api/v1/login') Log in
             a.nav__el.nav__el--cta(href='/#') Sign up
