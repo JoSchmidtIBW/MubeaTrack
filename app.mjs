@@ -21,7 +21,6 @@ import malReportRoute from './routes/malReportRoutes.mjs';
 import startRoute from './routes/startRoute.mjs';
 
 import globalErrorHandler from './controllers/errorController.mjs';
-import testRoute from './routes/testRoute.mjs';
 
 const app = express();
 
@@ -165,7 +164,7 @@ app.get('/ejs', (req, res) => {
 });
 
 // API- Routes
-app.use('/api/v1/userstest', testRoute);
+//app.use('/api/v1/userstest', testRoute);
 app.use('/', startRoute);
 app.use('/api/v1', viewRoute); // has to be the first
 app.use('/api/v1/departments', departmentRoute);
