@@ -38,9 +38,7 @@ app.set('views', [
 // slash /views// in path, can be a bug with /\- path
 // could also be './views', but this is safer, app.set('views', path.join(__dirname, 'views/pages'));
 
-// Middleware
-
-// 1. GLOBAL MIDDLEWARES
+// GLOBAL MIDDLEWARES
 
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store');
@@ -48,22 +46,12 @@ app.use((req, res, next) => {
 });
 
 // Serving static files
-//um auf html css zuzugreifen, was jedoch eine API nicht macht
-//app.use(express.static(`${__dirname}/public`))
-
-//um auf html css zuzugreifen, was jedoch eine API nicht macht
-//app.use(express.static(`${__dirname}/public`));
-app.use(express.static(path.join(__dirname, 'public'))); //wurde hier plaziert, unter app.set views ORIGINAL
-//app.use('/public', express.static(path.join(__dirname, 'public')));
-
-//app.use(express.static('./public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // use cors before all route definitions  nicht von tutorial
 app.use(cors({ origin: 'http://localhost:4301' }));
 
 // Set securtity HTTP headers
-//app.use(helmet()); // sollte hier am anfang der mittdleware stehen,und nicht am schluss   hat mit dem funktioniert, bis jquery
-
 const cspOptions = {
   directives: {
     defaultSrc: ["'self'"],
@@ -97,47 +85,29 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
-// parst data from body
 app.use(express.json({ limit: '100kb' })); // for POST, to get data from client (need to be json)
 // parse data coming in a urlencoded form
-app.use(express.urlencoded({ extended: true, limit: '10kb' })); // wenn form send data to server, zb ejs method=post input, it also called urlencoded , extendet true, um komplexe daten zu senden, wird aber nicht gebraucht eigentlich
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); // When form send data to server, for example ejs method=post input, it also called urlencoded , extended true, to send complex data
 // parse data from cookies
 app.use(cookieParser());
 
-// after the bod-parser, Sicherheit für datenbereinigung
+// after the bod-parser, Security for data
 // Data sanatisation against NoSQLquery injection
 
-// bsp: bei postman, login als: // oder in compass: {"email": {"$gt": ""}} bei filter, mit {}
+// For example: by postman, login as: // or in compass: {"email": {"$gt": ""}} with filter, with {}
 // {
 //     "email": {"$gt": ""},
 //     "password": "newpassword"
 // }
-app.use(mongoSanitize()); // filtert alle dollarzeichen usw heraus
+app.use(mongoSanitize()); // Filters out all dollar signs
 
-// after the bod-parser, Sicherheit für datenbereinigung
-// Data sanatisation against XSS    cross-site-scriptingAttaks
-app.use(xss()); // clean user-input von bösartige html- sachen
 
-// Prevent parameter prolution  clearup the querystring {{URL}}api/v1/tours?sort=duration&sort=price mit zweimal sort, was nicht geht   benutzt nur noch den letzten sort!
-//app.use(hpp()) // wenn deaktiviert, {{URL}}api/v1/tours?duration=5&duration=9 kommen drei ansonsten eine
-app.use(
-  hpp({
-    whitelist: [
-      // erlaubt dublicatet in querystring
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price', //{{URL}}api/v1/tours?duration=5&duration=9  muss eingeloggt sein und barer-token    {{URL}}api/v1/tours?sort=duration&sort=price
-    ],
-  })
-);
+// Data sanatisation against XSS    cross-site-scripting-Attacks
+app.use(xss()); // clean user-input from bad / evil html input
 
-// Serving static files
-//um auf html css zuzugreifen, was jedoch eine API nicht macht
-//app.use(express.static(`${__dirname}/public`))
-//app.use(express.static(path.join(__dirname, 'public')))
+// Prevent parameter pollution, cleanup the querystring
+app.use(hpp()) // can have a whitelist app.use(hpp({whitelist: ['name']}))
+
 
 // Test middleware
 app.use((req, res, next) => {
@@ -157,14 +127,7 @@ app.get('/delete-cookie', (req, res) => {
   res.redirect('/');
 });
 
-// Routes
-
-app.get('/ejs', (req, res) => {
-  res.status(200).render('basee');
-});
-
 // API- Routes
-//app.use('/api/v1/userstest', testRoute);
 app.use('/', startRoute);
 app.use('/api/v1', viewRoute); // has to be the first
 app.use('/api/v1/departments', departmentRoute);
@@ -172,25 +135,10 @@ app.use('/api/v1/machinery', machineRoute);
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/malReports', malReportRoute);
 
-//---------------------------unit-test-test----Down--------------------------------
-// für UNIT-TEST- Versuch
-export function sum(a, b) {
-  return a + b;
-}
-console.log('Für Unit Test... sum: ' + sum(2, 3));
-
-// a_Plus_b(1, 2);
-//
-// function a_Plus_b(a, b) {
-//   let result = a + b;
-//   // console.log("UnitTest... a+b= "+ result);
-// }
-//---------------------------unit-test-test----Up--------------------------------
-
 // To give an error message for wrong urls, this must happen under the routes
 app.all('*', (req, res, next) => {
   // next(err); // error hand over
-  // für all Fehler, get post put delete --> all 404 for not found
+  // for all errors, get post put delete --> all 404 for not found
   next(new AppError(`Can's find ${req.originalUrl} on this server!`, 404));
 });
 

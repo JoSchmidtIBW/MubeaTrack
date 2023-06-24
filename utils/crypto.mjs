@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-var encryptedStringPasswortLClient; //=encryptData(data,iv,key);//muss var sein//
-//console.log("bin crypto.mjs encryptedStriiiing: "+encryptedStringPasswortLClient);//genrated encryption String:  swBX2r1Av2tKpdN7CYisMg==
+var encryptedStringPasswortLClient; // has to be var!
 
 export function encryptData(data, iv, key) {
   //  console.log("bin encryptData-Funktion in crypto.mjs");
