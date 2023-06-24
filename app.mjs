@@ -138,7 +138,7 @@ app.use('/api/v1/malReports', malReportRoute);
 // To give an error message for wrong urls, this must happen under the routes
 app.all('*', (req, res, next) => {
   // next(err); // error hand over
-  // für all Fehler, get post put delete --> all 404 for not found
+  // for all errors, get post put delete --> all 404 for not found
   next(new AppError(`Can's find ${req.originalUrl} on this server!`, 404));
 });
 
