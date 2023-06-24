@@ -30,13 +30,7 @@ block content
                     h2.heading-secondary.ma-bt-md= `Erstelle neuen Sektor für ${data.machine.name}`
                     br
                     h1 Hier kann die Maschine zu einer ASMA- Maschine gemacht werden.
-                        //-h2= `bin ${data.machine}`
-                        //-h1 Wähle dazu einen SektorASMA aus.
-
                     br
-                    //- h1 MaschinenID:
-                    //- h1= data.machine._id
-                    //-h1= data.machine.sectorASMA.length
                     if(data.machine.sectorASMA.length===0)
                         h2(style="color: red" ) Die Anlage hat noch kein ASMA, schreiben Sie die Anlage ins Feld
                         form.form.form-new-sectorASMA-data
@@ -53,13 +47,11 @@ block content
                             div(class="form__group")
                             button.btn.btn--green.btn--saveCreateSectorASMAMachine(href=`#`) Speichern
                     else
-                      //-h2= data.machine.sectorASMA.length
                       each sector in data.machine.sectorASMA
                         div(class="form__group")
                               input#idSectionASMA(class="form__input", type="hidden", value=sector.id, readonly, style="background-color: lightgrey;")
                               label(class="form__label", for="name") Sektor Name
                               input#name(class="form__input", type="text", value=sector.name, readonly, style="background-color: lightgrey;")
-                              //-div(class="form__group")
                               label(class="form__label", for="description_de") Beschreibung_de
                               input#description_de(class="form__input", type="text", value=sector.description_de, readonly, style="background-color: lightgrey;")
                               br
@@ -73,8 +65,6 @@ block content
                                   a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/createComponents/${sector.id}`, style="background-color:lightblue;") Komponenten
                                   br
                                   br
-                                  //-button#btn-plus +
-                                  //-button.btn.btn--green1#btn-plus + Sektor
                       button.btn.btn--green1#btn-plus + Sektor
 
                       form.form.form-new-sectorASMA-data
@@ -90,11 +80,9 @@ block content
                                 label(class="form__label", for="description_en") Beschreibung_en
                                 input#input_description_en(class="form__input" type="text" placeholder="Beschreibung_en" required="required")
                             div(class="form__group" id="saveBtnDiv" style="display: none;")
-                                //-button.btn.btn--green.btn.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateSectorASMAMachine(href=`#`) Speichern
 
                       script.
-
                           const btnPlus = document.querySelector('#btn-plus');
                           const nameDiv = document.querySelector('#nameDiv');
                           const description_deDiv = document.querySelector('#description_deDiv');
@@ -114,6 +102,4 @@ block content
                       br
                       br
                       div(class="form__group")
-                            //-button.btn.btn--green Save
-                            //-a.btn.btn--green(href=`/api/v1/machiner/createASMAMachine`) Save
                             a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Abbrechen

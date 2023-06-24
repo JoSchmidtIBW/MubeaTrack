@@ -51,41 +51,25 @@ import {
 } from './malReport';
 
 import { updateSettings } from './updateSettings';
-import axios from 'axios';
-import { showAlert } from './alerts.js';
-import { createUser } from './user';
-import { updateData } from './updateSettings';
 
-// npm run start:prod --> nicht fertig implementiert--------------------
 import dotenv from 'dotenv';
 dotenv.config({ path: '../../config.env' });
 import * as process from 'process';
-//import fs from 'fs';
-//import app from '../../app.mjs';
 
-//const port = 7566;
 const dev_Port = 7566;
 const prod_Port = 7577;
 
 const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
 const host = 'http://127.0.0.1:';
 const strPathApiV1 = '/api/v1';
-//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
-
-//const port2 = process.env.NODE_ENV === 'development' ? 7566 : 7577;
-//const apiUrl = `http://127.0.0.1:${port}/api/v1`;
-
-//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
 const apiUrl = host + port + strPathApiV1;
 
-console.log('Hello from parcel! bin index.js'); //npm run watch:js
+console.log('Hello from parcel! bin index.js');
 console.log('port in index.js: ' + port);
 console.log('process: ' + JSON.stringify(process));
 console.log('process: ' + JSON.stringify(process.env));
 console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV);
 console.log('process.env.DEV_PORT: ' + process.env.DEV_PORT);
-//console.log('port2: ' + port2);
-//console.log('app.get("env"): ' + app.get('env'));
 
 // DOM Element
 const loginForm = document.querySelector('.form--login');
@@ -152,116 +136,63 @@ const myMalReportsTable = document.querySelector('.myMalReportsTable');
 
 const forgotPasswordForm = document.querySelector('.form--forgotPassword');
 
-//const createUserBtn = document.querySelector('.createUserBtn')
-
-//if (createUserBtn) createUserBtn.addEventListener('click', createUser);
-
-// VALUES
-// const email = document.getElementById('email').value;        hier, diese sind nicht defined, wenn dom läd, braucht eventlistener
-// const password = document.getElementById('password').value;
-
 // DELEGATION
 
 if (loginForm)
   loginForm.addEventListener('submit', (e) => {
-    //document.querySelector('.form').addEventListener('submit', e => {
     e.preventDefault(); // element prevent from loading the page
 
     const employeeNumber = document.getElementById('employeeNumber').value;
-    //const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    //login({ email, password })
+
     login(employeeNumber, password);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
-// if (userDataForm)
-//     userDataForm.addEventListener('submit', e => {
-//         e.preventDefault()
-//         const name = document.getElementById('name').value;
-//         const email = document.getElementById('email').value; // in pug id= #email
-//         updateData(name, email)
-//     })
-
-// send data, to be updated on the server
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    //console.log('Role: ' + document.getElementById('role').value);
-
-    //auch photos
+    //also images
     const form = new FormData();
-    //console.log('testi: ' + document.getElementById('firstname').value);
     form.append('firstName', document.getElementById('firstname').value);
     form.append('lastName', document.getElementById('lastname').value);
     form.append('gender', document.getElementById('gender').value);
     form.append('language', document.getElementById('language').value);
-
-    //form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('role', document.getElementById('role').value);
 
-    form.append('photo', document.getElementById('photo').files[0]); // files sind array, brauchen erstes element
+    form.append('photo', document.getElementById('photo').files[0]); // files are array, need first element
 
     console.log(
       'bin if(userDataForm), in index.js, wenn bild, sieht keine information sollte aber kein problem sein: ' +
         form
-    ); // man sieht hier keine information
+    );
 
-    // const name = document.getElementById('name').value;
-    // const email = document.getElementById('email').value; // in pug id= #email
-    //updateData(name, email)
-    //updateSettings({ name, email }, 'data')
     updateSettings(form, 'data');
   });
-
-// if (userDataForm)
-//   userDataForm.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//     const name = document.getElementById('name').value;
-//     const email = document.getElementById('email').value; // in pug id= #email
-//     //updateData(name, email)
-//     updateSettings({ name, email }, 'data');
-//   });
 
 if (userPasswordForm)
   userPasswordForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // wenn pw ändert, soll solange der button speicher, name ändern bis fertig
-    document.querySelector('.btn--save-password').textContent = 'Updating...'; //innerHtml oder textContent
-    //document.querySelector('.btn--save-password').innerHTML = 'Updating...'// mit punkt... .btn--save-password
+    document.querySelector('.btn--save-password').textContent = 'Updating...'; // innerHtml or textContent
 
-    const passwordCurrent = document.getElementById('password-current').value; // in puc account: #password-current
-    const password = document.getElementById('password').value; // in pug id= #password
-    const passwordConfirm = document.getElementById('password-confirm').value; // in pug id= #password-confirm
-    //updateData(name, email)
-    // await, um promise von dieser funktion, um die buchstaben im passwordfield zu löschen
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+
     await updateSettings(
       { passwordCurrent, password, passwordConfirm },
       'password'
-    ); // diese daten müssen genau so heissen wie in postman!
+    ); // this data must be called exactly the same as in postman!
 
     document.querySelector('.btn--save-password').textContent = 'Save password';
-    //document.querySelector('.btn--save-password').innerHTML = 'Save password'// mit punkt .btn--save-password...
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
   });
-
-// {
-//     "passwordCurrent": "newpass123",
-//     "password": "newpassword",
-//     "passwordConfirm": "newpassword"
-// }
-
-// if (manageUsersTable) {
-//   showUsers();
-// }
-
-//const usersTable = document.querySelector('.usersTable');
 
 if (forgotPasswordForm) {
   forgotPasswordForm.addEventListener('submit', (e) => {
@@ -274,7 +205,6 @@ if (forgotPasswordForm) {
 }
 
 if (manageUsersTable) {
-  //muss unterhalb showUsers sein
   console.log('bin If usertable');
   showUsers();
 }
@@ -282,7 +212,7 @@ if (manageUsersTable) {
 if (newUserDataForm) {
   newUserDataForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    //const id = document.getElementById('userId').value;
+
     const employeeNumber = document.getElementById('employeeNumber').value;
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
@@ -290,19 +220,13 @@ if (newUserDataForm) {
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
     const professional = document.querySelector('#professional').value;
-    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
     const role = document.querySelector('#role').value;
-    // const departmentString = document.getElementById(
-    //   'department-checkbox'
-    // ).value;
-    //const departmentString = document.querySelector('#department').value;
     const selectedDepartments = Array.from(
       document.querySelectorAll('input[name="departments"]:checked')
     ).map((department) => department.value);
-    //console.log('-------------------');
 
     console.log(employeeNumber);
     console.log(firstname);
@@ -311,21 +235,14 @@ if (newUserDataForm) {
     console.log(gender);
     console.log(language);
     console.log(professional);
-    //console.log(name);
     console.log(email);
     console.log(password);
     console.log(passwordConfirm);
     console.log(role);
-    //console.log(department);
 
     console.log('-------------------');
     console.log(selectedDepartments);
-    // const departmentString = selectedDepartments.join(',');
-    // console.log(departmentString); // Konstruktion,Engineering
-    // const departmentsArray = departmentString.split(',');
-    // //
-    // console.log(departmentsArray);
-    // const department = departmentsArray;
+
     const department = selectedDepartments;
 
     createNewUser(
@@ -336,64 +253,15 @@ if (newUserDataForm) {
       gender,
       language,
       professional,
-      //name,
       email,
       password,
       passwordConfirm,
       role,
       department
     );
-
-    // try {
-    //   const url = '${apiUrl}/users/signup'; ////127.0.0.1:4301/api/v1/users/signup
-    //
-    //   const res = await axios({
-    //     method: 'POST',
-    //     url, //: url,
-    //     //data, //: {
-    //     //     data, //das schicken wir der API
-    //     // }
-    //     data: {
-    //       name: 'erika',
-    //       firstName: 'Erika',
-    //       lastName: 'Schmidt',
-    //       employeeNumber: '66101',
-    //       email: 'm2@example.com',
-    //       password: 'test1234',
-    //       passwordConfirm: 'test1234',
-    //       role: 'guide',
-    //       active: true,
-    //       department: 'Unterhalt',
-    //     },
-    //   });
-    //
-    //   //testen, ob das gesendete zum server angekommen ist
-    //   if (res.data.status === 'success') {
-    //     // status bei API request
-    //     showAlert('success', `${type.toUpperCase()} updated successfully!`);
-    //   } else {
-    //     console.log('nixxxx');
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    //   showAlert('error', err.response.data.message); //err.responce.data.message) //testen, zb falsche email bei /me eingeben
-    // }
-
-    // console.log(passwordConfirm);
-
-    // updateUser(
-    //   {
-    //     employeeNumber,
-    //     name,
-    //     email,
-    //     role,
-    //   },
-    //   id
-    // );
   });
 }
 
-// todo button zu Admin ändern
 const saveUpdateUserByAdminButton = document.querySelector(
   '.btn--saveUpdateUserByAdmin'
 );
@@ -401,10 +269,9 @@ const deleteUpdateUserByAdminButton = document.querySelector(
   '.btn--deleteUpdateUserByAdmin'
 );
 
-// todo !!! der chef darf nur die abteilung und Rolle des users zuordnen nichts mehr, der user darf sich sonst selber verändern!!!
 if (updateUserByAdminDataForm) {
   updateUserByAdminDataForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateUserChefDataForm');
 
     const id = document.getElementById('userId').value;
@@ -415,10 +282,7 @@ if (updateUserByAdminDataForm) {
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
     const professional = document.querySelector('#professional').value;
-    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    //const password = document.getElementById('password').value;
-    //const passwordConfirm = document.getElementById('passwordConfirm').value;
     const role = document.querySelector('#role').value;
     const departmentString = document.querySelector('#department').value;
 
@@ -430,13 +294,10 @@ if (updateUserByAdminDataForm) {
     console.log(gender);
     console.log(language);
     console.log(professional);
-    //console.log(name);
     console.log(email);
-    //console.log(password);
-    //console.log(passwordConfirm);
     console.log(role);
 
-    console.log(departmentString); // Konstruktion,Engineering
+    console.log(departmentString);
     const departmentsArray = departmentString.split(',');
 
     console.log(departmentsArray);
@@ -471,7 +332,7 @@ const deleteUpdateUserByChefButton = document.querySelector(
 
 if (updateUserByChefDataForm) {
   updateUserByChefDataForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateUserChefDataForm');
 
     const id = document.getElementById('userId').value;
@@ -482,10 +343,7 @@ if (updateUserByChefDataForm) {
     const gender = document.querySelector('#gender').value;
     const language = document.querySelector('#language').value;
     const professional = document.querySelector('#professional').value;
-    //const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    //const password = document.getElementById('password').value;
-    //const passwordConfirm = document.getElementById('passwordConfirm').value;
     const role = document.querySelector('#role').value;
     const departmentString = document.querySelector('#department').value;
 
@@ -497,13 +355,10 @@ if (updateUserByChefDataForm) {
     console.log(gender);
     console.log(language);
     console.log(professional);
-    //console.log(name);
     console.log(email);
-    //console.log(password);
-    //console.log(passwordConfirm);
     console.log(role);
 
-    console.log(departmentString); // Konstruktion,Engineering
+    console.log(departmentString);
     const departmentsArray = departmentString.split(',');
 
     console.log(departmentsArray);
@@ -530,7 +385,6 @@ if (updateUserByChefDataForm) {
 }
 
 if (manageMachineryTabel) {
-  //muss unterhalb showMachinery sein
   console.log('bin If machinerytable');
   showMachinery();
 }
@@ -601,7 +455,7 @@ const deleteUpdateMachineButton = document.querySelector(
 
 if (updateMachineForm) {
   updateMachineForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateMachineDataForm');
 
     const id = document.getElementById('machineId').value;
@@ -675,7 +529,7 @@ if (updateMachineForm) {
 
 if (newcomponentDetailsASMAForm) {
   newcomponentDetailsASMAForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin newcomponentDetailsASMAForm');
 
     const machineId = document.getElementById('machineID').value;
@@ -702,7 +556,7 @@ if (newcomponentDetailsASMAForm) {
 
 if (newComponentASMAForm) {
   newComponentASMAForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin newComponentASMAForm');
 
     const machineId = document.getElementById('machineID').value;
@@ -750,7 +604,7 @@ const deleteComponentDetailASMAButton = document.querySelector(
 
 if (updateComponentDetailASMAForm) {
   updateComponentDetailASMAForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateComponentDetailASMAForm');
 
     const machineID = document.getElementById('machineID').value;
@@ -799,7 +653,7 @@ if (updateComponentDetailASMAForm) {
 
 if (updateComponentASMAForm) {
   updateComponentASMAForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateComponentASMAForm');
 
     const machineID = document.getElementById('machineID').value;
@@ -848,7 +702,7 @@ if (updateComponentASMAForm) {
 
 if (newSectorASMAform) {
   newSectorASMAform.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin newSectorASMAform');
 
     const machineId = document.getElementById('id').value;
@@ -880,7 +734,7 @@ const saveUpdateUserMachine = document.querySelector(
 
 if (ASMAbtnForm) {
   ASMAbtnForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin ASMAbtnForm');
 
     const currentUserID = document.getElementById('currentUserID').value;
@@ -897,12 +751,10 @@ if (ASMAbtnForm) {
     console.log('machineName: ' + machineName);
     console.log('selectedIdsBtnArr: ' + selectedIdsBtnArr);
     console.log('selectedRunIdBtn: ' + selectedRunIdBtn);
-
-    //if (e.submitter === saveUpdateUserMachine) {
     console.log('bin abszBtn');
+
     updateASMAMachine(
       { selectedIdsBtnArr, selectedRunIdBtn, currentUserID, machineID },
-      //currentUserID,
       machineID,
       departmentName,
       machineName
@@ -913,7 +765,7 @@ if (ASMAbtnForm) {
 
 if (updateUserMashineForm) {
   updateUserMashineForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateUserMashineForm');
 
     const userID = document.getElementById('userID').value;
@@ -923,11 +775,9 @@ if (updateUserMashineForm) {
 
     console.log('userID: ' + userID);
     console.log('machineryInDepartment: ' + machineryInDepartmentID);
-
-    //if (e.submitter === saveUpdateUserMachine) {
     console.log('bin saveUpdateUserMachinery');
+
     updateUserMachinery({ machineryInDepartmentID }, userID);
-    //}
   });
 }
 
@@ -936,7 +786,7 @@ const saveNewLogfalButton = document.querySelector('.btn--saveNewLogfal');
 
 if (updateMalReportForm) {
   updateMalReportForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateMalReportForm');
 
     const currentUser = document.getElementById('currentUser').value;
@@ -967,11 +817,8 @@ if (updateMalReportForm) {
     console.log('malReportID: ' + malReportID);
     console.log('departmentName: ' + departmentName);
     console.log('machineName: ' + machineName);
-
     console.log('elektroMech: ' + elektroMech);
-    console.log('---------------------------');
     console.log('estimatedTime_Repair: ' + estimatedTime_Repair);
-    console.log('---------------------------');
     console.log('Status_Repair: ' + Status_Repair);
     console.log('messageProblem_de_Repair: ' + messageProblem_de_Repair);
     console.log('messageMission_de_Repair: ' + messageMission_de_Repair);
@@ -985,8 +832,7 @@ if (updateMalReportForm) {
       closeMalReport(malReportID, machineName, departmentName);
     } else if (e.submitter === saveNewLogfalButton) {
       console.log('bin saveNewLogfalButton');
-      //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
-      //deleteSectorASMA(machineID, sectorASMAID);
+
       createLogFal(
         {
           currentUser,
@@ -1015,14 +861,8 @@ const deleteSectorASMAButton = document.querySelector('.btn--deleteSectorASMA');
 
 if (updateSectorASMAForm) {
   updateSectorASMAForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateSectorASMAForm');
-
-    // const machineIDdelete = document.getElementById('machineIDdelete').value;
-    // const sectorASMAIDdelete =
-    //   document.getElementById('sectorASMAIDdelete').value;
-    // console.log('machineIDdelete: ' + machineIDdelete);
-    // console.log('sectorASMAIDdelete: ' + sectorASMAIDdelete);
 
     const machineID = document.getElementById('machineID').value;
     const sectorASMAID = document.getElementById('sectorASMAID').value;
@@ -1049,16 +889,12 @@ if (updateSectorASMAForm) {
       );
     } else if (e.submitter === deleteSectorASMAButton) {
       console.log('bin deleteSectorASMAButton');
-      //deleteSectorASMA(machineIDdelete, sectorASMAIDdelete);
       deleteSectorASMA(machineID, sectorASMAID);
     }
   });
 }
 
-//----------------------------------------------------------------------------------
-
 if (manageUsersMachineryTable) {
-  //muss unterhalb showMachinery sein
   console.log('bin If manageUsersMachineryTable');
   showUsersMachinery();
 }
@@ -1085,14 +921,14 @@ if (manageASMAUnterhaltMachineClosedMalReportsTable) {
 
 if (updateLogFalForm) {
   updateLogFalForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Verhindert das Standardverhalten des Formulars
+    e.preventDefault();
     console.log('bin updateLogFalForm');
 
-    const currentUser = document.getElementById('currentUser').value; //departmentName
+    const currentUser = document.getElementById('currentUser').value;
     const malReportID = document.getElementById('malReportID').value;
     const malReportLogFalID =
       document.getElementById('malReportLogFalID').value;
-    const machineName = document.getElementById('machineName').value; //estimatedStatus
+    const machineName = document.getElementById('machineName').value;
     const departmentName = document.getElementById('departmentName').value;
     const estimatedStatus = document.getElementById('estimatedStatus').value;
     const elektroMech = document.getElementById('elektroMech').value;
@@ -1127,7 +963,6 @@ if (updateLogFalForm) {
     console.log('messageMission_en: ' + messageMission_en);
     console.log('createAt_Repair: ' + createAt_Repair);
 
-    // //if (e.submitter === saveUpdateUserMachine) {
     console.log('bin saveUpdateLogFal');
     updateLogFal(
       {
@@ -1147,6 +982,5 @@ if (updateLogFalForm) {
       machineName,
       departmentName
     );
-    // //}
   });
 }

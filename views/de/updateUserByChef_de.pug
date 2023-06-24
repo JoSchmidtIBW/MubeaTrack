@@ -34,9 +34,7 @@ block content
                                 br
                                 h2.heading-secondary.ma-bt-md= `Benutzer bearbeiten ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
                                 form.form.form-workerChef-data
-                                    //-input#userId(type="hidden", value=data.userToUpdate._id)
                                     div(class="form__group ma-bt-md")
-                                        //label(class="form__label", for="userId") UserId
                                         input#userId(class="form__input", type="hidden", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")
                                     div(class="form__group")
                                         label(class="form__label", for="employeeNumber") Mitarbeiter- Nummer
@@ -49,30 +47,16 @@ block content
                                         input#lastname(class="form__input", type="text", value=data.userToUpdate.lastName)
                                     div(class="form__group")
                                         label(class="form__label", for="birthDate") Geburtsdatum
-                                        //-input#birthDate(class="form__input", type="text", value=data.userToUpdate.birthDate, readonly, style="background-color: lightgrey;")
                                         input#birthDate(class="form__input", type="text", value=data.userToUpdate.birthDate, pattern="^(0[1-9]|[1-2][0-9]|3[0-1])[.](0[1-9]|1[0-2])[.][0-9]{4}$")
                                     div(class="form__group")
                                         label(class="form__label", for="gender") Geschlecht
-                                        //input#gender(class="form__input", type="text", value=data.userToUpdate.gender, readonly, style="background-color: lightgrey;")
                                         select#gender(class="form__input")
                                             option(value=data.userToUpdate.gender, selected, style="background-color: #98B7E1; color: white;") #{data.userToUpdate.gender}
                                             option(value="male", selected=data.userToUpdate.gender === 'male') Mann
                                             option(value="female", selected=data.userToUpdate.gender === 'female') Frau
-                                        //-select#gender(class="form__input")
-                                          option(value="male") Male
-                                          option(value="Female") Female
-                                    //div(class="form__group")
-                                      label(class="form__label", for="language") Language
-                                      input#language(class="form__input", type="text", value=data.userToUpdate.language, readonly, style="background-color: lightgrey;")
                                     div(class="form__group")
                                         label(class="form__label", for="professional") Beruf
                                         input#professional(class="form__input", type="text", value=data.userToUpdate.professional)
-                                        //-select#language(class="form__input")
-                                          option(value="Englisch") English
-                                          option(value="Deutsch") Deutsch
-                                    //-div(class="form__group")
-                                      label(class="form__label", for="name") Name
-                                      input#name(class="form__input", type="text", value=data.userToUpdate.name, readonly, style="background-color: lightgrey;")
                                     div(class="form__group")
                                         label(class="form__label", for="email") E-Mail
                                         input#email(class="form__input", type="email", value=data.userToUpdate.email)
@@ -82,16 +66,11 @@ block content
                                             input#password(class="form__input", type="text", value=data.userToUpdate.password, readonly, style="background-color: lightgrey;")
                                         div(class="form__group ma-bt-md")
                                             label(class="form__label", for="passwordEncripted") decryptedPassword
-
                                             input#passwordEncripted(class="form__input", type="text", value="", readonly, style="background-color: lightgrey;")
 
                                             script.
                                               console.log("test")
-                                              let encryptedPassword = "#{data.userToUpdate.password}";
-                                              let key = CryptoJS.SHA256('mySecretKey1');
-                                              let iv = CryptoJS.enc.Base64.parse('');
-                                              let decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, key, { iv: iv }).toString(CryptoJS.enc.Utf8);
-                                              document.getElementById("passwordEncripted").value = decryptedPassword;
+
                                     if(data.userToUpdate.role === 'admin')
                                         div(class="form__group")
                                             label(class="form__label", for="language") Language from admin can not be changed
@@ -103,13 +82,6 @@ block content
                                         div(class="form__group")
                                             label(class="form__label", for="role") Role from admin can not be changed
                                     else
-                                        //-div(class="form__group")
-                                          label(class="form__label", for="role") Role
-                                          select#role(class="form__input")
-                                            option(value="Chef", selected=data.userToUpdate.role === 'Chef') Chef
-                                            option(value="Schichtleiter", selected=data.userToUpdate.role === 'Schichtleiter') Schichtleiter
-                                            option(value="user", selected=data.userToUpdate.role === 'user') User
-                                            option(value="Unterhalt", selected=data.userToUpdate.role === 'Unterhalt') Unterhalt
                                         div(class="form__group")
                                             label(class="form__label", for="role") Rolle
                                             select#role(class="form__input")
@@ -120,7 +92,6 @@ block content
                                                 option(value="Unterhalt", selected=data.userToUpdate.role === 'Unterhalt') Unterhalt
                                     div(class="form__group")
                                         label(class="form__label", for="departments") Abteilungen
-                                        //input(class="form__input", type="text", value=data.userToUpdate.department, readonly, style="background-color: lightcoral;")
 
                                         each department in data.departments
                                             - var checked = data.userToUpdate.department && data.userToUpdate.department.includes(department.name)
@@ -147,17 +118,13 @@ block content
                                         });
                                         if (selectedDepartments.length > 0) {
                                           console.log(selectedDepartments + " sind angewählt");
-                                          //#department === selectedDepartments
-                                          //-const selectedDepartmentsString = JSON.stringify(selectedDepartments);
                                           document.querySelector('#department').value = selectedDepartments;
-                                          //-document.querySelector('#department').value = selectedDepartmentsString
                                         } else {
                                           console.log(selectedDepartments.length + " Departments!!!");
                                           alert('Bitte wählen Sie mindestens eine Abteilung aus.');
                                         }
                                       }
 
-                                      // Rufen Sie die Funktion auf, wenn der "Speichern"-Button geklickt wird
                                       document.querySelector('.btn--saveUpdateUserByChef').addEventListener('click', () => {
                                         getSelectedDepartments();
                                       });

@@ -9,12 +9,10 @@ block content
         br
         br
         table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
-            //table#manageASMAUnterhaltMachineOpenMalReportsTable.manageASMAUnterhaltMachineOpenMalReportsTable.table
-            //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
+            // hide these fields, do not delete! it needs the ID's!
             input#machineID(type="hidden", value=data.machineID)
             input#machineName(type="hidden", value=data.machineName)
             input#currentUser(type="hidden", value=data.currentUser)
-            //input#urlText(type="text", value=window.location.href)
             <input id="urlText" type="hidden" value="">
             thead
                 tr
@@ -28,22 +26,6 @@ block content
                     th Komponent-Detail
                     th Geschätzter Status
                     th Log's
-                    //th(colspan="10")
-
-                        table.table1
-                            thead
-                                tr
-
-                                    th logFal<br>_Repair<br>._id
-                                    th message<br>Problem<br>_Repair
-                                    th message<br>Mission<br>_Repair
-                                    th isElectro<br>Mechanical<br>_Repair
-                                    th estimated<br>Time<br>_Repair
-                                    th Status<br>_Repair
-                                    th user<br>_Repair.<br>firstName
-                                    th user<br>_Repair.<br>lastName
-                                    th createAt_<br>Repair
-                                    th Edit<br>_Repair
                     th statusRun<br>_Mal
                     th Status
                     th Bearbeiten
@@ -59,24 +41,8 @@ block content
                       td= malReport.nameComponent_de_Mal ? malReport.nameComponent_de_Mal : '-'
                       td= malReport.nameComponentDetail_de_Mal ? malReport.nameComponentDetail_de_Mal : '-'
                       td= `${malReport.estimatedStatus}%`
-                      //td ist leer
-                          //td
-                      //th dd
-                      //td leer
                       td
                           table.table1
-                              //thead
-                              //    tr
-                              //        th(rowspan="2") logFal<br>_Repair<br>._id
-                              //        th(rowspan="2") message<br>Problem<br>_Repair
-                              //        th(rowspan="2") message<br>Mission<br>_Repair
-                              //        th(rowspan="2") isElectroMechanical_Repair
-                              //        th(rowspan="2") estimatedTime_Repair
-                              //        th(rowspan="2") Status_Repair
-                              //        th(rowspan="2") user_Repair.firstName
-                              //        th(rowspan="2") user_Repair.lastName
-                              //        th(rowspan="2") createAt_Repair
-                              //        th(rowspan="2") Edit<br>_Repair
                               tbody
                                 each logFal_Repair in malReport.logFal_Repair
                                     tr
@@ -89,7 +55,6 @@ block content
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                            //span
                                         td(style="color:blue;")= logFal_Repair._id
                                         td
                                             a(href='#') YY

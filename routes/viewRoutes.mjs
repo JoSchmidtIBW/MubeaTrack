@@ -5,8 +5,6 @@ import {
   getDepartment,
   getMachine,
   getAccount,
-  //updateUserData,
-  getStart,
   getOverviewDepartment,
   getManageUsers,
   getManageMachinery,
@@ -40,26 +38,15 @@ import {
 } from '../controllers/viewsController.mjs';
 
 import {
-  signup,
-  login,
-  logout,
   protect,
   isLoggedIn,
   restrictTo,
-  forgotPassword,
-  resetPassword,
-  updatePassword,
 } from '../controllers/authController.mjs';
 
 const router = express.Router();
 
-//router.use(authController.isLoggedIn) // alle ab hier, haben diese middleware,  isLoggedIn will run for all request
-
-//router.get('/', getStart);
 router.get('/overview', protect, isLoggedIn, getOverviewDepartment); // /overview   // das ist die erstee seite
 
-//http://localhost:4301/tours/the-forest-hiker
-//router.get('/tour/:slug', isLoggedIn, getTour);
 router.get('/departments/:slug', protect, isLoggedIn, getDepartment);
 
 router.get(
@@ -84,7 +71,6 @@ router.get(
   getASMAUnterhalt
 );
 
-///api/v1/${data.departmentName}/ASMA/${data.machineName}/closedMalReports
 router.get(
   '/:departmentName/ASMA/:machineName/closedMalReports',
   protect,
@@ -92,8 +78,6 @@ router.get(
   getASMAUnterhaltMachineClosedMalReports
 );
 
-//todo openMalReports
-///api/v1/${data.departmentName}/ASMA/${machine.name}/MalReports`
 router.get(
   '/:departmentName/ASMA/:machineName/MalReports',
   protect,
@@ -101,7 +85,6 @@ router.get(
   getASMAUnterhaltMachineOpenMalReports
 );
 
-///api/v1/${urlDepartmentName}/ASMA/${urlMachineName}/MalReport_updateLogFal/logFal_Repair._id
 router.get(
   '/:departmentName/ASMA/:machineName/MalReport_updateLogFal/:logFalID',
   protect,
@@ -109,7 +92,6 @@ router.get(
   getASMAUnterhaltMachineUpdateLogFal
 );
 
-//api/v1/Unterhalt/ASMA/Rattunde1/updateMalReport/6473e0dbd6d093647c541c58
 router.get(
   '/:departmentName/ASMA/:machineName/updateMalReport/:malReportID',
   protect,
@@ -124,14 +106,10 @@ router.get(
   getASMAMachine
 );
 
-//router.get('/tour/:id', isLoggedIn, getTour);
-//router.get('/tour', isLoggedIn, getTour);
-
-// /login
 router.get('/login', isLoggedIn, getLoginForm);
 router.get('/forgotPassword', getForgotPassword);
 
-router.get('/me', protect, getAccount); // diese sollte protect sein
+router.get('/me', protect, getAccount);
 
 router.get(
   '/manage_machinery',
@@ -174,12 +152,6 @@ router.get(
   getUpdateUserMachine
 );
 
-//router.get('/manage_users/signup', protect, restrictTo('admin'), getSignupForm);
-
-//wenn input post von login, aber ohne api zu fragen (wie ejs method=post)
-// update User account
-//router.post('/submit-user-data', protect, updateUserData);
-
 router.get(
   '/createUser',
   protect,
@@ -215,8 +187,6 @@ router.get(
   getCreateComponents
 );
 
-//createASMAmachine/${data.machine._id}/updateSectorASMA/${sector.id}
-
 router.get(
   '/createASMAmachine/:id/updateSectorASMA/:id',
   protect,
@@ -231,7 +201,6 @@ router.get(
   getUpdateComponentASMA
 );
 
-///api/v1/createASMAmachine/${data.machine._id}/${data.sectorASMA._id}/createComponentDetails/${sector.id}`)
 router.get(
   '/createASMAmachine/:machineID/:sectorASMAID/createComponentDetails/:componentASMAID',
   protect,
@@ -255,21 +224,3 @@ router.get('/aboutASMAInlogt', isLoggedIn, getAboutASMAInlogt);
 router.get('/contactInlogt', isLoggedIn, getContactInlogt);
 
 export default router;
-
-//----------------------------------------------------------Old-----------------
-//router.get('/overview', viewsController.getOverview)
-// router.get('/overview', (req, res) => {
-//     res.status(200).render('overview', {
-//         title: 'All Tours',
-//     })
-// })
-
-// router.get('/', (req, res, ) => {
-//         res.status(200).render('base', {
-//             tour: 'The Forrest hiker',
-//             user: 'Jonas',
-//         })
-//     })
-//     // app.get('/ejs', (req, res, ) => {
-//     //     res.status(200).render('basee')
-//     // })

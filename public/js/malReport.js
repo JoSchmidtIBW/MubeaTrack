@@ -4,12 +4,6 @@ import axios from 'axios';
 import { showAlert } from './alerts.js';
 import process from 'process';
 
-// const process = require("process");
-//const port = 7566;
-// const port = process.env.PORT_NUMBER || 3000;
-//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
-
-//const port = 7566;
 const dev_Port = 7566;
 const prod_Port = 7577;
 
@@ -17,12 +11,6 @@ const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
 const host = 'http://127.0.0.1:';
 const strPathApiV1 = '/api/v1';
 const apiUrl = host + port + strPathApiV1;
-
-// const port =
-//   process.env.NODE_ENV === 'development'
-//     ? process.env.DEV_PORT
-//     : process.env.PROD_PORT;
-// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const showClosedMalReports = async () => {
   console.log('bin showClosedMalReports');
@@ -40,14 +28,9 @@ export const showClosedMalReports = async () => {
     if (res.data.status === 'success') {
       console.log('success in showClosedMalReports');
       console.log(res.data.status);
-      //console.log(res.data.data);
-      //console.log(res.data.data.data);
-      // console.log(res.data.data.malReportsMachine);
       const closedMalReports = res.data.data.closedMalReports;
-      //const currentUser = res.data.data.currentUser;
       console.log(closedMalReports);
       console.log($('#manageASMAUnterhaltMachineClosedMalReportsTable'));
-      //console.log(currentUser);
       console.log(currentUser.language);
 
       if (currentUser.language === 'de') {
@@ -57,12 +40,10 @@ export const showClosedMalReports = async () => {
           .destroy();
 
         $('#manageASMAUnterhaltMachineClosedMalReportsTable').DataTable({
-          data: closedMalReports, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: closedMalReports,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -76,12 +57,12 @@ export const showClosedMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -106,7 +87,6 @@ export const showClosedMalReports = async () => {
             { data: 'nameComponentDetail_de_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -115,21 +95,17 @@ export const showClosedMalReports = async () => {
                 return data;
               },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
                 let html = `
-          <table class="table1">
-      
+          <table class="table1">    
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_de_Repair}</td>
               <td>${logFal_Repair.messageMission_de_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -155,7 +131,6 @@ export const showClosedMalReports = async () => {
                   minute: '2-digit',
                 }
               )}</td>
-             
             </tr>
           `;
                 });
@@ -163,12 +138,9 @@ export const showClosedMalReports = async () => {
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
-            // { data: 'statusRun_Mal', visible: false },
-            //{ data: 'finishAt_Mal', visible: true },
             {
               data: 'finishAt_Mal',
               render: function (data) {
@@ -193,12 +165,10 @@ export const showClosedMalReports = async () => {
           .destroy();
 
         $('#manageASMAUnterhaltMachineClosedMalReportsTable').DataTable({
-          data: closedMalReports, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: closedMalReports,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -212,12 +182,12 @@ export const showClosedMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -242,7 +212,6 @@ export const showClosedMalReports = async () => {
             { data: 'nameComponentDetail_en_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -251,21 +220,17 @@ export const showClosedMalReports = async () => {
                 return data;
               },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
                 let html = `
           <table class="table1">
-      
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_en_Repair}</td>
               <td>${logFal_Repair.messageMission_en_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -290,8 +255,7 @@ export const showClosedMalReports = async () => {
                   hour: '2-digit',
                   minute: '2-digit',
                 }
-              )}</td>
-             
+              )}</td> 
             </tr>
           `;
                 });
@@ -299,12 +263,9 @@ export const showClosedMalReports = async () => {
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
-            //{ data: 'statusRun_Mal', visible: false },
-            //{ data: 'finishAt_Mal', visible: true },
             {
               data: 'finishAt_Mal',
               render: function (data) {
@@ -344,14 +305,10 @@ export const showMyMalReports = async () => {
     if (res.data.status === 'success') {
       console.log('success in showMyMalReports');
       console.log(res.data.status);
-      //console.log(res.data.data);
-      //console.log(res.data.data.data);
-      // console.log(res.data.data.malReportsMachine);
       const myMalReports = res.data.data.myMalReports;
       const currentUser = res.data.data.currentUser;
       console.log(myMalReports);
       console.log($('#myMalReportsTable'));
-      //console.log(currentUser);
       console.log(currentUser.language);
 
       if (currentUser.language === 'de') {
@@ -359,12 +316,10 @@ export const showMyMalReports = async () => {
         $('#myMalReportsTable').DataTable().destroy();
 
         $('#myMalReportsTable').DataTable({
-          data: myMalReports, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: myMalReports,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -378,12 +333,12 @@ export const showMyMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -408,7 +363,6 @@ export const showMyMalReports = async () => {
             { data: 'nameComponentDetail_de_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -417,21 +371,17 @@ export const showMyMalReports = async () => {
                 return data;
               },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
                 let html = `
           <table class="table1">
-      
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_de_Repair}</td>
               <td>${logFal_Repair.messageMission_de_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -457,7 +407,6 @@ export const showMyMalReports = async () => {
                   minute: '2-digit',
                 }
               )}</td>
-             
             </tr>
           `;
                 });
@@ -465,13 +414,11 @@ export const showMyMalReports = async () => {
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
-            //{ data: 'finishAt_Mal', visible: true },
             {
               data: 'finishAt_Mal',
               render: function (data) {
@@ -493,12 +440,10 @@ export const showMyMalReports = async () => {
         $('#myMalReportsTable').DataTable().destroy();
 
         $('#myMalReportsTable').DataTable({
-          data: myMalReports, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: myMalReports,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -512,12 +457,12 @@ export const showMyMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -542,7 +487,6 @@ export const showMyMalReports = async () => {
             { data: 'nameComponentDetail_en_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -551,21 +495,17 @@ export const showMyMalReports = async () => {
                 return data;
               },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
                 let html = `
           <table class="table1">
-      
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_en_Repair}</td>
               <td>${logFal_Repair.messageMission_en_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -591,7 +531,6 @@ export const showMyMalReports = async () => {
                   minute: '2-digit',
                 }
               )}</td>
-             
             </tr>
           `;
                 });
@@ -599,13 +538,11 @@ export const showMyMalReports = async () => {
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
-            //{ data: 'finishAt_Mal', visible: true },
             {
               data: 'finishAt_Mal',
               render: function (data) {
@@ -644,8 +581,6 @@ export const showOpenMalReports = async () => {
   console.log('urlMachineName: ' + urlMachineName);
   let currentUser = JSON.parse(document.getElementById('currentUser').value);
   console.log('currentUser: ' + currentUser);
-  // const machineName = document.getElementById('machineName').value;
-  // console.log('machineName: ' + machineName);
 
   console.log('currentUser.language: ' + currentUser.language);
   try {
@@ -657,9 +592,6 @@ export const showOpenMalReports = async () => {
     if (res.data.status === 'success') {
       console.log('success in showOpenMalReports');
       console.log(res.data.status);
-      //console.log(res.data.data);
-      //console.log(res.data.data.data);
-      // console.log(res.data.data.malReportsMachine);
       const malReportsMachine = res.data.data.malReportsMachine;
       console.log(malReportsMachine);
       console.log($('#manageASMAUnterhaltMachineOpenMalReportsTable'));
@@ -672,12 +604,10 @@ export const showOpenMalReports = async () => {
           .destroy();
 
         $('#manageASMAUnterhaltMachineOpenMalReportsTable').DataTable({
-          data: malReportsMachine, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: malReportsMachine,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -691,12 +621,12 @@ export const showOpenMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -721,7 +651,6 @@ export const showOpenMalReports = async () => {
             { data: 'nameComponentDetail_de_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -730,21 +659,17 @@ export const showOpenMalReports = async () => {
                 return data;
               },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
                 let html = `
           <table class="table1">
-      
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_de_Repair}</td>
               <td>${logFal_Repair.messageMission_de_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -778,57 +703,13 @@ export const showOpenMalReports = async () => {
             </tr>
           `;
                 });
-
                 html += `
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
-            // {
-            //   data: 'logFal_Repair',
-            //   render: function () {
-            //     return `
-            //       <table class="table1">
-            //         <thead>
-            //           <tr>
-            //             <th>logFal_Repair._id</th>
-            //             <th>messageProblem_Repair</th>
-            //             <th>messageMission_Repair</th>
-            //             <th>isElectroMechanical_Repair</th>
-            //             <th>estimatedTime_Repair</th>
-            //             <th>Status_Repair</th>
-            //             <th>user_Repair.firstName</th>
-            //             <th>user_Repair.lastName</th>
-            //             <th>createAt_Repair</th>
-            //             <th>Edit_Repair</th>
-            //           </tr>
-            //         </thead>
-            //         <tbody>
-            //           <!--  Daten nested Tabel-->
-            //
-            //         </tbody>
-            //       </table>
-            //     `;
-            //   },
-            // },
-
-            //{},
-            // {
-            //   data: 'logFal_Repair',
-            //   render: function (data) {
-            //     if (Array.isArray(data) && data.length > 0) {
-            //       const logFal_Repair = data[0];
-            //       return (
-            //         logFal_Repair._id + ', ' + logFal_Repair.messageMission_Repair+....
-            //       );
-            //     } else {
-            //       return '';
-            //     }
-            //   },
-            // },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
             {
@@ -851,12 +732,10 @@ export const showOpenMalReports = async () => {
           .destroy();
 
         $('#manageASMAUnterhaltMachineOpenMalReportsTable').DataTable({
-          data: malReportsMachine, //res.data.data.data,
-          //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+          data: malReportsMachine,
           dom: 'l<"toolbar">frtip',
           pagingType: 'full_numbers',
-          paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-          //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          paging: true,
           language: {
             lengthMenu: 'Display _MENU_ records per page',
             zeroRecords: 'Nothing found - sorry',
@@ -870,12 +749,12 @@ export const showOpenMalReports = async () => {
               previous: 'Previous',
             },
           },
-          lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+          lengthChange: true,
           lengthMenu: [
             [2, 5, 10, -1],
             [2, 5, 10, 'All'],
           ],
-          pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+          pageLength: 5,
           columns: [
             { data: '_id', visible: false },
             {
@@ -900,7 +779,6 @@ export const showOpenMalReports = async () => {
             { data: 'nameComponentDetail_en_Mal' },
             {
               data: 'estimatedStatus',
-
               render: function (data, type, row) {
                 if (type === 'display') {
                   var status = data + '%';
@@ -908,15 +786,7 @@ export const showOpenMalReports = async () => {
                 }
                 return data;
               },
-
-              // render: function (data) {
-              //   return data + '%';
-              //   //return '<span class="green">' + status + '%''</span>';
-              //   //var status = data + '%';
-              //   //return '<span class="estimatedStatus">' + status + '</span>';
-              // },
             },
-            //{ data: null },
             {
               data: 'logFal_Repair',
               render: function (data) {
@@ -926,11 +796,9 @@ export const showOpenMalReports = async () => {
             </thead>
             <tbody>
         `;
-
                 data.forEach((logFal_Repair) => {
                   html += `
             <tr>
-              <!--<td style="color:blue;">${logFal_Repair._id}</td>-->
               <td>${logFal_Repair.messageProblem_en_Repair}</td>
               <td>${logFal_Repair.messageMission_en_Repair}</td>
               <td>${logFal_Repair.isElectroMechanical_Repair}</td>
@@ -964,57 +832,13 @@ export const showOpenMalReports = async () => {
             </tr>
           `;
                 });
-
                 html += `
             </tbody>
           </table>
         `;
-
                 return html;
               },
             },
-            // {
-            //   data: 'logFal_Repair',
-            //   render: function () {
-            //     return `
-            //       <table class="table1">
-            //         <thead>
-            //           <tr>
-            //             <th>logFal_Repair._id</th>
-            //             <th>messageProblem_Repair</th>
-            //             <th>messageMission_Repair</th>
-            //             <th>isElectroMechanical_Repair</th>
-            //             <th>estimatedTime_Repair</th>
-            //             <th>Status_Repair</th>
-            //             <th>user_Repair.firstName</th>
-            //             <th>user_Repair.lastName</th>
-            //             <th>createAt_Repair</th>
-            //             <th>Edit_Repair</th>
-            //           </tr>
-            //         </thead>
-            //         <tbody>
-            //           <!--  Daten nested Tabel-->
-            //
-            //         </tbody>
-            //       </table>
-            //     `;
-            //   },
-            // },
-
-            //{},
-            // {
-            //   data: 'logFal_Repair',
-            //   render: function (data) {
-            //     if (Array.isArray(data) && data.length > 0) {
-            //       const logFal_Repair = data[0];
-            //       return (
-            //         logFal_Repair._id + ', ' + logFal_Repair.messageMission_Repair+....
-            //       );
-            //     } else {
-            //       return '';
-            //     }
-            //   },
-            // },
             { data: 'statusRun_Mal', visible: false },
             { data: 'statusOpenClose_Mal', visible: false },
             {
@@ -1031,7 +855,6 @@ export const showOpenMalReports = async () => {
           ],
         });
       }
-      // }
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
@@ -1103,7 +926,6 @@ export const updateLogFal = async (
   }
 };
 
-//closeMalReport
 export const closeMalReport = async (
   malReportID,
   machineName,
@@ -1121,49 +943,10 @@ export const closeMalReport = async (
       window.setTimeout(() => {
         location.assign(
           `${strPathApiV1}/${departmentName}/ASMA/${machineName}/MalReports`
-        ); //Unterhalt/ASMA/Rattunde1/MalReports
+        );
       }, 500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
   }
 };
-
-// function generateNestedTableRows(data) {
-//   let rows = '';
-//
-//   data.forEach((malReport) => {
-//     malReport.logFal_Repair.forEach((logFal_Repair) => {
-//       rows += `
-//         <tr>
-//           <td>${logFal_Repair._id}</td>
-//           <td>${logFal_Repair.messageProblem_Repair}</td>
-//           <td>${logFal_Repair.messageMission_Repair}</td>
-//           <td>${logFal_Repair.isElectroMechanical_Repair}</td>
-//           <td>${logFal_Repair.estimatedTime_Repair}</td>
-//           <td>${logFal_Repair.Status_Repair}</td>
-//           <td>${
-//             logFal_Repair.user_Repair
-//               ? logFal_Repair.user_Repair.firstName
-//               : 'No user'
-//           }</td>
-//           <td>${
-//             logFal_Repair.user_Repair
-//               ? logFal_Repair.user_Repair.lastName
-//               : 'No user'
-//           }</td>
-//           <td>${logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {
-//             day: '2-digit',
-//             month: '2-digit',
-//             year: 'numeric',
-//             hour: '2-digit',
-//             minute: '2-digit',
-//           })}</td>
-//           <td>Edit</td>
-//         </tr>
-//       `;
-//     });
-//   });
-//
-//   return rows;
-// }

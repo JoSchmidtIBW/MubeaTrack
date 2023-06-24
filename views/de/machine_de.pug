@@ -17,14 +17,9 @@ block content
                     +navItem('#', 'Aufträge', 'list')
                     +navItem('#', 'Sonstige', 'settings')
 
-                //- if(user.role === 'admin' || user.role === 'Chef')
                 .admin-navs
                     h5.admin-nav__heading= `ASMA`
                     ul.side-nav
-                        //+navItem('#', 'Aktueller Bearbeitungs- Auftrag', 'settings')
-                        //+navItem('#', 'Verbrauchs- Material', 'user-error-report')
-                        //+navItem('#', 'Prüfmittel', 'user-error-report')
-                        //+navItem('#', 'sonstige', 'user-error-report')
                         if(data.machine.sectorASMA.length > 0)
                             +navItem('#', 'ASMA', 'machine-asma')
                         else
@@ -75,29 +70,22 @@ block content
                             span(class="technical-data__value")= data.machine.drawingNumber
                     br
 
-                    //section
                     section
                         br
                         br
                         br
                         if(data.machine.sectorASMA.length > 0)
-                            //- h1= data.department._id
-                            //-h1= data.machine.name
-                            //-h1.heading-secondary.ma-bt-md= `ASMA machine from ${data.machine.name}`
                             a.btn.btn--small.btn--hellblau(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`, style="background-color:lightblue;") ASMA machine
-                            //-a(href=`/api/v1/departments/${data.department.name}/ASMA/${data.machine.name}`) ASMA machine
                         else
                             h1.heading-secondary.ma-bt-md= `ASMA- Maschine von ${data.machine.name}`
                             h1(style= "color: red") Diese Maschine hat kein ASMA
-                        //-.header__hero
-                            .header__hero-overlay &nbsp;
-                            img.header__hero-img(src='#', alt=`${machine.name}`)
                     br
                     br
                     br
                     div.overview-box__group
                       br
                       h2.heading-secondary.ma-bt-lg=`die Mitarbeiter von ${data.machine.name}`
+
                       each employee in data.machine.employees
                           .overview-box__detail
                             img.overview-box__img(src=`/img/users/${employee.photo}`, alt=`${employee.firstName} ${employee.lastName}`)
@@ -116,8 +104,9 @@ block content
                                 span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                             - if(employee.role === 'user')
                                 span.overview-box__label_little=employee.professional
-                                //span.overview-box__label= guide.role
                                 span.overview-box__text= `${employee.firstName} ${employee.lastName}`
                     br
-
-                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.department.name.toLowerCase()}`) zurück
+                    - let aeue = data.department.name
+                    - if (aeue === 'Geschäfts-Führung')
+                        - data.department.name = 'geschafts-fuhrung'
+                    a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.department.name.toLowerCase()}`) Zurück

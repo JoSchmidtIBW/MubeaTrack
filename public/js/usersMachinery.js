@@ -4,12 +4,6 @@ import axios from 'axios';
 import { showAlert } from './alerts';
 import process from 'process';
 
-// const process = require("process");
-//const port = 7566;
-// const port = process.env.PORT_NUMBER || 3000;
-//const apiUrl = 'http://127.0.0.1:' + port + '/api/v1';
-
-//const port = 7566;
 const dev_Port = 7566;
 const prod_Port = 7577;
 
@@ -17,12 +11,6 @@ const port = process.env.NODE_ENV === 'development' ? dev_Port : prod_Port;
 const host = 'http://127.0.0.1:';
 const strPathApiV1 = '/api/v1';
 const apiUrl = host + port + strPathApiV1;
-
-// const port =
-//   process.env.NODE_ENV === 'development'
-//     ? process.env.DEV_PORT
-//     : process.env.PROD_PORT;
-// const apiUrl = `http://127.0.0.1:${port}/api/v1`;
 
 export const showUsersMachinery = async () => {
   console.log('bin showUsersMachinery in usersMachinery.js');
@@ -36,26 +24,19 @@ export const showUsersMachinery = async () => {
       console.log('success in showUsersMachinery');
       console.log(res.data.data);
       console.log(res.data);
+      console.log('-----------------');
       console.log(res.data.data.machinery);
+      console.log('-----------------***************');
+
       const usersData = res.data.data.users;
 
       $('#manageUsersMachineryTable').DataTable().destroy();
-      // $('#manageUsersTable').on('click', '.delete-button', function () {
-      //   const id = $(this).attr('data-id');
-      //   //deleteUser(id);
-      // });
-      // $('#manageUsersTable').on('click', '.edit-button', function () {
-      //   const id = $(this).attr('id');
-      //   location.assign(`/userw/${id}`);
-      // });
 
       $('#manageUsersMachineryTable').DataTable({
-        data: usersData, //res.data.data.data,
-        //pagingType: 'full_numbers', // Hier wird das Paging-Layout definiert
+        data: usersData,
         dom: 'l<"toolbar">frtip',
         pagingType: 'full_numbers',
-        paging: true, // zeigt immer den "Next"-Button an, auch wenn weniger als 2
-        //lengthChange: false, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+        paging: true,
         language: {
           lengthMenu: 'Display _MENU_ records per page',
           zeroRecords: 'Nothing found - sorry',
@@ -69,23 +50,16 @@ export const showUsersMachinery = async () => {
             previous: 'Previous',
           },
         },
-        lengthChange: true, // verhindert, dass der Benutzer die Anzahl der angezeigten Einträge ändern kann
+        lengthChange: true,
         lengthMenu: [
           [2, 5, 10, -1],
           [2, 5, 10, 'All'],
         ],
-        pageLength: 5, // Hier wird die standardmäßige Anzahl von Einträgen pro Seite definiert
+        pageLength: 5,
         columns: [
           {
-            data: '_id', //'users._id',
+            data: '_id',
             visible: false,
-            // visible: true,
-            // render: function (data) {
-            //   return data;
-            // },
-            // render: function (data) {
-            //   return data;
-            // },
           },
           { data: 'employeeNumber' },
           { data: 'lastName' },
@@ -97,14 +71,16 @@ export const showUsersMachinery = async () => {
             render: function (data) {
               if (data && Array.isArray(data)) {
                 console.log('Data is an array');
-                console.log(res.data.data.machinery);
+                //console.log(res.data.data.machinery);
                 return data
                   .map(function (machineId) {
                     console.log(typeof machineId);
+                    console.log(machineId);
                     const machine = res.data.data.machinery.find(function (m) {
                       return m._id.toString() === machineId.toString();
                     });
-                    console.log(machine);
+                    console.log(machine.name);
+                    
                     console.log(typeof machineId, typeof machine._id);
                     return machine ? machine.name : 'No machine found';
                   })
@@ -113,51 +89,6 @@ export const showUsersMachinery = async () => {
                 return 'No machine assigned';
               }
             },
-            // ...
-
-            // render: function (data) {
-            //   if (data && Array.isArray(data)) {
-            //     return data
-            //       .map(function (machineId) {
-            //         const machine = res.data.data.machinery.find(function (m) {
-            //           return m._id.toString() === machineId.toString();
-            //         });
-            //         return machine ? machine.name : 'No machine found';
-            //       })
-            //       .join(', ');
-            //   } else {
-            //     return 'No machine assigned';
-            //   }
-            // },
-            // render: function (data) {
-            //   if (data && Array.isArray(data)) {
-            //     return data
-            //       .map(function (machineId) {
-            //         const machine = res.data.data.machinery.find(function (m) {
-            //           return m._id.toString() === machineId.toString();
-            //         });
-            //         return machine ? machine.name : 'No machine found';
-            //       })
-            //       .join(', ');
-            //   } else {
-            //     return 'No machine assigned';
-            //   }
-            // },
-            // render: function (data) {
-            //   if (data) {
-            //     return data
-            //       .map(function (machineId) {
-            //         const machine = res.data.data.machinery.find(function (m) {
-            //           return m._id.toString() === machineId.toString();
-            //         });
-            //
-            //         return machine ? machine.name : 'No machine found';
-            //       })
-            //       .join(', ');
-            //   } else {
-            //     return 'No machine assigned';
-            //   }
-            // },
           },
           {
             data: '_id',
@@ -187,17 +118,11 @@ export const updateUserMachinery = async (data, userID) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: `${apiUrl}/users/updateUserMachinery/${userID}`, // +
-      //id,
-      //127.0.0.1:7566/api/v1/createASMAmachine/6444566c830afd3adeba2d38/updateSectorASMA/645e7f222f0b54507c6859ae
-      //http: data,
+      url: `${apiUrl}/users/updateUserMachinery/${userID}`,
       data,
     });
     if (res.data.status === 'success') {
-      // console.log('------------');
-      // console.log(res.data.status);
       showAlert('success', `${res.data.message}`);
-      // console.log('machineIDddddddddd: ' + machineID);
       window.setTimeout(() => {
         location.assign(`${strPathApiV1}/manage_user-machine`);
       }, 5000);

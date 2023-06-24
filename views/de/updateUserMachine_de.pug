@@ -12,18 +12,18 @@ block content
         .user-viewAccount
             nav.user-view__menu
 
-                ul.side-nav
+              ul.side-nav
                     +navItem('/api/v1/me', 'Meine Einstellungen', 'settings', true)
                     +navItem('/api/v1/myMalReports', 'Meine ASMA-Error Reports', 'user-error-report')
 
-                - if(user.role === 'admin' || user.role === 'Chef')
-                    .admin-nav
-                        h5.admin-nav__heading= `${user.role}`
-                        ul.side-nav
-                            +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
-                            +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
-                            +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m', true)
-                            +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
+              - if(user.role === 'admin' || user.role === 'Chef')
+              .admin-nav
+                  h5.admin-nav__heading= `${user.role}`
+                  ul.side-nav
+                      +navItem('/api/v1/manage_users', 'Benutzer- Verwaltung', 'users')
+                      +navItem('/api/v1/manage_machinery', 'Maschinen- Verwaltung', 'machine')
+                      +navItem('/api/v1/manage_user-machine', 'Benutzer/Maschine- Verwaltung', 'user-m', true)
+                      +navItem('/api/v1/manage_ASMAmachine', 'ASMA/Maschine- Verwaltung', 'machine-asma')
 
             .user-view__content
                 .user-view__form-container
@@ -31,7 +31,6 @@ block content
                     br
                     h2.heading-secondary.ma-bt-md= `Bearbeiten Maschine für: ${data.user.firstName} ${data.user.lastName}`
                     form.form.form-userMachine-data
-                        //todo hidden userID und nicht löschen
                         input#userID(type="hidden", value=data.user._id)
                         div(class="form__group")
                             label(class="form__label", for="employeeNumber") Mitarbeiter- Nummer
@@ -50,45 +49,36 @@ block content
                         div(class="form__group")
                             br
                             h2.heading-secondary Abteilung / Maschinen
-                            //- label(class="form__label", for="departments") Departments / machinery
-                            //-input(class="form__input", type="text", value=data.user.department, readonly, style="background-color: lightcoral;")
+
                             script.
                               console.log("test2222")
-                            //- const departments = ['Schweisserei', 'Zieherei', 'Anarbeit', 'Unterhalt', 'IT', 'Engineering', 'Konstruktion', 'Geschäfts-Führung'];
 
                         - let hasSelectedMachine = false
 
                         each department in data.user.department
-                            - var isChecked = data.user.department && data.user.department.includes(department)
-                            - const departmentData = data.departments.find(dep => dep.name === department)
+                          - var isChecked = data.user.department && data.user.department.includes(department)
+                          - const departmentData = data.departments.find(dep => dep.name === department)
 
-                            if departmentData
-                                label(class="form__label" style="display: block; margin-bottom: 10px;")
-                                    input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department, checked=isChecked, disabled=true, style="width: 20px; height: 20px;")
-                                    span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department}
+                          if departmentData
+                            label(class="form__label" style="display: block; margin-bottom: 10px;")
+                                input#department(class="form__checkbox-box", type="checkbox", name="departments", value=department, checked=isChecked, disabled=true, style="width: 20px; height: 20px;")
+                                span(class="form__checkbox-name", style="font-size: 1.5rem;") #{department}
 
-                                each machine in departmentData.machinery
-                                  - var checkedMachine = data.user.machinery && data.user.machinery.includes(machine._id)
+                            each machine in departmentData.machinery
+                              - var checkedMachine = data.user.machinery && data.user.machinery.includes(machine._id)
 
-                                  label(class="form__label" style="display: block; margin-bottom: 10px; margin-left: 20px;")
-                                      input#machineryInDepartment(class="form__checkbox-box", type="checkbox", name="machineryInDepartment", value=machine._id, checked=checkedMachine, disabled=false, style="width: 20px; height: 20px;")
-                                      span(class="form__checkbox-name", style="font-size: 1.5rem;")
-                                          | #{machine.name}
+                              label(class="form__label" style="display: block; margin-bottom: 10px; margin-left: 20px;")
+                                  input#machineryInDepartment(class="form__checkbox-box", type="checkbox", name="machineryInDepartment", value=machine._id, checked=checkedMachine, disabled=false, style="width: 20px; height: 20px;")
+                                  span(class="form__checkbox-name", style="font-size: 1.5rem;")
+                                      | #{machine.name}
 
-                                  - if (checkedMachine)
-                                  - hasSelectedMachine = true
+                              - if (checkedMachine)
+                              - hasSelectedMachine = true
 
-                            //if hasSelectedMachine
-                            //    div(class="form__group")
-                            //        br
-                            //        button.btn.btn--green speichern
-                            //        a.btn-space
-                            //        a.btn.btn--small.btn--gray(href=`/api/v1/manage_user-machine`) Abrechen
-                                ///api/v1/manage_user-machine
 
                         if hasSelectedMachine
-                                br
-                                button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Speichern
+                              br
+                              button.btn.btn--small.btn--green.btn--saveUpdateUserMachine Speichern
                         br
                         br
                         a.btn.btn--small.btn--gray(href="/api/v1/manage_user-machine") Abbrechen
@@ -96,7 +86,6 @@ block content
                             script.
                               const machineryInput = document.querySelector('#machineryInDepartment');
                               if (machineryInput) {
-                                // Der Code wird nur ausgeführt, wenn das Element existiert
                                 const machineryInputs = document.querySelectorAll('input[name="machineryInDepartment"]');
                                 const selectedMachinery = [];
 

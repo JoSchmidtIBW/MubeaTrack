@@ -1,4 +1,4 @@
-extend base
+extends base
 
 mixin navItem(link, text, icon, active)
     li(class=`${active ? 'side-nav--active' : ''}`)
@@ -23,26 +23,14 @@ block content
                         +navItem('#', 'Verbrauchsmaterial', 'alert-circle')
                         +navItem('#', 'Prüfmittel', 'alert-octagon')
 
-
-
-
             .user-view__content
                 .user-view__ASMAform-container
                     h2.heading-secondary.ma-bt-md Maschinen- Reporter
                     br
-                    //h1 haaaaaaaaaaaaaaaaaaa   /api/v1/departments/Anarbeit/machinery/Rattunde1
-                    //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
-                    //br
-                    //br
-                    //a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}`) back
-
                     br
                     button.btn.stoerBtn(id="machineStatusRunBtn" style=(data.machine.statusRun ? 'background-color: lightgreen' : 'background-color: #E93A48')
                         data-statusRun=(data.machine.statusRun ? 'true' : 'false'),data-machineIDRun=data.machine._id) Anlage Läuft!!
-                    //button(id="machineStatusRunBtn" class="btn stoerBtn" style="background-color: lightgreen" data-statusRun="true" data-machineIDRun="{{data.machine._id}}")
-
                     br
-
                     table
                       br
                       each sector in data.machine.sectorASMA
@@ -64,7 +52,6 @@ block content
                                       h4= component.description_de
                                       br
                                   td
-
                                       table
                                         each detail, index in component.componentDetails
                                             if index % 4 === 0
@@ -81,7 +68,6 @@ block content
                                                    div(id=`popup-${index}` class="popup")= detail.name_de
                                                       each malReport in data.malReports
                                                           if(detail._id.toString() === malReport.idComponentDetail_Mal)
-                                                              //each logfal in malReport.logfal_Repair
                                                               span( class="popuptext" id="myPopup-${popupID}" style="font-size:8px")
                                                                   p= malReport.logFal_Repair[0].messageProblem_de_Repair
                                                                   p= malReport.logFal_Repair[0].messageMission_de_Repair
@@ -89,7 +75,6 @@ block content
                                                 each malReport in data.malReports
                                                     if(detail._id.toString() === malReport.idComponentDetail_Mal)
                                                         div(id=`popup-${index}-popup`, style="display: none; font-size:14px")= `${malReport.user_Mal.firstName} ${malReport.user_Mal.lastName}`
-
 
                                                 if !detail.status
                                                             each malReport in data.malReports
@@ -110,40 +95,24 @@ block content
                     br
 
                     form.form.form-ASMAbtn-data
-                        //todo diese felder verstecken, nicht löschen! es braucht die ID's
+                        // hide these fields, do not delete! it needs the ID's!
                         br
-                        //label machineID
                         input#machineID(type="hidden", name="machineID", value=data.machine._id, style="width: 300px;")
                         br
-                        //label CurrentUserID
                         input#currentUserID(type="hidden",  name="currentUserID", value=data.currentUser._id, style="width: 300px;")
-                        //br
-                        //label departmentName
                         input(type="hidden", id="departmentName", name="departmentName",value=data.departmentName, style="width: 600px;")
-                        //br
-                        //label machineName
                         input(type="hidden", id="machineName", name="machineName",value=data.machineName, style="width: 600px;")
-                        //br
-                        //label ASMABTNid's
                         input(type="hidden", id="selectedIdsInput", name="selectedIds",  style="width: 600px;")
-                        //br
-                        //label AMSA Run-ID
                         input(type="hidden", id="selectedRunIdInput", name="selectedRunId", style="width: 600px;")
-                        //br
-                        //br
                         button.btn.btn--small.btn--gray(id="abszBtn") Stör- Meldung absetzen
                         br
                         br
-                        //-a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machineName}`) Return
                         br
                         br
                         br
                         a.btn.btn--small.btn--gray(href=`/api/v1/departments/${data.departmentName}/machinery/${data.machine.name}`) Zurück
 
-
     script.
-
-
       let pathValue = 'xx';
 
       console.log("pathValue: " + pathValue);
@@ -168,13 +137,11 @@ block content
             machineStatusRunBtn.style.backgroundColor = 'orange';
             isOrange = false;
             isRed = false;
-            //selectedRunId.push(componentDetail_id); // data-detail-id zum Array hinzu
             selectedRunId = machineIDRun
           } else {
             machineStatusRunBtn.style.backgroundColor = 'lightgreen';
             isOrange = true;
             isPink = false;
-            //selectedRunId.splice(selectedIds.indexOf(componentDetail_id), 1); // Entferne die data-detail-id aus Array
             selectedRunId = ""
           }
         } else {
@@ -182,12 +149,10 @@ block content
             machineStatusRunBtn.style.backgroundColor = 'pink';
             isRed = false;
             isOrange = false;
-
           } else {
             machineStatusRunBtn.style.backgroundColor = 'red';
             isRed = true;
             isOrange = false;
-
           }
         }
       })
@@ -207,24 +172,22 @@ block content
               btn.style.backgroundColor = 'yellow';
               isYellow = false;
               isPink = false;
-              selectedIds.push(componentDetail_id); // data-detail-id zum Array hinzu
+              selectedIds.push(componentDetail_id); // data-detail-id to the array
             } else {
               btn.style.backgroundColor = 'green';
               isYellow = true;
               isPink = false;
-              selectedIds.splice(selectedIds.indexOf(componentDetail_id), 1); // Entferne data-detail-id aus Array
+              selectedIds.splice(selectedIds.indexOf(componentDetail_id), 1); // delete data-detail-id from the array
             }
           } else {
             if (isPink) {
               btn.style.backgroundColor = 'pink';
               isPink = false;
               isYellow = false;
-              //selectedIds.push(componentDetail_id); // braucht es nicht
             } else {
               btn.style.backgroundColor = 'red';
               isPink = true;
               isYellow = false;
-              //selectedIds.splice(selectedIds.indexOf(componentDetail_id), 1); // braucht es nicht
             }
           }
         });
@@ -233,30 +196,12 @@ block content
       const abszBtn = document.getElementById('abszBtn');
 
       abszBtn.addEventListener('click', function() {
-        console.log(selectedIds); // Array mit ausgewählten data-detail-ids
+        console.log(selectedIds); // Array with self-choosed data-detail-ids
         console.log(selectedRunId)
         selectedIdsInput.value = JSON.stringify(selectedIds);
         selectedRunIdInput.value = JSON.stringify(selectedRunId);
-        // dieses array zu inputFeld(versteckt) beim button Absetzen Form senden
+        // Send this array to the hidden inputFelds, in the form near btn Absetzen
       });
-
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   const buttons = document.querySelectorAll('.popup-trigger');
-      //   buttons.forEach(function(button) {
-      //     const index = button.id.split('-')[1];
-      //     const detailStatus = button.dataset.status === 'true';
-      //
-      //     if (!detailStatus) {
-      //       button.addEventListener('mouseover', function() {
-      //         showPopup(button);
-      //       });
-      //
-      //       button.addEventListener('mouseout', function() {
-      //         //hidePopup(button);
-      //       });
-      //     }
-      //   });
-      // });
 
       function setupPopup () {
         var popupTriggers = document.querySelectorAll('.stoerBtn.popup-trigger');
@@ -264,7 +209,7 @@ block content
           const index = trigger.id.split('-')[1];
           const detailStatus = trigger.dataset.status === 'true';
 
-          if (!detailStatus) { // Nur wenn der Button rot ist, wird das Popup-Setup durchgeführt
+          if (!detailStatus) { // Only if the button is red, the popup setup is running
             trigger.addEventListener('mouseover', function() {
               showPopup(trigger);
             });
@@ -285,164 +230,4 @@ block content
         popup.style.display = 'none';
       }
 
-
-
       setupPopup();
-
-
-
-
-      //funktioniert
-      // <div id=`popup -${index}` class="popup" onclick="myFunction()">Click me to toggle the popup!
-      // <span class="popuptext" id="myPopup-${popupID}">A Simple Popup!</span>
-      // </div>
-      // function myFunction () {
-      //   var popup2 = document.getElementById("popupID");
-      //   popup2.classList.toggle("show");
-      // }
-
-
-      // function myFunction (popupID) {
-      //   var popup = document.getElementById(popupID);
-      //   popup.classList.toggle("show");
-      // }
-
-      // function myFunction (popupID) {
-      //   const popup = document.getElementById(`popup-${popupID}`);
-      //   popup.classList.toggle("show");
-      // }
-
-
-
-
-
-      // function myFunction (popupID) {
-      //   const popup = document.getElementById(`popup-${popupID}`);
-      //   popup.classList.toggle("show");
-      // }
-
-      // function myFunction(popupID) {
-      //   const popup = document.getElementById(`popup-${popupID}`);
-      //   const popuptext = document.getElementById(`myPopup-${popupID}`);
-      //   popup.classList.toggle("show");
-      //   popuptext.classList.toggle("show");
-      // }
-
-      // function myFunction (index) {
-      //   const popup = document.getElementById(`popup-${index}`);
-      //   popup.classList.toggle("show");
-      // }
-      //
-      // // Beispiel für das Hinzufügen dynamischer Klassen basierend auf einer Variable
-      // const popupContainer = document.getElementById("popupContainer");
-      // popupContainer.classList.add(`popup-${index}`);
-
-
-
-
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   function myFunction () {
-      //     var popup2 = document.getElementById("myPopup");
-      //     popup2.classList.toggle("show");
-      //   }
-      // });
-
-      // function myFunction () {
-      //   var popup2 = document.getElementById("myPopup");
-      //   popup2.classList.toggle("show");
-      // }
-
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   function myFunction () {
-      //     var popup2 = document.getElementById("myPopup");
-      //     popup2.classList.toggle("show");
-      //   }
-      // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // //funktioniert
-
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   const buttons = document.querySelectorAll('.popup-trigger');
-      //   buttons.forEach(function(button) {
-      //     const index = button.id.split('-')[1];
-      //     const detailStatus = button.dataset.status === 'true';
-      //
-      //     if (!detailStatus) {
-      //       button.addEventListener('mouseover', function() {
-      //         showPopup(button);
-      //       });
-      //
-      //       button.addEventListener('mouseout', function() {
-      //         hidePopup(button);
-      //       });
-      //     }
-      //   });
-      // });
-      //
-      // function setupPopup () {
-      //   var popupTriggers = document.querySelectorAll('.stoerBtn.popup-trigger');
-      //   popupTriggers.forEach(function(trigger) {
-      //     const index = trigger.id.split('-')[1];
-      //     const detailStatus = trigger.dataset.status === 'true';
-      //
-      //     if (!detailStatus) { // Nur wenn der Button rot ist, wird das Popup-Setup durchgeführt
-      //       trigger.addEventListener('mouseover', function() {
-      //         showPopup(trigger);
-      //       });
-      //       trigger.addEventListener('mouseout', function() {
-      //         hidePopup(trigger);
-      //       });
-      //     }
-      //   });
-      // }
-      //
-      // function showPopup (button) {
-      //   const popup = button.nextElementSibling;
-      //   popup.style.display = 'block';
-      // }
-      //
-      // function hidePopup (button) {
-      //   const popup = button.nextElementSibling;
-      //   popup.style.display = 'none';
-      // }
-      //
-      //
-      //
-      // setupPopup();
-
-      // function myFunction () {
-      //   var popup2 = document.getElementById("myPopup");
-      //   popup2.classList.toggle("show");
-      // }
-
-      // function myFunction () {
-      //   var popup2 = document.getElementById("myPopup");
-      //   if (popup2.classList.contains("show")) {
-      //     popup2.classList.remove("show");
-      //   } else {
-      //     popup2.classList.add("show");
-      //   }
-      // }

@@ -157,6 +157,7 @@ node .\dev-data\data\import-dev-data.mjs --delete
 
 
 --------------------------
+## Produktions-Modus (Provisorisch)
 
 ### Bundler im Produktions- Modus starten
 Mit folgendem Befehl wird der Bundler gestartet:
@@ -190,4 +191,4 @@ John Schmidt, 2023
 
 
 ## Quellen
-Siehe in der richtigen (abgegebenen) Dokumentation unter quellen…. Bei der ibW
+Weitere Informationen sind in einer separaten Dokumentation vorhanden

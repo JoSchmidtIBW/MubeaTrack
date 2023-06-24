@@ -27,16 +27,11 @@ block content
 
             .user-view__content
                 .user-view__form-container
-                    //-h2.heading-secondary.ma-bt-md Machine reporter
-
-                    //-h1= data.sectorASMA
-                    //-div(class="user-view__content")
-                      div(class="user-view__form-container")
                     h2.heading-secondary.ma-bt-md= `Bearbeiten Maschine: ${data.machine.name}`
                     h3.heading-secondary.ma-bt-md= `Sektor: ${data.sectorASMA.name}`
 
                     form.form.form-updateSectorASMA-data
-                        //- todo diese hidden machen, weil man braucht die ID's, also nicht löschen!
+                        // hide these fields, do not delete! it needs the ID's!
                         input#machineID(type="hidden", value=data.machine._id)
                         br
                         input#sectorASMAID(type="hidden", value=data.sectorASMA._id)
@@ -67,5 +62,4 @@ block content
                             input(class="form__input", type="text", value=data.sectorASMA.description_de, readonly, style="background-color: #EFDDDC")
                             br
                             input(class="form__input", type="text", value=data.sectorASMA.description_en, readonly, style="background-color: #EFDDDC")
-                        //-h4(style="color:red") Achtung, es gehen dann auch alle Komponenten und Komponenten- Details verloren
                         button.btn.btn--small.btn--red.btn--deleteSectorASMA Löschen

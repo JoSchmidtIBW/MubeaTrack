@@ -18,13 +18,6 @@ block content
             th Language
             th Professional
             th Photo
-            //-th Name
-              //-span Name
-              //-.arrowUpDown
-              button-upDown
-                spam.arrow-up
-              button-upDown
-                spam.arrow-down
             th E-Mail
             th Role
             th Department
@@ -43,15 +36,12 @@ block content
               td= user.language
               td= user.professional
               td= user.photo
-              //td= user.name
               td= user.email
               td= user.role
               td= user.department
               td= user.password
               td= user.createdAt
               td
-                //-a.edit-button(href=`/user/${user._id}`) Edit
-                //-a.delete-button(data-id=user._id) Delete
 
       br
       br

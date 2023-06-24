@@ -45,22 +45,18 @@ block content
                                 label(class="form__label", for="description_en") Description_en
                                 input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
                             div(class="form__group")
-                                //-button.btn.btn--green.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createSectorASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateSectorASMAMachine(href=`#`) Save
                     else
-                      //-h2= data.machine.sectorASMA.length
                       each sector in data.machine.sectorASMA
                           div(class="form__group")
                               input#idSectionASMA(class="form__input", type="hidden", value=sector.id, readonly, style="background-color: lightgrey;")
                               label(class="form__label", for="name") Sector Name
                               input#name(class="form__input", type="text", value=sector.name, readonly, style="background-color: lightgrey;")
-                              //-div(class="form__group")
                               label(class="form__label", for="description_de") Description_de
                               input#description_de(class="form__input", type="text", value=sector.description_de, readonly, style="background-color: lightgrey;")
                               br
                               label(class="form__label", for="description_en") Description_en
                               input#description_en(class="form__input", type="text", value=sector.description_en, readonly, style="background-color: lightgrey;")
-                              //-a(href=`/api/v1/manage_updateASMAmachine/${data.machine._id}/sectorASMA/${sector._id}`) edit
                               br
                               span
                                   a.btn(href=`/api/v1/createASMAmachine/${data.machine._id}/updateSectorASMA/${sector.id}`, style="background-color:orange;") edit
@@ -84,7 +80,6 @@ block content
                                 label(class="form__label", for="description_en") Description_en
                                 input#input_description_en(class="form__input" type="text" placeholder="Description_en" required="required")
                             div(class="form__group" id="saveBtnDiv" style="display: none;")
-                                //-button.btn.btn--green.btn.btn--saveCreateSectorASMAMachine(href=`/api/v1/machinery/createASMAMachine`) Save
                                 button.btn.btn--green.btn--saveCreateSectorASMAMachine(href=`#`) Save
 
                       script.
@@ -108,8 +103,6 @@ block content
                       br
                       br
                       div(class="form__group")
-                            //-button.btn.btn--green Save
-                            //-a.btn.btn--green(href=`/api/v1/machiner/createASMAMachine`) Save
                             a.btn.btn--small.btn--gray(href=`/api/v1/manage_ASMAmachine`) Cancel
 
 
