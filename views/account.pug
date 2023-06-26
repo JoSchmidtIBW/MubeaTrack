@@ -14,7 +14,9 @@ block content
 
                 ul.side-nav
                     +navItem('#', 'My Settings', 'settings', true)
-                    +navItem('/api/v1/myMalReports', 'My ASMA-error reports', 'user-error-report')
+                - if(user.role === 'admin' || user.role === 'Chef' || user.role === 'Schichtleiter' || user.role === 'user')
+                    ul.side-nav
+                       +navItem('/api/v1/myMalReports', 'My ASMA-error reports', 'user-error-report')
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav

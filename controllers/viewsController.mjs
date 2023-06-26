@@ -264,7 +264,7 @@ export const getASMAMachine = catchAsync(async (req, res, next) => {
 
 export const getASMAUnterhalt = catchAsync(async (req, res, next) => {
   const malReports = await MalReport.find().populate('user_Mal');
-  const machinery = await Machine.find();
+  const machinery = await Machine.find().sort('name');
 
   const departmentName = req.params.departmentName;
   console.log('departmentName: ' + departmentName);
@@ -833,40 +833,7 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
   }
 });
 
-// export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
-//   console.log('bin getUpdateUsersMachinery');
-//   const userID = req.params.id;
-//   console.log('userID: ' + userID);
-//
-//   const user = await User.findById(userID).populate('departments');
-//   console.log(user.firstName);
-//
-//   const departments = await Department.find().populate(
-//     'employees',
-//     'machinery'
-//   );
-//   const machinery = await Machine.find();
-//
-//   if (req.user.language === 'de') {
-//     res.status(200).render('updateUserMachine_de', {
-//       title: 'Aktualisiere Benutzer/Maschine',
-//       data: {
-//         user: user,
-//         departments: departments,
-//         machine: machinery,
-//       },
-//     });
-//   } else {
-//     res.status(200).render('updateUserMachine', {
-//       title: 'Update user/machine',
-//       data: {
-//         user: user,
-//         departments: departments,
-//         machine: machinery,
-//       },
-//     });
-//   }
-// });
+
 export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateUsersMachinery');
   const userID = req.params.id;
