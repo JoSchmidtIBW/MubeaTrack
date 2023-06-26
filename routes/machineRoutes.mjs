@@ -35,7 +35,11 @@ router
 
 router
   .route('/updateASMAMachine/:machineID')
-  .patch(protect, restrictTo('admin', 'Chef'), updateASMAMachine);
+  .patch(
+    protect,
+    restrictTo('admin', 'Chef', 'user', 'Schichtleiter'),
+    updateASMAMachine
+  );
 
 router
   .route('/createSectorASMA/:id')

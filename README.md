@@ -74,7 +74,7 @@ Um die Konfiguration vorzunehmen, befolgen Sie bitte die folgenden Schritte:
 NODE_ENV=development
 #NODE_ENV=production
 
-#Application Port Configuration  Development Port/Production Port  
+#Application Port Configuration  Development- Port/Production- Port  
 DEV_PORT=7566    
 PROD_PORT=7577  
 
@@ -84,17 +84,17 @@ DATABASE_MONGODB_PASSWORD=r9v5lGxvQ27M06xZ
 
 #JWT Configuration  
 JWT_SECRET=my-ultra-secure-and-ultra-long-secret32reMoNthianOmENAnIsiaLEGUIRPREnCT32  
-JWT_EXPIRES_IN=90d #ablaufdatum 90d 10h, 5m, 3s, 5milisecond oder 5000 for 5s  
-JWT_COOKIE_EXPIRES_IN=90 #nicht 90d um nicht in milliseconds umwandeln zu müssen  
+JWT_EXPIRES_IN=90d   
+JWT_COOKIE_EXPIRES_IN=90   
 
 #CRYPTOJS Configuration  
 CRYPTOJS_SECRET_KEY=mySecretKey1  
 
 #Email Configuration  
-EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap#your-gmail  
-EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap#your-password  
-EMAIL_HOST=sandbox.smtp.mailtrap.io#von MailTrap  
-EMAIL_PORT=2525#Swisscom25#von MailTrap  
+EMAIL_USERNAME=a4b25f94e4d47b#von MailTrap  
+EMAIL_PASSWORD=5b28a613e35fe3#von MailTrap  
+EMAIL_HOST=sandbox.smtp.mailtrap.io  
+EMAIL_PORT=2525
 ```
 -------------------------------------------------- 
 
@@ -140,7 +140,7 @@ npm run test
 ### Selenium- Test's starten
 Mit folgendem Befehl werden die Selenium- Tests gestartet:
 ```bash
-npm run test:Selenium
+npm run test_selenium
 ```
 
 ### Datenbank erzeugen:

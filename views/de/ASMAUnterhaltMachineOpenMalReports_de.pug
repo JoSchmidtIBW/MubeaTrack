@@ -32,7 +32,7 @@ block content
             tbody
               each malReport in data.malReports
                   tr
-                      td(style="color:red;")= malReport._id
+                      td= malReport._id
                       td= malReport.createAt_Mal.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit', minute: '2-digit' })
                       td= malReport.user_Mal.firstName
                       td= malReport.user_Mal.lastName
@@ -46,7 +46,7 @@ block content
                               tbody
                                 each logFal_Repair in malReport.logFal_Repair
                                     tr
-                                        td(style="color:blue;")= logFal_Repair._id
+                                        td= logFal_Repair._id
                                         td= logFal_Repair.messageProblem_de_Repair
                                         td= logFal_Repair.messageMission_de_Repair
                                         td= logFal_Repair.isElectroMechanical_Repair
@@ -55,11 +55,11 @@ block content
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.firstName : 'No user'
                                         td= logFal_Repair.user_Repair ? logFal_Repair.user_Repair.lastName : 'No user'
                                         td= logFal_Repair.createAt_Repair.toLocaleDateString('de-DE', {day: '2-digit',month: '2-digit',year: 'numeric',hour: '2-digit',minute: '2-digit'})
-                                        td(style="color:blue;")= logFal_Repair._id
+                                        td= logFal_Repair._id
                                         td
                                             a(href='#') YY
 
-                      td(style=malReport.statusRun_Mal ? '' : 'background-color: coral')= malReport.statusRun_Mal
+                      td= malReport.statusRun_Mal
                       td= malReport.statusOpenClose_Mal
                       td
                           a(href='#', style="color:red;") xx

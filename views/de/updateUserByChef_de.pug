@@ -32,7 +32,7 @@ block content
                             div(class="user-view__form-container")
                                 h1(style="color: orange;") BY CHEF
                                 br
-                                h2.heading-secondary.ma-bt-md= `Benutzer bearbeiten ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
+                                h2.heading-secondary.ma-bt-md= `Bearbeiten Benutzer: ${data.userToUpdate.firstName} ${data.userToUpdate.lastName}`
                                 form.form.form-workerChef-data
                                     div(class="form__group ma-bt-md")
                                         input#userId(class="form__input", type="hidden", value=data.userToUpdate._id, readonly, style="background-color: lightgrey;")
