@@ -15,7 +15,7 @@ Git Repository zu meiner Diplomarbeit "MubeaTrack" als NDS HF Applikationsentwic
 - [Benutzung](#benutzung)
 - [Entwickler](#entwickler)
 - [Lizenz](#lizenz)
-- [Quellen](#quellen)
+
 
 
 
@@ -43,7 +43,7 @@ Diese Meldungen sind ausschließlich für das Unterhaltspersonal bestimmt und k�
 
 ## Vorbereitung  
 ### Voraussetzungen
-Bevor Sie dieses Projekt verwenden können, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind:
+Bevor Sie dieses Projekt verwenden können, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind, bevor Sie mit dem Projekt fortfahren:
 
 - Betriebssystem: Windows 11 (oder eine kompatible Version)
 - Webbrowser: Unterstützt werden die neuesten Versionen von Google Chrome und Microsoft Edge.
@@ -51,7 +51,6 @@ Bevor Sie dieses Projekt verwenden können, stellen Sie sicher, dass die folgend
 - NPM: NPM (Node Package Manager) wird zusammen mit Node.js installiert und sollte automatisch verfügbar sein. Sie können überprüfen, ob NPM installiert ist, indem Sie den Befehl npm --version in Ihrer Befehlszeile ausführen. https://www.npmjs.com/
 - MongoDB: Installieren Sie MongoDB in Version 10.10.2. Sie können MongoDB von der offiziellen Website herunterladen und entsprechend den Anweisungen installieren: https://www.mongodb.com/.
 
-Stellen Sie sicher, dass alle Voraussetzungen erfüllt sind, bevor Sie mit dem Projekt fortfahren.
 
 ## Installation
 Um das Projekt einzurichten, gehen Sie folgendermaßen vor:
@@ -178,7 +177,7 @@ npm run start:prod
 Um sich als Admin anzumelden, verwenden Sie bitte die folgenden Anmeldeinformationen:
 
 - employeenumber:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**70220**
-- password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**test1234**
+- password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**test1234**
 
 Geben Sie diese Informationen im Browser ein, um sich als Admin anzumelden.
 
@@ -187,8 +186,4 @@ John Schmidt, 2023
 
 
 ## Lizenz
-&copy; by John Schmidt. All rights reserved.
-
-
-## Quellen
-Weitere Informationen sind in einer separaten Dokumentation vorhanden
+&copy; von John Schmidt. Alle Rechte vorbehalten.
