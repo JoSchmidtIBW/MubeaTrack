@@ -76,8 +76,8 @@ export const getMe = (req, res, next) => {
 
 export const updateMe = catchAsync(async (req, res, next) => {
   console.log('bin updateMe');
-  console.log(req.file);
-  console.log(req.body);
+  // console.log(req.file);
+  // console.log(req.body);
 
   // 1.) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -148,15 +148,14 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
 export const createUser = catchAsync(async (req, res, next) => {
   console.log('bin createUser');
 
-  console.log(req.body);
+  // console.log(req.body);
 
-  console.log(req.body.birthDate);
+  // console.log(req.body.birthDate);
   const dateArr = req.body.birthDate.split('.');
   const year = dateArr[2];
 
-  console.log(year);
-
-  console.log(new Date().getFullYear());
+  // console.log(year);
+  // console.log(new Date().getFullYear());
   const yearNow = new Date().getFullYear();
 
   if (year >= yearNow.toString()) {
@@ -199,8 +198,8 @@ export const getUsersMachinery = catchAsync(async (req, res, next) => {
   const machinery = await Machine.find().populate('employees');
   const users = await User.find();
 
-  console.log(users.length);
-  console.log(users[0]._id);
+  // console.log(users.length);
+  // console.log(users[0]._id);
 
   if (!users) {
     return next(new AppError('No users found', 404));
@@ -221,9 +220,9 @@ export const getUpdateUserMachinery = catchAsync(async (req, res, next) => {
     console.log('Bin getUpdateUserMachinery');
 
     const userID = req.params.userID;
-    console.log('userID: ' + userID);
+    //console.log('userID: ' + userID);
 
-    console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
+    //console.log('machineryInDepartmentID: ' + req.body.machineryInDepartmentID);
 
     if (req.body.machineryInDepartmentID.length === 0) {
       console.log(

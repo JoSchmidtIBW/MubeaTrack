@@ -570,19 +570,19 @@ export const showMyMalReports = async () => {
 export const showOpenMalReports = async () => {
   console.log('bin showOpenMalReports');
   const machineID = document.getElementById('machineID').value;
-  console.log('machineID: ' + machineID);
+  //console.log('machineID: ' + machineID);
   const urlText = (document.getElementById('urlText').value =
     window.location.href);
-  console.log('urlText: ' + urlText);
+  //console.log('urlText: ' + urlText);
   let urlArr = urlText.split('/');
   let urlDepartmentName = urlArr[5];
-  console.log('urlDepartmentName: ' + urlDepartmentName);
+  //console.log('urlDepartmentName: ' + urlDepartmentName);
   let urlMachineName = urlArr[7];
-  console.log('urlMachineName: ' + urlMachineName);
+  //console.log('urlMachineName: ' + urlMachineName);
   let currentUser = JSON.parse(document.getElementById('currentUser').value);
-  console.log('currentUser: ' + currentUser);
+  //console.log('currentUser: ' + currentUser);
 
-  console.log('currentUser.language: ' + currentUser.language);
+  //console.log('currentUser.language: ' + currentUser.language);
   try {
     const res = await axios({
       method: 'GET',
@@ -591,11 +591,11 @@ export const showOpenMalReports = async () => {
 
     if (res.data.status === 'success') {
       console.log('success in showOpenMalReports');
-      console.log(res.data.status);
+      //console.log(res.data.status);
       const malReportsMachine = res.data.data.malReportsMachine;
-      console.log(malReportsMachine);
-      console.log($('#manageASMAUnterhaltMachineOpenMalReportsTable'));
-      console.log(currentUser.language);
+      //console.log(malReportsMachine);
+      //console.log($('#manageASMAUnterhaltMachineOpenMalReportsTable'));
+      //console.log(currentUser.language);
 
       if (currentUser.language === 'de') {
         console.log('currentUser.language = de');
@@ -869,9 +869,9 @@ export const createLogFal = async (
   malReportID
 ) => {
   console.log('bin createLogFal in malReport.js');
-  console.log(malReportID);
-  console.log(machineName);
-  console.log(departmentName);
+  // console.log(malReportID);
+  // console.log(machineName);
+  // console.log(departmentName);
 
   try {
     const res = await axios({
@@ -901,11 +901,11 @@ export const updateLogFal = async (
   departmentName
 ) => {
   console.log('bin updateLogFal in malReport.js');
-  console.log(malReportID);
-  console.log(malReportLogFalID);
-  console.log(machineName);
-  console.log(departmentName);
-  console.log(data);
+  // console.log(malReportID);
+  // console.log(malReportLogFalID);
+  // console.log(machineName);
+  // console.log(departmentName);
+  // console.log(data);
   try {
     const res = await axios({
       method: 'PATCH',
