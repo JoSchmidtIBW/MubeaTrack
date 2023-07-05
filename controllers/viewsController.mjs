@@ -36,11 +36,11 @@ export const getOverviewDepartment = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
   const currentUser = req.user;
-  console.log('currentUser.language: ' + currentUser.language);
+  //console.log('currentUser.language: ' + currentUser.language);
 
   const machinery = await Machine.find();
   const currentUserLanguage = currentUser.language;
-  console.log('currentUserLanguage: ' + currentUserLanguage);
+  //console.log('currentUserLanguage: ' + currentUserLanguage);
 
   if (currentUser.role === 'admin') {
     const departmentsAllAdmin = await Department.find().sort('_id');
@@ -147,9 +147,9 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
   const referer = req.headers.referer;
 
-  console.log(req.params);
-  console.log(req.query);
-  console.log(req.url);
+  // console.log(req.params);
+  // console.log(req.query);
+  // console.log(req.url);
   const url = req.url;
   const regex = /\/departments\/([^/]+)/;
   const match = url.match(regex);
@@ -157,18 +157,10 @@ export const getMachine = catchAsync(async (req, res, next) => {
 
   let departmentName = decodeURIComponent(departmentName2);
 
-  console.log('departmentName: ' + typeof departmentName);
-  console.log('departmentName: ' + departmentName);
-  console.log('departmentName: ' + decodeURIComponent(departmentName));
-
-  // if (decodeURIComponent(departmentName) === 'Geschäfts-Führung') {
-  //   departmentName = 'geschafts-fuhrung';
-  // }
 
   const department = await Department.findOne({ name: departmentName });
-  //console.log(department);
 
-  console.log(req.params.slug);
+  //console.log(req.params.slug);
 
   const machine = await Machine.findOne({ name: req.params.slug }).populate(
     'employees'
@@ -309,13 +301,13 @@ export const getASMAUnterhaltMachineOpenMalReports = catchAsync(
   async (req, res, next) => {
     console.log('bin getASMAUnterhaltMachineOpenMalReports');
     const departmentName = req.params.departmentName;
-    console.log('departmentName: ' + departmentName);
+    //console.log('departmentName: ' + departmentName);
 
     const machineName = req.params.machineName;
-    console.log('machineName: ' + machineName);
+    //console.log('machineName: ' + machineName);
 
     const machine = await Machine.findOne({ name: machineName });
-    console.log(machine._id);
+    //console.log(machine._id);
 
     const malReports = await MalReport.find({
       nameMachine_Mal: machineName,
@@ -429,11 +421,11 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
     const machineName = req.params.machineName;
     const departmentName = req.params.departmentName;
     const logFalID = req.params.logFalID;
-    console.log('logFalID: ' + logFalID);
-
-    console.log('machineName: ' + machineName);
-    console.log('departmentName: ' + departmentName);
-    console.log('logFalID: ' + logFalID);
+    // console.log('logFalID: ' + logFalID);
+    //
+    // console.log('machineName: ' + machineName);
+    // console.log('departmentName: ' + departmentName);
+    // console.log('logFalID: ' + logFalID);
 
     const logFal = await MalReport.aggregate([
       {
@@ -451,10 +443,10 @@ export const getASMAUnterhaltMachineUpdateLogFal = catchAsync(
       },
     ]);
 
-    console.log(logFal);
+    //console.log(logFal);
 
     const malReportLogFal = logFal[0];
-    console.log(malReportLogFal);
+    //console.log(malReportLogFal);
 
     if (req.user.language === 'de') {
       res.status(200).render('updateLogFal_de', {
@@ -489,15 +481,15 @@ export const getUpdateMalReport = catchAsync(async (req, res, next) => {
   const departmentName = req.params.departmentName;
   const malReportID = req.params.malReportID;
 
-  console.log('machineName: ' + machineName);
-  console.log('departmentName: ' + departmentName);
-  console.log('malReportID: ' + malReportID);
+  // console.log('machineName: ' + machineName);
+  // console.log('departmentName: ' + departmentName);
+  // console.log('malReportID: ' + malReportID);
 
   const malReport = await MalReport.findOne({
     _id: malReportID,
   });
 
-  console.log(malReport);
+  //console.log(malReport);
 
   if (req.user.language === 'de') {
     res.status(200).render('updateMalReport_de', {
@@ -565,7 +557,7 @@ export const getContact = catchAsync(async (req, res, next) => {
 });
 
 export const getContactInlogt = catchAsync(async (req, res, next) => {
-  console.log(req.user);
+  //console.log(req.user);
   if (req.user.language === 'de') {
     res.status(200).render('contact_de', {
       title: 'Kontakt',
@@ -610,7 +602,7 @@ export const getMyMalReports = catchAsync(async (req, res, next) => {
       },
     });
 
-  console.log(myMalReports);
+  //console.log(myMalReports);
 
   if (req.user.language === 'de') {
     res.status(200).render('myMalReports_de', {
@@ -808,9 +800,9 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
   const machinery = await Machine.find().populate('employees');
   const users = await User.find();
 
-  console.log(users.length);
-  console.log('-----------');
-  console.log(users.machinery);
+  // console.log(users.length);
+  // console.log('-----------');
+  // console.log(users.machinery);
 
   if (req.user.language === 'de') {
     res.status(200).render('manageUserMachine_de', {
@@ -837,10 +829,10 @@ export const getManageUserMachine = catchAsync(async (req, res, next) => {
 export const getUpdateUserMachine = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateUsersMachinery');
   const userID = req.params.id;
-  console.log('userID: ' + userID);
+  //console.log('userID: ' + userID);
 
   const user = await User.findById(userID).populate('departments');
-  console.log(user.firstName);
+  //console.log(user.firstName);
 
   const departments = await Department.find().populate(
     'employees',
@@ -889,7 +881,7 @@ export const getManageASMAMachine = catchAsync(async (req, res, next) => {
 export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
   console.log('bin getCreateASMAMachine');
   const machine = await Machine.findById(req.params.id);
-  console.log(req.params.id);
+  //console.log(req.params.id);
 
   if (req.user.language === 'de') {
     res.status(200).render('createASMAMachine_de', {
@@ -911,7 +903,7 @@ export const getCreateASMAMachine = catchAsync(async (req, res, next) => {
 export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateSectorASMA');
   const path = req.path; //
-  console.log('path: ' + path);
+  //console.log('path: ' + path);
   const pathArray = path.split('/');
   const machineID = pathArray[2];
 
@@ -947,8 +939,8 @@ export const getUpdateSectorASMA = catchAsync(async (req, res, next) => {
 
 export const getCreateComponents = catchAsync(async (req, res, next) => {
   console.log('bin getCreateComponents');
-  console.log(req.params.machineID);
-  console.log(req.params.sectorASMAID);
+  // console.log(req.params.machineID);
+  // console.log(req.params.sectorASMAID);
 
   const machine = await Machine.findById(req.params.machineID);
 
@@ -977,9 +969,9 @@ export const getCreateComponents = catchAsync(async (req, res, next) => {
 
 export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
   console.log('bin getUpdateComponentASMA');
-  console.log('machineID: ' + req.params.machineID);
-  console.log('sectorASMAID: ' + req.params.sectorASMAID);
-  console.log('componentASMAID: ' + req.params.componentASMAID);
+  // console.log('machineID: ' + req.params.machineID);
+  // console.log('sectorASMAID: ' + req.params.sectorASMAID);
+  // console.log('componentASMAID: ' + req.params.componentASMAID);
 
   const machine = await Machine.findById(req.params.machineID);
   if (!machine) {
@@ -1028,9 +1020,9 @@ export const getUpdateComponentASMA = catchAsync(async (req, res, next) => {
 export const getCreateComponentDetailsASMA = catchAsync(
   async (req, res, next) => {
     console.log('bin getCreateComponentDetailsASMA');
-    console.log(req.params.machineID);
-    console.log(req.params.sectorASMAID);
-    console.log(req.params.componentASMAID);
+    // console.log(req.params.machineID);
+    // console.log(req.params.sectorASMAID);
+    // console.log(req.params.componentASMAID);
 
     const machine = await Machine.findById(req.params.machineID);
 
@@ -1069,10 +1061,10 @@ export const getCreateComponentDetailsASMA = catchAsync(
 export const getUpdateComponentDetailsASMA = catchAsync(
   async (req, res, next) => {
     console.log('bin getUpdateComponentDetailsASMA');
-    console.log(req.params.machineID);
-    console.log(req.params.sectorASMAID);
-    console.log(req.params.componentASMAID);
-    console.log(req.params.componentDetailASMAID);
+    // console.log(req.params.machineID);
+    // console.log(req.params.sectorASMAID);
+    // console.log(req.params.componentASMAID);
+    // console.log(req.params.componentDetailASMAID);
 
     const machine = await Machine.findById(req.params.machineID);
     if (!machine) {

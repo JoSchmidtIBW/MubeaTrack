@@ -21,11 +21,11 @@ export const createComponentDetailASMA = async (
 ) => {
   console.log('bin createComponentDetailASMA zum serverschicken');
 
-  console.log('machineId: ' + machineId);
-  console.log('sectorASMAID: ' + sectorASMAID);
-  console.log('componentASMAID: ' + componentASMAID);
-  console.log('input_name_de: ' + input_name_de);
-  console.log('input_name_en: ' + input_name_en);
+  // console.log('machineId: ' + machineId);
+  // console.log('sectorASMAID: ' + sectorASMAID);
+  // console.log('componentASMAID: ' + componentASMAID);
+  // console.log('input_name_de: ' + input_name_de);
+  // console.log('input_name_en: ' + input_name_en);
 
   try {
     const res = await axios({
@@ -60,12 +60,12 @@ export const updateComponentDetailASMA = async (
   componentDetailASMAID
 ) => {
   console.log('bin updateComponentDetailASMA in componentsDetailASMA.js');
-  console.log('machineID: ' + machineID);
-  console.log('sectorASMAID: ' + sectorASMAID);
-  console.log('componentASMAID: ' + componentASMAID);
-  console.log('componentDetailASMAID: ' + componentDetailASMAID);
-  console.log('data: ' + data);
-  console.log('data: ' + JSON.stringify(data));
+  // console.log('machineID: ' + machineID);
+  // console.log('sectorASMAID: ' + sectorASMAID);
+  // console.log('componentASMAID: ' + componentASMAID);
+  // console.log('componentDetailASMAID: ' + componentDetailASMAID);
+  // console.log('data: ' + data);
+  // console.log('data: ' + JSON.stringify(data));
   try {
     const res = await axios({
       method: 'PATCH',
@@ -93,9 +93,9 @@ export const deleteComponentDetailASMA = async (
   componentDetailASMAID
 ) => {
   console.log('bin deleteComponentDetailASMA in coponentsDetailASMA.js');
-  console.log('machineIDdelete: ' + machineID);
-  console.log('sectorASMAIDdelete: ' + sectorASMAID);
-  console.log('componentASMAID: ' + componentASMAID);
+  // console.log('machineIDdelete: ' + machineID);
+  // console.log('sectorASMAIDdelete: ' + sectorASMAID);
+  // console.log('componentASMAID: ' + componentASMAID);
 
   try {
     const res = await axios({

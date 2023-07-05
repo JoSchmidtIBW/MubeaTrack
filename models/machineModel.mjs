@@ -244,7 +244,7 @@ machineSchema.pre('findOneAndUpdate', async function (next) {
   const { componentDetail, department } = this._update;
 
   if (componentDetail) {
-    console.log('bin if componentDetail in findOneAndUpdate in machineModel');
+    //console.log('bin if componentDetail in findOneAndUpdate in machineModel');
     next();
   }
 
@@ -266,7 +266,7 @@ machineSchema.pre('findOneAndUpdate', async function (next) {
 
     for (const dep of newDepartments) {
       if (machine.department && machine.department.includes(dep.name)) {
-        console.log('Die Maschine ist bereits in dieser Abteilung');
+        // console.log('Die Maschine ist bereits in dieser Abteilung');
         continue;
       }
       dep.machinery.addToSet(this._conditions._id);
@@ -279,17 +279,17 @@ machineSchema.pre('findOneAndUpdate', async function (next) {
 
 // Checks that when a machine is deleted that also matches department.machineryCount,
 machineSchema.pre('findOneAndDelete', async function (next) {
-  console.log('bin remove');
-  console.log('this: ' + this);
-  console.log('this._id: ' + this._id);
+  // console.log('bin remove');
+  // console.log('this: ' + this);
+  // console.log('this._id: ' + this._id);
 
   const machine = await this.findOne();
 
-  console.log('machine' + machine);
-  console.log('machine._id: ' + machine._id);
+  // console.log('machine' + machine);
+  // console.log('machine._id: ' + machine._id);
 
   const departments = await Department.find({ machinery: machine._id });
-  console.log('departments: ' + departments);
+  // console.log('departments: ' + departments);
   for (const department of departments) {
     department.machinery.pull(machine._id);
     department.machineryCount = department.machinery.length;

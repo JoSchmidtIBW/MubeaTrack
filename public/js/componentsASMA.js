@@ -22,12 +22,12 @@ export const createComponentASMA = async (
 ) => {
   console.log('bin createSectorASMA zum serverschicken');
 
-  console.log('machineId: ' + machineId);
-  console.log('sectorASMAID: ' + sectorASMAID);
-  console.log('input_name_de: ' + input_name_de);
-  console.log('input_name_en: ' + input_name_en);
-  console.log('input_description_de: ' + input_description_de);
-  console.log('input_description_en: ' + input_description_en);
+  // console.log('machineId: ' + machineId);
+  // console.log('sectorASMAID: ' + sectorASMAID);
+  // console.log('input_name_de: ' + input_name_de);
+  // console.log('input_name_en: ' + input_name_en);
+  // console.log('input_description_de: ' + input_description_de);
+  // console.log('input_description_en: ' + input_description_en);
 
   try {
     const res = await axios({
@@ -66,11 +66,11 @@ export const updateComponentASMA = async (
   componentASMAID
 ) => {
   console.log('bin updateComponentASMA in componentsASMA.js');
-  console.log('machineID: ' + machineID);
-  console.log('sectorASMAID: ' + sectorASMAID);
-  console.log('componentASMAID: ' + componentASMAID);
-  console.log('data: ' + data);
-  console.log('data: ' + JSON.stringify(data));
+  // console.log('machineID: ' + machineID);
+  // console.log('sectorASMAID: ' + sectorASMAID);
+  // console.log('componentASMAID: ' + componentASMAID);
+  // console.log('data: ' + data);
+  // console.log('data: ' + JSON.stringify(data));
   try {
     const res = await axios({
       method: 'PATCH',
@@ -97,9 +97,9 @@ export const deleteComponentASMA = async (
   componentASMAID
 ) => {
   console.log('bin deleteComponentASMA in coponentsASMA.js');
-  console.log('machineIDdelete: ' + machineID);
-  console.log('sectorASMAIDdelete: ' + sectorASMAID);
-  console.log('componentASMAID: ' + componentASMAID);
+  // console.log('machineIDdelete: ' + machineID);
+  // console.log('sectorASMAIDdelete: ' + sectorASMAID);
+  // console.log('componentASMAID: ' + componentASMAID);
 
   try {
     const res = await axios({

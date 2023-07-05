@@ -64,10 +64,10 @@ const host = 'http://127.0.0.1:';
 const strPathApiV1 = '/api/v1';
 const apiUrl = host + port + strPathApiV1;
 
-console.log('Hello from parcel! bin index.js');
+//console.log('Hello from parcel! bin index.js');
 console.log('port in index.js: ' + port);
-console.log('process: ' + JSON.stringify(process));
-console.log('process: ' + JSON.stringify(process.env));
+//console.log('process: ' + JSON.stringify(process));
+//console.log('process: ' + JSON.stringify(process.env));
 console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV);
 console.log('process.env.DEV_PORT: ' + process.env.DEV_PORT);
 
@@ -165,10 +165,10 @@ if (userDataForm)
 
     form.append('photo', document.getElementById('photo').files[0]); // files are array, need first element
 
-    console.log(
-      'bin if(userDataForm), in index.js, wenn bild, sieht keine information sollte aber kein problem sein: ' +
-        form
-    );
+    // console.log(
+    //   'bin if(userDataForm), in index.js, wenn bild, sieht keine information sollte aber kein problem sein: ' +
+    //     form
+    // );
 
     updateSettings(form, 'data');
   });
@@ -228,20 +228,20 @@ if (newUserDataForm) {
       document.querySelectorAll('input[name="departments"]:checked')
     ).map((department) => department.value);
 
-    console.log(employeeNumber);
-    console.log(firstname);
-    console.log(lastname);
-    console.log(birthDate);
-    console.log(gender);
-    console.log(language);
-    console.log(professional);
-    console.log(email);
-    console.log(password);
-    console.log(passwordConfirm);
-    console.log(role);
-
-    console.log('-------------------');
-    console.log(selectedDepartments);
+    // console.log(employeeNumber);
+    // console.log(firstname);
+    // console.log(lastname);
+    // console.log(birthDate);
+    // console.log(gender);
+    // console.log(language);
+    // console.log(professional);
+    // console.log(email);
+    // console.log(password);
+    // console.log(passwordConfirm);
+    // console.log(role);
+    //
+    // console.log('-------------------');
+    // console.log(selectedDepartments);
 
     const department = selectedDepartments;
 
@@ -286,21 +286,21 @@ if (updateUserByAdminDataForm) {
     const role = document.querySelector('#role').value;
     const departmentString = document.querySelector('#department').value;
 
-    console.log(id);
-    console.log(employeeNumber);
-    console.log(firstName);
-    console.log(lastName);
-    console.log(birthDate);
-    console.log(gender);
-    console.log(language);
-    console.log(professional);
-    console.log(email);
-    console.log(role);
-
-    console.log(departmentString);
+    // console.log(id);
+    // console.log(employeeNumber);
+    // console.log(firstName);
+    // console.log(lastName);
+    // console.log(birthDate);
+    // console.log(gender);
+    // console.log(language);
+    // console.log(professional);
+    // console.log(email);
+    // console.log(role);
+    //
+    // console.log(departmentString);
     const departmentsArray = departmentString.split(',');
 
-    console.log(departmentsArray);
+    //console.log(departmentsArray);
     const department = departmentsArray;
     if (e.submitter === saveUpdateUserByAdminButton) {
       updateUser(
@@ -347,21 +347,21 @@ if (updateUserByChefDataForm) {
     const role = document.querySelector('#role').value;
     const departmentString = document.querySelector('#department').value;
 
-    console.log(id);
-    console.log(employeeNumber);
-    console.log(firstName);
-    console.log(lastName);
-    console.log(birthDate);
-    console.log(gender);
-    console.log(language);
-    console.log(professional);
-    console.log(email);
-    console.log(role);
+    // console.log(id);
+    // console.log(employeeNumber);
+    // console.log(firstName);
+    // console.log(lastName);
+    // console.log(birthDate);
+    // console.log(gender);
+    // console.log(language);
+    // console.log(professional);
+    // console.log(email);
+    // console.log(role);
 
-    console.log(departmentString);
+    // console.log(departmentString);
     const departmentsArray = departmentString.split(',');
 
-    console.log(departmentsArray);
+    // console.log(departmentsArray);
     const department = departmentsArray;
     if (e.submitter === saveUpdateUserByChefButton) {
       updateUser(
@@ -410,21 +410,21 @@ if (newMachineDataForm) {
     const drawingNumber = document.getElementById('drawingNumber').value;
     const department = document.querySelector('#department').value;
 
-    console.log(name);
-    console.log(description);
-    console.log(zone);
-    console.log(type);
-    console.log(constructionYear);
-    console.log(companyMachine);
-    console.log(voltage);
-    console.log(controlVoltage);
-    console.log(ratedCurrent);
-    console.log(electricalFuse);
-    console.log(compressedAir);
-    console.log(weightMass);
-    console.log(dimensions);
-    console.log(drawingNumber);
-    console.log(department);
+    // console.log(name);
+    // console.log(description);
+    // console.log(zone);
+    // console.log(type);
+    // console.log(constructionYear);
+    // console.log(companyMachine);
+    // console.log(voltage);
+    // console.log(controlVoltage);
+    // console.log(ratedCurrent);
+    // console.log(electricalFuse);
+    // console.log(compressedAir);
+    // console.log(weightMass);
+    // console.log(dimensions);
+    // console.log(drawingNumber);
+    // console.log(department);
 
     createNewMachine(
       name,
@@ -475,29 +475,29 @@ if (updateMachineForm) {
     const drawingNumber = document.getElementById('drawingNumber').value;
     const department = document.querySelector('#department').value;
 
-    console.log(id);
-    console.log(name);
-    console.log(description);
-
-    console.log('---------------');
-    console.log(zone);
+    // console.log(id);
+    // console.log(name);
+    // console.log(description);
+    //
+    // console.log('---------------');
+    // console.log(zone);
     if (zone.startsWith('["')) {
       zone = zone.replace(/[\[\]"]/g, '');
     }
 
-    console.log(zone);
-    console.log(type);
-    console.log(constructionYear);
-    console.log(companyMachine);
-    console.log(voltage);
-    console.log(controlVoltage);
-    console.log(ratedCurrent);
-    console.log(electricalFuse);
-    console.log(compressedAir);
-    console.log(weightMass);
-    console.log(dimensions);
-    console.log(drawingNumber);
-    console.log(department);
+    // console.log(zone);
+    // console.log(type);
+    // console.log(constructionYear);
+    // console.log(companyMachine);
+    // console.log(voltage);
+    // console.log(controlVoltage);
+    // console.log(ratedCurrent);
+    // console.log(electricalFuse);
+    // console.log(compressedAir);
+    // console.log(weightMass);
+    // console.log(dimensions);
+    // console.log(drawingNumber);
+    // console.log(department);
 
     if (e.submitter === saveUpdateMachineButton) {
       updateMachine(
@@ -538,11 +538,11 @@ if (newcomponentDetailsASMAForm) {
     const input_name_de = document.getElementById('input_name_de').value;
     const input_name_en = document.getElementById('input_name_en').value;
 
-    console.log('machineId: ' + machineId);
-    console.log('sectorASMAID: ' + sectorASMAID);
-    console.log('componentASMAID: ' + componentASMAID);
-    console.log('input_name_de: ' + input_name_de);
-    console.log('input_name_en: ' + input_name_en);
+    // console.log('machineId: ' + machineId);
+    // console.log('sectorASMAID: ' + sectorASMAID);
+    // console.log('componentASMAID: ' + componentASMAID);
+    // console.log('input_name_de: ' + input_name_de);
+    // console.log('input_name_en: ' + input_name_en);
 
     createComponentDetailASMA(
       machineId,
@@ -570,12 +570,12 @@ if (newComponentASMAForm) {
       'input_description_en'
     ).value;
 
-    console.log('machineId: ' + machineId);
-    console.log('sectorASMAID: ' + sectorASMAID);
-    console.log('input_name_de: ' + input_name_de);
-    console.log('input_name_en: ' + input_name_en);
-    console.log('input_description_de: ' + input_description_de);
-    console.log('input_description_en: ' + input_description_en);
+    // console.log('machineId: ' + machineId);
+    // console.log('sectorASMAID: ' + sectorASMAID);
+    // console.log('input_name_de: ' + input_name_de);
+    // console.log('input_name_en: ' + input_name_en);
+    // console.log('input_description_de: ' + input_description_de);
+    // console.log('input_description_en: ' + input_description_en);
 
     createComponentASMA(
       machineId,
@@ -620,12 +620,12 @@ if (updateComponentDetailASMAForm) {
       'componentDetailASMAName_en'
     ).value;
 
-    console.log('machineID: ' + machineID);
-    console.log('sectorASMAID: ' + sectorASMAID);
-    console.log('componentASMAID: ' + componentASMAID);
-    console.log('componentDetailASMAID: ' + componentDetailASMAID);
-    console.log('componentDetailASMAName_de: ' + componentDetailASMAName_de);
-    console.log('componentDetailASMAName_en: ' + componentDetailASMAName_en);
+    // console.log('machineID: ' + machineID);
+    // console.log('sectorASMAID: ' + sectorASMAID);
+    // console.log('componentASMAID: ' + componentASMAID);
+    // console.log('componentDetailASMAID: ' + componentDetailASMAID);
+    // console.log('componentDetailASMAName_de: ' + componentDetailASMAName_de);
+    // console.log('componentDetailASMAName_en: ' + componentDetailASMAName_en);
 
     if (e.submitter === saveUpdateComponentDetailASMAButton) {
       console.log('bin saveUpdateComponentDetailASMAButton');
@@ -672,13 +672,13 @@ if (updateComponentASMAForm) {
       'componentASMAdescription_en'
     ).value;
 
-    console.log('machineID: ' + machineID);
-    console.log('sectorASMAID: ' + sectorASMAID);
-    console.log('componentASMAID: ' + componentASMAID);
-    console.log('componentASMAName_de: ' + componentASMAName_de);
-    console.log('componentASMAName_en: ' + componentASMAName_en);
-    console.log('componentASMADescription_de: ' + componentASMADescription_de);
-    console.log('componentASMADescription_en: ' + componentASMADescription_en);
+    // console.log('machineID: ' + machineID);
+    // console.log('sectorASMAID: ' + sectorASMAID);
+    // console.log('componentASMAID: ' + componentASMAID);
+    // console.log('componentASMAName_de: ' + componentASMAName_de);
+    // console.log('componentASMAName_en: ' + componentASMAName_en);
+    // console.log('componentASMADescription_de: ' + componentASMADescription_de);
+    // console.log('componentASMADescription_en: ' + componentASMADescription_en);
 
     if (e.submitter === saveUpdateComponentASMAButton) {
       console.log('bin saveUpdateComponentASMAButton');
@@ -714,10 +714,10 @@ if (newSectorASMAform) {
       'input_description_en'
     ).value;
 
-    console.log('machineId: ' + machineId);
-    console.log('input_name: ' + input_name);
-    console.log('input_description_de: ' + input_description_de);
-    console.log('input_description_en: ' + input_description_en);
+    // console.log('machineId: ' + machineId);
+    // console.log('input_name: ' + input_name);
+    // console.log('input_description_de: ' + input_description_de);
+    // console.log('input_description_en: ' + input_description_en);
 
     createSectorASMA(
       machineId,
@@ -745,13 +745,13 @@ if (ASMAbtnForm) {
     const selectedRunIdBtn =
       document.getElementById('selectedRunIdInput').value;
 
-    console.log('currentUserID: ' + currentUserID);
-    console.log('machineID: ' + machineID);
-    console.log('departmentName: ' + departmentName);
-    console.log('machineName: ' + machineName);
-    console.log('selectedIdsBtnArr: ' + selectedIdsBtnArr);
-    console.log('selectedRunIdBtn: ' + selectedRunIdBtn);
-    console.log('bin abszBtn');
+    // console.log('currentUserID: ' + currentUserID);
+    // console.log('machineID: ' + machineID);
+    // console.log('departmentName: ' + departmentName);
+    // console.log('machineName: ' + machineName);
+    // console.log('selectedIdsBtnArr: ' + selectedIdsBtnArr);
+    // console.log('selectedRunIdBtn: ' + selectedRunIdBtn);
+    // console.log('bin abszBtn');
 
     updateASMAMachine(
       { selectedIdsBtnArr, selectedRunIdBtn, currentUserID, machineID },
@@ -813,19 +813,19 @@ if (updateMalReportForm) {
     const createAt_Repair = document.getElementById('createAt_Repair').value;
     const estimatedStatus = document.getElementById('estimatedStatus').value;
 
-    console.log('currentUser: ' + currentUser);
-    console.log('malReportID: ' + malReportID);
-    console.log('departmentName: ' + departmentName);
-    console.log('machineName: ' + machineName);
-    console.log('elektroMech: ' + elektroMech);
-    console.log('estimatedTime_Repair: ' + estimatedTime_Repair);
-    console.log('Status_Repair: ' + Status_Repair);
-    console.log('messageProblem_de_Repair: ' + messageProblem_de_Repair);
-    console.log('messageMission_de_Repair: ' + messageMission_de_Repair);
-    console.log('messageProblem_en_Repair: ' + messageProblem_en_Repair);
-    console.log('messageMission_en_Repair: ' + messageMission_en_Repair);
-    console.log('createAt_Repair: ' + createAt_Repair);
-    console.log('estimatedStatus: ' + estimatedStatus);
+    // console.log('currentUser: ' + currentUser);
+    // console.log('malReportID: ' + malReportID);
+    // console.log('departmentName: ' + departmentName);
+    // console.log('machineName: ' + machineName);
+    // console.log('elektroMech: ' + elektroMech);
+    // console.log('estimatedTime_Repair: ' + estimatedTime_Repair);
+    // console.log('Status_Repair: ' + Status_Repair);
+    // console.log('messageProblem_de_Repair: ' + messageProblem_de_Repair);
+    // console.log('messageMission_de_Repair: ' + messageMission_de_Repair);
+    // console.log('messageProblem_en_Repair: ' + messageProblem_en_Repair);
+    // console.log('messageMission_en_Repair: ' + messageMission_en_Repair);
+    // console.log('createAt_Repair: ' + createAt_Repair);
+    // console.log('estimatedStatus: ' + estimatedStatus);
 
     if (e.submitter === closeMalReportButton) {
       console.log('bin closeMalReportButton');
@@ -874,11 +874,11 @@ if (updateSectorASMAForm) {
       'sectorASMAdescription_en'
     ).value;
 
-    console.log('machineID: ' + machineID);
-    console.log('sectorASMAID: ' + sectorASMAID);
-    console.log('sectorASMAName: ' + sectorASMAName);
-    console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
-    console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
+    // console.log('machineID: ' + machineID);
+    // console.log('sectorASMAID: ' + sectorASMAID);
+    // console.log('sectorASMAName: ' + sectorASMAName);
+    // console.log('sectorASMADescription_de: ' + sectorASMADescription_de);
+    // console.log('sectorASMADescription_en: ' + sectorASMADescription_en);
 
     if (e.submitter === saveUpdateSectorASMAButton) {
       console.log('bin saveUpdateSectorASMAButton');
@@ -948,20 +948,20 @@ if (updateLogFalForm) {
     ).value;
     const createAt_Repair = document.getElementById('createAt_Repair').value;
 
-    console.log('currentUser: ' + currentUser);
-    console.log('malReportID: ' + malReportID);
-    console.log('malReportLogFalID: ' + malReportLogFalID);
-    console.log('machineName: ' + machineName);
-    console.log('departmentName: ' + departmentName);
-    console.log('estimatedStatus: ' + estimatedStatus);
-    console.log('elektroMech: ' + elektroMech);
-    console.log('estimatedTime: ' + estimatedTime);
-    console.log('Status_Repair: ' + Status_Repair);
-    console.log('messageProblem_de: ' + messageProblem_de);
-    console.log('messageProblem_en: ' + messageProblem_en);
-    console.log('messageMission_de: ' + messageMission_de);
-    console.log('messageMission_en: ' + messageMission_en);
-    console.log('createAt_Repair: ' + createAt_Repair);
+    // console.log('currentUser: ' + currentUser);
+    // console.log('malReportID: ' + malReportID);
+    // console.log('malReportLogFalID: ' + malReportLogFalID);
+    // console.log('machineName: ' + machineName);
+    // console.log('departmentName: ' + departmentName);
+    // console.log('estimatedStatus: ' + estimatedStatus);
+    // console.log('elektroMech: ' + elektroMech);
+    // console.log('estimatedTime: ' + estimatedTime);
+    // console.log('Status_Repair: ' + Status_Repair);
+    // console.log('messageProblem_de: ' + messageProblem_de);
+    // console.log('messageProblem_en: ' + messageProblem_en);
+    // console.log('messageMission_de: ' + messageMission_de);
+    // console.log('messageMission_en: ' + messageMission_en);
+    // console.log('createAt_Repair: ' + createAt_Repair);
 
     console.log('bin saveUpdateLogFal');
     updateLogFal(

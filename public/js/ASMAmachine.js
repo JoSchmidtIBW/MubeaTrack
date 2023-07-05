@@ -19,22 +19,22 @@ export const updateASMAMachine = async (
   machineName
 ) => {
   console.log('bin updateASMAMachine in ASMAmachine.js');
-  console.log('machineID: ' + machineID);
-  console.log('departmentName: ' + departmentName);
-  console.log('machineName: ' + machineName);
-  console.log('data: ' + data);
-  console.log('data: ' + JSON.stringify(data));
+  // console.log('machineID: ' + machineID);
+  // console.log('departmentName: ' + departmentName);
+  // console.log('machineName: ' + machineName);
+  // console.log('data: ' + data);
+  // console.log('data: ' + JSON.stringify(data));
 
   const nameMachine = machineName;
   const nameDepartment = departmentName;
-  console.log('nameMachine: ' + nameMachine);
-  console.log('nameDepartment: ' + nameDepartment);
+  // console.log('nameMachine: ' + nameMachine);
+  // console.log('nameDepartment: ' + nameDepartment);
 
   const encodedDepartmentName = encodeURIComponent(departmentName);
   const encodedMachineName = encodeURIComponent(machineName);
 
-  console.log('encodedDepartmentName: ' + encodedDepartmentName);
-  console.log('encodedMachineName: ' + encodedMachineName);
+  // console.log('encodedDepartmentName: ' + encodedDepartmentName);
+  // console.log('encodedMachineName: ' + encodedMachineName);
 
   try {
     const res = await axios({

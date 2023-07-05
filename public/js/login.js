@@ -13,7 +13,7 @@ const strPathApiV1 = '/api/v1';
 const apiUrl = host + port + strPathApiV1;
 
 export const login = async (employeeNumber, password) => {
-  console.log(employeeNumber, password);
+  //console.log(employeeNumber, password);
 
   try {
     const res = await axios({

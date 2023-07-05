@@ -144,12 +144,12 @@ userSchema.pre('save', async function (next) {
 
 // Checks when the admin updates that he cannot change his role as admin
 userSchema.pre('findOneAndUpdate', async function (next) {
-  console.log('schau das Admin nicht seine rolle ändern kann');
+  //console.log('schau das Admin nicht seine rolle ändern kann');
 
   const updatedFields = this.getUpdate();
-  console.log('updatedFields');
-  console.log(updatedFields);
-  console.log(updatedFields.role);
+  //console.log('updatedFields');
+  //console.log(updatedFields);
+  //console.log(updatedFields.role);
 
   const user = await this.findOne();
 
@@ -233,26 +233,26 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 // Checks that when a user is deleted that also matches department.employeeCount,
 // and monitors that the ADMIN cannot delete itself, this with its ID because the name can be changed
 userSchema.pre('findOneAndDelete', async function (next) {
-  console.log('bin remove');
-  console.log('this: ' + this);
-  console.log('this._id: ' + this._id);
+  // console.log('bin remove');
+  // console.log('this: ' + this);
+  // console.log('this._id: ' + this._id);
   const user1 = await User.findById(this._conditions._id);
-  console.log('user1' + user1);
+  //console.log('user1' + user1);
   const user = await this.findOne();
 
-  console.log('user' + user);
-  console.log('user._id: ' + user._id);
+  // console.log('user' + user);
+  // console.log('user._id: ' + user._id);
 
   const ADMIN_ID = '643c1f042df0321cb8a06a47'; //Id MongoDB
 
   if (user._id.toString() === ADMIN_ID) {
-    console.log('ist ADMIN!!!!!!!!!!!!!!!!!');
+    //console.log('ist ADMIN!!!!!!!!!!!!!!!!!');
     return next(new AppError('Admin can not be deleted!!!', 400));
   }
 
-  console.log('user1._id: ' + user1._id);
+  //console.log('user1._id: ' + user1._id);
   const departments = await Department.find({ employees: user._id });
-  console.log('departments: ' + departments);
+  //console.log('departments: ' + departments);
   for (const department of departments) {
     department.employees.pull(user._id);
     department.employeesCount = department.employees.length;
@@ -296,9 +296,9 @@ userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {
-  console.log('bin methods.correctPassword');
-  console.log('userPassword: ' + userPassword);
-  console.log('candidatePassword: ' + candidatePassword);
+  // console.log('bin methods.correctPassword');
+  // console.log('userPassword: ' + userPassword);
+  // console.log('candidatePassword: ' + candidatePassword);
 
   //this.password does not work, because password is secret = false!
   // candidatePassword is coming from the user, it is not hash, userPassword is hash
@@ -306,7 +306,7 @@ userSchema.methods.correctPassword = async function (
   let iv = CryptoJS.enc.Base64.parse(''); // giving empty initialization vector
   let key = CryptoJS.SHA256(process.env.CRYPTOJS_SECRET_KEY); // hashing the key using SHA256
   let decrypteddata = decryptData(userPassword, iv, key);
-  console.log('decrypteddata: ' + decrypteddata);
+  //console.log('decrypteddata: ' + decrypteddata);
 
   if (decrypteddata === candidatePassword) {
     return true;

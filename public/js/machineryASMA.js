@@ -125,10 +125,10 @@ export const createSectorASMA = async (
 
 export const updateSectorASMA = async (data, machineID, sectorASMAID) => {
   console.log('bin updateSectorASMA in machineryASMA.js');
-  console.log('machineID: ' + machineID);
-  console.log('sectorASMAID: ' + sectorASMAID);
-  console.log('data: ' + data);
-  console.log('data: ' + JSON.stringify(data));
+  // console.log('machineID: ' + machineID);
+  // console.log('sectorASMAID: ' + sectorASMAID);
+  // console.log('data: ' + data);
+  // console.log('data: ' + JSON.stringify(data));
   try {
     const res = await axios({
       method: 'PATCH',
@@ -149,8 +149,8 @@ export const updateSectorASMA = async (data, machineID, sectorASMAID) => {
 
 export const deleteSectorASMA = async (machineID, sectorASMAID) => {
   console.log('bin deleteSectorASMA in machineryASMA.js');
-  console.log('machineIDdelete: ' + machineID);
-  console.log('sectorASMAIDdelete: ' + sectorASMAID);
+  // console.log('machineIDdelete: ' + machineID);
+  // console.log('sectorASMAIDdelete: ' + sectorASMAID);
 
   try {
     const res = await axios({
