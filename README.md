@@ -136,8 +136,8 @@ Mit folgendem Befehl werden die Unit- Tests gestartet:
 npm run test
 ```
 
-### Selenium- Test's starten
-Mit folgendem Befehl werden die Selenium- Tests gestartet:
+### End-toEnd- Test's starten
+Mit folgendem Befehl werden die End-to-End- Tests gestartet:
 ```bash
 npm run test_selenium
 ```
