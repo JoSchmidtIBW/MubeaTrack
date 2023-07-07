@@ -65,10 +65,10 @@ if (process.env.NODE_ENV === 'development') {
 const server = app.listen(PORT, () => {
   // console.log(`App running on port ${PORT} ...`);
   // console.log(
-  //   `Server running on port: http://localhost:${PORT} ...in Browser with no cookie, (nicht https)`
+  //   `Server running on port: http://localhost:${PORT} ...in Browser with no cookie, (not https)`
   // );
   console.log(
-    `Server running on port: http://127.0.0.1:${PORT} ...in Browser with cookie, (nicht https)`
+    `Server running on port: http://127.0.0.1:${PORT} ...in Browser with cookie, (not https)`
   );
 });
 
