@@ -24,10 +24,10 @@ import globalErrorHandler from './controllers/errorController.mjs';
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url); //__dirname is not definet
-const __dirname = path.dirname(__filename); //__dirname is not definet
+const __filename = fileURLToPath(import.meta.url); //__dirname is not defined
+const __dirname = path.dirname(__filename); //__dirname is not defined
 
-// Begining of the app
+// Beginning of the app
 app.set('view engine', 'pug');
 
 app.set('views', [
@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// use cors before all route definitions  nicht von tutorial
+// use cors before all route definitions
 app.use(cors({ origin: 'http://localhost:4301' }));
 
 // Set securtity HTTP headers
@@ -92,7 +92,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' })); // When form sen
 app.use(cookieParser());
 
 // after the bod-parser, Security for data
-// Data sanatisation against NoSQLquery injection
+// Data sanitization against NoSQLquery injection
 
 // For example: by postman, login as: // or in compass: {"email": {"$gt": ""}} with filter, with {}
 // {
