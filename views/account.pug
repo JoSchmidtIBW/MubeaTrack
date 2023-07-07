@@ -17,6 +17,8 @@ block content
                 - if(user.role === 'admin' || user.role === 'Chef' || user.role === 'Schichtleiter' || user.role === 'user')
                     ul.side-nav
                        +navItem('/api/v1/myMalReports', 'My ASMA-error reports', 'user-error-report')
+                ul.side-nav
+                    a.button(href='/documentations/MubeaTrack-Instruction_manual.pdf', target='_blank') Instruction manual
 
                 - if(user.role === 'admin' || user.role === 'Chef')
                     .admin-nav
